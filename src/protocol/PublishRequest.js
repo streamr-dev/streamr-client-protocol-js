@@ -5,8 +5,8 @@ import WebsocketRequest from './WebsocketRequest'
 const TYPE = 'publish'
 
 class PublishRequest extends WebsocketRequest {
-    constructor(streamId, apiKey, content, timestamp, partitionKey) {
-        super(TYPE, streamId, apiKey)
+    constructor(streamId, apiKey, sessionToken, content, timestamp, partitionKey) {
+        super(TYPE, streamId, apiKey, sessionToken)
 
         if (!content) {
             throw new ValidationError('No content given!')
@@ -52,6 +52,7 @@ class PublishRequest extends WebsocketRequest {
         return new PublishRequest(
             msg.stream,
             msg.authKey,
+            msg.sessionToken,
             msg.msg,
             msg.ts,
             msg.pkey,
