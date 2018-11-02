@@ -21,7 +21,10 @@ class PublishRequest extends WebsocketRequest {
     }
 
     getTimestampAsNumber() {
-        return TimestampUtil.parse(this.timestamp)
+        if (this.timestamp) {
+            return TimestampUtil.parse(this.timestamp)
+        }
+        return undefined
     }
 
     getSerializedContent() {
