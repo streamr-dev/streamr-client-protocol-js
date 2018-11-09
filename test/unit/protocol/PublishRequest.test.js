@@ -14,6 +14,7 @@ describe('PublishRequest', () => {
                 }),
                 ts: 1533924184016,
                 pkey: 'deviceId',
+                sigtype: 1,
                 sig: 'some-signature',
             }
             const result = PublishRequest.deserialize(JSON.stringify(msg))
@@ -25,6 +26,7 @@ describe('PublishRequest', () => {
             assert.equal(result.content, msg.msg)
             assert.equal(result.timestamp, msg.ts)
             assert.equal(result.partitionKey, msg.pkey)
+            assert.equal(result.signatureType, msg.sigtype)
             assert.equal(result.signature, msg.sig)
         })
     })
@@ -39,10 +41,20 @@ describe('PublishRequest', () => {
                 msg: '{}',
                 ts: 1533924184016,
                 pkey: 'deviceId',
+                sigtype: 1,
                 sig: 'some-signature',
             }
 
-            const serialized = new PublishRequest('streamId', 'authKey', 'sessionToken', {}, 1533924184016, 'deviceId', 'some-signature').serialize()
+            const serialized = new PublishRequest(
+                'streamId',
+                'authKey',
+                'sessionToken',
+                {},
+                1533924184016,
+                'deviceId',
+                1,
+                'some-signature',
+            ).serialize()
 
             assert(typeof serialized === 'string')
             assert.deepEqual(msg, JSON.parse(serialized))

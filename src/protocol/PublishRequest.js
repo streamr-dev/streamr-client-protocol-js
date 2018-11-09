@@ -5,7 +5,7 @@ import WebsocketRequest from './WebsocketRequest'
 const TYPE = 'publish'
 
 class PublishRequest extends WebsocketRequest {
-    constructor(streamId, apiKey, sessionToken, content, timestamp, partitionKey, signature) {
+    constructor(streamId, apiKey, sessionToken, content, timestamp, partitionKey, signatureType, signature) {
         super(TYPE, streamId, apiKey, sessionToken)
 
         if (!content) {
@@ -18,6 +18,7 @@ class PublishRequest extends WebsocketRequest {
         }
 
         this.partitionKey = partitionKey
+        this.signatureType = signatureType
         this.signature = signature
     }
 
@@ -43,6 +44,7 @@ class PublishRequest extends WebsocketRequest {
             msg: this.getSerializedContent(),
             ts: this.getTimestampAsNumber(),
             pkey: this.partitionKey,
+            sigtype: this.signatureType,
             sig: this.signature,
         }
     }
@@ -55,6 +57,7 @@ class PublishRequest extends WebsocketRequest {
             msg.msg,
             msg.ts,
             msg.pkey,
+            msg.sigtype,
             msg.sig,
         ]
     }
