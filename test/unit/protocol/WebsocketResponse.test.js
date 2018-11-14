@@ -46,6 +46,8 @@ const examplesByType = {
     '7': [0, 7, null, {
         error: 'foo',
     }],
+    '8': [0, 0, null, [29, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
+        941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'publisherAddress', 'signature']],
 }
 
 describe('WebsocketResponse', () => {
@@ -53,6 +55,12 @@ describe('WebsocketResponse', () => {
         describe('deserialize', () => {
             it('BroadcastMessage', () => {
                 const result = WebsocketResponse.deserialize(JSON.stringify(examplesByType[0]))
+                assert(result instanceof BroadcastMessage)
+                assert(result.payload instanceof StreamMessage)
+            })
+
+            it('BroadcastMessage version 29', () => {
+                const result = WebsocketResponse.deserialize(JSON.stringify(examplesByType[8]))
                 assert(result instanceof BroadcastMessage)
                 assert(result.payload instanceof StreamMessage)
             })
@@ -117,6 +125,11 @@ describe('WebsocketResponse', () => {
             it('correctly serializes broadcast messages', () => {
                 serialized = WebsocketResponse.deserialize(examplesByType[0]).serialize()
                 assert.deepEqual(examplesByType[0], JSON.parse(serialized))
+            })
+
+            it('correctly serializes broadcast messages version 29', () => {
+                serialized = WebsocketResponse.deserialize(examplesByType[8]).serialize(0, 29)
+                assert.deepEqual(examplesByType[8], JSON.parse(serialized))
             })
 
             it('correctly serializes unicast messages', () => {
