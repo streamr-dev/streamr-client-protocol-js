@@ -76,7 +76,7 @@ class StreamMessage {
                 }
                 return arr
             }
-            let obj = {
+            const obj = {
                 streamId: this.streamId,
                 streamPartition: this.streamPartition,
                 timestamp: this.timestamp,
@@ -87,12 +87,9 @@ class StreamMessage {
                 content: (parsedContent ? this.getParsedContent() : this.getSerializedContent()),
             }
             if (version === 29) {
-                obj = {
-                    ...obj,
-                    signatureType: this.signatureType,
-                    publisherAddress: this.publisherAddress,
-                    signature: this.signature,
-                }
+                obj.signatureType = this.signatureType
+                obj.publisherAddress = this.publisherAddress
+                obj.signature = this.signature
             }
             return obj
         }
