@@ -1,5 +1,9 @@
 import assert from 'assert'
+import StreamMessageFactory from '../../../src/utils/StreamMessageFactory'
 import StreamMessage from '../../../src/protocol/StreamMessage'
+import StreamMessageV28 from '../../../src/protocol/StreamMessageV28'
+import StreamMessageV29 from '../../../src/protocol/StreamMessageV29'
+import StreamMessageV30 from '../../../src/protocol/StreamMessageV30'
 import InvalidJsonError from '../../../src/errors/InvalidJsonError'
 import UnsupportedVersionError from '../../../src/errors/UnsupportedVersionError'
 
@@ -9,7 +13,7 @@ describe('StreamMessage', () => {
             it('correctly parses messages', () => {
                 const arr = [28, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
                     941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}']
-                const result = StreamMessage.deserialize(arr)
+                const result = StreamMessageFactory.deserialize(arr)
 
                 assert(result instanceof StreamMessage)
                 assert.equal(result.streamId, 'TsvTbqshTsuLg_HyUjxigA')
@@ -25,7 +29,7 @@ describe('StreamMessage', () => {
             it('throws if the content is invalid', () => {
                 const arr = [28, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
                     941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"invalid\njson"}']
-                assert.throws(() => StreamMessage.deserialize(arr), (err) => {
+                assert.throws(() => StreamMessageFactory.deserialize(arr), (err) => {
                     assert(err instanceof InvalidJsonError)
                     assert.equal(err.streamId, 'TsvTbqshTsuLg_HyUjxigA')
                     assert.equal(err.jsonString, '{"invalid\njson"}')
@@ -40,10 +44,10 @@ describe('StreamMessage', () => {
                 const arr = [28, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
                     941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}']
 
-                const serialized = new StreamMessage(
+                const serialized = new StreamMessageV28(
                     'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
                     941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}',
-                ).serialize(28)
+                ).serialize()
 
                 assert.deepEqual(serialized, JSON.stringify(arr))
             })
@@ -55,7 +59,7 @@ describe('StreamMessage', () => {
             it('correctly parses messages', () => {
                 const arr = [29, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
                     941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
-                const result = StreamMessage.deserialize(arr)
+                const result = StreamMessageFactory.deserialize(arr)
 
                 assert(result instanceof StreamMessage)
                 assert.equal(result.streamId, 'TsvTbqshTsuLg_HyUjxigA')
@@ -77,10 +81,48 @@ describe('StreamMessage', () => {
                 const arr = [29, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
                     941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
 
-                const serialized = new StreamMessage(
+                const serialized = new StreamMessageV29(
                     'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
                     941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature',
-                ).serialize(29)
+                ).serialize()
+
+                assert.deepEqual(serialized, JSON.stringify(arr))
+            })
+        })
+    })
+
+    describe('version 30', () => {
+        describe('deserialize', () => {
+            it('correctly parses messages', () => {
+                const arr = [30, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address',
+                    0, 941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
+                const result = StreamMessageFactory.deserialize(arr)
+
+                assert(result instanceof StreamMessage)
+                assert.equal(result.streamId, 'TsvTbqshTsuLg_HyUjxigA')
+                assert.equal(result.streamPartition, 0)
+                assert.equal(result.timestamp, 1529549961116)
+                assert.equal(result.sequenceNumber, 0)
+                assert.equal(result.producerId, 'address')
+                assert.equal(result.ttl, 0)
+                assert.equal(result.offset, 941516902)
+                assert.equal(result.previousOffset, 941499898)
+                assert.equal(result.contentType, StreamMessage.CONTENT_TYPES.JSON)
+                assert.equal(result.content, '{"valid": "json"}')
+                assert.equal(result.signatureType, 1)
+                assert.equal(result.signature, 'signature')
+            })
+        })
+
+        describe('serialize', () => {
+            it('correctly serializes messages', () => {
+                const arr = [30, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address',
+                    0, 941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
+
+                const serialized = new StreamMessageV30(
+                    'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address',
+                    0, 941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature',
+                ).serialize()
 
                 assert.deepEqual(serialized, JSON.stringify(arr))
             })
@@ -91,20 +133,7 @@ describe('StreamMessage', () => {
         describe('deserialize', () => {
             it('throws', () => {
                 const arr = [123]
-                assert.throws(() => StreamMessage.deserialize(arr), (err) => {
-                    assert(err instanceof UnsupportedVersionError)
-                    assert.equal(err.version, 123)
-                    return true
-                })
-            })
-        })
-
-        describe('serialize', () => {
-            it('throws', () => {
-                assert.throws(() => new StreamMessage(
-                    'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
-                    941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}',
-                ).serialize(123), (err) => {
+                assert.throws(() => StreamMessageFactory.deserialize(arr), (err) => {
                     assert(err instanceof UnsupportedVersionError)
                     assert.equal(err.version, 123)
                     return true
@@ -118,14 +147,14 @@ describe('StreamMessage', () => {
             const content = {
                 foo: 'bar',
             }
-            const msg = new StreamMessage('streamId', 0, Date.now(), 0, 1, null, StreamMessage.CONTENT_TYPES.JSON, content)
+            const msg = new StreamMessageV28('streamId', 0, Date.now(), 0, 1, null, StreamMessage.CONTENT_TYPES.JSON, content)
             assert.deepEqual(msg.getParsedContent(), content)
         })
         it('returns an object if the constructor was given a string', () => {
             const content = {
                 foo: 'bar',
             }
-            const msg = new StreamMessage('streamId', 0, Date.now(), 0, 1, null, StreamMessage.CONTENT_TYPES.JSON, JSON.stringify(content))
+            const msg = new StreamMessageV28('streamId', 0, Date.now(), 0, 1, null, StreamMessage.CONTENT_TYPES.JSON, JSON.stringify(content))
             assert.deepEqual(msg.getParsedContent(), content)
         })
     })
@@ -137,12 +166,12 @@ describe('StreamMessage', () => {
                     valid: 'json',
                 }]
 
-            const msg = new StreamMessage(
+            const msg = new StreamMessageV28(
                 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
                 941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}',
             )
 
-            assert.deepEqual(msg.toObject(28, true), object)
+            assert.deepEqual(msg.toObject(true), object)
         })
 
         it('compact == false', () => {
@@ -157,12 +186,12 @@ describe('StreamMessage', () => {
                 content: '{"valid": "json"}',
             }
 
-            const msg = new StreamMessage(
+            const msg = new StreamMessageV28(
                 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
                 941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}',
             )
 
-            assert.deepEqual(msg.toObject(28, undefined, false), object)
+            assert.deepEqual(msg.toObject(undefined, false), object)
         })
 
         it('parseContent == true, compact == false', () => {
@@ -179,12 +208,12 @@ describe('StreamMessage', () => {
                 },
             }
 
-            const msg = new StreamMessage(
+            const msg = new StreamMessageV28(
                 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
                 941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}',
             )
 
-            assert.deepEqual(msg.toObject(28, true, false), object)
+            assert.deepEqual(msg.toObject(true, false), object)
         })
     })
 })

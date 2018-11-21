@@ -13,8 +13,9 @@ describe('PublishRequest', () => {
                     foo: 'bar',
                 }),
                 ts: 1533924184016,
+                seq: 0,
                 pkey: 'deviceId',
-                addr: 'publisherAddress',
+                producer: 'producerAddress',
                 sigtype: 1,
                 sig: 'signature',
             }
@@ -26,8 +27,9 @@ describe('PublishRequest', () => {
             assert.equal(result.sessionToken, msg.sessionToken)
             assert.equal(result.content, msg.msg)
             assert.equal(result.timestamp, msg.ts)
+            assert.equal(result.sequenceNumber, msg.seq)
             assert.equal(result.partitionKey, msg.pkey)
-            assert.equal(result.publisherAddress, msg.addr)
+            assert.equal(result.producerId, msg.producer)
             assert.equal(result.signatureType, msg.sigtype)
             assert.equal(result.signature, msg.sig)
         })
@@ -42,20 +44,22 @@ describe('PublishRequest', () => {
                 sessionToken: 'sessionToken',
                 msg: '{}',
                 ts: 1533924184016,
+                seq: 0,
                 pkey: 'deviceId',
-                addr: 'publisherAddress',
+                producer: 'producerAddress',
                 sigtype: 1,
                 sig: 'signature',
             }
 
             const serialized = new PublishRequest(
                 'streamId',
+                'deviceId',
+                1533924184016,
+                0,
+                'producerAddress',
                 'authKey',
                 'sessionToken',
                 {},
-                1533924184016,
-                'deviceId',
-                'publisherAddress',
                 1,
                 'signature',
             ).serialize()
