@@ -5,9 +5,9 @@ class StreamMessageV30 extends StreamMessageV28 {
         streamId, streamPartition, timestamp, sequenceNumber, producerId,
         ttl, offset, previousOffset, contentType, content, signatureType, signature,
     ) {
-        super(streamId, streamPartition, timestamp, ttl, offset, previousOffset, contentType, content)
-        this.sequenceNumber = sequenceNumber
-        this.producerId = producerId
+        super(streamId, streamPartition, timestamp || Date.now(), ttl, offset, previousOffset, contentType, content)
+        this.sequenceNumber = sequenceNumber || 0
+        this.producerId = producerId || ''
         this.signatureType = signatureType
         this.signature = signature
     }
