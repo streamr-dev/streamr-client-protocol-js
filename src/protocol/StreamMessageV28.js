@@ -1,5 +1,4 @@
 import InvalidJsonError from '../errors/InvalidJsonError'
-import UnsupportedVersionError from '../errors/UnsupportedVersionError'
 import StreamMessage from './StreamMessage'
 
 const BYE_KEY = '_bye'

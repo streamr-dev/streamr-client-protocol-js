@@ -1,6 +1,8 @@
 import UnsupportedVersionError from '../errors/UnsupportedVersionError'
 import ValidationError from '../errors/ValidationError'
 import ParseUtil from '../utils/ParseUtil'
+import StreamMessageFactory from '../utils/StreamMessageFactory'
+import StreamMessage from './StreamMessage'
 
 const messageClassByMessageType = {}
 
@@ -30,15 +32,15 @@ module.exports = class WebsocketResponse {
         throw new Error('Abstract method called - please override in subclass!')
     }
 
-    toObject(version = 0, payloadVersion = 28) {
+    toObject(version = 0) {
         if (version === 0) {
-            return [version, this.messageType, this.subId, this.payload.toObject(payloadVersion)]
+            return [version, this.messageType, this.subId, this.payload.toObject()]
         }
         throw UnsupportedVersionError(version, 'Supported versions: [0]')
     }
 
-    serialize(version = 0, payloadVersion = 28) {
-        return JSON.stringify(this.toObject(version, payloadVersion))
+    serialize(version = 0) {
+        return JSON.stringify(this.toObject(version))
     }
 
     static checkVersion(message) {
@@ -50,7 +52,8 @@ module.exports = class WebsocketResponse {
     static deserialize(stringOrArray) {
         const message = ParseUtil.ensureParsed(stringOrArray)
         this.checkVersion(message)
-        const deserializedPayload = messageClassByMessageType[message[1]].getPayloadClass().deserialize(message[3])
+        const payloadClass = messageClassByMessageType[message[1]].getPayloadClass()
+        const deserializedPayload = (payloadClass === StreamMessage) ? StreamMessageFactory.deserialize(message[3]) : payloadClass.deserialize(message[3])
         const constructorArgs = messageClassByMessageType[message[1]].getConstructorArguments(message, deserializedPayload)
         return new messageClassByMessageType[message[1]](...constructorArgs)
     }
