@@ -12,6 +12,8 @@ module.exports = {
          * Version 28: [version, streamId, streamPartition, timestamp, ttl, offset, previousOffset, contentType, content]
          * Version 29: [version, streamId, streamPartition, timestamp, ttl, offset, previousOffset, contentType, content,
          * signatureType, address, signature]
+         * Version 30: [version, streamId, streamPartition, timestamp, sequenceNumber, producerId, ttl, offset,
+         * previousOffset, contentType, content, signatureType, signature]
          */
         if (message[0] === 28) {
             result = new StreamMessageV28(...message.slice(1))
