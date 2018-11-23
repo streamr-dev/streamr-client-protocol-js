@@ -1,4 +1,3 @@
-import UnsupportedVersionError from '../errors/UnsupportedVersionError'
 import StreamMessageV28 from './StreamMessageV28'
 
 class StreamMessageV29 extends StreamMessageV28 {

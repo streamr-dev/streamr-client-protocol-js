@@ -53,7 +53,9 @@ module.exports = class WebsocketResponse {
         const message = ParseUtil.ensureParsed(stringOrArray)
         this.checkVersion(message)
         const payloadClass = messageClassByMessageType[message[1]].getPayloadClass()
-        const deserializedPayload = (payloadClass === StreamMessage) ? StreamMessageFactory.deserialize(message[3]) : payloadClass.deserialize(message[3])
+        const deserializedPayload = (payloadClass === StreamMessage) ?
+            StreamMessageFactory.deserialize(message[3]) :
+            payloadClass.deserialize(message[3])
         const constructorArgs = messageClassByMessageType[message[1]].getConstructorArguments(message, deserializedPayload)
         return new messageClassByMessageType[message[1]](...constructorArgs)
     }
