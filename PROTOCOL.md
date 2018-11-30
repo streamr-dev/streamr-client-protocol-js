@@ -81,7 +81,7 @@ Unsubscribes the client from a stream-partition. The response message is `Unsubs
 ```
 Example:
 ```
-[1, 9, "stream-id", 0]
+[1, 10, "stream-id", 0]
 ```
 
 Field     | Description

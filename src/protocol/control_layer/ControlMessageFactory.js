@@ -1,6 +1,6 @@
 import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
-import PublishRequest from './PublishRequest'
-import PublishRequestFactory from './PublishRequestFactory'
+import PublishRequest from './publish_request/PublishRequest'
+import PublishRequestFactory from './publish_request/PublishRequestFactory'
 import ControlMessageV0Factory from './ControlMessageV0Factory'
 
 const factoryByMessageType = {}

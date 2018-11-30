@@ -1,6 +1,6 @@
-import ControlMessage from './ControlMessage'
+import ControlMessage from '../ControlMessage'
 
-const TYPE = 9
+const TYPE = 8
 
 class PublishRequest extends ControlMessage {
     constructor(version, sessionToken, apiKey) {

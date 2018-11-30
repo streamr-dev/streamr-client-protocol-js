@@ -1,5 +1,5 @@
 import assert from 'assert'
-import PublishRequestV0 from '../../../../src/protocol/control_layer/PublishRequestV0'
+import PublishRequestV0 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV0'
 
 describe('PublishRequestV0', () => {
     describe('deserialize', () => {

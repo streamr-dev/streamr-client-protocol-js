@@ -1,5 +1,5 @@
-import TimestampUtil from '../../utils/TimestampUtil'
-import ValidationError from '../../errors/ValidationError'
+import TimestampUtil from '../../../utils/TimestampUtil'
+import ValidationError from '../../../errors/ValidationError'
 import PublishRequest from './PublishRequest'
 
 const VERSION = 0

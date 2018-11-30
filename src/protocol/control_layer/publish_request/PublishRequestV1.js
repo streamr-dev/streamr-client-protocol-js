@@ -1,4 +1,4 @@
-import StreamMessageFactory from '../message_layer/StreamMessageFactory'
+import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
 import PublishRequest from './PublishRequest'
 
 const VERSION = 1

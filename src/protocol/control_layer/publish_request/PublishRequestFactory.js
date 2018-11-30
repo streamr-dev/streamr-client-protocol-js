@@ -1,4 +1,4 @@
-import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
+import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import PublishRequestV1 from './PublishRequestV1'
 
 export default class PublishRequestFactory {
@@ -7,6 +7,6 @@ export default class PublishRequestFactory {
         if (messageVersion === 1) {
             return new PublishRequestV1(...publishRequestSpecificArgsArray)
         }
-        throw new UnsupportedVersionError(messageVersion, 'Supported versions: [0, 1]')
+        throw new UnsupportedVersionError(messageVersion, 'Supported versions: [1]')
     }
 }

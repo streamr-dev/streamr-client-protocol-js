@@ -1,6 +1,6 @@
 import assert from 'assert'
-import PublishRequest from '../../../../src/protocol/control_layer/PublishRequest'
-import PublishRequestV1 from '../../../../src/protocol/control_layer/PublishRequestV1'
+import PublishRequest from '../../../../src/protocol/control_layer/publish_request/PublishRequest'
+import PublishRequestV1 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV1'
 import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 
 describe('PublishRequestV1', () => {

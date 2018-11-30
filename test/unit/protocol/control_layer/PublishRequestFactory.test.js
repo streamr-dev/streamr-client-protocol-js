@@ -1,6 +1,6 @@
 import assert from 'assert'
-import PublishRequestFactory from '../../../../src/protocol/control_layer/PublishRequestFactory'
-import PublishRequestV1 from '../../../../src/protocol/control_layer/PublishRequestV1'
+import PublishRequestFactory from '../../../../src/protocol/control_layer/publish_request/PublishRequestFactory'
+import PublishRequestV1 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV1'
 import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionError'
 import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 
