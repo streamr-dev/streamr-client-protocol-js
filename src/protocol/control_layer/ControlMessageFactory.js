@@ -1,10 +1,19 @@
 import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
 import PublishRequest from './publish_request/PublishRequest'
 import PublishRequestFactory from './publish_request/PublishRequestFactory'
+import SubscribeRequest from './subscribe_request/SubscribeRequest'
+import SubscribeRequestFactory from './subscribe_request/SubscribeRequestFactory'
+import UnsubscribeRequest from './unsubscribe_request/UnsubscribeRequest'
+import UnsubscribeRequestFactory from './unsubscribe_request/UnsubscribeRequestFactory'
+import BroadcastMessage from './broadcast_message/BroadcastMessage'
+import BroadcastMessageFactory from './broadcast_message/BroadcastMessageFactory'
 import ControlMessageV0Factory from './ControlMessageV0Factory'
 
 const factoryByMessageType = {}
 factoryByMessageType[PublishRequest.TYPE] = PublishRequestFactory
+factoryByMessageType[SubscribeRequest.TYPE] = SubscribeRequestFactory
+factoryByMessageType[UnsubscribeRequest.TYPE] = UnsubscribeRequestFactory
+factoryByMessageType[BroadcastMessage.TYPE] = BroadcastMessageFactory
 
 export default class ControlMessageFactory {
     static buildControlMessage(version, type, typeSpecificArgsArray) {

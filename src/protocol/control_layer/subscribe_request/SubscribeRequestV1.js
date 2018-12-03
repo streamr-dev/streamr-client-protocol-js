@@ -17,10 +17,6 @@ class SubscribeRequestV1 extends SubscribeRequest {
         ])
         return array
     }
-
-    serialize() {
-        return JSON.stringify(this.toArray())
-    }
 }
 
 module.exports = SubscribeRequestV1

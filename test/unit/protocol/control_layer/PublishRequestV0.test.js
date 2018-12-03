@@ -1,5 +1,6 @@
 import assert from 'assert'
 import PublishRequestV0 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV0'
+import StreamMessageV30 from '../../../../src/protocol/message_layer/StreamMessageV30'
 
 describe('PublishRequestV0', () => {
     describe('deserialize', () => {
@@ -28,6 +29,7 @@ describe('PublishRequestV0', () => {
             assert.equal(result.publisherAddress, msg.addr)
             assert.equal(result.signatureType, msg.sigtype)
             assert.equal(result.signature, msg.sig)
+            assert(result.getStreamMessage(1) instanceof StreamMessageV30)
         })
     })
     describe('serialize', () => {

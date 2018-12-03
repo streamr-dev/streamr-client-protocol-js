@@ -7,8 +7,7 @@ import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 describe('PublishRequestFactory', () => {
     describe('deserialize', () => {
         it('should throw when unsupported version', () => {
-            const arr = [123]
-            assert.throws(() => PublishRequestFactory.deserialize(arr), (err) => {
+            assert.throws(() => PublishRequestFactory.deserialize(123, undefined), (err) => {
                 assert(err instanceof UnsupportedVersionError)
                 assert.equal(err.version, 123)
                 return true

@@ -6,8 +6,7 @@ import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionEr
 describe('SubscribeRequestFactory', () => {
     describe('deserialize', () => {
         it('should throw when unsupported version', () => {
-            const arr = [123]
-            assert.throws(() => SubscribeRequestFactory.deserialize(arr), (err) => {
+            assert.throws(() => SubscribeRequestFactory.deserialize(123, undefined), (err) => {
                 assert(err instanceof UnsupportedVersionError)
                 assert.equal(err.version, 123)
                 return true

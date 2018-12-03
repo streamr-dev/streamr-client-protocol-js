@@ -9,24 +9,42 @@ describe('PublishRequestV1', () => {
             const arr = [[30, ['streamId', 0, 1529549961116, 0, 'address'],
                 [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 'sessionToken', 'apiKey']
             const result = new PublishRequestV1(...arr)
-            assert(result.streamMessage instanceof StreamMessage)
+            assert(result.getStreamMessage() instanceof StreamMessage)
             assert.equal(result.sessionToken, 'sessionToken')
             assert.equal(result.apiKey, 'apiKey')
         })
     })
     describe('serialize', () => {
-        it('correctly serializes messages', () => {
-            const arr = [1, PublishRequest.TYPE, [30, ['streamId', 0, 1529549961116, 0, 'address'],
-                [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 'sessionToken', 'apiKey']
-
-            const serialized = new PublishRequestV1(
+        let publishRequest
+        let expectedPayloadArray
+        let serialized
+        beforeEach(() => {
+            publishRequest = new PublishRequestV1(
                 [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON,
                     '{"valid": "json"}', 1, 'signature'],
                 'sessionToken',
                 'apiKey',
-            ).serialize()
+            )
+        })
+        afterEach(() => {
+            const arr = [1, PublishRequest.TYPE, expectedPayloadArray, 'sessionToken', 'apiKey']
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
+        })
+        it('correctly serializes messages with default version (30) payload', () => {
+            expectedPayloadArray = [30, ['streamId', 0, 1529549961116, 0, 'address'],
+                [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
+            serialized = publishRequest.serialize()
+        })
+        it('correctly serializes messages with version 29 payload', () => {
+            expectedPayloadArray = [29, 'streamId', 0, 1529549961116, 0,
+                null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
+            serialized = publishRequest.serialize(29)
+        })
+        it('correctly serializes messages with version 28 payload', () => {
+            expectedPayloadArray = [28, 'streamId', 0, 1529549961116, 0,
+                null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}']
+            serialized = publishRequest.serialize(28)
         })
     })
 })

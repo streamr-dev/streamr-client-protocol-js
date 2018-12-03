@@ -46,7 +46,7 @@ describe('ControlMessageV0Factory', () => {
             const result = ControlMessageV0Factory.deserialize(JSON.stringify(msg))
             assert(result instanceof SubscribeRequestV0)
         })
-        it('should return a UnsubscribeRequestV0', () => {
+        it('should return an UnsubscribeRequestV0', () => {
             const msg = {
                 type: 'unsubscribe',
                 stream: 'streamId',

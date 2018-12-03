@@ -1,4 +1,5 @@
 import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
+import StreamMessage from '../../message_layer/StreamMessage'
 import PublishRequest from './PublishRequest'
 
 const VERSION = 1
@@ -9,18 +10,22 @@ class PublishRequestV1 extends PublishRequest {
         this.streamMessage = StreamMessageFactory.deserialize(streamMessageArgsArray)
     }
 
-    toArray() {
+    getStreamMessage() {
+        return this.streamMessage
+    }
+
+    toArray(messageLayerVersion = StreamMessage.DEFAULT_VERSION) {
         const array = super.toArray()
         array.push(...[
-            this.streamMessage.toArray(),
+            JSON.parse(this.streamMessage.serialize(messageLayerVersion)),
             this.sessionToken,
             this.apiKey,
         ])
         return array
     }
 
-    serialize() {
-        return JSON.stringify(this.toArray())
+    serialize(messageLayerVersion = StreamMessage.DEFAULT_VERSION) {
+        return JSON.stringify(this.toArray(messageLayerVersion))
     }
 }
 
