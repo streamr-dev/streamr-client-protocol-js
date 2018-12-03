@@ -1,6 +1,8 @@
 import InvalidJsonError from '../../errors/InvalidJsonError'
 
-class StreamMessage {
+const DEFAULT_VERSION = 30
+
+export default class StreamMessage {
     constructor(version, ttl, contentType, content) {
         if (new.target === StreamMessage) {
             throw new TypeError('StreamMessage is abstract.')
@@ -51,4 +53,4 @@ StreamMessage.CONTENT_TYPES = {
     JSON: 27,
 }
 
-module.exports = StreamMessage
+StreamMessage.DEFAULT_VERSION = DEFAULT_VERSION

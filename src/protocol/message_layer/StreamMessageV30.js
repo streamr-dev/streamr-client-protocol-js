@@ -7,13 +7,17 @@ import MessageRef from './MessageRef'
 
 const VERSION = 30
 
-class StreamMessageV30 extends StreamMessage {
+export default class StreamMessageV30 extends StreamMessage {
     constructor(messageIdArgsArray, prevMessageRefArgsArray, ttl, contentType, content, signatureType, signature) {
         super(VERSION, ttl, contentType, content)
         this.messageId = new MessageID(...messageIdArgsArray)
         this.prevMessageRef = new MessageRef(...prevMessageRefArgsArray)
         this.signatureType = signatureType
         this.signature = signature
+    }
+
+    getStreamId() {
+        return this.messageId.streamId
     }
 
     toArray(parsedContent = false) {
@@ -51,5 +55,3 @@ class StreamMessageV30 extends StreamMessage {
         return this.toOtherVersion(version).serialize()
     }
 }
-
-module.exports = StreamMessageV30

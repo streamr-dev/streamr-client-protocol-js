@@ -3,8 +3,8 @@ import StreamMessageV28 from './StreamMessageV28'
 import StreamMessageV29 from './StreamMessageV29'
 import StreamMessageV30 from './StreamMessageV30'
 
-module.exports = {
-    deserialize: (stringOrArray, parseContent = true) => {
+export default class StreamMessageFactory {
+    static deserialize(stringOrArray, parseContent = true) {
         const message = (typeof stringOrArray === 'string' ? JSON.parse(stringOrArray) : stringOrArray)
         let result
 
@@ -29,5 +29,5 @@ module.exports = {
             result.getParsedContent()
         }
         return result
-    },
+    }
 }

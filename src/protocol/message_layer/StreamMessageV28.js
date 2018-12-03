@@ -7,7 +7,7 @@ const BYE_KEY = '_bye'
 
 const VERSION = 28
 
-class StreamMessageV28 extends StreamMessage {
+export default class StreamMessageV28 extends StreamMessage {
     constructor(streamId, streamPartition, timestamp, ttl, offset, previousOffset, contentType, content) {
         super(VERSION, ttl, contentType, content)
         this.streamId = streamId
@@ -15,6 +15,10 @@ class StreamMessageV28 extends StreamMessage {
         this.timestamp = timestamp
         this.offset = offset
         this.previousOffset = previousOffset
+    }
+
+    getStreamId() {
+        return this.streamId
     }
 
     toObject(parsedContent = false, compact = true) {
@@ -69,5 +73,3 @@ class StreamMessageV28 extends StreamMessage {
         return !!this.getParsedContent()[BYE_KEY]
     }
 }
-
-module.exports = StreamMessageV28

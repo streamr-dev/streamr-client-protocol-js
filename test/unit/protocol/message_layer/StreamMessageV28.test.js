@@ -10,7 +10,7 @@ describe('StreamMessageV28', () => {
             const result = new StreamMessageV28(...arr)
 
             assert(result instanceof StreamMessage)
-            assert.equal(result.streamId, 'TsvTbqshTsuLg_HyUjxigA')
+            assert.equal(result.getStreamId(), 'TsvTbqshTsuLg_HyUjxigA')
             assert.equal(result.streamPartition, 0)
             assert.equal(result.timestamp, 1529549961116)
             assert.equal(result.ttl, 0)

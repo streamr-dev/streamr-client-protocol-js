@@ -5,7 +5,7 @@ import StreamMessageV30 from './StreamMessageV30'
 
 const VERSION = 29
 
-class StreamMessageV29 extends StreamMessage {
+export default class StreamMessageV29 extends StreamMessage {
     constructor(streamId, streamPartition, timestamp, ttl, offset, previousOffset, contentType, content, signatureType, publisherAddress, signature) {
         super(VERSION, ttl, contentType, content)
         this.streamId = streamId
@@ -16,6 +16,10 @@ class StreamMessageV29 extends StreamMessage {
         this.signatureType = signatureType
         this.publisherAddress = publisherAddress
         this.signature = signature
+    }
+
+    getStreamId() {
+        return this.streamId
     }
 
     toObject(parsedContent = false, compact = true) {
@@ -72,5 +76,3 @@ class StreamMessageV29 extends StreamMessage {
         return this.toOtherVersion(version).serialize()
     }
 }
-
-module.exports = StreamMessageV29
