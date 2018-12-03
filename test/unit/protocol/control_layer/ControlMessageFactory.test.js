@@ -14,6 +14,9 @@ import UnsubscribeRequestV1 from '../../../../src/protocol/control_layer/unsubsc
 import BroadcastMessage from '../../../../src/protocol/control_layer/broadcast_message/BroadcastMessage'
 import BroadcastMessageV0 from '../../../../src/protocol/control_layer/broadcast_message/BroadcastMessageV0'
 import BroadcastMessageV1 from '../../../../src/protocol/control_layer/broadcast_message/BroadcastMessageV1'
+import UnicastMessage from '../../../../src/protocol/control_layer/unicast_message/UnicastMessage'
+import UnicastMessageV0 from '../../../../src/protocol/control_layer/unicast_message/UnicastMessageV0'
+import UnicastMessageV1 from '../../../../src/protocol/control_layer/unicast_message/UnicastMessageV1'
 
 describe('ControlMessageFactory', () => {
     describe('deserialize', () => {
@@ -90,6 +93,18 @@ describe('ControlMessageFactory', () => {
                 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']]
             const result = ControlMessageFactory.deserialize(arr)
             assert(result instanceof BroadcastMessageV1)
+        })
+        it('should return a UnicastMessageV0', () => {
+            const arr = [0, UnicastMessage.TYPE, [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
+                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 1]
+            const result = ControlMessageFactory.deserialize(arr)
+            assert(result instanceof UnicastMessageV0)
+        })
+        it('should return a UnicastMessageV1', () => {
+            const arr = [1, UnicastMessage.TYPE, [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
+                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 1]
+            const result = ControlMessageFactory.deserialize(arr)
+            assert(result instanceof UnicastMessageV1)
         })
     })
 })

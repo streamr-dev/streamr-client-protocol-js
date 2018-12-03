@@ -16,10 +16,6 @@ class BroadcastMessageV0 extends BroadcastMessage {
         ])
         return array
     }
-
-    serialize(messageLayerVersion = StreamMessage.DEFAULT_VERSION) {
-        return JSON.stringify(this.toArray(messageLayerVersion))
-    }
 }
 
 module.exports = BroadcastMessageV0
