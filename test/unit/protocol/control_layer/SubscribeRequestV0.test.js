@@ -1,5 +1,6 @@
 import assert from 'assert'
 import SubscribeRequestV0 from '../../../../src/protocol/control_layer/subscribe_request/SubscribeRequestV0'
+import SubscribeRequest from '../../../../src/protocol/control_layer/subscribe_request/SubscribeRequest'
 
 describe('SubscribeRequestV0', () => {
     describe('deserialize', () => {
@@ -35,6 +36,12 @@ describe('SubscribeRequestV0', () => {
 
             assert(typeof serialized === 'string')
             assert.deepEqual(msg, JSON.parse(serialized))
+        })
+        it('correctly serializes messages to version 1', () => {
+            const arr = [1, SubscribeRequest.TYPE, 'streamId', 0, 'sessionToken', 'apiKey']
+            const serialized = new SubscribeRequestV0('streamId', 0, 'apiKey', 'sessionToken').serialize(1)
+            assert(typeof serialized === 'string')
+            assert.deepEqual(arr, JSON.parse(serialized))
         })
     })
 })

@@ -1,7 +1,5 @@
 import InvalidJsonError from '../../errors/InvalidJsonError'
 
-const DEFAULT_VERSION = 30
-
 export default class StreamMessage {
     constructor(version, ttl, contentType, content) {
         if (new.target === StreamMessage) {
@@ -52,5 +50,3 @@ export default class StreamMessage {
 StreamMessage.CONTENT_TYPES = {
     JSON: 27,
 }
-
-StreamMessage.DEFAULT_VERSION = DEFAULT_VERSION

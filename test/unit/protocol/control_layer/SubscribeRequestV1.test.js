@@ -21,5 +21,18 @@ describe('SubscribeRequestV1', () => {
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })
+        it('correctly serializes messages to version 0', () => {
+            const msg = {
+                type: 'subscribe',
+                stream: 'streamId',
+                partition: 0,
+                authKey: 'apiKey',
+                sessionToken: 'sessionToken',
+            }
+
+            const serialized = new SubscribeRequestV1('streamId', 0, 'sessionToken', 'apiKey').serialize(0)
+            assert(typeof serialized === 'string')
+            assert.deepEqual(msg, JSON.parse(serialized))
+        })
     })
 })

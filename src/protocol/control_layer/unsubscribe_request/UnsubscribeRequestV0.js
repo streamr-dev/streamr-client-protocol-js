@@ -1,3 +1,5 @@
+import UnsubscribeRequestV1 from '../unsubscribe_request/UnsubscribeRequestV1'
+import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import UnsubscribeRequest from './UnsubscribeRequest'
 
 const VERSION = 0
@@ -15,8 +17,18 @@ class UnsubscribeRequestV0 extends UnsubscribeRequest {
         }
     }
 
-    serialize() {
-        return JSON.stringify(this.toObject())
+    toOtherVersion(version) {
+        if (version === 1) {
+            return new UnsubscribeRequestV1(this.streamId, this.streamPartition)
+        }
+        throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
+    }
+
+    serialize(version = VERSION) {
+        if (version === VERSION) {
+            return JSON.stringify(this.toObject())
+        }
+        return this.toOtherVersion(version).serialize()
     }
 
     static getConstructorArguments(msg) {

@@ -19,5 +19,15 @@ describe('UnsubscribeRequestV1', () => {
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })
+        it('correctly serializes messages to version 0', () => {
+            const msg = {
+                type: 'unsubscribe',
+                stream: 'streamId',
+                partition: 0,
+            }
+            const serialized = new UnsubscribeRequestV1('streamId', 0).serialize(0)
+            assert(typeof serialized === 'string')
+            assert.deepEqual(msg, JSON.parse(serialized))
+        })
     })
 })

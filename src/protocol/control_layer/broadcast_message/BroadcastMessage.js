@@ -1,16 +1,21 @@
 import ControlMessage from '../ControlMessage'
-import StreamMessage from '../../message_layer/StreamMessage'
 
 const TYPE = 0
 
 class BroadcastMessage extends ControlMessage {
     constructor(version, streamMessage) {
+        if (new.target === BroadcastMessage) {
+            throw new TypeError('BroadcastMessage is abstract.')
+        }
         super(version, TYPE)
         this.streamMessage = streamMessage
     }
 
-    serialize(messageLayerVersion = StreamMessage.DEFAULT_VERSION) {
-        return JSON.stringify(this.toArray(messageLayerVersion))
+    serialize(controlLayerVersion = this.version, messageLayerVersion) {
+        if (controlLayerVersion === this.version) {
+            return JSON.stringify(this.toArray(messageLayerVersion))
+        }
+        return this.toOtherVersion(controlLayerVersion).serialize()
     }
 }
 

@@ -1,4 +1,6 @@
+import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import SubscribeRequest from './SubscribeRequest'
+import SubscribeRequestV1 from './SubscribeRequestV1'
 
 const VERSION = 0
 
@@ -17,8 +19,18 @@ class SubscribeRequestV0 extends SubscribeRequest {
         }
     }
 
-    serialize() {
-        return JSON.stringify(this.toObject())
+    toOtherVersion(version) {
+        if (version === 1) {
+            return new SubscribeRequestV1(this.streamId, this.streamPartition, this.sessionToken, this.apiKey)
+        }
+        throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
+    }
+
+    serialize(version = VERSION) {
+        if (version === VERSION) {
+            return JSON.stringify(this.toObject())
+        }
+        return this.toOtherVersion(version).serialize()
     }
 
     static getConstructorArguments(msg) {
