@@ -15,14 +15,14 @@ describe('UnicastMessageFactory', () => {
             })
         })
         it('should return a UnicastMessageV0', () => {
-            const arr = [[30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 1]
+            const arr = ['subId', [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
+                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']]
             const result = UnicastMessageFactory.deserialize(0, arr)
             assert(result instanceof UnicastMessageV0)
         })
         it('should return a UnicastMessageV1', () => {
-            const arr = [[30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 1]
+            const arr = ['subId', [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
+                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']]
             const result = UnicastMessageFactory.deserialize(1, arr)
             assert(result instanceof UnicastMessageV1)
         })

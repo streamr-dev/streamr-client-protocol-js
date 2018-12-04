@@ -4,13 +4,13 @@ import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 const TYPE = 1
 
 class UnicastMessage extends ControlMessage {
-    constructor(version, streamMessage, subId) {
+    constructor(version, subId, streamMessage) {
         if (new.target === UnicastMessage) {
             throw new TypeError('UnicastMessage is abstract.')
         }
         super(version, TYPE)
-        this.streamMessage = streamMessage
         this.subId = subId
+        this.streamMessage = streamMessage
     }
 
     toArray(messageLayerVersion) {
@@ -29,5 +29,7 @@ class UnicastMessage extends ControlMessage {
         throw new UnsupportedVersionError(controlLayerVersion, 'Supported versions: [0, 1]')
     }
 }
+
+/* static */ UnicastMessage.TYPE = TYPE
 
 module.exports = UnicastMessage

@@ -6,8 +6,9 @@ import UnicastMessageV1 from './UnicastMessageV1'
 export default class UnicastMessageFactory {
     static deserialize(messageVersion, unicastMessageSpecificArgsArray) {
         if (messageVersion === 0) {
-            const streamMessageArray = unicastMessageSpecificArgsArray[0]
-            return new UnicastMessageV0(StreamMessageFactory.deserialize(streamMessageArray), ...unicastMessageSpecificArgsArray.slice(1))
+            const subId = unicastMessageSpecificArgsArray[0]
+            const streamMessageArray = unicastMessageSpecificArgsArray[1]
+            return new UnicastMessageV0(subId, StreamMessageFactory.deserialize(streamMessageArray))
         } else if (messageVersion === 1) {
             return new UnicastMessageV1(...unicastMessageSpecificArgsArray)
         }

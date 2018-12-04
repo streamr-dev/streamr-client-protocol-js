@@ -7,9 +7,9 @@ import BroadcastMessageV0 from '../../../../src/protocol/control_layer/broadcast
 describe('BroadcastMessageV0', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
-            const arr = [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
-            const streamMsg = StreamMessageFactory.deserialize(arr)
+            const arr = [null, [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
+                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']]
+            const streamMsg = StreamMessageFactory.deserialize(arr[1])
             const result = new BroadcastMessageV0(streamMsg)
             assert(result.streamMessage instanceof StreamMessageV30)
         })

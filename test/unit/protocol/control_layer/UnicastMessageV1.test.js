@@ -3,11 +3,11 @@ import UnicastMessageV1 from '../../../../src/protocol/control_layer/unicast_mes
 import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 import StreamMessageV30 from '../../../../src/protocol/message_layer/StreamMessageV30'
 
-describe('BroadcastMessageV1', () => {
+describe('UnicastMessageV1', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
-            const arr = [[30, ['streamId', 0, 1529549961116, 0, 'address'],
-                [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 1]
+            const arr = ['subId', [30, ['streamId', 0, 1529549961116, 0, 'address'],
+                [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']]
             const result = new UnicastMessageV1(...arr)
             assert(result.streamMessage instanceof StreamMessageV30)
         })
@@ -19,10 +19,10 @@ describe('BroadcastMessageV1', () => {
         beforeEach(() => {
             const streamMessageArray = [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
                 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
-            broadcastMessage = new UnicastMessageV1(streamMessageArray, 1)
+            broadcastMessage = new UnicastMessageV1('subId', streamMessageArray)
         })
         afterEach(() => {
-            const arr = [1, 1, 1, expectedPayloadArray]
+            const arr = [1, 1, 'subId', expectedPayloadArray]
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })
