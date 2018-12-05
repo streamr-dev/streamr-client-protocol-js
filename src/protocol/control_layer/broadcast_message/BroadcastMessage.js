@@ -3,12 +3,11 @@ import ControlMessage from '../ControlMessage'
 const TYPE = 0
 
 class BroadcastMessage extends ControlMessage {
-    constructor(version, streamMessage) {
+    constructor(version) {
         if (new.target === BroadcastMessage) {
             throw new TypeError('BroadcastMessage is abstract.')
         }
         super(version, TYPE)
-        this.streamMessage = streamMessage
     }
 
     serialize(controlLayerVersion = this.version, messageLayerVersion) {

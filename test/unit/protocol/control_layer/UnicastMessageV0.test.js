@@ -11,7 +11,7 @@ describe('UnicastMessageV0', () => {
                 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']]
             const streamMsg = StreamMessageFactory.deserialize(arr[1])
             const result = new UnicastMessageV0(streamMsg, arr[0])
-            assert(result.streamMessage instanceof StreamMessageV30)
+            assert(result.payload instanceof StreamMessageV30)
             assert.strictEqual(result.subId, 'subId')
         })
     })

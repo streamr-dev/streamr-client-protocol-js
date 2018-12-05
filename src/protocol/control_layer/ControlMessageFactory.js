@@ -13,6 +13,8 @@ import SubscribeResponse from './subscribe_response/SubscribeResponse'
 import SubscribeResponseFactory from './subscribe_response/SubscribeResponseFactory'
 import UnsubscribeResponse from './unsubscribe_response/UnsubscribeResponse'
 import UnsubscribeResponseFactory from './unsubscribe_response/UnsubscribeResponseFactory'
+import ErrorResponse from './error_response/ErrorResponse'
+import ErrorResponseFactory from './error_response/ErrorResponseFactory'
 import ControlMessageV0Factory from './ControlMessageV0Factory'
 
 const factoryByMessageType = {}
@@ -23,6 +25,7 @@ factoryByMessageType[BroadcastMessage.TYPE] = BroadcastMessageFactory
 factoryByMessageType[UnicastMessage.TYPE] = UnicastMessageFactory
 factoryByMessageType[SubscribeResponse.TYPE] = SubscribeResponseFactory
 factoryByMessageType[UnsubscribeResponse.TYPE] = UnsubscribeResponseFactory
+factoryByMessageType[ErrorResponse.TYPE] = ErrorResponseFactory
 
 export default class ControlMessageFactory {
     static buildControlMessage(version, type, typeSpecificArgsArray) {

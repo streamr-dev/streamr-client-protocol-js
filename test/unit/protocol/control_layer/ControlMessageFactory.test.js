@@ -16,17 +16,224 @@ import SubscribeResponseV0 from '../../../../src/protocol/control_layer/subscrib
 import SubscribeResponseV1 from '../../../../src/protocol/control_layer/subscribe_response/SubscribeResponseV1'
 import UnsubscribeResponseV0 from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseV0'
 import UnsubscribeResponseV1 from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseV1'
+import ErrorResponseV0 from '../../../../src/protocol/control_layer/error_response/ErrorResponseV0'
+import ErrorResponseV1 from '../../../../src/protocol/control_layer/error_response/ErrorResponseV1'
+
+const examplesByTypeV0 = {
+    '0': [0, 0, null, [28, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
+        941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}']],
+    '1': [0, 1, 'subId', [28, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
+        941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}']],
+    '2': [0, 2, null, {
+        stream: 'id',
+        partition: 0,
+    }],
+    '3': [0, 3, null, {
+        stream: 'id',
+        partition: 0,
+    }],
+    '4': [0, 4, null, {
+        stream: 'id',
+        partition: 0,
+        sub: 'subId',
+    }],
+    '5': [0, 5, null, {
+        stream: 'id',
+        partition: 0,
+        sub: 'subId',
+    }],
+    '6': [0, 6, null, {
+        stream: 'id',
+        partition: 0,
+        sub: 'subId',
+    }],
+    '7': [0, 7, null, {
+        error: 'foo',
+    }],
+}
+
+const examplesByTypeV1 = {
+    '0': [1, 0, [30, ['streamId', 0, 1529549961116, 0, 'address'],
+        [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']],
+    '1': [1, 1, 'subId', [30, ['streamId', 0, 1529549961116, 0, 'address'],
+        [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']],
+    '2': [1, 2, 'streamId', 0],
+    '3': [1, 3, 'streamId', 0],
+    '7': [1, 7, 'errorMessage'],
+    '8': [1, 8, [30, ['streamId', 0, 1529549961116, 0, 'address'],
+        [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 'sessionToken', 'apiKey'],
+    '9': [1, 9, 'streamId', 0, 'sessionToken', 'apiKey'],
+    '10': [1, 10, 'streamId', 0],
+}
 
 describe('ControlMessageFactory', () => {
-    describe('deserialize', () => {
-        it('should throw when unsupported version', () => {
-            const arr = [123]
-            assert.throws(() => ControlMessageFactory.deserialize(arr), (err) => {
-                assert(err instanceof UnsupportedVersionError)
-                assert.equal(err.version, 123)
-                return true
-            })
+    it('should throw when unsupported version', () => {
+        const arr = [123]
+        assert.throws(() => ControlMessageFactory.deserialize(arr), (err) => {
+            assert(err instanceof UnsupportedVersionError)
+            assert.equal(err.version, 123)
+            return true
         })
+    })
+    describe('version 0', () => {
+        describe('deserialize', () => {
+            let clazz
+            let array
+            let result
+            beforeEach(() => {
+                array = null
+                clazz = null
+            })
+            afterEach(() => {
+                result = ControlMessageFactory.deserialize(JSON.stringify(array))
+                assert(result instanceof clazz)
+            })
+            /* eslint-disable prefer-destructuring */
+            it('BroadcastMessageV0', () => {
+                clazz = BroadcastMessageV0
+                array = examplesByTypeV0[0]
+            })
+            it('UnicastMessageV0', () => {
+                clazz = UnicastMessageV0
+                array = examplesByTypeV0[1]
+            })
+            it('SubscribeResponseV0', () => {
+                clazz = SubscribeResponseV0
+                array = examplesByTypeV0[2]
+            })
+            it('UnsubscribeResponseV0', () => {
+                clazz = UnsubscribeResponseV0
+                array = examplesByTypeV0[3]
+            })
+            it('ErrorResponseV0', () => {
+                clazz = ErrorResponseV0
+                array = examplesByTypeV0[7]
+            })
+            /* eslint-enable prefer-destructuring */
+        })
+        describe('serialize', () => {
+            let array
+            let serialized
+            beforeEach(() => {
+                array = null
+                serialized = null
+            })
+            afterEach(() => {
+                serialized = ControlMessageFactory.deserialize(array).serialize()
+                assert(typeof serialized === 'string')
+                assert.deepEqual(array, JSON.parse(serialized))
+            })
+            /* eslint-disable prefer-destructuring */
+            it('BroadcastMessageV0', () => {
+                array = examplesByTypeV0[0]
+            })
+            it('UnicastMessageV0', () => {
+                array = examplesByTypeV0[1]
+            })
+            it('SubscribeResponseV0', () => {
+                array = examplesByTypeV0[2]
+            })
+            it('UnsubscribeResponseV0', () => {
+                array = examplesByTypeV0[3]
+            })
+            it('ErrorResponseV0', () => {
+                array = examplesByTypeV0[7]
+            })
+            /* eslint-enable prefer-destructuring */
+        })
+    })
+    describe('version 1', () => {
+        describe('deserialize', () => {
+            let clazz
+            let array
+            let result
+            beforeEach(() => {
+                array = null
+                clazz = null
+            })
+            afterEach(() => {
+                result = ControlMessageFactory.deserialize(JSON.stringify(array))
+                assert(result instanceof clazz)
+            })
+            /* eslint-disable prefer-destructuring */
+            it('BroadcastMessageV1', () => {
+                clazz = BroadcastMessageV1
+                array = examplesByTypeV1[0]
+            })
+
+            it('UnicastMessageV1', () => {
+                clazz = UnicastMessageV1
+                array = examplesByTypeV1[1]
+            })
+
+            it('SubscribeResponseV1', () => {
+                clazz = SubscribeResponseV1
+                array = examplesByTypeV1[2]
+            })
+
+            it('UnsubscribeResponseV1', () => {
+                clazz = UnsubscribeResponseV1
+                array = examplesByTypeV1[3]
+            })
+            it('ErrorResponseV1', () => {
+                clazz = ErrorResponseV1
+                array = examplesByTypeV1[7]
+            })
+            it('PublishRequestV1', () => {
+                clazz = PublishRequestV1
+                array = examplesByTypeV1[8]
+            })
+            it('SubscribeRequestV1', () => {
+                clazz = SubscribeRequestV1
+                array = examplesByTypeV1[9]
+            })
+            it('UnsubscribeRequestV1', () => {
+                clazz = UnsubscribeRequestV1
+                array = examplesByTypeV1[10]
+            })
+            /* eslint-enable prefer-destructuring */
+        })
+        describe('serialize', () => {
+            let array
+            let serialized
+            beforeEach(() => {
+                array = null
+                serialized = null
+            })
+            afterEach(() => {
+                serialized = ControlMessageFactory.deserialize(array).serialize()
+                assert(typeof serialized === 'string')
+                assert.deepEqual(array, JSON.parse(serialized))
+            })
+            /* eslint-disable prefer-destructuring */
+            it('BroadcastMessageV1', () => {
+                array = examplesByTypeV1[0]
+            })
+            it('UnicastMessageV1', () => {
+                array = examplesByTypeV1[1]
+            })
+            it('SubscribeResponseV1', () => {
+                array = examplesByTypeV1[2]
+            })
+            it('UnsubscribeResponseV1', () => {
+                array = examplesByTypeV1[3]
+            })
+            it('ErrorResponseV1', () => {
+                array = examplesByTypeV1[7]
+            })
+            it('PublishRequestV1', () => {
+                array = examplesByTypeV1[8]
+            })
+            it('SubscribeRequestV1', () => {
+                array = examplesByTypeV1[9]
+            })
+            it('UnsubscribeRequestV1', () => {
+                array = examplesByTypeV1[10]
+            })
+            /* eslint-enable prefer-destructuring */
+        })
+    })
+    describe('deserialize', () => {
         it('should return a PublishRequestV0', () => {
             const msg = {
                 type: 'publish',
@@ -45,12 +252,6 @@ describe('ControlMessageFactory', () => {
             const result = ControlMessageFactory.deserialize(JSON.stringify(msg))
             assert(result instanceof PublishRequestV0)
         })
-        it('should return a PublishRequestV1', () => {
-            const arr = [1, 8, [30, ['streamId', 0, 1529549961116, 0, 'address'],
-                [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 'sessionToken', 'apiKey']
-            const result = ControlMessageFactory.deserialize(arr)
-            assert(result instanceof PublishRequestV1)
-        })
         it('should return a SubscribeRequestV0', () => {
             const msg = {
                 type: 'subscribe',
@@ -62,11 +263,6 @@ describe('ControlMessageFactory', () => {
             const result = ControlMessageFactory.deserialize(JSON.stringify(msg))
             assert(result instanceof SubscribeRequestV0)
         })
-        it('should return a SubscribeRequestV1', () => {
-            const arr = [1, 9, 'streamId', 0, 'sessionToken', 'apiKey']
-            const result = ControlMessageFactory.deserialize(arr)
-            assert(result instanceof SubscribeRequestV1)
-        })
         it('should return an UnsubscribeRequestV0', () => {
             const msg = {
                 type: 'unsubscribe',
@@ -75,61 +271,6 @@ describe('ControlMessageFactory', () => {
             }
             const result = ControlMessageFactory.deserialize(JSON.stringify(msg))
             assert(result instanceof UnsubscribeRequestV0)
-        })
-        it('should return an UnsubscribeRequestV1', () => {
-            const arr = [1, 10, 'streamId', 0]
-            const result = ControlMessageFactory.deserialize(arr)
-            assert(result instanceof UnsubscribeRequestV1)
-        })
-        it('should return a BroadcastMessageV0', () => {
-            const arr = [0, 0, null, [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']]
-            const result = ControlMessageFactory.deserialize(arr)
-            assert(result instanceof BroadcastMessageV0)
-        })
-        it('should return a BroadcastMessageV1', () => {
-            const arr = [1, 0, [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']]
-            const result = ControlMessageFactory.deserialize(arr)
-            assert(result instanceof BroadcastMessageV1)
-        })
-        it('should return a UnicastMessageV0', () => {
-            const arr = [0, 1, 'subId', [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']]
-            const result = ControlMessageFactory.deserialize(arr)
-            assert(result instanceof UnicastMessageV0)
-        })
-        it('should return a UnicastMessageV1', () => {
-            const arr = [1, 1, 'subId', [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']]
-            const result = ControlMessageFactory.deserialize(arr)
-            assert(result instanceof UnicastMessageV1)
-        })
-        it('should return a SubscribeResponseV0', () => {
-            const arr = [0, 2, null, {
-                stream: 'streamId',
-                partition: 0,
-            }]
-            const result = ControlMessageFactory.deserialize(arr)
-            assert(result instanceof SubscribeResponseV0)
-        })
-        it('should return a SubscribeResponseV1', () => {
-            const arr = [1, 2, 'streamId', 0]
-            const result = ControlMessageFactory.deserialize(arr)
-            assert(result instanceof SubscribeResponseV1)
-        })
-        it('should return an UnsubscribeResponseV0', () => {
-            const arr = [0, 3, null, {
-                stream: 'streamId',
-                partition: 0,
-            }]
-            const result = ControlMessageFactory.deserialize(arr)
-            assert(result instanceof UnsubscribeResponseV0)
-        })
-        it('should return an UnsubscribeResponseV1', () => {
-            const arr = [1, 3, 'streamId', 0]
-            const result = ControlMessageFactory.deserialize(arr)
-            assert(result instanceof UnsubscribeResponseV1)
         })
     })
 })

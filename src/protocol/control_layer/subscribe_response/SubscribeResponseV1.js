@@ -21,7 +21,7 @@ class SubscribeResponseV1 extends SubscribeResponse {
     }
 
     toOtherVersion(version) {
-        if (version === 1) {
+        if (version === 0) {
             return new SubscribeResponseV0(this.streamId, this.streamPartition)
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')

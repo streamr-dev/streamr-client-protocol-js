@@ -6,21 +6,22 @@ const VERSION = 0
 
 class BroadcastMessageV0 extends BroadcastMessage {
     constructor(streamMessage) {
-        super(VERSION, streamMessage)
+        super(VERSION)
+        this.payload = streamMessage
     }
 
     toArray(messageLayerVersion) {
         const array = super.toArray()
         array.push(...[
             null, // subId
-            JSON.parse(this.streamMessage.serialize(messageLayerVersion)),
+            JSON.parse(this.payload.serialize(messageLayerVersion)),
         ])
         return array
     }
 
     toOtherVersion(version) {
         if (version === 1) {
-            return new BroadcastMessageV1(this.streamMessage.serialize())
+            return new BroadcastMessageV1(this.payload.serialize())
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }

@@ -5,7 +5,16 @@ const VERSION = 1
 
 class UnicastMessageV1 extends UnicastMessage {
     constructor(subId, streamMessageArgsArray) {
-        super(VERSION, subId, StreamMessageFactory.deserialize(streamMessageArgsArray))
+        super(VERSION, subId)
+        this.streamMessage = StreamMessageFactory.deserialize(streamMessageArgsArray)
+    }
+
+    toArray(messageLayerVersion) {
+        const array = super.toArray()
+        array.push(...[
+            JSON.parse(this.streamMessage.serialize(messageLayerVersion)),
+        ])
+        return array
     }
 }
 

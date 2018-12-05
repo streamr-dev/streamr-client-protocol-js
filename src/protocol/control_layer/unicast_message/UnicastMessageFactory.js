@@ -8,7 +8,7 @@ export default class UnicastMessageFactory {
         if (messageVersion === 0) {
             const subId = unicastMessageSpecificArgsArray[0]
             const streamMessageArray = unicastMessageSpecificArgsArray[1]
-            return new UnicastMessageV0(subId, StreamMessageFactory.deserialize(streamMessageArray))
+            return new UnicastMessageV0(StreamMessageFactory.deserialize(streamMessageArray), subId)
         } else if (messageVersion === 1) {
             return new UnicastMessageV1(...unicastMessageSpecificArgsArray)
         }

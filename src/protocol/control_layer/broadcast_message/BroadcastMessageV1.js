@@ -7,7 +7,8 @@ const VERSION = 1
 
 class BroadcastMessageV1 extends BroadcastMessage {
     constructor(streamMessageArgsArray) {
-        super(VERSION, StreamMessageFactory.deserialize(streamMessageArgsArray))
+        super(VERSION)
+        this.streamMessage = StreamMessageFactory.deserialize(streamMessageArgsArray)
     }
 
     toArray(messageLayerVersion) {

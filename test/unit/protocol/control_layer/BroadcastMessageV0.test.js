@@ -11,7 +11,7 @@ describe('BroadcastMessageV0', () => {
                 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']]
             const streamMsg = StreamMessageFactory.deserialize(arr[1])
             const result = new BroadcastMessageV0(streamMsg)
-            assert(result.streamMessage instanceof StreamMessageV30)
+            assert(result.payload instanceof StreamMessageV30)
         })
     })
     describe('serialize', () => {

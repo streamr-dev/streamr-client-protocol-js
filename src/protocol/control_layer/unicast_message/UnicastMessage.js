@@ -4,20 +4,18 @@ import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 const TYPE = 1
 
 class UnicastMessage extends ControlMessage {
-    constructor(version, subId, streamMessage) {
+    constructor(version, subId) {
         if (new.target === UnicastMessage) {
             throw new TypeError('UnicastMessage is abstract.')
         }
         super(version, TYPE)
         this.subId = subId
-        this.streamMessage = streamMessage
     }
 
-    toArray(messageLayerVersion) {
+    toArray() {
         const array = super.toArray()
         array.push(...[
             this.subId,
-            JSON.parse(this.streamMessage.serialize(messageLayerVersion)),
         ])
         return array
     }

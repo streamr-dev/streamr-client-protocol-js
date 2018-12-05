@@ -24,11 +24,15 @@ describe('SubscribeResponseV0', () => {
                 stream: 'streamId',
                 partition: 0,
             }]
-
             const serialized = new SubscribeResponseV0('streamId', 0).serialize()
-
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })
-    })k
+        it('correctly serializes messages to version 1', () => {
+            const arr = [1, 2, 'streamId', 0]
+            const serialized = new SubscribeResponseV0('streamId', 0).serialize(1)
+            assert(typeof serialized === 'string')
+            assert.deepEqual(arr, JSON.parse(serialized))
+        })
+    })
 })

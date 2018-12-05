@@ -21,7 +21,7 @@ class UnsubscribeResponseV1 extends UnsubscribeResponse {
     }
 
     toOtherVersion(version) {
-        if (version === 1) {
+        if (version === 0) {
             return new UnsubscribeResponseV0(this.streamId, this.streamPartition)
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
