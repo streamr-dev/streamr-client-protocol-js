@@ -2,6 +2,7 @@ import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import SubscribeRequest from './SubscribeRequest'
 import SubscribeRequestV1 from './SubscribeRequestV1'
 
+const TYPE = 'subscribe'
 const VERSION = 0
 
 class SubscribeRequestV0 extends SubscribeRequest {
@@ -11,7 +12,7 @@ class SubscribeRequestV0 extends SubscribeRequest {
 
     toObject() {
         return {
-            type: 'subscribe',
+            type: TYPE,
             stream: this.streamId,
             partition: this.streamPartition,
             authKey: this.apiKey,

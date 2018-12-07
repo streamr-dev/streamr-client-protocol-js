@@ -4,6 +4,7 @@ import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionEr
 import PublishRequestV0 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV0'
 import SubscribeRequestV0 from '../../../../src/protocol/control_layer/subscribe_request/SubscribeRequestV0'
 import UnsubscribeRequestV0 from '../../../../src/protocol/control_layer/unsubscribe_request/UnsubscribeRequestV0'
+import ResendRequestV0 from '../../../../src/protocol/control_layer/resend_request/ResendRequestV0'
 
 describe('ControlMessageV0Factory', () => {
     describe('deserialize', () => {
@@ -54,6 +55,17 @@ describe('ControlMessageV0Factory', () => {
             }
             const result = ControlMessageV0Factory.deserialize(JSON.stringify(msg))
             assert(result instanceof UnsubscribeRequestV0)
+        })
+        it('should return a ResendRequestV0', () => {
+            const msg = {
+                type: 'resend',
+                stream: 'id',
+                partition: 0,
+                sub: 'subId',
+                resend_all: true,
+            }
+            const result = ControlMessageV0Factory.deserialize(JSON.stringify(msg))
+            assert(result instanceof ResendRequestV0)
         })
     })
 })

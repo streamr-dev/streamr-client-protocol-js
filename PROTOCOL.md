@@ -240,17 +240,18 @@ Field    | Type | Description
 Sent in response to a `ResendRequest`. Informs the client that a resend is starting.
 
 ```
-[version, type, streamId, streamPartition]
+[version, type, streamId, streamPartition, subId]
 ```
 Example:
 ```
-[1, 4, "stream-id", 0]
+[1, 4, "stream-id", 0, "subId"]
 ```
 
 Field    | Type | Description
 -------- | ---- | --------
 `streamId`| String | Stream id to resend on.
 `streamPartition` | Integer | Partition id to resend on. Optional, defaults to 0.
+`subId` | String | Subscription id for which the resend is starting.
 
 #### ResendResponseResent
 

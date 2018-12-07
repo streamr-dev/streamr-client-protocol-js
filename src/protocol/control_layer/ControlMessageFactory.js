@@ -13,6 +13,18 @@ import SubscribeResponse from './subscribe_response/SubscribeResponse'
 import SubscribeResponseFactory from './subscribe_response/SubscribeResponseFactory'
 import UnsubscribeResponse from './unsubscribe_response/UnsubscribeResponse'
 import UnsubscribeResponseFactory from './unsubscribe_response/UnsubscribeResponseFactory'
+import ResendResponseResending from './resend_response_resending/ResendResponseResending'
+import ResendResponseResendingFactory from './resend_response_resending/ResendResponseResendingFactory'
+import ResendResponseResent from './resend_response_resent/ResendResponseResent'
+import ResendResponseResentFactory from './resend_response_resent/ResendResponseResentFactory'
+import ResendResponseNoResend from './resend_response_no_resend/ResendResponseNoResend'
+import ResendResponseNoResendFactory from './resend_response_no_resend/ResendResponseNoResendFactory'
+import ResendLastRequestV1 from './resend_request/ResendLastRequestV1'
+import ResendLastRequestFactory from './resend_request/ResendLastRequestFactory'
+import ResendFromRequestV1 from './resend_request/ResendFromRequestV1'
+import ResendFromRequestFactory from './resend_request/ResendFromRequestFactory'
+import ResendRangeRequestV1 from './resend_request/ResendRangeRequestV1'
+import ResendRangeRequestFactory from './resend_request/ResendRangeRequestFactory'
 import ErrorResponse from './error_response/ErrorResponse'
 import ErrorResponseFactory from './error_response/ErrorResponseFactory'
 import ControlMessageV0Factory from './ControlMessageV0Factory'
@@ -25,6 +37,12 @@ factoryByMessageType[BroadcastMessage.TYPE] = BroadcastMessageFactory
 factoryByMessageType[UnicastMessage.TYPE] = UnicastMessageFactory
 factoryByMessageType[SubscribeResponse.TYPE] = SubscribeResponseFactory
 factoryByMessageType[UnsubscribeResponse.TYPE] = UnsubscribeResponseFactory
+factoryByMessageType[ResendResponseResending.TYPE] = ResendResponseResendingFactory
+factoryByMessageType[ResendResponseResent.TYPE] = ResendResponseResentFactory
+factoryByMessageType[ResendResponseNoResend.TYPE] = ResendResponseNoResendFactory
+factoryByMessageType[ResendLastRequestV1.TYPE] = ResendLastRequestFactory
+factoryByMessageType[ResendFromRequestV1.TYPE] = ResendFromRequestFactory
+factoryByMessageType[ResendRangeRequestV1.TYPE] = ResendRangeRequestFactory
 factoryByMessageType[ErrorResponse.TYPE] = ErrorResponseFactory
 
 export default class ControlMessageFactory {

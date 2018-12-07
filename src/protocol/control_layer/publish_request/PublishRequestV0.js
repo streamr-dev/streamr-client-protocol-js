@@ -6,6 +6,7 @@ import PublishRequest from './PublishRequest'
 
 const murmur = require('murmurhash-native').murmurHash
 
+const TYPE = 'publish'
 const VERSION = 0
 
 class PublishRequestV0 extends PublishRequest {
@@ -71,7 +72,7 @@ class PublishRequestV0 extends PublishRequest {
 
     toObject() {
         return {
-            type: 'publish',
+            type: TYPE,
             stream: this.streamId,
             authKey: this.apiKey,
             sessionToken: this.sessionToken,

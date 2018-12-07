@@ -2,6 +2,7 @@ import UnsubscribeRequestV1 from '../unsubscribe_request/UnsubscribeRequestV1'
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import UnsubscribeRequest from './UnsubscribeRequest'
 
+const TYPE = 'unsubscribe'
 const VERSION = 0
 
 class UnsubscribeRequestV0 extends UnsubscribeRequest {
@@ -11,7 +12,7 @@ class UnsubscribeRequestV0 extends UnsubscribeRequest {
 
     toObject() {
         return {
-            type: 'unsubscribe',
+            type: TYPE,
             stream: this.streamId,
             partition: this.streamPartition,
         }

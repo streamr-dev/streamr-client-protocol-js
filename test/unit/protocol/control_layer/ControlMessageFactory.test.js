@@ -16,8 +16,18 @@ import SubscribeResponseV0 from '../../../../src/protocol/control_layer/subscrib
 import SubscribeResponseV1 from '../../../../src/protocol/control_layer/subscribe_response/SubscribeResponseV1'
 import UnsubscribeResponseV0 from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseV0'
 import UnsubscribeResponseV1 from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseV1'
+import ResendResponseResendingV0 from '../../../../src/protocol/control_layer/resend_response_resending/ResendResponseResendingV0'
+import ResendResponseResendingV1 from '../../../../src/protocol/control_layer/resend_response_resending/ResendResponseResendingV1'
+import ResendResponseResentV0 from '../../../../src/protocol/control_layer/resend_response_resent/ResendResponseResentV0'
+import ResendResponseResentV1 from '../../../../src/protocol/control_layer/resend_response_resent/ResendResponseResentV1'
+import ResendResponseNoResendV0 from '../../../../src/protocol/control_layer/resend_response_no_resend/ResendResponseNoResendV0'
+import ResendResponseNoResendV1 from '../../../../src/protocol/control_layer/resend_response_no_resend/ResendResponseNoResendV1'
+import ResendLastRequestV1 from '../../../../src/protocol/control_layer/resend_request/ResendLastRequestV1'
+import ResendFromRequestV1 from '../../../../src/protocol/control_layer/resend_request/ResendFromRequestV1'
+import ResendRangeRequestV1 from '../../../../src/protocol/control_layer/resend_request/ResendRangeRequestV1'
 import ErrorResponseV0 from '../../../../src/protocol/control_layer/error_response/ErrorResponseV0'
 import ErrorResponseV1 from '../../../../src/protocol/control_layer/error_response/ErrorResponseV1'
+import ResendRequestV0 from '../../../../src/protocol/control_layer/resend_request/ResendRequestV0'
 
 const examplesByTypeV0 = {
     '0': [0, 0, null, [28, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
@@ -50,6 +60,39 @@ const examplesByTypeV0 = {
     '7': [0, 7, null, {
         error: 'foo',
     }],
+    publish: {
+        type: 'publish',
+        stream: 'streamId',
+        authKey: 'authKey',
+        sessionToken: 'sessionToken',
+        msg: JSON.stringify({
+            foo: 'bar',
+        }),
+        ts: 1533924184016,
+        pkey: 'deviceId',
+        addr: 'publisherAddress',
+        sigtype: 1,
+        sig: 'signature',
+    },
+    subscribe: {
+        type: 'subscribe',
+        stream: 'streamId',
+        partition: 0,
+        authKey: 'authKey',
+        sessionToken: 'sessionToken',
+    },
+    unsubscribe: {
+        type: 'unsubscribe',
+        stream: 'id',
+        partition: 0,
+    },
+    resend: {
+        type: 'resend',
+        stream: 'id',
+        partition: 0,
+        sub: 'subId',
+        resend_all: true,
+    },
 }
 
 const examplesByTypeV1 = {
@@ -59,11 +102,17 @@ const examplesByTypeV1 = {
         [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']],
     '2': [1, 2, 'streamId', 0],
     '3': [1, 3, 'streamId', 0],
+    '4': [1, 4, 'streamId', 0, 'subId'],
+    '5': [1, 5, 'streamId', 0, 'subId'],
+    '6': [1, 6, 'streamId', 0, 'subId'],
     '7': [1, 7, 'errorMessage'],
     '8': [1, 8, [30, ['streamId', 0, 1529549961116, 0, 'address'],
         [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 'sessionToken', 'apiKey'],
     '9': [1, 9, 'streamId', 0, 'sessionToken', 'apiKey'],
     '10': [1, 10, 'streamId', 0],
+    '11': [1, 11, 'streamId', 0, 'subId', 100],
+    '12': [1, 12, 'subId', ['streamId', 0, 132846894, 0, 'producerId']],
+    '13': [1, 13, 'subId', ['streamId', 0, 132846894, 0, 'producerId'], ['streamId', 0, 132847894, 0, 'producerId']],
 }
 
 describe('ControlMessageFactory', () => {
@@ -105,9 +154,37 @@ describe('ControlMessageFactory', () => {
                 clazz = UnsubscribeResponseV0
                 array = examplesByTypeV0[3]
             })
+            it('ResendResponseResendingV0', () => {
+                clazz = ResendResponseResendingV0
+                array = examplesByTypeV0[4]
+            })
+            it('ResendResponseResentV0', () => {
+                clazz = ResendResponseResentV0
+                array = examplesByTypeV0[5]
+            })
+            it('ResendResponseNoResendV0', () => {
+                clazz = ResendResponseNoResendV0
+                array = examplesByTypeV0[6]
+            })
             it('ErrorResponseV0', () => {
                 clazz = ErrorResponseV0
                 array = examplesByTypeV0[7]
+            })
+            it('PublishRequestV0', () => {
+                clazz = PublishRequestV0
+                array = examplesByTypeV0.publish
+            })
+            it('SubscribeRequestV0', () => {
+                clazz = SubscribeRequestV0
+                array = examplesByTypeV0.subscribe
+            })
+            it('UnsubscribeRequestV0', () => {
+                clazz = UnsubscribeRequestV0
+                array = examplesByTypeV0.unsubscribe
+            })
+            it('ResendRequestV0', () => {
+                clazz = ResendRequestV0
+                array = examplesByTypeV0.resend
             })
             /* eslint-enable prefer-destructuring */
         })
@@ -136,8 +213,29 @@ describe('ControlMessageFactory', () => {
             it('UnsubscribeResponseV0', () => {
                 array = examplesByTypeV0[3]
             })
+            it('ResendResponseResendingV0', () => {
+                array = examplesByTypeV0[4]
+            })
+            it('ResendResponseResentV0', () => {
+                array = examplesByTypeV0[5]
+            })
+            it('ResendResponseNoResendV0', () => {
+                array = examplesByTypeV0[6]
+            })
             it('ErrorResponseV0', () => {
                 array = examplesByTypeV0[7]
+            })
+            it('PublishRequestV0', () => {
+                array = examplesByTypeV0.publish
+            })
+            it('SubscribeRequestV0', () => {
+                array = examplesByTypeV0.subscribe
+            })
+            it('UnsubscribeRequestV0', () => {
+                array = examplesByTypeV0.unsubscribe
+            })
+            it('ResendRequestV0', () => {
+                array = examplesByTypeV0.resend
             })
             /* eslint-enable prefer-destructuring */
         })
@@ -160,20 +258,29 @@ describe('ControlMessageFactory', () => {
                 clazz = BroadcastMessageV1
                 array = examplesByTypeV1[0]
             })
-
             it('UnicastMessageV1', () => {
                 clazz = UnicastMessageV1
                 array = examplesByTypeV1[1]
             })
-
             it('SubscribeResponseV1', () => {
                 clazz = SubscribeResponseV1
                 array = examplesByTypeV1[2]
             })
-
             it('UnsubscribeResponseV1', () => {
                 clazz = UnsubscribeResponseV1
                 array = examplesByTypeV1[3]
+            })
+            it('ResendResponseResendingV1', () => {
+                clazz = ResendResponseResendingV1
+                array = examplesByTypeV1[4]
+            })
+            it('ResendResponseResentV1', () => {
+                clazz = ResendResponseResentV1
+                array = examplesByTypeV1[5]
+            })
+            it('ResendResponseNoResendV1', () => {
+                clazz = ResendResponseNoResendV1
+                array = examplesByTypeV1[6]
             })
             it('ErrorResponseV1', () => {
                 clazz = ErrorResponseV1
@@ -190,6 +297,18 @@ describe('ControlMessageFactory', () => {
             it('UnsubscribeRequestV1', () => {
                 clazz = UnsubscribeRequestV1
                 array = examplesByTypeV1[10]
+            })
+            it('ResendLastRequestV1', () => {
+                clazz = ResendLastRequestV1
+                array = examplesByTypeV1[11]
+            })
+            it('ResendFromRequestV1', () => {
+                clazz = ResendFromRequestV1
+                array = examplesByTypeV1[12]
+            })
+            it('ResendRangeRequestV1', () => {
+                clazz = ResendRangeRequestV1
+                array = examplesByTypeV1[13]
             })
             /* eslint-enable prefer-destructuring */
         })
@@ -218,6 +337,15 @@ describe('ControlMessageFactory', () => {
             it('UnsubscribeResponseV1', () => {
                 array = examplesByTypeV1[3]
             })
+            it('ResendResponseResendingV1', () => {
+                array = examplesByTypeV1[4]
+            })
+            it('ResendResponseResentV1', () => {
+                array = examplesByTypeV1[5]
+            })
+            it('ResendResponseNoResendV1', () => {
+                array = examplesByTypeV1[6]
+            })
             it('ErrorResponseV1', () => {
                 array = examplesByTypeV1[7]
             })
@@ -230,47 +358,16 @@ describe('ControlMessageFactory', () => {
             it('UnsubscribeRequestV1', () => {
                 array = examplesByTypeV1[10]
             })
+            it('ResendLastRequestV1', () => {
+                array = examplesByTypeV1[11]
+            })
+            it('ResendFromRequestV1', () => {
+                array = examplesByTypeV1[12]
+            })
+            it('ResendRangeRequestV1', () => {
+                array = examplesByTypeV1[13]
+            })
             /* eslint-enable prefer-destructuring */
-        })
-    })
-    describe('deserialize', () => {
-        it('should return a PublishRequestV0', () => {
-            const msg = {
-                type: 'publish',
-                stream: 'streamId',
-                authKey: 'authKey',
-                sessionToken: 'sessionToken',
-                msg: JSON.stringify({
-                    foo: 'bar',
-                }),
-                ts: 1533924184016,
-                pkey: 'deviceId',
-                addr: 'publisherAddress',
-                sigtype: 1,
-                sig: 'signature',
-            }
-            const result = ControlMessageFactory.deserialize(JSON.stringify(msg))
-            assert(result instanceof PublishRequestV0)
-        })
-        it('should return a SubscribeRequestV0', () => {
-            const msg = {
-                type: 'subscribe',
-                stream: 'streamId',
-                partition: 0,
-                authKey: 'authKey',
-                sessionToken: 'sessionToken',
-            }
-            const result = ControlMessageFactory.deserialize(JSON.stringify(msg))
-            assert(result instanceof SubscribeRequestV0)
-        })
-        it('should return an UnsubscribeRequestV0', () => {
-            const msg = {
-                type: 'unsubscribe',
-                stream: 'id',
-                partition: 0,
-            }
-            const result = ControlMessageFactory.deserialize(JSON.stringify(msg))
-            assert(result instanceof UnsubscribeRequestV0)
         })
     })
 })
