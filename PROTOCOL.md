@@ -89,29 +89,46 @@ Field     | Description
 `streamId` | Stream id to unsubscribe.
 `streamPartition` | Partition id to unsubscribe. Optional, defaults to 0.
 
-#### ResendRequest
+#### ResendLastRequest
 
-Requests a resend for a stream-partition. Responses are either a sequence of `ResendResponseResending`, one or more `UnicastMessage`, and a `ResendResponseResent`; or a `ResendResponseNoResend` if there is nothing to resend.
+Requests a resend of the last N messages for a stream-partition. Responses are either a sequence of `ResendResponseResending`, one or more `UnicastMessage`, and a `ResendResponseResent`; or a `ResendResponseNoResend` if there is nothing to resend.
 
 ```
-[version, type, streamId, streamPartition, subId, resend_all, resend_last, resend_from, resend_to]
+[version, type, streamId, streamPartition, subId, numberLast]
 ```
 Example:
 ```
-[1, 11, "streamId", 0, "subId", true, 1324, 234, 512]
+[1, 11, "streamId", 0, "subId", 500]
 ```
-
-Only one of `resend_all`, `resend_last`, `resend_from` must be set.
 
 Field     | Description
 --------- | --------
 `streamId` | Stream id to unsubscribe.
 `streamPartition` | Partition id to unsubscribe. Optional, defaults to 0.
 `subId` | Subscription id requesting the resend.
-`resend_all` | Set to true to resend all messages in stream.
-`resend_last` | Resend the latest N messages.
-`resend_from` | Resend all messages from and including the given offset. Can be used in combination with `resend_to`.
-`resend_to` | Resend up to given offset.
+`numberLast` | Resend the latest `numberLast` messages.
+
+#### ResendFromToRequest
+
+Requests a resend for a stream-partition from a particular timestamp-sequenceNumber to another timestamp-sequenceNumber. Responses are either a sequence of `ResendResponseResending`, one or more `UnicastMessage`, and a `ResendResponseResent`; or a `ResendResponseNoResend` if there is nothing to resend.
+
+```
+[version, type, streamId, streamPartition, subId, fromTimestamp, fromSequenceNumber, toTimestamp, toSequenceNumber]
+```
+Example:
+```
+[1, 11, "streamId", 0, "subId", 425354887214, 0, 425354889601, 0]
+```
+
+Field     | Description
+--------- | --------
+`streamId` | Stream id to unsubscribe.
+`streamPartition` | Partition id to unsubscribe. Optional, defaults to 0.
+`subId` | Subscription id requesting the resend.
+`fromTimestamp` | Resend all messages from and including the timestamp `fromTimestamp`.
+`fromSequenceNumber` | Sequence number within `fromTimestamp` to define the first message to resend.
+`toTimestamp` | Resend all messages to and including the timestamp `toTimestamp`.
+`toSequenceNumber` | Sequence number within `toTimestamp` to define the last message to resend.
 
 ### Responses sent
 
