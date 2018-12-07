@@ -7,7 +7,30 @@ The Streamr Protocol is made of three layers:
 - **Control Layer:** Defines the control messages allowing communication entities to publish, subscribe, resend, etc... These messages are the payload of the Communication Layer messages.
 - **Message Layer:** Some messages in the Control Layer carry messages published in streams. The Message Layer defines the format of these message payloads, consisting of data and metadata of the messages.
 
-The following describes the Control Layer and Message Layer since they are common to any network configuration.
+This documentation describes the Control Layer and Message Layer since they are common to any network configuration.
+
+## Table of contents
+
+- [Control Layer](#control-layer)
+    - [PublishRequest](#publishrequest)
+    - [SubscribeRequest](#subscriberequest)
+    - [UnsubscribeRequest](#unsubscriberequest)
+    - [ResendLastRequest](#resendlastrequest)
+    - [ResendFromRequest](#resendfromrequest)
+    - [ResendRangeRequest](#resendrangerequest)
+    - [BroadcastMessage](#broadcastmessage)
+    - [UnicastMessage](#unicastmessage)
+    - [SubscribeResponse](#subscriberesponse)
+    - [UnsubscribeResponse](#unsubscriberesponse)
+    - [ResendResponseResending](#resendresponseresending)
+    - [ResendResponseResent](#resendresponseresent)
+    - [ResendResponseNoResend](#resendresponsenoresend)
+    - [ErrorResponse](#errorresponse)
+- [Message Layer](#message-layer)
+    - [StreamMessage](#streammessage)
+    - [MessageID](#messageid)
+    - [MessageRef](#messageref)
+
 
 ## Control Layer
 
@@ -37,7 +60,7 @@ Also see the [Javascript client](https://github.com/streamr-dev/streamr-client) 
 
 #### PublishRequest
 
-Publishes a new message to a stream. Requires a write permission to the stream. Authentication requires either the API key or the session token to be set. It contains a `StreamMessage` as a payload at the Message Layer level. The `StreamMessage` representation is also an array (nested in the `PublishRequest` array) which is described in the Message Layer section.
+Publishes a new message to a stream. Requires a write permission to the stream. Authentication requires either the API key or the session token to be set. It contains a `StreamMessage` as a payload at the Message Layer level. The `StreamMessage` representation is also an array (nested in the `PublishRequest` array) which is described in the [StreamMessage](#streammessage) section.
 
 ```
 [version, type, streamMessage, sessionToken, apiKey]
@@ -110,7 +133,7 @@ Field    | Type | Description
 
 #### ResendFromRequest
 
-Requests a resend for a subscription id from a particular message id. It carries a `MessageID` payload at the Message Layer level. Responses are either a sequence of `ResendResponseResending`, one or more `UnicastMessage`, and a `ResendResponseResent`; or a `ResendResponseNoResend` if there is nothing to resend.
+Requests a resend for a subscription id from a particular message id. It carries a `MessageID` payload at the Message Layer level, its array representation is described in the [MessageID](#messageid) section. Responses are either a sequence of `ResendResponseResending`, one or more `UnicastMessage`, and a `ResendResponseResent`; or a `ResendResponseNoResend` if there is nothing to resend.
 
 ```
 [version, type, subId, msgId]
@@ -123,11 +146,11 @@ Example:
 Field    | Type | Description
 -------- | ---- | --------
 `subId` | String | Subscription id requesting the resend.
-`msgId` | MessageID | The array representation of the Message ID to resend from. Defined in the Message Layer.
+`msgId` | MessageID | The array representation of the `MessageID` to resend from. Defined in the Message Layer.
 
 #### ResendRangeRequest
 
-Requests a resend for a subscription id of a range of messages between two message ids. It carries two `MessageID` payloads at the Message Layer level. Responses are either a sequence of `ResendResponseResending`, one or more `UnicastMessage`, and a `ResendResponseResent`; or a `ResendResponseNoResend` if there is nothing to resend.
+Requests a resend for a subscription id of a range of messages between two message ids. It carries two `MessageID` payloads at the Message Layer level, described in the [MessageID](#messageid) section. Responses are either a sequence of `ResendResponseResending`, one or more `UnicastMessage`, and a `ResendResponseResent`; or a `ResendResponseNoResend` if there is nothing to resend.
 
 ```
 [version, type, subId, fromMsgId, toMsgId]
@@ -140,14 +163,14 @@ Example:
 Field    | Type | Description
 -------- | ---- | --------
 `subId` | String | Subscription id requesting the resend.
-`fromMsgId` | MessageID | The array representation of first the Message ID to resend. Defined in the Message Layer.
-`toMsgId` | MessageID | The array representation of the last Message ID to resend. Defined in the Message Layer.
+`fromMsgId` | MessageID | The array representation of the first `MessageID` to resend. Defined in the Message Layer.
+`toMsgId` | MessageID | The array representation of the last `MessageID` to resend. Defined in the Message Layer.
 
 ### Responses sent
 
 #### BroadcastMessage
 
-A message addressed to all subscriptions listening on the stream. It contains a `StreamMessage` as a payload at the Message Layer level. The `StreamMessage` representation is also an array (nested in the `BroadcastMessage` array) which is described in the Message Layer section.
+A message addressed to all subscriptions listening on the stream. It contains a `StreamMessage` as a payload at the Message Layer level. The `StreamMessage` representation is also an array (nested in the `BroadcastMessage` array) which is described in the [StreamMessage](#streammessage) section.
 
 ```
 [version, type, streamMessage]
@@ -163,7 +186,7 @@ Field    | Type | Description
 
 #### UnicastMessage
 
-A message addressed to a specific subscription. It contains a `StreamMessage` as a payload at the Message Layer level. The `StreamMessage` representation is also an array (nested in the `UnicastMessage` array) which is described in the Message Layer section.
+A message addressed to a specific subscription. It contains a `StreamMessage` as a payload at the Message Layer level. The `StreamMessage` representation is also an array (nested in the `UnicastMessage` array) which is described in the [StreamMessage](#streammessage) section.
 
 ```
 [version, type, subId, streamMessage]
@@ -286,7 +309,7 @@ The Message Layer contains three different types: `MessageID`, `MessageRef` and 
 
 ### StreamMessage
 
-Contains the data and metadata for a message produced/consumed on a stream. It is a payload at the Control Layer for the following message types: `PublishRequest`, `BroadcastMessage`, `UnicastMessage`. Where `msgId` uniquely identifies the `StreamMessage` and is the array representation of the [`MessageID`](###messageid) defined below. `prevMsgRef` allows to identify the previous `StreamMessage` on the same stream and same partition published by the same producer. It is used to detect missing messages. It is the array representation of the `MessageRef` defined below.
+Contains the data and metadata for a message produced/consumed on a stream. It is a payload at the Control Layer for the following message types: `PublishRequest`, `BroadcastMessage`, `UnicastMessage`. Where `msgId` uniquely identifies the `StreamMessage` and is the array representation of the `MessageID` defined [below](#messageid). `prevMsgRef` allows to identify the previous `StreamMessage` on the same stream and same partition published by the same producer. It is used to detect missing messages. It is the array representation of the `MessageRef` defined [below](#messageref).
 
 ```
 [version, msgId, prevMsgRef, ttl, contentType, content, signatureType, signature]
