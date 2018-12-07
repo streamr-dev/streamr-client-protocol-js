@@ -47,11 +47,11 @@ Example:
 [1, 8, [...streamMessageFields], "my-session-token", null]
 ```
 
-Field     | Description
---------- | --------
-`streamMessage` | The array representation of the `StreamMessage` to publish. Defined in the Message Layer.
-`apiKey` | User's API key or anonymous stream key. Either this or `sessionToken` must be defined.
-`sessionToken` | User's session token retrieved with some authentication method. Either this or `apiKey` must be defined.
+Field    | Type | Description
+-------- | ---- | --------
+`streamMessage` | StreamMessage | The array representation of the `StreamMessage` to publish. Defined in the Message Layer.
+`apiKey` | String | User's API key or anonymous stream key. Either this or `sessionToken` must be defined.
+`sessionToken` | String | User's session token retrieved with some authentication method. Either this or `apiKey` must be defined.
 
 #### SubscribeRequest
 
@@ -65,12 +65,12 @@ Example:
 [1, 9, "stream-id", 0, "my-session-token", null]
 ```
 
-Field     | Description
---------- | --------
-`streamId` | Stream id to subscribe to.
-`streamPartition` | Partition id to subscribe to. Optional, defaults to 0.
-`apiKey` | User's API key or anonymous stream key. Optional. Public streams can be subscribed to without authentication.
-`sessionToken` | User's session token retrieved with some authentication method. Optional. Public streams can be subscribed to without authentication.
+Field    | Type | Description
+-------- | ---- | --------
+`streamId` | String | Stream id to subscribe to.
+`streamPartition` | Integer | Partition id to subscribe to. Optional, defaults to 0.
+`apiKey` | String | User's API key or anonymous stream key. Optional. Public streams can be subscribed to without authentication.
+`sessionToken` | String | User's session token retrieved with some authentication method. Optional. Public streams can be subscribed to without authentication.
 
 #### UnsubscribeRequest
 
@@ -84,10 +84,10 @@ Example:
 [1, 10, "stream-id", 0]
 ```
 
-Field     | Description
---------- | --------
-`streamId` | Stream id to unsubscribe.
-`streamPartition` | Partition id to unsubscribe. Optional, defaults to 0.
+Field    | Type | Description
+-------- | ---- | --------
+`streamId` | String | Stream id to unsubscribe.
+`streamPartition` | Integer | Partition id to unsubscribe. Optional, defaults to 0.
 
 #### ResendLastRequest
 
@@ -101,34 +101,47 @@ Example:
 [1, 11, "streamId", 0, "subId", 500]
 ```
 
-Field     | Description
---------- | --------
-`streamId` | Stream id to unsubscribe.
-`streamPartition` | Partition id to unsubscribe. Optional, defaults to 0.
-`subId` | Subscription id requesting the resend.
-`numberLast` | Resend the latest `numberLast` messages.
+Field    | Type | Description
+-------- | ---- | --------
+`streamId` | String | Stream id to unsubscribe.
+`streamPartition` | Integer | Partition id to unsubscribe. Optional, defaults to 0.
+`subId` | String | Subscription id requesting the resend.
+`numberLast` | Integer | Resend the latest `numberLast` messages.
 
-#### ResendFromToRequest
+#### ResendFromRequest
 
-Requests a resend for a stream-partition from a particular timestamp-sequenceNumber to another timestamp-sequenceNumber. Responses are either a sequence of `ResendResponseResending`, one or more `UnicastMessage`, and a `ResendResponseResent`; or a `ResendResponseNoResend` if there is nothing to resend.
+Requests a resend for a subscription id from a particular message id. It carries a `MessageID` payload at the Message Layer level. Responses are either a sequence of `ResendResponseResending`, one or more `UnicastMessage`, and a `ResendResponseResent`; or a `ResendResponseNoResend` if there is nothing to resend.
 
 ```
-[version, type, streamId, streamPartition, subId, fromTimestamp, fromSequenceNumber, toTimestamp, toSequenceNumber]
+[version, type, subId, msgId]
 ```
 Example:
 ```
-[1, 11, "streamId", 0, "subId", 425354887214, 0, 425354889601, 0]
+[1, 12, "subId", [...msgIdFields]]
 ```
 
-Field     | Description
---------- | --------
-`streamId` | Stream id to unsubscribe.
-`streamPartition` | Partition id to unsubscribe. Optional, defaults to 0.
-`subId` | Subscription id requesting the resend.
-`fromTimestamp` | Resend all messages from and including the timestamp `fromTimestamp`.
-`fromSequenceNumber` | Sequence number within `fromTimestamp` to define the first message to resend.
-`toTimestamp` | Resend all messages to and including the timestamp `toTimestamp`.
-`toSequenceNumber` | Sequence number within `toTimestamp` to define the last message to resend.
+Field    | Type | Description
+-------- | ---- | --------
+`subId` | String | Subscription id requesting the resend.
+`msgId` | MessageID | The array representation of the Message ID to resend from. Defined in the Message Layer.
+
+#### ResendRangeRequest
+
+Requests a resend for a subscription id of a range of messages between two message ids. It carries two `MessageID` payloads at the Message Layer level. Responses are either a sequence of `ResendResponseResending`, one or more `UnicastMessage`, and a `ResendResponseResent`; or a `ResendResponseNoResend` if there is nothing to resend.
+
+```
+[version, type, subId, fromMsgId, toMsgId]
+```
+Example:
+```
+[1, 13, "subId", [...fromMsgIdFields], [...toMsgIdFields]]
+```
+
+Field    | Type | Description
+-------- | ---- | --------
+`subId` | String | Subscription id requesting the resend.
+`fromMsgId` | MessageID | The array representation of first the Message ID to resend. Defined in the Message Layer.
+`toMsgId` | MessageID | The array representation of the last Message ID to resend. Defined in the Message Layer.
 
 ### Responses sent
 
@@ -144,9 +157,9 @@ Example:
 [1, 0, [...streamMessageFields]]
 ```
 
-Field     | Description
---------- | --------
-`streamMessage` | The array representation of the `StreamMessage` to be broadcast. Defined in the Message Layer.
+Field    | Type | Description
+-------- | ---- | --------
+`streamMessage` | StreamMessage | The array representation of the `StreamMessage` to be broadcast. Defined in the Message Layer.
 
 #### UnicastMessage
 
@@ -160,10 +173,10 @@ Example:
 [1, 1, "sub-id", [...streamMessageFields]]
 ```
 
-Field     | Description
---------- | --------
-`subId` | The subscription id to deliver the message to.
-`streamMessage` | The array representation of the `StreamMessage` to be delivered. Defined in the Message Layer.
+Field    | Type | Description
+-------- | ---- | --------
+`subId` | String | The subscription id to deliver the message to.
+`streamMessage` | StreamMessage | The array representation of the `StreamMessage` to be delivered. Defined in the Message Layer.
 
 #### SubscribeResponse
 
@@ -177,10 +190,10 @@ Example:
 [1, 2, "stream-id", 0]
 ```
 
-Field     | Description
---------- | --------
-`streamId`     | Stream id subscribed.
-`streamPartition`  | Partition id subscribed. Optional, defaults to 0.
+Field    | Type | Description
+-------- | ---- | --------
+`streamId` | String | Stream id subscribed.
+`streamPartition` | Integer | Partition id subscribed. Optional, defaults to 0.
 
 #### UnsubscribeResponse
 
@@ -194,10 +207,10 @@ Example:
 [1, 3, "stream-id", 0]
 ```
 
-Field     | Description
---------- | --------
-`streamId`     | Stream id unsubscribed.
-`streamPartition`  | Partition id unsubscribed. Optional, defaults to 0.
+Field    | Type | Description
+-------- | ---- | --------
+`streamId` | String | Stream id unsubscribed.
+`streamPartition` | Integer | Partition id unsubscribed. Optional, defaults to 0.
 
 #### ResendResponseResending
 
@@ -211,10 +224,10 @@ Example:
 [1, 4, "stream-id", 0]
 ```
 
-Field     | Description
---------- | --------
-`streamId`     | Stream id to resend on.
-`streamPartition`  | Partition id to resend on. Optional, defaults to 0.
+Field    | Type | Description
+-------- | ---- | --------
+`streamId`| String | Stream id to resend on.
+`streamPartition` | Integer | Partition id to resend on. Optional, defaults to 0.
 
 #### ResendResponseResent
 
@@ -228,11 +241,11 @@ Example:
 [1, 5, "stream-id", 0, "sub-id"]
 ```
 
-Field     | Description
---------- | --------
-`streamId`     | Stream id of the completed resend.
-`streamPartition`  | Partition id of the completed resend. Optional, defaults to 0.
-`subId` | Subscription id for which the resend is complete.
+Field    | Type | Description
+-------- | ---- | --------
+`streamId` | String | Stream id of the completed resend.
+`streamPartition` | Integer | Partition id of the completed resend. Optional, defaults to 0.
+`subId` | String | Subscription id for which the resend is complete.
 
 #### ResendResponseNoResend
 
@@ -246,10 +259,10 @@ Example:
 [1, 6, "stream-id", 0]
 ```
 
-Field     | Description
---------- | --------
-`streamId`     | Stream id of resend not executed.
-`streamPartition`  | Partition id of the resend not executed. Optional, defaults to 0.
+Field    | Type | Description
+-------- | ---- | --------
+`streamId` | String | Stream id of resend not executed.
+`streamPartition` | Integer | Partition id of the resend not executed. Optional, defaults to 0.
 
 #### ErrorResponse
 
@@ -263,53 +276,75 @@ Example:
 [1, 7, "error-message"]
 ```
 
-Field     | Description
---------- | --------
-`errorMessage`     | Message of the error.
+Field    | Type | Description
+-------- | ---- | --------
+`errorMessage` | String | Message of the error.
 
 ## Message Layer
 
-The Message Layer contains a single type of message called `StreamMessage`.
+The Message Layer contains three different types: `MessageID`, `MessageRef` and `StreamMessage`.
 
 ### StreamMessage
 
-Contains the data and metadata for a message produced/consumed on a stream. It is a payload at the Control Layer for the following message types: `PublishRequest`, `BroadcastMessage`, `UnicastMessage`.
+Contains the data and metadata for a message produced/consumed on a stream. It is a payload at the Control Layer for the following message types: `PublishRequest`, `BroadcastMessage`, `UnicastMessage`. Where `msgId` uniquely identifies the `StreamMessage` and is the array representation of the [`MessageID`](###messageid) defined below. `prevMsgRef` allows to identify the previous `StreamMessage` on the same stream and same partition published by the same producer. It is used to detect missing messages. It is the array representation of the `MessageRef` defined below.
 
 ```
 [version, msgId, prevMsgRef, ttl, contentType, content, signatureType, signature]
 ```
-
-Where `msgId` uniquely identifies the `StreamMessage` and is an array with the following structure:
+Example:
 ```
-[streamId, streamPartition, timestamp, sequenceNumber, producerId]
-```
-`prevMsgRef` allows to identify the previous `StreamMessage` on the same stream and same partition published by the same producer. It is used to detect missing messages. Its array representation is the following:
-```
-[prevTimestamp, prevSequenceNumber]
+[30, [...msgIdFields], [...msgRefFields], 120, 27, "contentData", 1, "0x29c057786Fa..."]
 ```
 
-Example of a `StreamMessage` array representation:
-```
-[30, ["stream-id", 0, 425354887214, 0, "0xAd23Ba54d26D3f0Ac057..."], [425354887001, 0], 120, 27, "contentData", 1, "0x29c057786Fa..."]
-```
-
-Field     | Description
---------- | --------
-`version` | Is currently 30.
-`streamId` | Stream id this message belongs to.
-`streamPartition` | Stream partition this message belongs to.
-`timestamp` | Timestamp of the message (milliseconds format).
-`sequenceNumber` | Sequence number of the message within the same timestamp. Defaults to 0.
-`producerId` | Id of the producer of the message. Must be an Ethereum address if the message has an Ethereum signature (signatureType = 1).
-`prevTimestamp` | Timestamp of the previous message published on the same stream and same partition by the same producer.
-`prevSequenceNumber` | Sequence Number of the previous message. With prevTimestamp, the two fields can detect missing messages.
-`ttl` | Time-to-live of the message in seconds.
-`contentType` | Determines how the content should be parsed.
-`content` | Content data of the message.
-`signatureType` | Signature type as defined by the table below.
-`signature` | Signature of the message, signed by the producer. Encoding depends on the signature type.
+Field    | Type | Description
+-------- | ---- | --------
+`version` | Integer | Is currently 30.
+`msgId` | MessageID |Array representation of the `MessageID` to uniquely identify this message. 
+`prevMsgRef` | MessageRef | Array representation of the `MessageRef` of the previous message. Used to detect missing messages.
+`ttl` | Integer | Time-to-live of the message in seconds.
+`contentType` | Integer | Determines how the content should be parsed.
+`content` | String | Content data of the message.
+`signatureType` | Integer | Signature type as defined by the table below.
+`signature` | String | Signature of the message, signed by the producer. Encoding depends on the signature type.
 
 Signature Type | Description
 -------------- | --------
 0 | No signature. signature field is empty in this case.
 1 | Ethereum signature. signature field is encoded as a hex string.
+
+### MessageID
+
+Uniquely identifies a `StreamMessage`.
+
+```
+[streamId, streamPartition, timestamp, sequenceNumber, producerId]
+```
+Example:
+```
+["stream-id", 0, 425354887214, 0, "0xAd23Ba54d26D3f0Ac057..."]
+```
+
+Field    | Type | Description
+-------- | ---- | --------
+`streamId` | String | Stream id the corresponding `StreamMessage` belongs to.
+`streamPartition` | Integer | Stream partition the `StreamMessage` belongs to.
+`timestamp` | Long | Timestamp of the `StreamMessage` (milliseconds format).
+`sequenceNumber` | Integer | Sequence number of the `StreamMessage` within the same timestamp. Defaults to 0.
+`producerId` | String | Id of the producer of the `StreamMessage`. Must be an Ethereum address if the `StreamMessage` has an Ethereum signature (`signatureType` = 1).
+
+### MessageRef
+
+Used inside a `StreamMessage` to identify the previous message on the same stream-partition published by the same producer.
+
+```
+[timestamp, sequenceNumber]
+```
+Example:
+```
+[425354887001, 0]
+```
+
+Field    | Type | Description
+-------- | ---- | --------
+`timestamp` | Long | Timestamp of the `StreamMessage` published on the same stream and same partition by the same producer.
+`sequenceNumber` | Integer | Sequence Number of the `StreamMessage`.
