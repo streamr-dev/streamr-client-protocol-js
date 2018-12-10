@@ -13,33 +13,53 @@ describe('UnicastMessageV1', () => {
         })
     })
     describe('serialize', () => {
-        let broadcastMessage
-        let expectedPayloadArray
-        let serialized
-        beforeEach(() => {
+        describe('serialize version 1', () => {
+            let unicastMessage
+            let expectedPayloadArray
+            let serialized
+            beforeEach(() => {
+                const streamMessageArray = [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
+                    0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
+                unicastMessage = new UnicastMessageV1('subId', streamMessageArray)
+            })
+            afterEach(() => {
+                const arr = [1, 1, 'subId', expectedPayloadArray]
+                assert(typeof serialized === 'string')
+                assert.deepEqual(arr, JSON.parse(serialized))
+            })
+            it('correctly serializes messages with default version (30) payload', () => {
+                expectedPayloadArray = [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
+                    0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
+                serialized = unicastMessage.serialize()
+            })
+            it('correctly serializes messages with version 29 payload', () => {
+                expectedPayloadArray = [29, 'streamId', 0, 1529549961116, 0,
+                    null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
+                serialized = unicastMessage.serialize(1, 29)
+            })
+            it('correctly serializes messages with version 28 payload', () => {
+                expectedPayloadArray = [28, 'streamId', 0, 1529549961116, 0,
+                    null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}']
+                serialized = unicastMessage.serialize(1, 28)
+            })
+        })
+        it('correctly serializes to version 0', () => {
             const streamMessageArray = [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
                 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
-            broadcastMessage = new UnicastMessageV1('subId', streamMessageArray)
-        })
-        afterEach(() => {
-            const arr = [1, 1, 'subId', expectedPayloadArray]
+            const arr = [0, 1, 'subId', streamMessageArray]
+            const serialized = new UnicastMessageV1('subId', streamMessageArray).serialize(0)
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })
-        it('correctly serializes messages with default version (30) payload', () => {
-            expectedPayloadArray = [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
+        it('correctly serializes to version 0 with non-default payload version', () => {
+            const streamMessageArray = [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
                 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
-            serialized = broadcastMessage.serialize()
-        })
-        it('correctly serializes messages with version 29 payload', () => {
-            expectedPayloadArray = [29, 'streamId', 0, 1529549961116, 0,
+            const serialized = new UnicastMessageV1('subId', streamMessageArray).serialize(0, 29)
+            assert(typeof serialized === 'string')
+            const expectedPayloadArray = [29, 'streamId', 0, 1529549961116, 0,
                 null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
-            serialized = broadcastMessage.serialize(1, 29)
-        })
-        it('correctly serializes messages with version 28 payload', () => {
-            expectedPayloadArray = [28, 'streamId', 0, 1529549961116, 0,
-                null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}']
-            serialized = broadcastMessage.serialize(1, 28)
+            const arr = [0, 1, 'subId', expectedPayloadArray]
+            assert.deepEqual(arr, JSON.parse(serialized))
         })
     })
 })

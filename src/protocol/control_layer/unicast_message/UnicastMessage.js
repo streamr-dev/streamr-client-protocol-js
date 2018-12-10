@@ -1,5 +1,4 @@
 import ControlMessage from '../ControlMessage'
-import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 
 const TYPE = 1
 
@@ -20,11 +19,11 @@ class UnicastMessage extends ControlMessage {
         return array
     }
 
-    serialize(controlLayerVersion = this.version, messageLayerVersion) {
-        if (controlLayerVersion === 0 || controlLayerVersion === 1) {
+    serialize(version = this.version, messageLayerVersion) {
+        if (version === this.version) {
             return JSON.stringify(this.toArray(messageLayerVersion))
         }
-        throw new UnsupportedVersionError(controlLayerVersion, 'Supported versions: [0, 1]')
+        return this.toOtherVersion(version, messageLayerVersion).serialize()
     }
 }
 

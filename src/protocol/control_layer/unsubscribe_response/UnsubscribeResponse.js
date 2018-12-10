@@ -4,14 +4,10 @@ const TYPE = 3
 
 class UnsubscribeResponse extends ControlMessage {
     constructor(version) {
-        super(version, TYPE)
-    }
-
-    serialize(version = this.version) {
-        if (version === this.version) {
-            return JSON.stringify(this.toArray())
+        if (new.target === UnsubscribeResponse) {
+            throw new TypeError('UnsubscribeResponse is abstract.')
         }
-        return this.toOtherVersion(version).serialize()
+        super(version, TYPE)
     }
 }
 

@@ -9,13 +9,6 @@ class ResendResponseResent extends ControlMessage {
         }
         super(version, TYPE)
     }
-
-    serialize(version = this.version) {
-        if (version === this.version) {
-            return JSON.stringify(this.toArray())
-        }
-        return this.toOtherVersion(version).serialize()
-    }
 }
 
 /* static */ ResendResponseResent.TYPE = TYPE

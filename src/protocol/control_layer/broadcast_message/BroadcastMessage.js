@@ -14,7 +14,7 @@ class BroadcastMessage extends ControlMessage {
         if (controlLayerVersion === this.version) {
             return JSON.stringify(this.toArray(messageLayerVersion))
         }
-        return this.toOtherVersion(controlLayerVersion).serialize()
+        return this.toOtherVersion(controlLayerVersion, messageLayerVersion).serialize()
     }
 }
 

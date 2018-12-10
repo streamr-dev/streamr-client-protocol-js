@@ -24,13 +24,6 @@ class UnsubscribeRequestV1 extends UnsubscribeRequest {
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
-
-    serialize(version = VERSION) {
-        if (version === VERSION) {
-            return JSON.stringify(this.toArray())
-        }
-        return this.toOtherVersion(version).serialize()
-    }
 }
 
 module.exports = UnsubscribeRequestV1
