@@ -33,7 +33,7 @@ describe('ControlMessageV0Factory', () => {
                 sigtype: 1,
                 sig: 'signature',
             }
-            const result = ControlMessageV0Factory.deserialize(JSON.stringify(msg))
+            const result = ControlMessageV0Factory.deserialize(msg)
             assert(result instanceof PublishRequestV0)
         })
         it('should return a SubscribeRequestV0', () => {
@@ -44,7 +44,7 @@ describe('ControlMessageV0Factory', () => {
                 authKey: 'authKey',
                 sessionToken: 'sessionToken',
             }
-            const result = ControlMessageV0Factory.deserialize(JSON.stringify(msg))
+            const result = ControlMessageV0Factory.deserialize(msg)
             assert(result instanceof SubscribeRequestV0)
         })
         it('should return an UnsubscribeRequestV0', () => {
@@ -53,7 +53,7 @@ describe('ControlMessageV0Factory', () => {
                 stream: 'streamId',
                 partition: 0,
             }
-            const result = ControlMessageV0Factory.deserialize(JSON.stringify(msg))
+            const result = ControlMessageV0Factory.deserialize(msg)
             assert(result instanceof UnsubscribeRequestV0)
         })
         it('should return a ResendRequestV0', () => {
@@ -64,7 +64,7 @@ describe('ControlMessageV0Factory', () => {
                 sub: 'subId',
                 resend_all: true,
             }
-            const result = ControlMessageV0Factory.deserialize(JSON.stringify(msg))
+            const result = ControlMessageV0Factory.deserialize(msg)
             assert(result instanceof ResendRequestV0)
         })
     })

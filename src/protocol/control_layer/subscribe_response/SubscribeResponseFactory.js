@@ -1,5 +1,5 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
-import StreamAndPartition from '../../StreamAndPartition'
+import StreamAndPartition from '../StreamAndPartition'
 import SubscribeResponseV0 from './SubscribeResponseV0'
 import SubscribeResponseV1 from './SubscribeResponseV1'
 
