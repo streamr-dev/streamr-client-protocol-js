@@ -326,10 +326,14 @@ Field    | Type | Description
 `msgId` | MessageID |Array representation of the `MessageID` to uniquely identify this message. 
 `prevMsgRef` | MessageRef | Array representation of the `MessageRef` of the previous message. Used to detect missing messages.
 `ttl` | Integer | Time-to-live of the message in seconds.
-`contentType` | Integer | Determines how the content should be parsed.
+`contentType` | Integer | Determines how the content should be parsed according to the table below.
 `content` | String | Content data of the message.
 `signatureType` | Integer | Signature type as defined by the table below.
 `signature` | String | Signature of the message, signed by the producer. Encoding depends on the signature type.
+
+Content Type | Description
+-------------- | --------
+27 | JSON content. The `content` can either be a JSON string to be parsed or a JSON object.
 
 Signature Type | Description
 -------------- | --------

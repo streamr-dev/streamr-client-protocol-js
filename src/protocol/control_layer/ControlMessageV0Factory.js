@@ -19,8 +19,7 @@ export default class ControlMessageV0Factory {
         }
     }
 
-    static deserialize(stringOrObject) {
-        const message = typeof stringOrObject === 'string' ? JSON.parse(stringOrObject) : stringOrObject
+    static deserialize(message) {
         this.checkVersion(message)
         const constructorArgs = messageClassByMessageType[message.type].getConstructorArguments(message)
         return new messageClassByMessageType[message.type](...constructorArgs)

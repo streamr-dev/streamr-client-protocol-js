@@ -54,13 +54,6 @@ class PublishRequestV0 extends PublishRequest {
         }
     }
 
-    getTimestampAsNumber() {
-        if (this.timestamp) {
-            return TimestampUtil.parse(this.timestamp)
-        }
-        return undefined
-    }
-
     getSerializedContent() {
         if (typeof this.content === 'string') {
             return this.content
@@ -77,7 +70,7 @@ class PublishRequestV0 extends PublishRequest {
             authKey: this.apiKey,
             sessionToken: this.sessionToken,
             msg: this.getSerializedContent(),
-            ts: this.getTimestampAsNumber(),
+            ts: this.timestamp,
             pkey: this.partitionKey,
             addr: this.publisherAddress,
             sigtype: this.signatureType,
