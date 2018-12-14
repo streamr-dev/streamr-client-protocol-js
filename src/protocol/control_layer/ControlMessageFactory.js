@@ -54,7 +54,7 @@ export default class ControlMessageFactory {
         const messageArray = (typeof msg === 'string' ? JSON.parse(msg) : msg)
 
         // Version 0 (deprecated) uses objects instead of arrays for request types. In this case, messageArray is not an array but an object.
-        if ((!!messageArray) && (messageArray.constructor === Object)) {
+        if (!Array.isArray(messageArray)) {
             return ControlMessageV0Factory.deserialize(messageArray)
         }
 
