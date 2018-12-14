@@ -4,7 +4,7 @@ import ControlMessage from '../ControlMessage'
 const TYPE = 10
 
 class UnsubscribeRequest extends ControlMessage {
-    constructor(version, streamId, streamPartition = 0) {
+    constructor(version, streamId, streamPartition) {
         if (new.target === UnsubscribeRequest) {
             throw new TypeError('UnSubscribeRequest is abstract.')
         }

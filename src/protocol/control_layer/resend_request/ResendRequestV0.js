@@ -5,7 +5,7 @@ const TYPE = 'resend'
 const VERSION = 0
 
 class ResendRequestV0 extends ControlMessage {
-    constructor(streamId, streamPartition = 0, subId, resendOptions, apiKey, sessionToken) {
+    constructor(streamId, streamPartition, subId, resendOptions, apiKey, sessionToken) {
         super(VERSION, TYPE)
         this.streamId = streamId
         this.apiKey = apiKey

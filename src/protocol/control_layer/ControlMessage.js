@@ -5,7 +5,7 @@ export default class ControlMessage {
         if (new.target === ControlMessage) {
             throw new TypeError('ControlMessage is abstract.')
         }
-        this.version = version || 0
+        this.version = version
         if (type === undefined) {
             throw new ValidationError('No message type given!')
         }

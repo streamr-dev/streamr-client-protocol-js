@@ -2,7 +2,7 @@ import ParseUtil from '../../utils/ParseUtil'
 import ValidationError from '../../errors/ValidationError'
 
 class StreamAndPartition {
-    constructor(streamId, streamPartition = 0) {
+    constructor(streamId, streamPartition) {
         if (!streamId) {
             throw new ValidationError('Stream ID not given!')
         }
