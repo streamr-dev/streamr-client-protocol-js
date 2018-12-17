@@ -9,8 +9,7 @@ const VERSION = 28
 
 export default class StreamMessageV28 extends StreamMessage {
     constructor(streamId, streamPartition, timestamp, ttl, offset, previousOffset, contentType, content) {
-        super(VERSION, ttl, contentType, content)
-        this.streamId = streamId
+        super(VERSION, streamId, ttl, contentType, content)
         this.streamPartition = streamPartition
         this.timestamp = timestamp
         this.offset = offset
@@ -32,7 +31,7 @@ export default class StreamMessageV28 extends StreamMessage {
                 this.offset,
                 this.previousOffset,
                 this.contentType,
-                (parsedContent ? this.getParsedContent() : this.getSerializedContent()),
+                this.getContent(parsedContent),
             ]
         }
         return {
@@ -43,7 +42,7 @@ export default class StreamMessageV28 extends StreamMessage {
             offset: this.offset,
             previousOffset: this.previousOffset,
             contentType: this.contentType,
-            content: (parsedContent ? this.getParsedContent() : this.getSerializedContent()),
+            content: this.getContent(parsedContent),
         }
     }
 
@@ -51,12 +50,12 @@ export default class StreamMessageV28 extends StreamMessage {
         if (version === 29) {
             return new StreamMessageV29(
                 this.streamId, this.streamPartition, this.timestamp,
-                this.ttl, this.offset, this.previousOffset, this.contentType, this.content, 0, null, null,
+                this.ttl, this.offset, this.previousOffset, this.contentType, this.getContent(), 0, null, null,
             )
         } else if (version === 30) {
             return new StreamMessageV30(
                 [this.streamId, this.streamPartition, this.timestamp, 0, null],
-                [null, null], this.ttl, this.contentType, this.content, 0, null,
+                [null, null], this.ttl, this.contentType, this.getContent(), 0, null,
             )
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [28, 29, 30]')

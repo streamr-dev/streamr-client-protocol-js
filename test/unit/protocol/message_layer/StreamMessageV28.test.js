@@ -17,7 +17,7 @@ describe('StreamMessageV28', () => {
             assert.equal(result.offset, 941516902)
             assert.equal(result.previousOffset, 941499898)
             assert.equal(result.contentType, StreamMessage.CONTENT_TYPES.JSON)
-            assert.equal(result.content, '{"valid": "json"}')
+            assert.equal(result.getContent(), '{"valid": "json"}')
         })
     })
 

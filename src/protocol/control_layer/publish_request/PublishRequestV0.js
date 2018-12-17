@@ -30,7 +30,7 @@ class PublishRequestV0 extends PublishRequest {
     getStreamMessage(streamPartition) {
         return new StreamMessageV30(
             [this.streamId, streamPartition, this.timestamp, 0, this.publisherAddress], [null, null],
-            StreamMessage.CONTENT_TYPES.JSON, this.content, this.signatureType, this.signature,
+            0, StreamMessage.CONTENT_TYPES.JSON, this.content, this.signatureType, this.signature,
         )
     }
 

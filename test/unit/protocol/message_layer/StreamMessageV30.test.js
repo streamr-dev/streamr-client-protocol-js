@@ -19,7 +19,7 @@ describe('StreamMessageV30', () => {
             assert.equal(result.prevMessageRef.sequenceNumber, 0)
             assert.equal(result.ttl, 0)
             assert.equal(result.contentType, StreamMessage.CONTENT_TYPES.JSON)
-            assert.equal(result.content, '{"valid": "json"}')
+            assert.equal(result.getContent(), '{"valid": "json"}')
             assert.equal(result.signatureType, 1)
             assert.equal(result.signature, 'signature')
         })
@@ -85,7 +85,7 @@ describe('StreamMessageV30', () => {
     })
 
     describe('toArray()', () => {
-        it('parseContent == true', () => {
+        it('parsedContent == true', () => {
             const array = [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'],
                 [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, {
                     valid: 'json',
@@ -99,7 +99,7 @@ describe('StreamMessageV30', () => {
             assert.deepEqual(msg.toArray(true), array)
         })
 
-        it('parseContent == false', () => {
+        it('parsedContent == false', () => {
             const array = [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'],
                 [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
 

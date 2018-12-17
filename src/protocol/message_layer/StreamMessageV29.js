@@ -7,8 +7,7 @@ const VERSION = 29
 
 export default class StreamMessageV29 extends StreamMessage {
     constructor(streamId, streamPartition, timestamp, ttl, offset, previousOffset, contentType, content, signatureType, publisherAddress, signature) {
-        super(VERSION, ttl, contentType, content)
-        this.streamId = streamId
+        super(VERSION, streamId, ttl, contentType, content)
         this.streamPartition = streamPartition
         this.timestamp = timestamp
         this.offset = offset
@@ -33,7 +32,7 @@ export default class StreamMessageV29 extends StreamMessage {
                 this.offset,
                 this.previousOffset,
                 this.contentType,
-                (parsedContent ? this.getParsedContent() : this.getSerializedContent()),
+                this.getContent(parsedContent),
                 this.signatureType,
                 this.publisherAddress,
                 this.signature,
@@ -47,7 +46,7 @@ export default class StreamMessageV29 extends StreamMessage {
             offset: this.offset,
             previousOffset: this.previousOffset,
             contentType: this.contentType,
-            content: (parsedContent ? this.getParsedContent() : this.getSerializedContent()),
+            content: this.getContent(parsedContent),
             signatureType: this.signatureType,
             publisherAddress: this.publisherAddress,
             signature: this.signature,
@@ -58,12 +57,12 @@ export default class StreamMessageV29 extends StreamMessage {
         if (version === 28) {
             return new StreamMessageV28(
                 this.streamId, this.streamPartition, this.timestamp,
-                this.ttl, this.offset, this.previousOffset, this.contentType, this.content,
+                this.ttl, this.offset, this.previousOffset, this.contentType, this.getContent(),
             )
         } else if (version === 30) {
             return new StreamMessageV30(
                 [this.streamId, this.streamPartition, this.timestamp, 0, this.publisherAddress],
-                [null, null], this.ttl, this.contentType, this.content, this.signatureType, this.signature,
+                [null, null], this.ttl, this.contentType, this.getContent(), this.signatureType, this.signature,
             )
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [28, 29, 30]')

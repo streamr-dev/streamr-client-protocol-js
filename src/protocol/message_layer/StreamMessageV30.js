@@ -9,7 +9,7 @@ const VERSION = 30
 
 export default class StreamMessageV30 extends StreamMessage {
     constructor(messageIdArgsArray, prevMessageRefArgsArray, ttl, contentType, content, signatureType, signature) {
-        super(VERSION, ttl, contentType, content)
+        super(VERSION, undefined, ttl, contentType, content)
         this.messageId = new MessageID(...messageIdArgsArray)
         this.prevMessageRef = new MessageRef(...prevMessageRefArgsArray)
         this.signatureType = signatureType
@@ -27,7 +27,7 @@ export default class StreamMessageV30 extends StreamMessage {
             this.prevMessageRef.toArray(),
             this.ttl,
             this.contentType,
-            (parsedContent ? this.getParsedContent() : this.getSerializedContent()),
+            this.getContent(parsedContent),
             this.signatureType,
             this.signature,
         ]
@@ -37,12 +37,12 @@ export default class StreamMessageV30 extends StreamMessage {
         if (version === 28) {
             return new StreamMessageV28(
                 this.messageId.streamId, this.messageId.streamPartition, this.messageId.timestamp,
-                this.ttl, null, null, this.contentType, this.content,
+                this.ttl, null, null, this.contentType, this.getContent(),
             )
         } else if (version === 29) {
             return new StreamMessageV29(
                 this.messageId.streamId, this.messageId.streamPartition, this.messageId.timestamp,
-                this.ttl, null, null, this.contentType, this.content, this.signatureType, this.messageId.producerId, this.signature,
+                this.ttl, null, null, this.contentType, this.getContent(), this.signatureType, this.messageId.producerId, this.signature,
             )
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [28, 29, 30]')

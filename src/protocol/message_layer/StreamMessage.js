@@ -1,21 +1,23 @@
 import InvalidJsonError from '../../errors/InvalidJsonError'
 
 export default class StreamMessage {
-    constructor(version, ttl, contentType, content) {
+    constructor(version, streamId, ttl, contentType, content) {
         if (new.target === StreamMessage) {
             throw new TypeError('StreamMessage is abstract.')
         }
         this.version = version
+        this.streamId = streamId
         this.ttl = ttl
         this.contentType = contentType
-        this.content = content
+        this.serializedContent = this.serializeContent(content)
+        this.parsedContent = this.parseContent(content)
     }
 
-    getSerializedContent() {
-        if (typeof this.content === 'string') {
-            return this.content
-        } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof this.content === 'object') {
-            return JSON.stringify(this.content)
+    serializeContent(content) {
+        if (typeof content === 'string') {
+            return content
+        } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof content === 'object') {
+            return JSON.stringify(content)
         } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON) {
             throw new Error('Stream payloads can only be objects!')
         } else {
@@ -23,18 +25,16 @@ export default class StreamMessage {
         }
     }
 
-    getParsedContent() {
-        if (this.parsedContent !== undefined) {
-            return this.parsedContent
-        } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof this.content === 'object') {
-            this.parsedContent = this.content
-        } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof this.content === 'string') {
+    parseContent(content) {
+        if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof content === 'object') {
+            return content
+        } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof content === 'string') {
             try {
-                this.parsedContent = JSON.parse(this.content)
+                return JSON.parse(content)
             } catch (err) {
                 throw new InvalidJsonError(
                     this.streamId,
-                    this.content,
+                    content,
                     err,
                     this,
                 )
@@ -42,8 +42,21 @@ export default class StreamMessage {
         } else {
             throw new Error(`Unsupported content type: ${this.contentType}`)
         }
+    }
 
+    getSerializedContent() {
+        return this.serializedContent
+    }
+
+    getParsedContent() {
         return this.parsedContent
+    }
+
+    getContent(parsedContent = false) {
+        if (parsedContent) {
+            return this.getParsedContent()
+        }
+        return this.getSerializedContent()
     }
 }
 
