@@ -1,14 +1,13 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
-import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
 import BroadcastMessage from './BroadcastMessage'
 import BroadcastMessageV0 from './BroadcastMessageV0'
 
 const VERSION = 1
 
 class BroadcastMessageV1 extends BroadcastMessage {
-    constructor(streamMessageArgsArray) {
+    constructor(streamMessage) {
         super(VERSION)
-        this.streamMessage = StreamMessageFactory.deserialize(streamMessageArgsArray)
+        this.streamMessage = streamMessage
     }
 
     toArray(messageLayerVersion) {

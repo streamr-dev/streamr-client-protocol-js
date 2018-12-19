@@ -1,14 +1,13 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
-import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
 import UnicastMessage from './UnicastMessage'
 import UnicastMessageV0 from './UnicastMessageV0'
 
 const VERSION = 1
 
 class UnicastMessageV1 extends UnicastMessage {
-    constructor(subId, streamMessageArgsArray) {
+    constructor(subId, streamMessage) {
         super(VERSION, subId)
-        this.streamMessage = StreamMessageFactory.deserialize(streamMessageArgsArray)
+        this.streamMessage = streamMessage
     }
 
     toArray(messageLayerVersion) {

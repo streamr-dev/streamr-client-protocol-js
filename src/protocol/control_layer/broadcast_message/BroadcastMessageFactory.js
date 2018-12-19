@@ -9,7 +9,8 @@ export default class BroadcastMessageFactory {
             const streamMessageArray = broadcastMessageSpecificArgsArray[1] // index 0 is the null subId
             return new BroadcastMessageV0(StreamMessageFactory.deserialize(streamMessageArray))
         } else if (messageVersion === 1) {
-            return new BroadcastMessageV1(...broadcastMessageSpecificArgsArray)
+            const streamMessageArray = broadcastMessageSpecificArgsArray[0]
+            return new BroadcastMessageV1(StreamMessageFactory.deserialize(streamMessageArray))
         }
         throw new UnsupportedVersionError(messageVersion, 'Supported versions: [0, 1]')
     }

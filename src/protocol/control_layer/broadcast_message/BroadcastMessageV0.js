@@ -21,7 +21,11 @@ class BroadcastMessageV0 extends BroadcastMessage {
 
     toOtherVersion(version, messageLayerVersion) {
         if (version === 1) {
-            return new BroadcastMessageV1(this.payload.serialize(messageLayerVersion))
+            let streamMsg = this.payload
+            if (messageLayerVersion && messageLayerVersion !== this.payload.version) {
+                streamMsg = this.payload.toOtherVersion(messageLayerVersion)
+            }
+            return new BroadcastMessageV1(streamMsg)
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }

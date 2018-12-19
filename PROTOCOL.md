@@ -276,17 +276,18 @@ Field    | Type | Description
 Sent in response to a `ResendRequest`. Informs the client that there was nothing to resend.
 
 ```
-[version, type, streamId, streamPartition]
+[version, type, streamId, streamPartition, subId]
 ```
 Example:
 ```
-[1, 6, "stream-id", 0]
+[1, 6, "stream-id", 0, "subId"]
 ```
 
 Field    | Type | Description
 -------- | ---- | --------
 `streamId` | String | Stream id of resend not executed.
 `streamPartition` | Integer | Partition id of the resend not executed. Optional, defaults to 0.
+`subId` | String | Subscription id for which there is no resend. Corresponds to the subscription id sent in a `ResendLastRequest`, a `ResendRangeRequest` or a `ResendFromRequest`.
 
 #### ErrorResponse
 

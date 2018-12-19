@@ -20,7 +20,11 @@ class UnicastMessageV0 extends UnicastMessage {
 
     toOtherVersion(version, messageLayerVersion) {
         if (version === 1) {
-            return new UnicastMessageV1(this.subId, this.payload.serialize(messageLayerVersion))
+            let streamMsg = this.payload
+            if (messageLayerVersion && messageLayerVersion !== this.payload.version) {
+                streamMsg = this.payload.toOtherVersion(messageLayerVersion)
+            }
+            return new UnicastMessageV1(this.subId, streamMsg)
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }

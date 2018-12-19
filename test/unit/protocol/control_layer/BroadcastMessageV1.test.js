@@ -2,13 +2,15 @@ import assert from 'assert'
 import BroadcastMessageV1 from '../../../../src/protocol/control_layer/broadcast_message/BroadcastMessageV1'
 import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 import StreamMessageV30 from '../../../../src/protocol/message_layer/StreamMessageV30'
+import StreamMessageFactory from '../../../../src/protocol/message_layer/StreamMessageFactory'
 
 describe('BroadcastMessageV1', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             const arr = [[30, ['streamId', 0, 1529549961116, 0, 'address'],
                 [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']]
-            const result = new BroadcastMessageV1(...arr)
+            const streamMsg = StreamMessageFactory.deserialize(arr[0])
+            const result = new BroadcastMessageV1(streamMsg)
             assert(result.streamMessage instanceof StreamMessageV30)
         })
     })
@@ -20,7 +22,7 @@ describe('BroadcastMessageV1', () => {
             beforeEach(() => {
                 const streamMessageArray = [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
                     0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
-                broadcastMessage = new BroadcastMessageV1(streamMessageArray)
+                broadcastMessage = new BroadcastMessageV1(StreamMessageFactory.deserialize(streamMessageArray))
             })
             afterEach(() => {
                 const arr = [1, 0, expectedPayloadArray]
@@ -47,14 +49,14 @@ describe('BroadcastMessageV1', () => {
             const streamMessageArray = [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
                 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
             const arr = [0, 0, null, streamMessageArray]
-            const serialized = new BroadcastMessageV1(streamMessageArray).serialize(0)
+            const serialized = new BroadcastMessageV1(StreamMessageFactory.deserialize(streamMessageArray)).serialize(0)
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })
         it('correctly serializes to version 0 with non-default payload', () => {
             const streamMessageArray = [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
                 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
-            const serialized = new BroadcastMessageV1(streamMessageArray).serialize(0, 29)
+            const serialized = new BroadcastMessageV1(StreamMessageFactory.deserialize(streamMessageArray)).serialize(0, 29)
             assert(typeof serialized === 'string')
             const expectedPayloadArray = [29, 'streamId', 0, 1529549961116, 0,
                 null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']

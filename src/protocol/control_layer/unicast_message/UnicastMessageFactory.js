@@ -8,9 +8,13 @@ export default class UnicastMessageFactory {
         if (messageVersion === 0) {
             const subId = unicastMessageSpecificArgsArray[0]
             const streamMessageArray = unicastMessageSpecificArgsArray[1]
-            return new UnicastMessageV0(StreamMessageFactory.deserialize(streamMessageArray), subId)
+            const streamMessage = StreamMessageFactory.deserialize(streamMessageArray)
+            return new UnicastMessageV0(streamMessage, subId)
         } else if (messageVersion === 1) {
-            return new UnicastMessageV1(...unicastMessageSpecificArgsArray)
+            const subId = unicastMessageSpecificArgsArray[0]
+            const streamMessageArray = unicastMessageSpecificArgsArray[1]
+            const streamMessage = StreamMessageFactory.deserialize(streamMessageArray)
+            return new UnicastMessageV1(subId, streamMessage)
         }
         throw new UnsupportedVersionError(messageVersion, 'Supported versions: [0, 1]')
     }
