@@ -1,10 +1,10 @@
 class MessageID {
-    constructor(streamId, streamPartition, timestamp, sequenceNumber, producerId) {
+    constructor(streamId, streamPartition, timestamp, sequenceNumber, publisherId) {
         this.streamId = streamId
         this.streamPartition = streamPartition
         this.timestamp = timestamp
         this.sequenceNumber = sequenceNumber
-        this.producerId = producerId
+        this.publisherId = publisherId
     }
 
     toArray() {
@@ -13,7 +13,7 @@ class MessageID {
             this.streamPartition,
             this.timestamp,
             this.sequenceNumber,
-            this.producerId,
+            this.publisherId,
         ]
     }
 

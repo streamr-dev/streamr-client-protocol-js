@@ -5,7 +5,7 @@ import StreamMessageV30 from '../../../../src/protocol/message_layer/StreamMessa
 describe('StreamMessageV30', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
-            const arr = [['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'],
+            const arr = [['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId'],
                 [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
             const result = new StreamMessageV30(...arr)
 
@@ -14,7 +14,7 @@ describe('StreamMessageV30', () => {
             assert.equal(result.messageId.streamPartition, 0)
             assert.equal(result.messageId.timestamp, 1529549961116)
             assert.equal(result.messageId.sequenceNumber, 0)
-            assert.equal(result.messageId.producerId, 'address')
+            assert.equal(result.messageId.publisherId, 'publisherId')
             assert.equal(result.prevMessageRef.timestamp, 1529549961000)
             assert.equal(result.prevMessageRef.sequenceNumber, 0)
             assert.equal(result.ttl, 0)
@@ -27,11 +27,11 @@ describe('StreamMessageV30', () => {
 
     describe('serialize', () => {
         it('correctly serializes messages', () => {
-            const arr = [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'],
+            const arr = [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId'],
                 [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
 
             const serialized = new StreamMessageV30(
-                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'],
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId'],
                 [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature',
             ).serialize()
 
@@ -39,10 +39,10 @@ describe('StreamMessageV30', () => {
         })
         it('correctly serializes messages to v29', () => {
             const arr = [29, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
-                null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
+                null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'publisherId', 'signature']
 
             const serialized = new StreamMessageV30(
-                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'],
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId'],
                 [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature',
             ).serialize(29)
 
@@ -67,7 +67,7 @@ describe('StreamMessageV30', () => {
                 foo: 'bar',
             }
             const msg = new StreamMessageV30(
-                ['streamId', 0, Date.now(), 0, 'address'], [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, content,
+                ['streamId', 0, Date.now(), 0, 'publisherId'], [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, content,
                 1, 'signature',
             )
             assert.deepEqual(msg.getParsedContent(), content)
@@ -77,7 +77,7 @@ describe('StreamMessageV30', () => {
                 foo: 'bar',
             }
             const msg = new StreamMessageV30(
-                ['streamId', 0, Date.now(), 0, 'address'], [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, JSON.stringify(content),
+                ['streamId', 0, Date.now(), 0, 'publisherId'], [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, JSON.stringify(content),
                 1, 'signature',
             )
             assert.deepEqual(msg.getParsedContent(), content)
@@ -86,13 +86,13 @@ describe('StreamMessageV30', () => {
 
     describe('toArray()', () => {
         it('parsedContent == true', () => {
-            const array = [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'],
+            const array = [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId'],
                 [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, {
                     valid: 'json',
                 }, 1, 'signature']
 
             const msg = new StreamMessageV30(
-                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0], 0,
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId'], [1529549961000, 0], 0,
                 StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature',
             )
 
@@ -100,11 +100,11 @@ describe('StreamMessageV30', () => {
         })
 
         it('parsedContent == false', () => {
-            const array = [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'],
+            const array = [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId'],
                 [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
 
             const msg = new StreamMessageV30(
-                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0], 0,
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId'], [1529549961000, 0], 0,
                 StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature',
             )
 

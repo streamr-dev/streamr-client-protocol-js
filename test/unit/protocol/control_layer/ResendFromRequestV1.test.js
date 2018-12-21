@@ -14,7 +14,7 @@ describe('ResendFromRequestV1', () => {
             assert.equal(result.msgId.streamPartition, 0)
             assert.equal(result.msgId.timestamp, 132846894)
             assert.equal(result.msgId.sequenceNumber, 0)
-            assert.equal(result.msgId.producerId, 'producerId')
+            assert.equal(result.msgId.publisherId, 'producerId')
         })
     })
     describe('serialize', () => {

@@ -42,7 +42,7 @@ export default class StreamMessageV30 extends StreamMessage {
         } else if (version === 29) {
             return new StreamMessageV29(
                 this.messageId.streamId, this.messageId.streamPartition, this.messageId.timestamp,
-                this.ttl, null, null, this.contentType, this.getContent(), this.signatureType, this.messageId.producerId, this.signature,
+                this.ttl, null, null, this.contentType, this.getContent(), this.signatureType, this.messageId.publisherId, this.signature,
             )
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [28, 29, 30]')

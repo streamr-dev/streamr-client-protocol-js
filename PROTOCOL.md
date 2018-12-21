@@ -353,7 +353,7 @@ Signature Type | Description
 Uniquely identifies a `StreamMessage`.
 
 ```
-[streamId, streamPartition, timestamp, sequenceNumber, producerId]
+[streamId, streamPartition, timestamp, sequenceNumber, publisherId]
 ```
 Example:
 ```
@@ -366,7 +366,7 @@ Field    | Type | Description
 `streamPartition` | Integer | Stream partition the `StreamMessage` belongs to.
 `timestamp` | Long | Timestamp of the `StreamMessage` (milliseconds format).
 `sequenceNumber` | Integer | Sequence number of the `StreamMessage` within the same timestamp. Defaults to 0.
-`producerId` | String | Id of the producer of the `StreamMessage`. Must be an Ethereum address if the `StreamMessage` has an Ethereum signature (`signatureType` = 1).
+`publisherId` | String | Id of the publisher of the `StreamMessage`. Must be an Ethereum address if the `StreamMessage` has an Ethereum signature (`signatureType` = 1).
 
 ### MessageRef
 
