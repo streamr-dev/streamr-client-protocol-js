@@ -1,5 +1,12 @@
 # Protocol
 
+## Data Types
+
+Our protocol is a JSON protocol. This means that we have the following types at our disposal: `string`, `number`, `object`, `array`, `boolean` and `null`.
+- In the following, the `String` type is the same as the JSON `string` type.
+- We also use an `Integer` type which represents a JSON `number` with the additional constraints that it needs to be a positive integer and that it must fit on a 32 bits representation.
+- The `Long` type defines a JSON `number` that must be a positive integer with a maximum size of 64 bits.
+
 ## Layers
 
 The Streamr Protocol is made of three layers:

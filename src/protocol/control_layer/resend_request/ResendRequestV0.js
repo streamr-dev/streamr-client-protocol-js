@@ -60,4 +60,6 @@ class ResendRequestV0 extends ControlMessage {
     }
 }
 
+/* static */ ResendRequestV0.TYPE = TYPE
+
 module.exports = ResendRequestV0
