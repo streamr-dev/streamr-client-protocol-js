@@ -9,7 +9,8 @@ const VERSION = 0
 
 class PublishRequestV0 extends PublishRequest {
     constructor(streamId, apiKey, sessionToken, content, timestamp, partitionKey, publisherAddress, signatureType, signature) {
-        super(VERSION, sessionToken, apiKey)
+        super(VERSION, sessionToken)
+        this.apiKey = apiKey
         this.streamId = streamId
 
         if (!content) {

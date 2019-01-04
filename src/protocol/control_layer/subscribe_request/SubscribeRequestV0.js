@@ -7,7 +7,8 @@ const VERSION = 0
 
 class SubscribeRequestV0 extends SubscribeRequest {
     constructor(streamId, streamPartition, apiKey, sessionToken) {
-        super(VERSION, streamId, streamPartition, sessionToken, apiKey)
+        super(VERSION, streamId, streamPartition, sessionToken)
+        this.apiKey = apiKey
     }
 
     toObject() {
@@ -22,7 +23,7 @@ class SubscribeRequestV0 extends SubscribeRequest {
 
     toOtherVersion(version) {
         if (version === 1) {
-            return new SubscribeRequestV1(this.streamId, this.streamPartition, this.sessionToken, this.apiKey)
+            return new SubscribeRequestV1(this.streamId, this.streamPartition, this.sessionToken)
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }

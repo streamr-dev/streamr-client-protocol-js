@@ -3,13 +3,12 @@ import ControlMessage from '../ControlMessage'
 const TYPE = 8
 
 class PublishRequest extends ControlMessage {
-    constructor(version, sessionToken, apiKey) {
+    constructor(version, sessionToken) {
         if (new.target === PublishRequest) {
             throw new TypeError('PublishRequest is abstract.')
         }
         super(version, TYPE)
         this.sessionToken = sessionToken
-        this.apiKey = apiKey
     }
 }
 

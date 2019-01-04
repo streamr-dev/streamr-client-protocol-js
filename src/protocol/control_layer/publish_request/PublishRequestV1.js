@@ -4,8 +4,8 @@ import PublishRequest from './PublishRequest'
 const VERSION = 1
 
 class PublishRequestV1 extends PublishRequest {
-    constructor(streamMessageArgsArray, sessionToken, apiKey) {
-        super(VERSION, sessionToken, apiKey)
+    constructor(streamMessageArgsArray, sessionToken) {
+        super(VERSION, sessionToken)
         this.streamMessage = StreamMessageFactory.deserialize(streamMessageArgsArray)
     }
 
@@ -18,7 +18,6 @@ class PublishRequestV1 extends PublishRequest {
         array.push(...[
             JSON.parse(this.streamMessage.serialize(messageLayerVersion)),
             this.sessionToken,
-            this.apiKey,
         ])
         return array
     }

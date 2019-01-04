@@ -4,7 +4,7 @@ import ControlMessage from '../ControlMessage'
 const TYPE = 9
 
 class SubscribeRequest extends ControlMessage {
-    constructor(version, streamId, streamPartition, sessionToken, apiKey) {
+    constructor(version, streamId, streamPartition, sessionToken) {
         if (new.target === SubscribeRequest) {
             throw new TypeError('SubscribeRequest is abstract.')
         }
@@ -15,7 +15,6 @@ class SubscribeRequest extends ControlMessage {
         }
         this.streamPartition = streamPartition
         this.sessionToken = sessionToken
-        this.apiKey = apiKey
     }
 }
 

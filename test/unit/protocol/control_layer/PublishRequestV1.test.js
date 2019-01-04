@@ -7,11 +7,10 @@ describe('PublishRequestV1', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             const arr = [[30, ['streamId', 0, 1529549961116, 0, 'address'],
-                [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 'sessionToken', 'apiKey']
+                [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 'sessionToken']
             const result = new PublishRequestV1(...arr)
             assert(result.getStreamMessage() instanceof StreamMessage)
             assert.equal(result.sessionToken, 'sessionToken')
-            assert.equal(result.apiKey, 'apiKey')
         })
     })
     describe('serialize', () => {
@@ -23,11 +22,10 @@ describe('PublishRequestV1', () => {
                 [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON,
                     '{"valid": "json"}', 1, 'signature'],
                 'sessionToken',
-                'apiKey',
             )
         })
         afterEach(() => {
-            const arr = [1, PublishRequest.TYPE, expectedPayloadArray, 'sessionToken', 'apiKey']
+            const arr = [1, PublishRequest.TYPE, expectedPayloadArray, 'sessionToken']
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })

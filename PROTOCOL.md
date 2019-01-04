@@ -67,39 +67,37 @@ Also see the [Javascript client](https://github.com/streamr-dev/streamr-client) 
 
 #### PublishRequest
 
-Publishes a new message to a stream. Requires a write permission to the stream. Authentication requires either the API key or the session token to be set. It contains a `StreamMessage` as a payload at the Message Layer level. The `StreamMessage` representation is also an array (nested in the `PublishRequest` array) which is described in the [StreamMessage](#streammessage) section.
+Publishes a new message to a stream. Requires a write permission to the stream. Authentication requires the session token to be set. It contains a `StreamMessage` as a payload at the Message Layer level. The `StreamMessage` representation is also an array (nested in the `PublishRequest` array) which is described in the [StreamMessage](#streammessage) section.
 
 ```
-[version, type, streamMessage, sessionToken, apiKey]
+[version, type, streamMessage, sessionToken]
 ```
 Example:
 ```
-[1, 8, [...streamMessageFields], "my-session-token", null]
+[1, 8, [...streamMessageFields], "my-session-token"]
 ```
 
 Field    | Type | Description
 -------- | ---- | --------
 `streamMessage` | StreamMessage | The array representation of the `StreamMessage` to publish. Defined in the Message Layer.
-`apiKey` | String | User's API key or anonymous stream key. Either this or `sessionToken` must be defined.
-`sessionToken` | String | User's session token retrieved with some authentication method. Either this or `apiKey` must be defined.
+`sessionToken` | String | User's session token retrieved with some authentication method.
 
 #### SubscribeRequest
 
 Requests that the client be subscribed to a stream-partition. Will result in a `SubscribeResponse` message, and a stream of `BroadcastMessage` as they are published.
 
 ```
-[version, type, streamId, streamPartition, sessionToken, apiKey]
+[version, type, streamId, streamPartition, sessionToken]
 ```
 Example:
 ```
-[1, 9, "stream-id", 0, "my-session-token", null]
+[1, 9, "stream-id", 0, "my-session-token"]
 ```
 
 Field    | Type | Description
 -------- | ---- | --------
 `streamId` | String | Stream id to subscribe to.
 `streamPartition` | Integer | Partition id to subscribe to. Optional, defaults to 0.
-`apiKey` | String | User's API key or anonymous stream key. Optional. Public streams can be subscribed to without authentication.
 `sessionToken` | String | User's session token retrieved with some authentication method. Optional. Public streams can be subscribed to without authentication.
 
 #### UnsubscribeRequest

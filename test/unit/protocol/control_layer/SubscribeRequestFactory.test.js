@@ -13,7 +13,7 @@ describe('SubscribeRequestFactory', () => {
             })
         })
         it('should return a SubscribeRequestV1', () => {
-            const arr = ['streamId', 0, 'sessionToken', 'apiKey']
+            const arr = ['streamId', 0, 'sessionToken']
             const result = SubscribeRequestFactory.deserialize(1, arr)
             assert(result instanceof SubscribeRequestV1)
         })
