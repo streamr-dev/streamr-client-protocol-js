@@ -110,9 +110,9 @@ const examplesByTypeV1 = {
         [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 'sessionToken'],
     '9': [1, 9, 'streamId', 0, 'sessionToken'],
     '10': [1, 10, 'streamId', 0],
-    '11': [1, 11, 'streamId', 0, 'subId', 100],
-    '12': [1, 12, 'streamId', 0, 'subId', [132846894, 0], 'producerId'],
-    '13': [1, 13, 'streamId', 0, 'subId', [132846894, 0], [132847000, 0], 'publisherId'],
+    '11': [1, 11, 'streamId', 0, 'subId', 100, 'sessionToken'],
+    '12': [1, 12, 'streamId', 0, 'subId', [132846894, 0], 'producerId', 'sessionToken'],
+    '13': [1, 13, 'streamId', 0, 'subId', [132846894, 0], [132847000, 0], 'publisherId', 'sessionToken'],
 }
 
 describe('ControlMessageFactory', () => {

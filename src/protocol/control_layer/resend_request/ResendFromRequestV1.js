@@ -5,13 +5,14 @@ const TYPE = 12
 const VERSION = 1
 
 export default class ResendFromRequestV1 extends ControlMessage {
-    constructor(streamId, streamPartition, subId, msgRefArgsArray, publisherId) {
+    constructor(streamId, streamPartition, subId, msgRefArgsArray, publisherId, sessionToken) {
         super(VERSION, TYPE)
         this.streamId = streamId
         this.streamPartition = streamPartition
         this.subId = subId
         this.fromMsgRef = new MessageRef(...msgRefArgsArray)
         this.publisherId = publisherId
+        this.sessionToken = sessionToken
     }
 
     toArray(messageLayerVersion) {
@@ -22,6 +23,7 @@ export default class ResendFromRequestV1 extends ControlMessage {
             this.subId,
             JSON.parse(this.fromMsgRef.serialize(messageLayerVersion)),
             this.publisherId,
+            this.sessionToken,
         ])
         return array
     }

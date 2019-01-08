@@ -6,7 +6,7 @@ const TYPE = 13
 const VERSION = 1
 
 export default class ResendRangeRequestV1 extends ControlMessage {
-    constructor(streamId, streamPartition, subId, fromMsgRefArgsArray, toMsgRefArgsArray, publisherId) {
+    constructor(streamId, streamPartition, subId, fromMsgRefArgsArray, toMsgRefArgsArray, publisherId, sessionToken) {
         super(VERSION, TYPE)
         this.streamId = streamId
         this.streamPartition = streamPartition
@@ -17,6 +17,7 @@ export default class ResendRangeRequestV1 extends ControlMessage {
             throw new ValidationError('fromMsgRef.timestamp must be less than or equal to toMsgRef.timestamp')
         }
         this.publisherId = publisherId
+        this.sessionToken = sessionToken
     }
 
     toArray(messageLayerVersion) {
@@ -28,6 +29,7 @@ export default class ResendRangeRequestV1 extends ControlMessage {
             JSON.parse(this.fromMsgRef.serialize(messageLayerVersion)),
             JSON.parse(this.toMsgRef.serialize(messageLayerVersion)),
             this.publisherId,
+            this.sessionToken,
         ])
         return array
     }

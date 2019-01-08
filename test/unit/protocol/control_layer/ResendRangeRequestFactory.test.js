@@ -13,7 +13,7 @@ describe('ResendRangeRequestFactory', () => {
             })
         })
         it('should return a ResendRangeRequestV1', () => {
-            const arr = ['streamId', 0, 'subId', [132846894, 0], [132847000, 0], 'publisherId']
+            const arr = ['streamId', 0, 'subId', [132846894, 0], [132847000, 0], 'publisherId', 'sessionToken']
             const result = ResendRangeRequestFactory.deserialize(1, arr)
             assert(result instanceof ResendRangeRequestV1)
         })
