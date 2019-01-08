@@ -16,9 +16,18 @@ export default class StreamMessageV28 extends StreamMessage {
         this.previousOffset = previousOffset
     }
 
-    getStreamId() {
-        return this.streamId
+    getStreamPartition() {
+        return this.streamPartition
     }
+
+    getTimestamp() {
+        return this.timestamp
+    }
+    /* eslint-disable class-methods-use-this */
+    getPublisherId() {
+        return undefined
+    }
+    /* eslint-enable class-methods-use-this */
 
     toObject(parsedContent = false, compact = true) {
         if (compact) {

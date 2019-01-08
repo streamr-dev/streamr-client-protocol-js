@@ -11,13 +11,14 @@ describe('StreamMessageV28', () => {
 
             assert(result instanceof StreamMessage)
             assert.equal(result.getStreamId(), 'TsvTbqshTsuLg_HyUjxigA')
-            assert.equal(result.streamPartition, 0)
-            assert.equal(result.timestamp, 1529549961116)
+            assert.equal(result.getStreamPartition(), 0)
+            assert.equal(result.getTimestamp(), 1529549961116)
             assert.equal(result.ttl, 0)
             assert.equal(result.offset, 941516902)
             assert.equal(result.previousOffset, 941499898)
             assert.equal(result.contentType, StreamMessage.CONTENT_TYPES.JSON)
             assert.equal(result.getContent(), '{"valid": "json"}')
+            assert.equal(result.getPublisherId(), undefined)
         })
     })
 

@@ -13,6 +13,23 @@ export default class StreamMessage {
         this.parsedContent = this.parseContent(content)
     }
 
+    getStreamId() {
+        return this.streamId
+    }
+    /* eslint-disable class-methods-use-this */
+    getStreamPartition() {
+        throw new Error('getStreamPartition must be implemented')
+    }
+
+    getTimestamp() {
+        throw new Error('getTimestamp must be implemented')
+    }
+
+    getPublisherId() {
+        throw new Error('getPublisherId must be implemented')
+    }
+    /* eslint-enable class-methods-use-this */
+
     serializeContent(content) {
         if (typeof content === 'string') {
             return content

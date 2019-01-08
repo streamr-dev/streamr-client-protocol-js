@@ -17,8 +17,16 @@ export default class StreamMessageV29 extends StreamMessage {
         this.signature = signature
     }
 
-    getStreamId() {
-        return this.streamId
+    getStreamPartition() {
+        return this.streamPartition
+    }
+
+    getTimestamp() {
+        return this.timestamp
+    }
+
+    getPublisherId() {
+        return this.publisherAddress
     }
 
     toObject(parsedContent = false, compact = true) {

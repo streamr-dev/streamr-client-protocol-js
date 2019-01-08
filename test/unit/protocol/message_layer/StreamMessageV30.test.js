@@ -11,10 +11,10 @@ describe('StreamMessageV30', () => {
 
             assert(result instanceof StreamMessageV30)
             assert.equal(result.getStreamId(), 'TsvTbqshTsuLg_HyUjxigA')
-            assert.equal(result.messageId.streamPartition, 0)
-            assert.equal(result.messageId.timestamp, 1529549961116)
+            assert.equal(result.getStreamPartition(), 0)
+            assert.equal(result.getTimestamp(), 1529549961116)
             assert.equal(result.messageId.sequenceNumber, 0)
-            assert.equal(result.messageId.publisherId, 'publisherId')
+            assert.equal(result.getPublisherId(), 'publisherId')
             assert.equal(result.prevMessageRef.timestamp, 1529549961000)
             assert.equal(result.prevMessageRef.sequenceNumber, 0)
             assert.equal(result.ttl, 0)

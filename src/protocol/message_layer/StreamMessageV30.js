@@ -20,6 +20,18 @@ export default class StreamMessageV30 extends StreamMessage {
         return this.messageId.streamId
     }
 
+    getStreamPartition() {
+        return this.messageId.streamPartition
+    }
+
+    getTimestamp() {
+        return this.messageId.timestamp
+    }
+
+    getPublisherId() {
+        return this.messageId.publisherId
+    }
+
     toArray(parsedContent = false) {
         return [
             this.version,
