@@ -1,12 +1,11 @@
-import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
 import PublishRequest from './PublishRequest'
 
 const VERSION = 1
 
 export default class PublishRequestV1 extends PublishRequest {
-    constructor(streamMessageArgsArray, sessionToken) {
+    constructor(streamMessage, sessionToken) {
         super(VERSION, sessionToken)
-        this.streamMessage = StreamMessageFactory.deserialize(streamMessageArgsArray)
+        this.streamMessage = streamMessage
     }
 
     getStreamMessage() {

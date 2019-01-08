@@ -2,13 +2,15 @@ import assert from 'assert'
 import PublishRequest from '../../../../src/protocol/control_layer/publish_request/PublishRequest'
 import PublishRequestV1 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV1'
 import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
+import StreamMessageFactory from '../../../../src/protocol/message_layer/StreamMessageFactory'
 
 describe('PublishRequestV1', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             const arr = [[30, ['streamId', 0, 1529549961116, 0, 'address'],
                 [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 'sessionToken']
-            const result = new PublishRequestV1(...arr)
+            const streamMsg = StreamMessageFactory.deserialize(arr[0])
+            const result = new PublishRequestV1(streamMsg, arr[1])
             assert(result.getStreamMessage() instanceof StreamMessage)
             assert.equal(result.sessionToken, 'sessionToken')
         })
@@ -18,11 +20,9 @@ describe('PublishRequestV1', () => {
         let expectedPayloadArray
         let serialized
         beforeEach(() => {
-            publishRequest = new PublishRequestV1(
-                [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON,
-                    '{"valid": "json"}', 1, 'signature'],
-                'sessionToken',
-            )
+            const streamMessageArray = [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0], 0,
+                StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
+            publishRequest = new PublishRequestV1(StreamMessageFactory.deserialize(streamMessageArray), 'sessionToken')
         })
         afterEach(() => {
             const arr = [1, PublishRequest.TYPE, expectedPayloadArray, 'sessionToken']
