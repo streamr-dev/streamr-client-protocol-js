@@ -1,33 +1,33 @@
 import ControlMessage from '../ControlMessage'
 import ValidationError from '../../../errors/ValidationError'
-import MessageID from '../../message_layer/MessageID'
+import MessageRef from '../../message_layer/MessageRef'
 
 const TYPE = 13
 const VERSION = 1
 
 class ResendRangeRequestV1 extends ControlMessage {
-    constructor(subId, fromMsgIdArgsArray, toMsgIdArgsArray) {
+    constructor(streamId, streamPartition, subId, fromMsgRefArgsArray, toMsgRefArgsArray, publisherId) {
         super(VERSION, TYPE)
+        this.streamId = streamId
+        this.streamPartition = streamPartition
         this.subId = subId
-        this.fromMsgId = new MessageID(...fromMsgIdArgsArray)
-        this.toMsgId = new MessageID(...toMsgIdArgsArray)
-        if (this.fromMsgId.streamId !== this.toMsgId.streamId) {
-            throw new ValidationError('fromMsgId.streamId and toMsgId.streamId must be equal')
+        this.fromMsgRef = new MessageRef(...fromMsgRefArgsArray)
+        this.toMsgRef = new MessageRef(...toMsgRefArgsArray)
+        if (this.fromMsgRef.timestamp > this.toMsgRef.timestamp) {
+            throw new ValidationError('fromMsgRef.timestamp must be less than or equal to toMsgRef.timestamp')
         }
-        if (this.fromMsgId.streamPartition !== this.toMsgId.streamPartition) {
-            throw new ValidationError('fromMsgId.streamPartition and toMsgId.streamPartition must be equal')
-        }
-        if (this.fromMsgId.producerId !== this.toMsgId.producerId) {
-            throw new ValidationError('fromMsgId.producerId and toMsgId.producerId must be equal')
-        }
+        this.publisherId = publisherId
     }
 
     toArray(messageLayerVersion) {
         const array = super.toArray()
         array.push(...[
+            this.streamId,
+            this.streamPartition,
             this.subId,
-            JSON.parse(this.fromMsgId.serialize(messageLayerVersion)),
-            JSON.parse(this.toMsgId.serialize(messageLayerVersion)),
+            JSON.parse(this.fromMsgRef.serialize(messageLayerVersion)),
+            JSON.parse(this.toMsgRef.serialize(messageLayerVersion)),
+            this.publisherId,
         ])
         return array
     }

@@ -1,21 +1,27 @@
 import ControlMessage from '../ControlMessage'
-import MessageID from '../../message_layer/MessageID'
+import MessageRef from '../../message_layer/MessageRef'
 
 const TYPE = 12
 const VERSION = 1
 
 class ResendFromRequestV1 extends ControlMessage {
-    constructor(subId, msgIdArgsArray) {
+    constructor(streamId, streamPartition, subId, msgRefArgsArray, publisherId) {
         super(VERSION, TYPE)
+        this.streamId = streamId
+        this.streamPartition = streamPartition
         this.subId = subId
-        this.msgId = new MessageID(...msgIdArgsArray)
+        this.fromMsgRef = new MessageRef(...msgRefArgsArray)
+        this.publisherId = publisherId
     }
 
     toArray(messageLayerVersion) {
         const array = super.toArray()
         array.push(...[
+            this.streamId,
+            this.streamPartition,
             this.subId,
-            JSON.parse(this.msgId.serialize(messageLayerVersion)),
+            JSON.parse(this.fromMsgRef.serialize(messageLayerVersion)),
+            this.publisherId,
         ])
         return array
     }

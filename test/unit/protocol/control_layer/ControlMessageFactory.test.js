@@ -111,8 +111,8 @@ const examplesByTypeV1 = {
     '9': [1, 9, 'streamId', 0, 'sessionToken'],
     '10': [1, 10, 'streamId', 0],
     '11': [1, 11, 'streamId', 0, 'subId', 100],
-    '12': [1, 12, 'subId', ['streamId', 0, 132846894, 0, 'producerId']],
-    '13': [1, 13, 'subId', ['streamId', 0, 132846894, 0, 'producerId'], ['streamId', 0, 132847894, 0, 'producerId']],
+    '12': [1, 12, 'streamId', 0, 'subId', [132846894, 0], 'producerId'],
+    '13': [1, 13, 'streamId', 0, 'subId', [132846894, 0], [132847000, 0], 'publisherId'],
 }
 
 describe('ControlMessageFactory', () => {

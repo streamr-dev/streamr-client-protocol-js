@@ -13,7 +13,7 @@ describe('ResendFromRequestFactory', () => {
             })
         })
         it('should return a ResendLastRequestV1', () => {
-            const arr = ['subId', ['streamId', 0, 132846894, 0, 'producerId']]
+            const arr = ['streamId', 0, 'subId', [132846894, 0], 'producerId']
             const result = ResendFromRequestFactory.deserialize(1, arr)
             assert(result instanceof ResendFromRequestV1)
         })
