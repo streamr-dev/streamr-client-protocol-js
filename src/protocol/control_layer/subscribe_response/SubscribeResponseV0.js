@@ -5,7 +5,7 @@ import SubscribeResponseV1 from './SubscribeResponseV1'
 
 const VERSION = 0
 
-class SubscribeResponseV0 extends SubscribeResponse {
+export default class SubscribeResponseV0 extends SubscribeResponse {
     constructor(streamId, streamPartition) {
         super(VERSION)
         this.payload = new StreamAndPartition(streamId, streamPartition)
@@ -27,5 +27,3 @@ class SubscribeResponseV0 extends SubscribeResponse {
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 }
-
-module.exports = SubscribeResponseV0

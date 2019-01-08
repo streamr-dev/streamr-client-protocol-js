@@ -5,7 +5,7 @@ import SubscribeRequestV1 from './SubscribeRequestV1'
 const TYPE = 'subscribe'
 const VERSION = 0
 
-class SubscribeRequestV0 extends SubscribeRequest {
+export default class SubscribeRequestV0 extends SubscribeRequest {
     constructor(streamId, streamPartition, apiKey, sessionToken) {
         super(VERSION, streamId, streamPartition, sessionToken)
         this.apiKey = apiKey
@@ -39,5 +39,3 @@ class SubscribeRequestV0 extends SubscribeRequest {
         return [msg.stream, msg.partition, msg.authKey, msg.sessionToken]
     }
 }
-
-module.exports = SubscribeRequestV0

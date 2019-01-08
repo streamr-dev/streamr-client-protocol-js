@@ -4,7 +4,7 @@ import SubscribeResponseV0 from './SubscribeResponseV0'
 
 const VERSION = 1
 
-class SubscribeResponseV1 extends SubscribeResponse {
+export default class SubscribeResponseV1 extends SubscribeResponse {
     constructor(streamId, streamPartition) {
         super(VERSION)
         this.streamId = streamId
@@ -27,5 +27,3 @@ class SubscribeResponseV1 extends SubscribeResponse {
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 }
-
-module.exports = SubscribeResponseV1

@@ -4,7 +4,7 @@ import UnicastMessageV0 from './UnicastMessageV0'
 
 const VERSION = 1
 
-class UnicastMessageV1 extends UnicastMessage {
+export default class UnicastMessageV1 extends UnicastMessage {
     constructor(subId, streamMessage) {
         super(VERSION, subId)
         this.streamMessage = streamMessage

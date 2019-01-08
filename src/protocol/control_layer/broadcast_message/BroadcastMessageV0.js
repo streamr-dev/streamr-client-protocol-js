@@ -4,7 +4,7 @@ import BroadcastMessageV1 from './BroadcastMessageV1'
 
 const VERSION = 0
 
-class BroadcastMessageV0 extends BroadcastMessage {
+export default class BroadcastMessageV0 extends BroadcastMessage {
     constructor(streamMessage) {
         super(VERSION)
         this.payload = streamMessage
@@ -30,5 +30,3 @@ class BroadcastMessageV0 extends BroadcastMessage {
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 }
-
-module.exports = BroadcastMessageV0

@@ -4,7 +4,7 @@ import MessageRef from '../../message_layer/MessageRef'
 const TYPE = 12
 const VERSION = 1
 
-class ResendFromRequestV1 extends ControlMessage {
+export default class ResendFromRequestV1 extends ControlMessage {
     constructor(streamId, streamPartition, subId, msgRefArgsArray, publisherId) {
         super(VERSION, TYPE)
         this.streamId = streamId
@@ -32,5 +32,3 @@ class ResendFromRequestV1 extends ControlMessage {
 }
 
 /* static */ ResendFromRequestV1.TYPE = TYPE
-
-module.exports = ResendFromRequestV1

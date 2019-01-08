@@ -2,7 +2,7 @@ import ControlMessage from '../ControlMessage'
 
 const TYPE = 3
 
-class UnsubscribeResponse extends ControlMessage {
+export default class UnsubscribeResponse extends ControlMessage {
     constructor(version) {
         if (new.target === UnsubscribeResponse) {
             throw new TypeError('UnsubscribeResponse is abstract.')

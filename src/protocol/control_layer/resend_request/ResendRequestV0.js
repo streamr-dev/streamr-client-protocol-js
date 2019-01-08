@@ -4,7 +4,7 @@ import ControlMessage from '../ControlMessage'
 const TYPE = 'resend'
 const VERSION = 0
 
-class ResendRequestV0 extends ControlMessage {
+export default class ResendRequestV0 extends ControlMessage {
     constructor(streamId, streamPartition, subId, resendOptions, apiKey, sessionToken) {
         super(VERSION, TYPE)
         this.streamId = streamId
@@ -61,5 +61,3 @@ class ResendRequestV0 extends ControlMessage {
 }
 
 /* static */ ResendRequestV0.TYPE = TYPE
-
-module.exports = ResendRequestV0

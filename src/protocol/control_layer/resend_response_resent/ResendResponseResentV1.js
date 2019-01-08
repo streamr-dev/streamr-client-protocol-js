@@ -4,7 +4,7 @@ import ResendResponseResentV0 from './ResendResponseResentV0'
 
 const VERSION = 1
 
-class ResendResponseResentV1 extends ResendResponseResent {
+export default class ResendResponseResentV1 extends ResendResponseResent {
     constructor(streamId, streamPartition, subId) {
         super(VERSION)
         this.streamId = streamId
@@ -29,5 +29,3 @@ class ResendResponseResentV1 extends ResendResponseResent {
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 }
-
-module.exports = ResendResponseResentV1

@@ -2,7 +2,7 @@ import ControlMessage from '../ControlMessage'
 
 const TYPE = 0
 
-class BroadcastMessage extends ControlMessage {
+export default class BroadcastMessage extends ControlMessage {
     constructor(version) {
         if (new.target === BroadcastMessage) {
             throw new TypeError('BroadcastMessage is abstract.')
@@ -19,5 +19,3 @@ class BroadcastMessage extends ControlMessage {
 }
 
 /* static */ BroadcastMessage.TYPE = TYPE
-
-module.exports = BroadcastMessage

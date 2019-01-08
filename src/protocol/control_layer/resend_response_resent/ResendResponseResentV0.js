@@ -5,7 +5,7 @@ import ResendResponseResentV1 from './ResendResponseResentV1'
 
 const VERSION = 0
 
-class ResendResponseResentV0 extends ResendResponseResent {
+export default class ResendResponseResentV0 extends ResendResponseResent {
     constructor(streamId, streamPartition, subId) {
         super(VERSION)
         this.payload = new ResendResponsePayload(streamId, streamPartition, subId)
@@ -31,5 +31,3 @@ class ResendResponseResentV0 extends ResendResponseResent {
         return [payload.streamId, payload.streamPartition, payload.subId]
     }
 }
-
-module.exports = ResendResponseResentV0

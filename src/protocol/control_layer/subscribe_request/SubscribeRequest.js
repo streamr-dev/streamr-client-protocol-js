@@ -3,7 +3,7 @@ import ControlMessage from '../ControlMessage'
 
 const TYPE = 9
 
-class SubscribeRequest extends ControlMessage {
+export default class SubscribeRequest extends ControlMessage {
     constructor(version, streamId, streamPartition, sessionToken) {
         if (new.target === SubscribeRequest) {
             throw new TypeError('SubscribeRequest is abstract.')
@@ -19,5 +19,3 @@ class SubscribeRequest extends ControlMessage {
 }
 
 /* static */ SubscribeRequest.TYPE = TYPE
-
-module.exports = SubscribeRequest

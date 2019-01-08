@@ -2,7 +2,7 @@ import ControlMessage from '../ControlMessage'
 
 const TYPE = 5
 
-class ResendResponseResent extends ControlMessage {
+export default class ResendResponseResent extends ControlMessage {
     constructor(version) {
         if (new.target === ResendResponseResent) {
             throw new TypeError('ResendResponseResent is abstract.')
@@ -12,5 +12,3 @@ class ResendResponseResent extends ControlMessage {
 }
 
 /* static */ ResendResponseResent.TYPE = TYPE
-
-module.exports = ResendResponseResent

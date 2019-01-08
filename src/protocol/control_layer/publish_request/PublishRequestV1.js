@@ -3,7 +3,7 @@ import PublishRequest from './PublishRequest'
 
 const VERSION = 1
 
-class PublishRequestV1 extends PublishRequest {
+export default class PublishRequestV1 extends PublishRequest {
     constructor(streamMessageArgsArray, sessionToken) {
         super(VERSION, sessionToken)
         this.streamMessage = StreamMessageFactory.deserialize(streamMessageArgsArray)
@@ -26,5 +26,3 @@ class PublishRequestV1 extends PublishRequest {
         return JSON.stringify(this.toArray(messageLayerVersion))
     }
 }
-
-module.exports = PublishRequestV1

@@ -4,7 +4,7 @@ import ErrorResponseV0 from './ErrorResponseV0'
 
 const VERSION = 1
 
-class ErrorResponseV1 extends ErrorResponse {
+export default class ErrorResponseV1 extends ErrorResponse {
     constructor(errorMessage) {
         super(VERSION)
         this.errorMessage = errorMessage
@@ -25,5 +25,3 @@ class ErrorResponseV1 extends ErrorResponse {
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 }
-
-module.exports = ErrorResponseV1

@@ -7,7 +7,7 @@ import PublishRequest from './PublishRequest'
 const TYPE = 'publish'
 const VERSION = 0
 
-class PublishRequestV0 extends PublishRequest {
+export default class PublishRequestV0 extends PublishRequest {
     constructor(streamId, apiKey, sessionToken, content, timestamp, partitionKey, publisherAddress, signatureType, signature) {
         super(VERSION, sessionToken)
         this.apiKey = apiKey
@@ -77,5 +77,3 @@ class PublishRequestV0 extends PublishRequest {
         ]
     }
 }
-
-module.exports = PublishRequestV0

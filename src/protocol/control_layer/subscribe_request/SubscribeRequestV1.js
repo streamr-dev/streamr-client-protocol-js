@@ -4,7 +4,7 @@ import SubscribeRequestV0 from './SubscribeRequestV0'
 
 const VERSION = 1
 
-class SubscribeRequestV1 extends SubscribeRequest {
+export default class SubscribeRequestV1 extends SubscribeRequest {
     constructor(streamId, streamPartition, sessionToken) {
         super(VERSION, streamId, streamPartition, sessionToken)
     }
@@ -33,5 +33,3 @@ class SubscribeRequestV1 extends SubscribeRequest {
         return this.toOtherVersion(version).serialize()
     }
 }
-
-module.exports = SubscribeRequestV1

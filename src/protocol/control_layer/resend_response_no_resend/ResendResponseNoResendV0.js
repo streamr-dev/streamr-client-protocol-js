@@ -5,7 +5,7 @@ import ResendResponseNoResendV1 from './ResendResponseNoResendV1'
 
 const VERSION = 0
 
-class ResendResponseNoResendV0 extends ResendResponseNoResend {
+export default class ResendResponseNoResendV0 extends ResendResponseNoResend {
     constructor(streamId, streamPartition, subId) {
         super(VERSION)
         this.payload = new ResendResponsePayload(streamId, streamPartition, subId)
@@ -31,5 +31,3 @@ class ResendResponseNoResendV0 extends ResendResponseNoResend {
         return [payload.streamId, payload.streamPartition, payload.subId]
     }
 }
-
-module.exports = ResendResponseNoResendV0

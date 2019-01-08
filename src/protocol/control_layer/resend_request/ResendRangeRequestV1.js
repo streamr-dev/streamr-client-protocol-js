@@ -5,7 +5,7 @@ import MessageRef from '../../message_layer/MessageRef'
 const TYPE = 13
 const VERSION = 1
 
-class ResendRangeRequestV1 extends ControlMessage {
+export default class ResendRangeRequestV1 extends ControlMessage {
     constructor(streamId, streamPartition, subId, fromMsgRefArgsArray, toMsgRefArgsArray, publisherId) {
         super(VERSION, TYPE)
         this.streamId = streamId
@@ -38,5 +38,3 @@ class ResendRangeRequestV1 extends ControlMessage {
 }
 
 /* static */ ResendRangeRequestV1.TYPE = TYPE
-
-module.exports = ResendRangeRequestV1
