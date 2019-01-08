@@ -37,12 +37,12 @@ describe('UnicastMessageV0', () => {
             })
             it('correctly serializes messages with version 29 payload', () => {
                 expectedPayloadArray = [29, 'streamId', 0, 1529549961116, 0,
-                    null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
+                    1529549961116, 1529549961000, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
                 serialized = unicastMessage.serialize(0, 29)
             })
             it('correctly serializes messages with version 28 payload', () => {
                 expectedPayloadArray = [28, 'streamId', 0, 1529549961116, 0,
-                    null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}']
+                    1529549961116, 1529549961000, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}']
                 serialized = unicastMessage.serialize(0, 28)
             })
         })
@@ -60,7 +60,7 @@ describe('UnicastMessageV0', () => {
             const serialized = new UnicastMessageV0(StreamMessageFactory.deserialize(streamMessageArray), 'subId').serialize(1, 29)
             assert(typeof serialized === 'string')
             const expectedPayloadArray = [29, 'streamId', 0, 1529549961116, 0,
-                null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
+                1529549961116, 1529549961000, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
             const arr = [1, 1, 'subId', expectedPayloadArray]
             assert.deepEqual(arr, JSON.parse(serialized))
         })

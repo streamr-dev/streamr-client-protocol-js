@@ -48,11 +48,13 @@ export default class StreamMessageV28 extends StreamMessage {
 
     toOtherVersion(version) {
         if (version === 29) {
+            // null fields in order: publisherAddress, signature
             return new StreamMessageV29(
                 this.streamId, this.streamPartition, this.timestamp,
                 this.ttl, this.offset, this.previousOffset, this.contentType, this.getContent(), 0, null, null,
             )
         } else if (version === 30) {
+            // null fields in order: msgId.publisherId, prevMsgRef.timestamp, prevMsgRef.sequenceNumber, signature
             return new StreamMessageV30(
                 [this.streamId, this.streamPartition, this.timestamp, 0, null],
                 [null, null], this.ttl, this.contentType, this.getContent(), 0, null,

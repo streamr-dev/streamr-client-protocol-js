@@ -35,14 +35,17 @@ export default class StreamMessageV30 extends StreamMessage {
 
     toOtherVersion(version) {
         if (version === 28) {
+            // hack for resend and gap detection: messageId.timestamp --> offset, prevMessageRef.timestamp --> previousOffset
             return new StreamMessageV28(
                 this.messageId.streamId, this.messageId.streamPartition, this.messageId.timestamp,
-                this.ttl, null, null, this.contentType, this.getContent(),
+                this.ttl, this.messageId.timestamp, this.prevMessageRef.timestamp, this.contentType, this.getContent(),
             )
         } else if (version === 29) {
+            // hack for resend and gap detection: messageId.timestamp --> offset, prevMessageRef.timestamp --> previousOffset
             return new StreamMessageV29(
                 this.messageId.streamId, this.messageId.streamPartition, this.messageId.timestamp,
-                this.ttl, null, null, this.contentType, this.getContent(), this.signatureType, this.messageId.publisherId, this.signature,
+                this.ttl, this.messageId.timestamp, this.prevMessageRef.timestamp, this.contentType, this.getContent(),
+                this.signatureType, this.messageId.publisherId, this.signature,
             )
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [28, 29, 30]')

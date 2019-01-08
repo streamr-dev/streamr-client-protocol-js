@@ -36,12 +36,12 @@ describe('PublishRequestV1', () => {
         })
         it('correctly serializes messages with version 29 payload', () => {
             expectedPayloadArray = [29, 'streamId', 0, 1529549961116, 0,
-                null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
+                1529549961116, 1529549961000, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
             serialized = publishRequest.serialize(29)
         })
         it('correctly serializes messages with version 28 payload', () => {
             expectedPayloadArray = [28, 'streamId', 0, 1529549961116, 0,
-                null, null, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}']
+                1529549961116, 1529549961000, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}']
             serialized = publishRequest.serialize(28)
         })
     })
