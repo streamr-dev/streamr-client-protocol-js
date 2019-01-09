@@ -3,8 +3,6 @@ import StreamMessage from './StreamMessage'
 import StreamMessageV29 from './StreamMessageV29'
 import StreamMessageV30 from './StreamMessageV30'
 
-const BYE_KEY = '_bye'
-
 const VERSION = 28
 
 export default class StreamMessageV28 extends StreamMessage {
@@ -77,9 +75,5 @@ export default class StreamMessageV28 extends StreamMessage {
             return JSON.stringify(this.toObject())
         }
         return this.toOtherVersion(version).serialize()
-    }
-
-    isByeMessage() {
-        return !!this.getParsedContent()[BYE_KEY]
     }
 }

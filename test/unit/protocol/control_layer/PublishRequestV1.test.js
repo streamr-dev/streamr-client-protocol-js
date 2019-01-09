@@ -7,8 +7,8 @@ import StreamMessageFactory from '../../../../src/protocol/message_layer/StreamM
 describe('PublishRequestV1', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
-            const arr = [[30, ['streamId', 0, 1529549961116, 0, 'address'],
-                [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature'], 'sessionToken']
+            const arr = [[30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0], 0,
+                StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature'], 'sessionToken']
             const streamMsg = StreamMessageFactory.deserialize(arr[0])
             const result = new PublishRequestV1(streamMsg, arr[1])
             assert(result.getStreamMessage() instanceof StreamMessage)
@@ -21,7 +21,7 @@ describe('PublishRequestV1', () => {
         let serialized
         beforeEach(() => {
             const streamMessageArray = [30, ['streamId', 0, 1529549961116, 0, 'address'], [1529549961000, 0], 0,
-                StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
+                StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']
             publishRequest = new PublishRequestV1(StreamMessageFactory.deserialize(streamMessageArray), 'sessionToken')
         })
         afterEach(() => {
@@ -31,12 +31,12 @@ describe('PublishRequestV1', () => {
         })
         it('correctly serializes messages with default version (30) payload', () => {
             expectedPayloadArray = [30, ['streamId', 0, 1529549961116, 0, 'address'],
-                [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
+                [1529549961000, 0], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']
             serialized = publishRequest.serialize()
         })
         it('correctly serializes messages with version 29 payload', () => {
-            expectedPayloadArray = [29, 'streamId', 0, 1529549961116, 0,
-                1529549961116, 1529549961000, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
+            expectedPayloadArray = [29, 'streamId', 0, 1529549961116, 0, 1529549961116, 1529549961000,
+                StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'address', 'signature']
             serialized = publishRequest.serialize(29)
         })
         it('correctly serializes messages with version 28 payload', () => {

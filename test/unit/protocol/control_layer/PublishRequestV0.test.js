@@ -1,6 +1,7 @@
 import assert from 'assert'
 import PublishRequestV0 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV0'
 import StreamMessageV30 from '../../../../src/protocol/message_layer/StreamMessageV30'
+import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 
 describe('PublishRequestV0', () => {
     describe('deserialize', () => {
@@ -16,7 +17,7 @@ describe('PublishRequestV0', () => {
                 ts: 1533924184016,
                 pkey: 'deviceId',
                 addr: 'publisherAddress',
-                sigtype: 1,
+                sigtype: StreamMessage.SIGNATURE_TYPES.ETH,
                 sig: 'signature',
             }
             const result = new PublishRequestV0(...PublishRequestV0.getConstructorArguments(msg))
@@ -43,7 +44,7 @@ describe('PublishRequestV0', () => {
                 ts: 1533924184016,
                 pkey: 'deviceId',
                 addr: 'publisherAddress',
-                sigtype: 1,
+                sigtype: StreamMessage.SIGNATURE_TYPES.ETH,
                 sig: 'signature',
             }
 
@@ -55,7 +56,7 @@ describe('PublishRequestV0', () => {
                 1533924184016,
                 'deviceId',
                 'publisherAddress',
-                1,
+                StreamMessage.SIGNATURE_TYPES.ETH,
                 'signature',
             ).serialize()
 

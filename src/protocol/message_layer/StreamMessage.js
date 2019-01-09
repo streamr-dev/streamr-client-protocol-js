@@ -1,5 +1,7 @@
 import InvalidJsonError from '../../errors/InvalidJsonError'
 
+const BYE_KEY = '_bye'
+
 export default class StreamMessage {
     constructor(version, streamId, ttl, contentType, content) {
         if (new.target === StreamMessage) {
@@ -75,8 +77,17 @@ export default class StreamMessage {
         }
         return this.getSerializedContent()
     }
+
+    isByeMessage() {
+        return !!this.getParsedContent()[BYE_KEY]
+    }
 }
 
 StreamMessage.CONTENT_TYPES = {
     JSON: 27,
+}
+
+StreamMessage.SIGNATURE_TYPES = {
+    NONE: 0,
+    ETH: 1,
 }

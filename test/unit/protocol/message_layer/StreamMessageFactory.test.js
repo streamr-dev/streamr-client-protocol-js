@@ -35,14 +35,14 @@ describe('StreamMessageFactory', () => {
             })
         })
         it('should create a StreamMessageV29', () => {
-            const arr = [29, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
-                941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'address', 'signature']
+            const arr = [29, 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 941516902, 941499898,
+                StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'address', 'signature']
             const result = StreamMessageFactory.deserialize(arr)
             assert(result instanceof StreamMessageV29)
         })
         it('should create a StreamMessageV30', () => {
             const arr = [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 1, 'signature']
+                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']
             const result = StreamMessageFactory.deserialize(arr)
             assert(result instanceof StreamMessageV30)
         })

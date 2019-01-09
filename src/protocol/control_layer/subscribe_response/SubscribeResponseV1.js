@@ -5,7 +5,7 @@ import SubscribeResponseV0 from './SubscribeResponseV0'
 const VERSION = 1
 
 export default class SubscribeResponseV1 extends SubscribeResponse {
-    constructor(streamId, streamPartition) {
+    constructor(streamId, streamPartition = 0) {
         super(VERSION)
         this.streamId = streamId
         this.streamPartition = streamPartition

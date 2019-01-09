@@ -5,7 +5,7 @@ import UnsubscribeRequest from './UnsubscribeRequest'
 const VERSION = 1
 
 export default class UnsubscribeRequestV1 extends UnsubscribeRequest {
-    constructor(streamId, streamPartition) {
+    constructor(streamId, streamPartition = 0) {
         super(VERSION, streamId, streamPartition)
     }
 

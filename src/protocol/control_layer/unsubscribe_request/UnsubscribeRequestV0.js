@@ -6,7 +6,7 @@ const TYPE = 'unsubscribe'
 const VERSION = 0
 
 export default class UnsubscribeRequestV0 extends UnsubscribeRequest {
-    constructor(streamId, streamPartition) {
+    constructor(streamId, streamPartition = 0) {
         super(VERSION, streamId, streamPartition)
     }
 

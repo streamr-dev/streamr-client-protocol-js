@@ -5,7 +5,7 @@ import UnsubscribeResponseV0 from './UnsubscribeResponseV0'
 const VERSION = 1
 
 export default class UnsubscribeResponseV1 extends UnsubscribeResponse {
-    constructor(streamId, streamPartition) {
+    constructor(streamId, streamPartition = 0) {
         super(VERSION)
         this.streamId = streamId
         this.streamPartition = streamPartition

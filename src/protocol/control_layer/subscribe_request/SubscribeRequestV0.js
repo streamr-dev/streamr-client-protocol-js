@@ -6,7 +6,7 @@ const TYPE = 'subscribe'
 const VERSION = 0
 
 export default class SubscribeRequestV0 extends SubscribeRequest {
-    constructor(streamId, streamPartition, apiKey, sessionToken) {
+    constructor(streamId, streamPartition = 0, apiKey, sessionToken) {
         super(VERSION, streamId, streamPartition, sessionToken)
         this.apiKey = apiKey
     }

@@ -5,6 +5,7 @@ import PublishRequestV0 from '../../../../src/protocol/control_layer/publish_req
 import SubscribeRequestV0 from '../../../../src/protocol/control_layer/subscribe_request/SubscribeRequestV0'
 import UnsubscribeRequestV0 from '../../../../src/protocol/control_layer/unsubscribe_request/UnsubscribeRequestV0'
 import ResendRequestV0 from '../../../../src/protocol/control_layer/resend_request/ResendRequestV0'
+import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 
 describe('ControlMessageV0Factory', () => {
     describe('deserialize', () => {
@@ -30,7 +31,7 @@ describe('ControlMessageV0Factory', () => {
                 ts: 1533924184016,
                 pkey: 'deviceId',
                 addr: 'publisherAddress',
-                sigtype: 1,
+                sigtype: StreamMessage.SIGNATURE_TYPES.ETH,
                 sig: 'signature',
             }
             const result = ControlMessageV0Factory.deserialize(msg)

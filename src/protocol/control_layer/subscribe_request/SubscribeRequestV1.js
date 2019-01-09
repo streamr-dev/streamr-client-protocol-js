@@ -5,7 +5,7 @@ import SubscribeRequestV0 from './SubscribeRequestV0'
 const VERSION = 1
 
 export default class SubscribeRequestV1 extends SubscribeRequest {
-    constructor(streamId, streamPartition, sessionToken) {
+    constructor(streamId, streamPartition = 0, sessionToken) {
         super(VERSION, streamId, streamPartition, sessionToken)
     }
 
