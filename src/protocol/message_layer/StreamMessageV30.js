@@ -11,7 +11,7 @@ export default class StreamMessageV30 extends StreamMessage {
     constructor(messageIdArgsArray, prevMessageRefArgsArray, ttl, contentType, content, signatureType, signature) {
         super(VERSION, undefined, ttl, contentType, content)
         this.messageId = new MessageID(...messageIdArgsArray)
-        this.prevMessageRef = new MessageRef(...prevMessageRefArgsArray)
+        this.prevMsgRef = new MessageRef(...prevMessageRefArgsArray)
         this.signatureType = signatureType
         this.signature = signature
     }
@@ -36,7 +36,7 @@ export default class StreamMessageV30 extends StreamMessage {
         return [
             this.version,
             this.messageId.toArray(),
-            this.prevMessageRef.toArray(),
+            this.prevMsgRef.toArray(),
             this.ttl,
             this.contentType,
             this.getContent(parsedContent),
@@ -50,13 +50,13 @@ export default class StreamMessageV30 extends StreamMessage {
             // hack for resend and gap detection: messageId.timestamp --> offset, prevMessageRef.timestamp --> previousOffset
             return new StreamMessageV28(
                 this.messageId.streamId, this.messageId.streamPartition, this.messageId.timestamp,
-                this.ttl, this.messageId.timestamp, this.prevMessageRef.timestamp, this.contentType, this.getContent(),
+                this.ttl, this.messageId.timestamp, this.prevMsgRef.timestamp, this.contentType, this.getContent(),
             )
         } else if (version === 29) {
             // hack for resend and gap detection: messageId.timestamp --> offset, prevMessageRef.timestamp --> previousOffset
             return new StreamMessageV29(
                 this.messageId.streamId, this.messageId.streamPartition, this.messageId.timestamp,
-                this.ttl, this.messageId.timestamp, this.prevMessageRef.timestamp, this.contentType, this.getContent(),
+                this.ttl, this.messageId.timestamp, this.prevMsgRef.timestamp, this.contentType, this.getContent(),
                 this.signatureType, this.messageId.publisherId, this.signature,
             )
         }
