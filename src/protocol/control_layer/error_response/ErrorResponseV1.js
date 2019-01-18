@@ -1,4 +1,5 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessage from '../ControlMessage'
 import ErrorResponse from './ErrorResponse'
 import ErrorResponseV0 from './ErrorResponseV0'
 
@@ -25,3 +26,5 @@ export default class ErrorResponseV1 extends ErrorResponse {
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 }
+
+ControlMessage.registerV1Class(ErrorResponse.TYPE, ErrorResponseV1)

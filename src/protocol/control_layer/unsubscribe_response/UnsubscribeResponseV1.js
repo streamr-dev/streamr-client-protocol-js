@@ -1,4 +1,5 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessage from '../ControlMessage'
 import UnsubscribeResponse from './UnsubscribeResponse'
 import UnsubscribeResponseV0 from './UnsubscribeResponseV0'
 
@@ -28,4 +29,4 @@ export default class UnsubscribeResponseV1 extends UnsubscribeResponse {
     }
 }
 
-module.exports = UnsubscribeResponseV1
+ControlMessage.registerV1Class(UnsubscribeResponse.TYPE, UnsubscribeResponseV1)

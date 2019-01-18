@@ -1,4 +1,5 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessage from '../ControlMessage'
 import SubscribeResponse from './SubscribeResponse'
 import SubscribeResponseV0 from './SubscribeResponseV0'
 
@@ -27,3 +28,5 @@ export default class SubscribeResponseV1 extends SubscribeResponse {
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 }
+
+ControlMessage.registerV1Class(SubscribeResponse.TYPE, SubscribeResponseV1)

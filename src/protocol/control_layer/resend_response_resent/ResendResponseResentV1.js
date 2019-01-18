@@ -1,4 +1,5 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessage from '../ControlMessage'
 import ResendResponseResent from './ResendResponseResent'
 import ResendResponseResentV0 from './ResendResponseResentV0'
 
@@ -29,3 +30,5 @@ export default class ResendResponseResentV1 extends ResendResponseResent {
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 }
+
+ControlMessage.registerV1Class(ResendResponseResent.TYPE, ResendResponseResentV1)

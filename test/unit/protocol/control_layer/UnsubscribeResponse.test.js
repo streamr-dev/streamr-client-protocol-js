@@ -1,13 +1,13 @@
 import assert from 'assert'
-import UnsubscribeResponseFactory from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseFactory'
+import UnsubscribeResponse from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponse'
 import UnsubscribeResponseV0 from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseV0'
 import UnsubscribeResponseV1 from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseV1'
 import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionError'
 
-describe('UnsubscribeResponseFactory', () => {
+describe('UnsubscribeResponse', () => {
     describe('deserialize', () => {
         it('should throw when unsupported version', () => {
-            assert.throws(() => UnsubscribeResponseFactory.deserialize(123, undefined), (err) => {
+            assert.throws(() => UnsubscribeResponse.deserialize(123, undefined), (err) => {
                 assert(err instanceof UnsupportedVersionError)
                 assert.equal(err.version, 123)
                 return true
@@ -18,13 +18,21 @@ describe('UnsubscribeResponseFactory', () => {
                 stream: 'streamId',
                 partition: 0,
             }]
-            const result = UnsubscribeResponseFactory.deserialize(0, arr)
+            const result = UnsubscribeResponse.deserialize(0, arr)
             assert(result instanceof UnsubscribeResponseV0)
         })
         it('should return a SubscribeResponseV1', () => {
             const arr = ['streamId', 0]
-            const result = UnsubscribeResponseFactory.deserialize(1, arr)
+            const result = UnsubscribeResponse.deserialize(1, arr)
             assert(result instanceof UnsubscribeResponseV1)
+        })
+    })
+    describe('create', () => {
+        it('should create the latest version', () => {
+            const msg = UnsubscribeResponse.create('streamId', 0)
+            assert(msg instanceof UnsubscribeResponseV1)
+            assert.equal(msg.streamId, 'streamId')
+            assert.equal(msg.streamPartition, 0)
         })
     })
 })

@@ -1,5 +1,6 @@
 import UnsubscribeRequestV0 from '../unsubscribe_request/UnsubscribeRequestV0'
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessage from '../ControlMessage'
 import UnsubscribeRequest from './UnsubscribeRequest'
 
 const VERSION = 1
@@ -26,4 +27,4 @@ export default class UnsubscribeRequestV1 extends UnsubscribeRequest {
     }
 }
 
-module.exports = UnsubscribeRequestV1
+ControlMessage.registerV1Class(UnsubscribeRequest.TYPE, UnsubscribeRequestV1)

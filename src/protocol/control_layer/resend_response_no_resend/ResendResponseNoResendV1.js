@@ -1,4 +1,5 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessage from '../ControlMessage'
 import ResendResponseNoResend from './ResendResponseNoResend'
 import ResendResponseNoResendV0 from './ResendResponseNoResendV0'
 
@@ -29,3 +30,5 @@ export default class ResendResponseNoResendV1 extends ResendResponseNoResend {
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 }
+
+ControlMessage.registerV1Class(ResendResponseNoResend.TYPE, ResendResponseNoResendV1)

@@ -1,5 +1,6 @@
 import StreamAndPartition from '../StreamAndPartition'
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessage from '../ControlMessage'
 import SubscribeResponse from './SubscribeResponse'
 import SubscribeResponseV1 from './SubscribeResponseV1'
 
@@ -27,3 +28,5 @@ export default class SubscribeResponseV0 extends SubscribeResponse {
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 }
+
+ControlMessage.registerV0Class(SubscribeResponse.TYPE, SubscribeResponseV0)

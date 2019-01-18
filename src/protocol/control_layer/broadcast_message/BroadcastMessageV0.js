@@ -1,6 +1,7 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import BroadcastMessage from './BroadcastMessage'
 import BroadcastMessageV1 from './BroadcastMessageV1'
+import ControlMessage from '../ControlMessage'
 
 const VERSION = 0
 
@@ -30,3 +31,5 @@ export default class BroadcastMessageV0 extends BroadcastMessage {
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 }
+
+ControlMessage.registerV0Class(BroadcastMessage.TYPE, BroadcastMessageV0)

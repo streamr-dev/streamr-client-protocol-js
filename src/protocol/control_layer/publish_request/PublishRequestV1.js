@@ -1,3 +1,4 @@
+import ControlMessage from '../ControlMessage'
 import PublishRequest from './PublishRequest'
 
 const VERSION = 1
@@ -25,3 +26,5 @@ export default class PublishRequestV1 extends PublishRequest {
         return JSON.stringify(this.toArray(messageLayerVersion))
     }
 }
+
+ControlMessage.registerV1Class(PublishRequest.TYPE, PublishRequestV1)

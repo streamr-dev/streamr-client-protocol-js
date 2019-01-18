@@ -1,4 +1,5 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessage from '../ControlMessage'
 import SubscribeRequest from './SubscribeRequest'
 import SubscribeRequestV0 from './SubscribeRequestV0'
 
@@ -33,3 +34,5 @@ export default class SubscribeRequestV1 extends SubscribeRequest {
         return this.toOtherVersion(version).serialize()
     }
 }
+
+ControlMessage.registerV1Class(SubscribeRequest.TYPE, SubscribeRequestV1)

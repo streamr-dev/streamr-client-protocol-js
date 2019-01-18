@@ -2,6 +2,7 @@ import TimestampUtil from '../../../utils/TimestampUtil'
 import ValidationError from '../../../errors/ValidationError'
 import StreamMessageV30 from '../../message_layer/StreamMessageV30'
 import StreamMessage from '../../message_layer/StreamMessage'
+import ControlMessage from '../ControlMessage'
 import PublishRequest from './PublishRequest'
 
 const TYPE = 'publish'
@@ -77,3 +78,5 @@ export default class PublishRequestV0 extends PublishRequest {
         ]
     }
 }
+
+ControlMessage.registerV0Class(PublishRequest.TYPE, PublishRequestV0)

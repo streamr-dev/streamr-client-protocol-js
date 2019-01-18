@@ -1,5 +1,6 @@
 import ValidationError from '../../../errors/ValidationError'
 import ControlMessage from '../ControlMessage'
+import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 
 const TYPE = 9
 
@@ -15,6 +16,18 @@ export default class SubscribeRequest extends ControlMessage {
         }
         this.streamPartition = streamPartition
         this.sessionToken = sessionToken
+    }
+
+    static create(streamId, streamPartition, sessionToken) {
+        return new (ControlMessage.getV1Class(TYPE))(streamId, streamPartition, sessionToken)
+    }
+
+    static deserialize(messageVersion, subscribeRequestSpecificArgsArray) {
+        // Version 0 is an object not an array, it is handled by ControlMessageV0Factory and SubscribeRequestV0.
+        if (messageVersion === 1) {
+            return new (ControlMessage.getV1Class(TYPE))(...subscribeRequestSpecificArgsArray)
+        }
+        throw new UnsupportedVersionError(messageVersion, 'Supported versions: [1]')
     }
 }
 

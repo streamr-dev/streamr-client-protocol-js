@@ -1,4 +1,5 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessage from '../ControlMessage'
 import UnicastMessage from './UnicastMessage'
 import UnicastMessageV0 from './UnicastMessageV0'
 
@@ -30,4 +31,4 @@ export default class UnicastMessageV1 extends UnicastMessage {
     }
 }
 
-module.exports = UnicastMessageV1
+ControlMessage.registerV1Class(UnicastMessage.TYPE, UnicastMessageV1)

@@ -1,4 +1,5 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessage from '../ControlMessage'
 import SubscribeRequest from './SubscribeRequest'
 import SubscribeRequestV1 from './SubscribeRequestV1'
 
@@ -39,3 +40,5 @@ export default class SubscribeRequestV0 extends SubscribeRequest {
         return [msg.stream, msg.partition, msg.authKey, msg.sessionToken]
     }
 }
+
+ControlMessage.registerV0Class(SubscribeRequest.TYPE, SubscribeRequestV0)

@@ -1,13 +1,13 @@
 import ControlMessage from '../ControlMessage'
 import ValidationError from '../../../errors/ValidationError'
 import MessageRef from '../../message_layer/MessageRef'
+import ResendRangeRequest from './ResendRangeRequest'
 
-const TYPE = 13
 const VERSION = 1
 
-export default class ResendRangeRequestV1 extends ControlMessage {
+export default class ResendRangeRequestV1 extends ResendRangeRequest {
     constructor(streamId, streamPartition, subId, fromMsgRefArgsArray, toMsgRefArgsArray, publisherId, sessionToken) {
-        super(VERSION, TYPE)
+        super(VERSION)
         this.streamId = streamId
         this.streamPartition = streamPartition
         this.subId = subId
@@ -39,4 +39,4 @@ export default class ResendRangeRequestV1 extends ControlMessage {
     }
 }
 
-/* static */ ResendRangeRequestV1.TYPE = TYPE
+ControlMessage.registerV1Class(ResendRangeRequest.TYPE, ResendRangeRequestV1)

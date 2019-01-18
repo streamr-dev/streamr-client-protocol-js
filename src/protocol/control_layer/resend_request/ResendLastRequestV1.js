@@ -1,11 +1,11 @@
 import ControlMessage from '../ControlMessage'
+import ResendLastRequest from './ResendLastRequest'
 
-const TYPE = 11
 const VERSION = 1
 
-export default class ResendLastRequestV1 extends ControlMessage {
+export default class ResendLastRequestV1 extends ResendLastRequest {
     constructor(streamId, streamPartition, subId, numberLast, sessionToken) {
-        super(VERSION, TYPE)
+        super(VERSION)
         this.streamId = streamId
         this.streamPartition = streamPartition
         this.subId = subId
@@ -30,4 +30,4 @@ export default class ResendLastRequestV1 extends ControlMessage {
     }
 }
 
-/* static */ ResendLastRequestV1.TYPE = TYPE
+ControlMessage.registerV1Class(ResendLastRequest.TYPE, ResendLastRequestV1)

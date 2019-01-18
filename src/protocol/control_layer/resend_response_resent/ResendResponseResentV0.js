@@ -1,5 +1,6 @@
 import ResendResponsePayload from '../ResendResponsePayload'
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessage from '../ControlMessage'
 import ResendResponseResent from './ResendResponseResent'
 import ResendResponseResentV1 from './ResendResponseResentV1'
 
@@ -31,3 +32,5 @@ export default class ResendResponseResentV0 extends ResendResponseResent {
         return [payload.streamId, payload.streamPartition, payload.subId]
     }
 }
+
+ControlMessage.registerV0Class(ResendResponseResent.TYPE, ResendResponseResentV0)

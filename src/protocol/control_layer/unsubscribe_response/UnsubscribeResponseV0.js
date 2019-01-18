@@ -1,4 +1,5 @@
 import StreamAndPartition from '../StreamAndPartition'
+import ControlMessage from '../ControlMessage'
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import UnsubscribeResponse from './UnsubscribeResponse'
 import UnsubscribeResponseV1 from './UnsubscribeResponseV1'
@@ -28,4 +29,4 @@ export default class UnsubscribeResponseV0 extends UnsubscribeResponse {
     }
 }
 
-module.exports = UnsubscribeResponseV0
+ControlMessage.registerV0Class(UnsubscribeResponse.TYPE, UnsubscribeResponseV0)

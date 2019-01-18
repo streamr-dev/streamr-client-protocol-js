@@ -1,12 +1,12 @@
 import ControlMessage from '../ControlMessage'
 import MessageRef from '../../message_layer/MessageRef'
+import ResendFromRequest from './ResendFromRequest'
 
-const TYPE = 12
 const VERSION = 1
 
-export default class ResendFromRequestV1 extends ControlMessage {
+export default class ResendFromRequestV1 extends ResendFromRequest {
     constructor(streamId, streamPartition, subId, msgRefArgsArray, publisherId, sessionToken) {
-        super(VERSION, TYPE)
+        super(VERSION)
         this.streamId = streamId
         this.streamPartition = streamPartition
         this.subId = subId
@@ -33,4 +33,4 @@ export default class ResendFromRequestV1 extends ControlMessage {
     }
 }
 
-/* static */ ResendFromRequestV1.TYPE = TYPE
+ControlMessage.registerV1Class(ResendFromRequest.TYPE, ResendFromRequestV1)
