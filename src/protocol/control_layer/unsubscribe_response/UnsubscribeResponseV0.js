@@ -29,4 +29,4 @@ export default class UnsubscribeResponseV0 extends UnsubscribeResponse {
     }
 }
 
-ControlMessage.registerV0Class(UnsubscribeResponse.TYPE, UnsubscribeResponseV0)
+ControlMessage.registerClass(VERSION, UnsubscribeResponse.TYPE, UnsubscribeResponseV0)

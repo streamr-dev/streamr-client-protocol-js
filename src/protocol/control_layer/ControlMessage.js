@@ -1,7 +1,9 @@
 import ValidationError from '../../errors/ValidationError'
 
-const v0ClassByType = {}
-const v1ClassByType = {}
+const classByType = {
+    '0': {},
+    '1': {},
+}
 
 export default class ControlMessage {
     constructor(version, type) {
@@ -33,19 +35,11 @@ export default class ControlMessage {
         return this.toOtherVersion(version).serialize()
     }
 
-    static registerV0Class(type, clazz) {
-        v0ClassByType[type] = clazz
+    static registerClass(version, type, clazz) {
+        classByType[version][type] = clazz
     }
 
-    static registerV1Class(type, clazz) {
-        v1ClassByType[type] = clazz
-    }
-
-    static getV0Class(type) {
-        return v0ClassByType[type]
-    }
-
-    static getV1Class(type) {
-        return v1ClassByType[type]
+    static getClass(version, type) {
+        return classByType[version][type]
     }
 }

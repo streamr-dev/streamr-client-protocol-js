@@ -39,4 +39,4 @@ export default class ResendRangeRequestV1 extends ResendRangeRequest {
     }
 }
 
-ControlMessage.registerV1Class(ResendRangeRequest.TYPE, ResendRangeRequestV1)
+ControlMessage.registerClass(VERSION, ResendRangeRequest.TYPE, ResendRangeRequestV1)

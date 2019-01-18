@@ -33,4 +33,4 @@ export default class ResendResponseResentV0 extends ResendResponseResent {
     }
 }
 
-ControlMessage.registerV0Class(ResendResponseResent.TYPE, ResendResponseResentV0)
+ControlMessage.registerClass(VERSION, ResendResponseResent.TYPE, ResendResponseResentV0)

@@ -18,13 +18,13 @@ export default class UnsubscribeRequest extends ControlMessage {
     }
 
     static create(streamId, streamPartition) {
-        return new (ControlMessage.getV1Class(TYPE))(streamId, streamPartition)
+        return new (ControlMessage.getClass(1, TYPE))(streamId, streamPartition)
     }
 
     static deserialize(messageVersion, unsubscribeRequestSpecificArgsArray) {
         // Version 0 is an object not an array, it is handled by ControlMessageV0Factory and UnsubscribeRequestV0.
         if (messageVersion === 1) {
-            return new (ControlMessage.getV1Class(TYPE))(...unsubscribeRequestSpecificArgsArray)
+            return new (ControlMessage.getClass(1, TYPE))(...unsubscribeRequestSpecificArgsArray)
         }
         throw new UnsupportedVersionError(messageVersion, 'Supported versions: [1]')
     }

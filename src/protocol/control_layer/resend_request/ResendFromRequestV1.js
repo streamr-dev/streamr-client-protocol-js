@@ -33,4 +33,4 @@ export default class ResendFromRequestV1 extends ResendFromRequest {
     }
 }
 
-ControlMessage.registerV1Class(ResendFromRequest.TYPE, ResendFromRequestV1)
+ControlMessage.registerClass(VERSION, ResendFromRequest.TYPE, ResendFromRequestV1)

@@ -29,7 +29,7 @@ export default class UnicastMessage extends ControlMessage {
     }
 
     static create(subId, streamMessage) {
-        return new (ControlMessage.getV1Class(TYPE))(subId, streamMessage)
+        return new (ControlMessage.getClass(1, TYPE))(subId, streamMessage)
     }
 
     static deserialize(messageVersion, unicastMessageSpecificArgsArray) {
@@ -37,12 +37,12 @@ export default class UnicastMessage extends ControlMessage {
             const subId = unicastMessageSpecificArgsArray[0]
             const streamMessageArray = unicastMessageSpecificArgsArray[1]
             const streamMessage = StreamMessageFactory.deserialize(streamMessageArray)
-            return new (ControlMessage.getV0Class(TYPE))(streamMessage, subId)
+            return new (ControlMessage.getClass(0, TYPE))(streamMessage, subId)
         } else if (messageVersion === 1) {
             const subId = unicastMessageSpecificArgsArray[0]
             const streamMessageArray = unicastMessageSpecificArgsArray[1]
             const streamMessage = StreamMessageFactory.deserialize(streamMessageArray)
-            return new (ControlMessage.getV1Class(TYPE))(subId, streamMessage)
+            return new (ControlMessage.getClass(1, TYPE))(subId, streamMessage)
         }
         throw new UnsupportedVersionError(messageVersion, 'Supported versions: [0, 1]')
     }

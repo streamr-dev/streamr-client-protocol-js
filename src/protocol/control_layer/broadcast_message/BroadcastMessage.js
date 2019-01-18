@@ -20,16 +20,16 @@ export default class BroadcastMessage extends ControlMessage {
     }
 
     static create(streamMessage) {
-        return new (ControlMessage.getV1Class(TYPE))(streamMessage)
+        return new (ControlMessage.getClass(1, TYPE))(streamMessage)
     }
 
     static deserialize(messageVersion, broadcastMessageSpecificArgsArray) {
         if (messageVersion === 0) {
             const streamMessageArray = broadcastMessageSpecificArgsArray[1] // index 0 is the null subId
-            return new (ControlMessage.getV0Class(TYPE))(StreamMessageFactory.deserialize(streamMessageArray))
+            return new (ControlMessage.getClass(0, TYPE))(StreamMessageFactory.deserialize(streamMessageArray))
         } else if (messageVersion === 1) {
             const streamMessageArray = broadcastMessageSpecificArgsArray[0]
-            return new (ControlMessage.getV1Class(TYPE))(StreamMessageFactory.deserialize(streamMessageArray))
+            return new (ControlMessage.getClass(1, TYPE))(StreamMessageFactory.deserialize(streamMessageArray))
         }
         throw new UnsupportedVersionError(messageVersion, 'Supported versions: [0, 1]')
     }

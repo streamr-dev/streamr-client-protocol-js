@@ -14,7 +14,7 @@ export default class ResendRangeRequest extends ControlMessage {
     static deserialize(messageVersion, resendRangeRequestSpecificArgsArray) {
         // No Version 0 exists. It is part of ResendRequestV0.
         if (messageVersion === 1) {
-            return new (ControlMessage.getV1Class(TYPE))(...resendRangeRequestSpecificArgsArray)
+            return new (ControlMessage.getClass(1, TYPE))(...resendRangeRequestSpecificArgsArray)
         }
         throw new UnsupportedVersionError(messageVersion, 'Supported versions: [1]')
     }

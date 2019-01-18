@@ -31,4 +31,4 @@ export default class UnicastMessageV1 extends UnicastMessage {
     }
 }
 
-ControlMessage.registerV1Class(UnicastMessage.TYPE, UnicastMessageV1)
+ControlMessage.registerClass(VERSION, UnicastMessage.TYPE, UnicastMessageV1)

@@ -13,16 +13,16 @@ export default class ResendResponseResent extends ControlMessage {
     }
 
     static create(streamId, streamPartition, subId) {
-        return new (ControlMessage.getV1Class(TYPE))(streamId, streamPartition, subId)
+        return new (ControlMessage.getClass(1, TYPE))(streamId, streamPartition, subId)
     }
 
     static deserialize(messageVersion, resendResponseResentSpecificArgsArray) {
         if (messageVersion === 0) {
             const payloadObject = resendResponseResentSpecificArgsArray[1] // index 0 is the null subId
             const payload = ResendResponsePayload.deserialize(payloadObject)
-            return new (ControlMessage.getV0Class(TYPE))(...(ControlMessage.getV0Class(TYPE)).getConstructorArguments(payload))
+            return new (ControlMessage.getClass(0, TYPE))(...(ControlMessage.getClass(0, TYPE)).getConstructorArguments(payload))
         } else if (messageVersion === 1) {
-            return new (ControlMessage.getV1Class(TYPE))(...resendResponseResentSpecificArgsArray)
+            return new (ControlMessage.getClass(1, TYPE))(...resendResponseResentSpecificArgsArray)
         }
         throw new UnsupportedVersionError(messageVersion, 'Supported versions: [0, 1]')
     }

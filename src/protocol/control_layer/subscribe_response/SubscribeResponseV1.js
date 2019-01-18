@@ -29,4 +29,4 @@ export default class SubscribeResponseV1 extends SubscribeResponse {
     }
 }
 
-ControlMessage.registerV1Class(SubscribeResponse.TYPE, SubscribeResponseV1)
+ControlMessage.registerClass(VERSION, SubscribeResponse.TYPE, SubscribeResponseV1)

@@ -31,4 +31,4 @@ export default class ResendResponseNoResendV1 extends ResendResponseNoResend {
     }
 }
 
-ControlMessage.registerV1Class(ResendResponseNoResend.TYPE, ResendResponseNoResendV1)
+ControlMessage.registerClass(VERSION, ResendResponseNoResend.TYPE, ResendResponseNoResendV1)

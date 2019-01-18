@@ -27,4 +27,4 @@ export default class PublishRequestV1 extends PublishRequest {
     }
 }
 
-ControlMessage.registerV1Class(PublishRequest.TYPE, PublishRequestV1)
+ControlMessage.registerClass(VERSION, PublishRequest.TYPE, PublishRequestV1)

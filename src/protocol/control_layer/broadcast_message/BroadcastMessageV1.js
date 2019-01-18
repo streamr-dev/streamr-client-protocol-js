@@ -29,5 +29,4 @@ export default class BroadcastMessageV1 extends BroadcastMessage {
     }
 }
 
-ControlMessage.registerV1Class(BroadcastMessage.TYPE, BroadcastMessageV1)
-ControlMessage.registerV1Class()
+ControlMessage.registerClass(VERSION, BroadcastMessage.TYPE, BroadcastMessageV1)

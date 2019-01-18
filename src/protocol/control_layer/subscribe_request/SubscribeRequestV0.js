@@ -41,4 +41,4 @@ export default class SubscribeRequestV0 extends SubscribeRequest {
     }
 }
 
-ControlMessage.registerV0Class(SubscribeRequest.TYPE, SubscribeRequestV0)
+ControlMessage.registerClass(VERSION, SubscribeRequest.TYPE, SubscribeRequestV0)

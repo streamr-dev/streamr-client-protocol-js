@@ -13,16 +13,16 @@ export default class ErrorResponse extends ControlMessage {
     }
 
     static create(errorMessage) {
-        return new (ControlMessage.getV1Class(TYPE))(errorMessage)
+        return new (ControlMessage.getClass(1, TYPE))(errorMessage)
     }
 
     static deserialize(messageVersion, errorResponseSpecificArgsArray) {
         if (messageVersion === 0) {
             const errorObject = errorResponseSpecificArgsArray[1] // index 0 is the null subId
             const payload = ErrorPayload.deserialize(errorObject)
-            return new (ControlMessage.getV0Class(TYPE))(payload.error)
+            return new (ControlMessage.getClass(0, TYPE))(payload.error)
         } else if (messageVersion === 1) {
-            return new (ControlMessage.getV1Class(TYPE))(...errorResponseSpecificArgsArray)
+            return new (ControlMessage.getClass(1, TYPE))(...errorResponseSpecificArgsArray)
         }
         throw new UnsupportedVersionError(messageVersion, 'Supported versions: [0, 1]')
     }

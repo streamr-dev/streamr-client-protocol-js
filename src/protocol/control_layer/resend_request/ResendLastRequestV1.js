@@ -1,5 +1,6 @@
 import ControlMessage from '../ControlMessage'
 import ResendLastRequest from './ResendLastRequest'
+import ResendFromRequest from './ResendFromRequest'
 
 const VERSION = 1
 
@@ -30,4 +31,4 @@ export default class ResendLastRequestV1 extends ResendLastRequest {
     }
 }
 
-ControlMessage.registerV1Class(ResendLastRequest.TYPE, ResendLastRequestV1)
+ControlMessage.registerClass(VERSION, ResendLastRequest.TYPE, ResendLastRequestV1)

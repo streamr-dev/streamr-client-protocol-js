@@ -27,4 +27,4 @@ export default class UnsubscribeRequestV1 extends UnsubscribeRequest {
     }
 }
 
-ControlMessage.registerV1Class(UnsubscribeRequest.TYPE, UnsubscribeRequestV1)
+ControlMessage.registerClass(VERSION, UnsubscribeRequest.TYPE, UnsubscribeRequestV1)

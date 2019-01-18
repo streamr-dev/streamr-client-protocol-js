@@ -29,4 +29,4 @@ export default class ErrorResponseV0 extends ErrorResponse {
     }
 }
 
-ControlMessage.registerV0Class(ErrorResponse.TYPE, ErrorResponseV0)
+ControlMessage.registerClass(VERSION, ErrorResponse.TYPE, ErrorResponseV0)
