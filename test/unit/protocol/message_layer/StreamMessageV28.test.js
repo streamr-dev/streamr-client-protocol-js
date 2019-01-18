@@ -47,7 +47,7 @@ describe('StreamMessageV28', () => {
         })
         it('correctly serializes messages to v30', () => {
             const arr = [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, null],
-                [null, null], 0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 0, null]
+                [null, null], StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', 0, null]
 
             const serialized = new StreamMessageV28(
                 'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,

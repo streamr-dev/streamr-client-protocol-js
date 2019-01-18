@@ -42,7 +42,7 @@ describe('StreamMessageFactory', () => {
         })
         it('should create a StreamMessageV30', () => {
             const arr = [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']
+                StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']
             const result = StreamMessageFactory.deserialize(arr)
             assert(result instanceof StreamMessageV30)
         })

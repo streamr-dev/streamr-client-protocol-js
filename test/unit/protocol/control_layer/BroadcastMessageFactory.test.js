@@ -16,13 +16,13 @@ describe('BroadcastMessageFactory', () => {
         })
         it('should return a BroadcastMessageV0', () => {
             const arr = [null, [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']]
+                StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']]
             const result = BroadcastMessageFactory.deserialize(0, arr)
             assert(result instanceof BroadcastMessageV0)
         })
         it('should return a BroadcastMessageV1', () => {
             const arr = [[30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']]
+                StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']]
             const result = BroadcastMessageFactory.deserialize(1, arr)
             assert(result instanceof BroadcastMessageV1)
         })

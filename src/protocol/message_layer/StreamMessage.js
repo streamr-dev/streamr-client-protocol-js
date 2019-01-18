@@ -3,13 +3,12 @@ import InvalidJsonError from '../../errors/InvalidJsonError'
 const BYE_KEY = '_bye'
 
 export default class StreamMessage {
-    constructor(version, streamId, ttl, contentType, content) {
+    constructor(version, streamId, contentType, content) {
         if (new.target === StreamMessage) {
             throw new TypeError('StreamMessage is abstract.')
         }
         this.version = version
         this.streamId = streamId
-        this.ttl = ttl
         this.contentType = contentType
         this.serializedContent = this.serializeContent(content)
         this.parsedContent = this.parseContent(content)

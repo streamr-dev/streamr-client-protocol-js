@@ -7,7 +7,8 @@ const VERSION = 28
 
 export default class StreamMessageV28 extends StreamMessage {
     constructor(streamId, streamPartition, timestamp, ttl, offset, previousOffset, contentType, content) {
-        super(VERSION, streamId, ttl, contentType, content)
+        super(VERSION, streamId, contentType, content)
+        this.ttl = ttl
         this.streamPartition = streamPartition
         this.timestamp = timestamp
         this.offset = offset
@@ -64,7 +65,7 @@ export default class StreamMessageV28 extends StreamMessage {
             // null fields in order: msgId.publisherId, prevMsgRef.timestamp, prevMsgRef.sequenceNumber, signature
             return new StreamMessageV30(
                 [this.streamId, this.streamPartition, this.timestamp, 0, null],
-                [null, null], this.ttl, this.contentType, this.getContent(), 0, null,
+                [null, null], this.contentType, this.getContent(), 0, null,
             )
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [28, 29, 30]')

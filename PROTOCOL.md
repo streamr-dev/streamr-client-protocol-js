@@ -325,11 +325,11 @@ The Message Layer contains three different types: `MessageID`, `MessageRef` and 
 Contains the data and metadata for a message produced/consumed on a stream. It is a payload at the Control Layer for the following message types: `PublishRequest`, `BroadcastMessage`, `UnicastMessage`. Where `msgId` uniquely identifies the `StreamMessage` and is the array representation of the `MessageID` defined [below](#messageid). `prevMsgRef` allows to identify the previous `StreamMessage` on the same stream and same partition published by the same producer. It is used to detect missing messages. It is the array representation of the `MessageRef` defined [below](#messageref).
 
 ```
-[version, msgId, prevMsgRef, ttl, contentType, content, signatureType, signature]
+[version, msgId, prevMsgRef, contentType, content, signatureType, signature]
 ```
 Example:
 ```
-[30, [...msgIdFields], [...msgRefFields], 120, 27, "contentData", 1, "0x29c057786Fa..."]
+[30, [...msgIdFields], [...msgRefFields], 27, "contentData", 1, "0x29c057786Fa..."]
 ```
 
 Field    | Type | Description
@@ -337,7 +337,6 @@ Field    | Type | Description
 `version` | Integer | Is currently 30.
 `msgId` | MessageID |Array representation of the `MessageID` to uniquely identify this message. 
 `prevMsgRef` | MessageRef | Array representation of the `MessageRef` of the previous message. Used to detect missing messages.
-`ttl` | Integer | Time-to-live of the message in seconds.
 `contentType` | Integer | Determines how the content should be parsed according to the table below.
 `content` | String | Content data of the message.
 `signatureType` | Integer | Signature type as defined by the table below.

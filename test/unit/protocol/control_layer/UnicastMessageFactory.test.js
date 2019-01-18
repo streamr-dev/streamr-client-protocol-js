@@ -16,13 +16,13 @@ describe('UnicastMessageFactory', () => {
         })
         it('should return a UnicastMessageV0', () => {
             const arr = ['subId', [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']]
+                StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']]
             const result = UnicastMessageFactory.deserialize(0, arr)
             assert(result instanceof UnicastMessageV0)
         })
         it('should return a UnicastMessageV1', () => {
             const arr = ['subId', [30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address'], [1529549961000, 0],
-                0, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']]
+                StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']]
             const result = UnicastMessageFactory.deserialize(1, arr)
             assert(result instanceof UnicastMessageV1)
         })
