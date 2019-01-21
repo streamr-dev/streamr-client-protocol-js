@@ -31,6 +31,12 @@ export default class ResendResponseResentV0 extends ResendResponseResent {
     static getConstructorArguments(payload) {
         return [payload.streamId, payload.streamPartition, payload.subId]
     }
+
+    static getConstructorArgs(array) {
+        const payloadObject = array[1] // index 0 is the null subId
+        const payload = ResendResponsePayload.deserialize(payloadObject)
+        return [payload.streamId, payload.streamPartition, payload.subId]
+    }
 }
 
 ControlMessage.registerClass(VERSION, ResendResponseResent.TYPE, ResendResponseResentV0)

@@ -1,6 +1,5 @@
 import assert from 'assert'
 import ResendResponseNoResendV0 from '../../../../src/protocol/control_layer/resend_response_no_resend/ResendResponseNoResendV0'
-import ResendResponsePayload from '../../../../src/protocol/control_layer/ResendResponsePayload'
 
 describe('ResendResponseNoResendV0', () => {
     describe('deserialize', () => {
@@ -10,8 +9,7 @@ describe('ResendResponseNoResendV0', () => {
                 partition: 0,
                 sub: 'subId',
             }]
-            const payload = ResendResponsePayload.deserialize(arr[1])
-            const result = new ResendResponseNoResendV0(...ResendResponseNoResendV0.getConstructorArguments(payload))
+            const result = new ResendResponseNoResendV0(...ResendResponseNoResendV0.getConstructorArgs(arr))
             assert(result instanceof ResendResponseNoResendV0)
             assert.equal(result.subId, null)
             assert.equal(result.payload.streamId, 'streamId')

@@ -12,7 +12,7 @@ describe('SubscribeRequestV0', () => {
                 authKey: 'authKey',
                 sessionToken: 'sessionToken',
             }
-            const result = new SubscribeRequestV0(...SubscribeRequestV0.getConstructorArguments(msg))
+            const result = new SubscribeRequestV0(...SubscribeRequestV0.getConstructorArgs(msg))
 
             assert(result instanceof SubscribeRequestV0)
             assert.equal(result.streamId, msg.stream)

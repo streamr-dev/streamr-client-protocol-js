@@ -33,7 +33,7 @@ export default class UnsubscribeRequestV0 extends UnsubscribeRequest {
         return this.toOtherVersion(version).serialize()
     }
 
-    static getConstructorArguments(msg) {
+    static getConstructorArgs(msg) {
         return [msg.stream, msg.partition]
     }
 }

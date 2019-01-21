@@ -20,7 +20,7 @@ describe('PublishRequestV0', () => {
                 sigtype: StreamMessage.SIGNATURE_TYPES.ETH,
                 sig: 'signature',
             }
-            const result = new PublishRequestV0(...PublishRequestV0.getConstructorArguments(msg))
+            const result = new PublishRequestV0(...PublishRequestV0.getConstructorArgs(msg))
             assert.equal(result.streamId, msg.stream)
             assert.equal(result.apiKey, msg.authKey)
             assert.equal(result.sessionToken, msg.sessionToken)

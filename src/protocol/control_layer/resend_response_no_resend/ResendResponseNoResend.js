@@ -1,6 +1,5 @@
 import ControlMessage from '../ControlMessage'
-import ResendResponsePayload from '../ResendResponsePayload'
-import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 6
 
@@ -17,15 +16,10 @@ export default class ResendResponseNoResend extends ControlMessage {
     }
 
     static deserialize(messageVersion, resendResponseNoResendSpecificArgsArray) {
-        if (messageVersion === 0) {
-            const payloadObject = resendResponseNoResendSpecificArgsArray[1] // index 0 is the null subId
-            const payload = ResendResponsePayload.deserialize(payloadObject)
-            return new (ControlMessage.getClass(0, TYPE))(...(ControlMessage.getClass(0, TYPE)).getConstructorArguments(payload))
-        } else if (messageVersion === 1) {
-            return new (ControlMessage.getClass(1, TYPE))(...resendResponseNoResendSpecificArgsArray)
-        }
-        throw new UnsupportedVersionError(messageVersion, 'Supported versions: [0, 1]')
+        const C = ControlMessage.getClass(messageVersion, TYPE)
+        return new C(...C.getConstructorArgs(resendResponseNoResendSpecificArgsArray))
     }
 }
 
 /* static */ ResendResponseNoResend.TYPE = TYPE
+ControlMessageFactory.registerFactory(ResendResponseNoResend.TYPE, ResendResponseNoResend)

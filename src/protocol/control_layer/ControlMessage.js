@@ -1,11 +1,12 @@
 import ValidationError from '../../errors/ValidationError'
+import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
 
 const classByType = {
     '0': {},
     '1': {},
 }
 
-export default class ControlMessage {
+class ControlMessage {
     constructor(version, type) {
         if (new.target === ControlMessage) {
             throw new TypeError('ControlMessage is abstract.')
@@ -35,11 +36,19 @@ export default class ControlMessage {
         return this.toOtherVersion(version).serialize()
     }
 
+    static getConstructorArgs(array) {
+        return array
+    }
+
     static registerClass(version, type, clazz) {
         classByType[version][type] = clazz
     }
 
     static getClass(version, type) {
+        if (version !== 0 && version !== 1) {
+            throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
+        }
         return classByType[version][type]
     }
 }
+module.exports = ControlMessage

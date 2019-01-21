@@ -10,7 +10,7 @@ describe('UnsubscribeRequest', () => {
                 stream: 'id',
                 partition: 0,
             }
-            const result = new UnsubscribeRequestV0(...UnsubscribeRequestV0.getConstructorArguments(msg))
+            const result = new UnsubscribeRequestV0(...UnsubscribeRequestV0.getConstructorArgs(msg))
             assert(result instanceof UnsubscribeRequestV0)
             assert.equal(result.streamId, msg.stream)
             assert.equal(result.streamPartition, msg.partition)

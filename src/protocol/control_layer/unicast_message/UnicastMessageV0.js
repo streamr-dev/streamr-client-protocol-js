@@ -1,5 +1,6 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import ControlMessage from '../ControlMessage'
+import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
 import UnicastMessage from './UnicastMessage'
 import UnicastMessageV1 from './UnicastMessageV1'
 
@@ -28,6 +29,13 @@ export default class UnicastMessageV0 extends UnicastMessage {
             return new UnicastMessageV1(this.subId, streamMsg)
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
+    }
+
+    static getConstructorArgs(array) {
+        const subId = array[0]
+        const streamMessageArray = array[1]
+        const streamMessage = StreamMessageFactory.deserialize(streamMessageArray)
+        return [streamMessage, subId]
     }
 }
 

@@ -1,10 +1,9 @@
 import ControlMessage from '../ControlMessage'
-import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
-import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 1
 
-export default class UnicastMessage extends ControlMessage {
+class UnicastMessage extends ControlMessage {
     constructor(version, subId) {
         if (new.target === UnicastMessage) {
             throw new TypeError('UnicastMessage is abstract.')
@@ -29,25 +28,15 @@ export default class UnicastMessage extends ControlMessage {
     }
 
     static create(subId, streamMessage) {
-        return new (ControlMessage.getClass(1, TYPE))(subId, streamMessage)
+        const C = ControlMessage.getClass(1, TYPE)
+        return new C(subId, streamMessage)
     }
 
     static deserialize(messageVersion, unicastMessageSpecificArgsArray) {
-        if (messageVersion === 0) {
-            const subId = unicastMessageSpecificArgsArray[0]
-            const streamMessageArray = unicastMessageSpecificArgsArray[1]
-            const streamMessage = StreamMessageFactory.deserialize(streamMessageArray)
-            return new (ControlMessage.getClass(0, TYPE))(streamMessage, subId)
-        } else if (messageVersion === 1) {
-            const subId = unicastMessageSpecificArgsArray[0]
-            const streamMessageArray = unicastMessageSpecificArgsArray[1]
-            const streamMessage = StreamMessageFactory.deserialize(streamMessageArray)
-            return new (ControlMessage.getClass(1, TYPE))(subId, streamMessage)
-        }
-        throw new UnsupportedVersionError(messageVersion, 'Supported versions: [0, 1]')
+        const C = ControlMessage.getClass(messageVersion, TYPE)
+        return new C(...C.getConstructorArgs(unicastMessageSpecificArgsArray))
     }
 }
-
-/* static */ UnicastMessage.TYPE = TYPE
-
 module.exports = UnicastMessage
+/* static */ UnicastMessage.TYPE = TYPE
+ControlMessageFactory.registerFactory(UnicastMessage.TYPE, UnicastMessage)

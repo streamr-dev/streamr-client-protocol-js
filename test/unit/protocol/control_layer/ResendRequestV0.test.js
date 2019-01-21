@@ -11,7 +11,7 @@ describe('ResendRequestV0', () => {
                 sub: 'subId',
                 resend_all: true,
             }
-            const result = new ResendRequestV0(...ResendRequestV0.getConstructorArguments(msg))
+            const result = new ResendRequestV0(...ResendRequestV0.getConstructorArgs(msg))
             assert.equal(result.streamId, msg.stream)
             assert.equal(result.streamPartition, msg.partition)
             assert.equal(result.subId, msg.sub)

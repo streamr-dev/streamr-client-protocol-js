@@ -1,5 +1,6 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import ControlMessage from '../ControlMessage'
+import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 11
 
@@ -18,6 +19,11 @@ export default class ResendLastRequest extends ControlMessage {
         }
         throw new UnsupportedVersionError(messageVersion, 'Supported versions: [1]')
     }
+
+    static create(streamId, streamPartition, subId, numberLast, sessionToken) {
+        return new (ControlMessage.getClass(1, TYPE))(streamId, streamPartition, subId, numberLast, sessionToken)
+    }
 }
 
 /* static */ ResendLastRequest.TYPE = TYPE
+ControlMessageFactory.registerFactory(ResendLastRequest.TYPE, ResendLastRequest)

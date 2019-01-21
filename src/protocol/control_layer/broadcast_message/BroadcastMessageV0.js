@@ -1,4 +1,5 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
 import ControlMessage from '../ControlMessage'
 import BroadcastMessage from './BroadcastMessage'
 import BroadcastMessageV1 from './BroadcastMessageV1'
@@ -29,6 +30,10 @@ export default class BroadcastMessageV0 extends BroadcastMessage {
             return new BroadcastMessageV1(streamMsg)
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
+    }
+
+    static getConstructorArgs(array) {
+        return StreamMessageFactory.deserialize(array[1])
     }
 }
 

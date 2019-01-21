@@ -1,3 +1,4 @@
+import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
 import ControlMessage from '../ControlMessage'
 import PublishRequest from './PublishRequest'
 
@@ -24,6 +25,11 @@ export default class PublishRequestV1 extends PublishRequest {
 
     serialize(messageLayerVersion) {
         return JSON.stringify(this.toArray(messageLayerVersion))
+    }
+
+    static getConstructorArgs(array) {
+        const streamMessage = StreamMessageFactory.deserialize(array[0])
+        return [streamMessage, array[1]]
     }
 }
 

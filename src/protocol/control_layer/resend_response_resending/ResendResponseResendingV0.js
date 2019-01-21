@@ -28,7 +28,9 @@ export default class ResendResponseResendingV0 extends ResendResponseResending {
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 
-    static getConstructorArguments(payload) {
+    static getConstructorArgs(array) {
+        const payloadObject = array[1] // index 0 is the null subId
+        const payload = ResendResponsePayload.deserialize(payloadObject)
         return [payload.streamId, payload.streamPartition, payload.subId]
     }
 }

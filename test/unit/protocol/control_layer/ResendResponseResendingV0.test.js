@@ -1,17 +1,15 @@
 import assert from 'assert'
 import ResendResponseResendingV0 from '../../../../src/protocol/control_layer/resend_response_resending/ResendResponseResendingV0'
-import ResendResponsePayload from '../../../../src/protocol/control_layer/ResendResponsePayload'
 
 describe('ResendResponseResendingV0', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
-            const arr = [null, {
+            const array = [null, {
                 stream: 'streamId',
                 partition: 0,
                 sub: 'subId',
             }]
-            const payload = ResendResponsePayload.deserialize(arr[1])
-            const result = new ResendResponseResendingV0(...ResendResponseResendingV0.getConstructorArguments(payload))
+            const result = new ResendResponseResendingV0(...ResendResponseResendingV0.getConstructorArgs(array))
             assert(result instanceof ResendResponseResendingV0)
             assert.equal(result.subId, null)
             assert.equal(result.payload.streamId, 'streamId')

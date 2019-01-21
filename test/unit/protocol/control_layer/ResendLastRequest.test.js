@@ -18,4 +18,15 @@ describe('ResendLastRequest', () => {
             assert(result instanceof ResendLastRequestV1)
         })
     })
+    describe('create', () => {
+        it('should create the latest version', () => {
+            const msg = ResendLastRequest.create('streamId', 0, 'subId', 100, 'sessionToken')
+            assert(msg instanceof ResendLastRequestV1)
+            assert.equal(msg.streamId, 'streamId')
+            assert.equal(msg.streamPartition, 0)
+            assert.equal(msg.subId, 'subId')
+            assert.equal(msg.numberLast, 100)
+            assert.equal(msg.sessionToken, 'sessionToken')
+        })
+    })
 })

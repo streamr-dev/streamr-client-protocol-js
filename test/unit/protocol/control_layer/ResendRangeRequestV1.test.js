@@ -25,7 +25,8 @@ describe('ResendRangeRequestV1', () => {
         it('correctly serializes messages', () => {
             const arr = [1, 13, 'streamId', 0, 'subId', [132846894, 0], [132847000, 0], 'publisherId', 'sessionToken']
             const serialized = new ResendRangeRequestV1(
-                'streamId', 0, 'subId', [132846894, 0], [132847000, 0], 'publisherId', 'sessionToken'
+                'streamId', 0, 'subId', [132846894, 0],
+                [132847000, 0], 'publisherId', 'sessionToken',
             ).serialize()
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))

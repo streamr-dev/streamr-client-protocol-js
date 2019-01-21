@@ -27,6 +27,12 @@ export default class UnsubscribeResponseV0 extends UnsubscribeResponse {
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
+
+    static getConstructorArgs(array) {
+        const streamPartitionObject = array[1] // index 0 is the null subId
+        const payload = StreamAndPartition.deserialize(streamPartitionObject)
+        return [payload.streamId, payload.streamPartition]
+    }
 }
 
 ControlMessage.registerClass(VERSION, UnsubscribeResponse.TYPE, UnsubscribeResponseV0)

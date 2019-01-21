@@ -64,7 +64,7 @@ export default class PublishRequestV0 extends PublishRequest {
         return JSON.stringify(this.toObject())
     }
 
-    static getConstructorArguments(msg) {
+    static getConstructorArgs(msg) {
         return [
             msg.stream,
             msg.authKey,

@@ -1,6 +1,5 @@
 import ControlMessage from '../ControlMessage'
-import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
-import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 0
 
@@ -24,15 +23,10 @@ export default class BroadcastMessage extends ControlMessage {
     }
 
     static deserialize(messageVersion, broadcastMessageSpecificArgsArray) {
-        if (messageVersion === 0) {
-            const streamMessageArray = broadcastMessageSpecificArgsArray[1] // index 0 is the null subId
-            return new (ControlMessage.getClass(0, TYPE))(StreamMessageFactory.deserialize(streamMessageArray))
-        } else if (messageVersion === 1) {
-            const streamMessageArray = broadcastMessageSpecificArgsArray[0]
-            return new (ControlMessage.getClass(1, TYPE))(StreamMessageFactory.deserialize(streamMessageArray))
-        }
-        throw new UnsupportedVersionError(messageVersion, 'Supported versions: [0, 1]')
+        const C = ControlMessage.getClass(messageVersion, TYPE)
+        return new C(C.getConstructorArgs(broadcastMessageSpecificArgsArray))
     }
 }
 
 /* static */ BroadcastMessage.TYPE = TYPE
+ControlMessageFactory.registerFactory(BroadcastMessage.TYPE, BroadcastMessage)

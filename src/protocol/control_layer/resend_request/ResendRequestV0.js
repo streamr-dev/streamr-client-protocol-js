@@ -1,5 +1,6 @@
 import ValidationError from '../../../errors/ValidationError'
 import ControlMessage from '../ControlMessage'
+import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 'resend'
 const VERSION = 0
@@ -40,7 +41,11 @@ export default class ResendRequestV0 extends ControlMessage {
         return JSON.stringify(this.toObject())
     }
 
-    static getConstructorArguments(msg) {
+    static deserialize(version, msg) {
+        return new ResendRequestV0(...this.getConstructorArgs(msg))
+    }
+
+    static getConstructorArgs(msg) {
         // Every property that starts with resend_ is a resend option
         const resendOptions = {}
         Object.keys(msg).forEach((key) => {
@@ -61,3 +66,4 @@ export default class ResendRequestV0 extends ControlMessage {
 }
 
 /* static */ ResendRequestV0.TYPE = TYPE
+ControlMessageFactory.registerFactory(ResendRequestV0.TYPE, ResendRequestV0)

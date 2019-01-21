@@ -1,6 +1,5 @@
 import ControlMessage from '../ControlMessage'
-import StreamAndPartition from '../StreamAndPartition'
-import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 2
 
@@ -14,15 +13,10 @@ export default class SubscribeResponse extends ControlMessage {
     }
 
     static deserialize(messageVersion, subscribeResponseSpecificArgsArray) {
-        if (messageVersion === 0) {
-            const streamPartitionObject = subscribeResponseSpecificArgsArray[1] // index 0 is the null subId
-            const payload = StreamAndPartition.deserialize(streamPartitionObject)
-            return new (ControlMessage.getClass(0, TYPE))(payload.streamId, payload.streamPartition)
-        } else if (messageVersion === 1) {
-            return new (ControlMessage.getClass(1, TYPE))(...subscribeResponseSpecificArgsArray)
-        }
-        throw new UnsupportedVersionError(messageVersion, 'Supported versions: [0, 1]')
+        const C = ControlMessage.getClass(messageVersion, TYPE)
+        return new C(...C.getConstructorArgs(subscribeResponseSpecificArgsArray))
     }
 }
 
 /* static */ SubscribeResponse.TYPE = TYPE
+ControlMessageFactory.registerFactory(SubscribeResponse.TYPE, SubscribeResponse)

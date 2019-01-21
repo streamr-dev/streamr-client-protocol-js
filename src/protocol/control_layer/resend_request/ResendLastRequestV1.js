@@ -1,6 +1,5 @@
 import ControlMessage from '../ControlMessage'
 import ResendLastRequest from './ResendLastRequest'
-import ResendFromRequest from './ResendFromRequest'
 
 const VERSION = 1
 

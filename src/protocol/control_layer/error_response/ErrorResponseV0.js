@@ -27,6 +27,12 @@ export default class ErrorResponseV0 extends ErrorResponse {
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
+
+    static getConstructorArgs(array) {
+        const errorObject = array[1] // index 0 is the null subId
+        const payload = ErrorPayload.deserialize(errorObject)
+        return [payload.error]
+    }
 }
 
 ControlMessage.registerClass(VERSION, ErrorResponse.TYPE, ErrorResponseV0)

@@ -36,7 +36,7 @@ export default class SubscribeRequestV0 extends SubscribeRequest {
         return this.toOtherVersion(version).serialize()
     }
 
-    static getConstructorArguments(msg) {
+    static getConstructorArgs(msg) {
         return [msg.stream, msg.partition, msg.authKey, msg.sessionToken]
     }
 }

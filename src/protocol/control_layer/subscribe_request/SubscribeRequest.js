@@ -1,6 +1,6 @@
 import ValidationError from '../../../errors/ValidationError'
 import ControlMessage from '../ControlMessage'
-import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
+import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 9
 
@@ -23,12 +23,11 @@ export default class SubscribeRequest extends ControlMessage {
     }
 
     static deserialize(messageVersion, subscribeRequestSpecificArgsArray) {
-        // Version 0 is an object not an array, it is handled by ControlMessageV0Factory and SubscribeRequestV0.
-        if (messageVersion === 1) {
-            return new (ControlMessage.getClass(1, TYPE))(...subscribeRequestSpecificArgsArray)
-        }
-        throw new UnsupportedVersionError(messageVersion, 'Supported versions: [1]')
+        const C = ControlMessage.getClass(messageVersion, TYPE)
+        return new C(...C.getConstructorArgs(subscribeRequestSpecificArgsArray))
     }
 }
 
 /* static */ SubscribeRequest.TYPE = TYPE
+ControlMessageFactory.registerFactory(SubscribeRequest.TYPE, SubscribeRequest)
+ControlMessageFactory.registerFactory('subscribe', SubscribeRequest) // for version 0
