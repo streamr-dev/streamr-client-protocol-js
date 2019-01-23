@@ -1,5 +1,4 @@
 import ControlMessage from '../ControlMessage'
-import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 3
 
@@ -12,7 +11,7 @@ export default class UnsubscribeResponse extends ControlMessage {
     }
 
     static create(streamId, streamPartition) {
-        return new (ControlMessage.getClass(1, TYPE))(streamId, streamPartition)
+        return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(streamId, streamPartition)
     }
 
     static deserialize(messageVersion, subscribeResponseSpecificArgsArray) {
@@ -22,4 +21,4 @@ export default class UnsubscribeResponse extends ControlMessage {
 }
 
 /* static */ UnsubscribeResponse.TYPE = TYPE
-ControlMessageFactory.registerFactory(UnsubscribeResponse.TYPE, UnsubscribeResponse)
+ControlMessage.registerFactory(UnsubscribeResponse.TYPE, UnsubscribeResponse)

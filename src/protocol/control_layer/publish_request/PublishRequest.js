@@ -1,5 +1,4 @@
 import ControlMessage from '../ControlMessage'
-import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 8
 
@@ -13,7 +12,7 @@ export default class PublishRequest extends ControlMessage {
     }
 
     static create(streamMessage, sessionToken) {
-        return new (ControlMessage.getClass(1, TYPE))(streamMessage, sessionToken)
+        return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(streamMessage, sessionToken)
     }
 
     static deserialize(messageVersion, publishRequestSpecificArgsArray) {
@@ -23,5 +22,5 @@ export default class PublishRequest extends ControlMessage {
 }
 
 /* static */ PublishRequest.TYPE = TYPE
-ControlMessageFactory.registerFactory(PublishRequest.TYPE, PublishRequest)
-ControlMessageFactory.registerFactory('publish', PublishRequest) // for version 0
+ControlMessage.registerFactory(PublishRequest.TYPE, PublishRequest)
+ControlMessage.registerFactory('publish', PublishRequest) // for version 0

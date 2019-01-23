@@ -1,5 +1,4 @@
 import ControlMessage from '../ControlMessage'
-import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 1
 
@@ -28,7 +27,7 @@ class UnicastMessage extends ControlMessage {
     }
 
     static create(subId, streamMessage) {
-        const C = ControlMessage.getClass(1, TYPE)
+        const C = ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE)
         return new C(subId, streamMessage)
     }
 
@@ -39,4 +38,4 @@ class UnicastMessage extends ControlMessage {
 }
 module.exports = UnicastMessage
 /* static */ UnicastMessage.TYPE = TYPE
-ControlMessageFactory.registerFactory(UnicastMessage.TYPE, UnicastMessage)
+ControlMessage.registerFactory(UnicastMessage.TYPE, UnicastMessage)

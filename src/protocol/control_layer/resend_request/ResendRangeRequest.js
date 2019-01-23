@@ -1,6 +1,5 @@
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import ControlMessage from '../ControlMessage'
-import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 13
 
@@ -21,7 +20,7 @@ export default class ResendRangeRequest extends ControlMessage {
     }
 
     static create(streamId, streamPartition, subId, fromMsgRefArgsArray, toMsgRefArgsArray, publisherId, sessionToken) {
-        return new (ControlMessage.getClass(1, TYPE))(
+        return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(
             streamId, streamPartition, subId, fromMsgRefArgsArray,
             toMsgRefArgsArray, publisherId, sessionToken,
         )
@@ -29,4 +28,4 @@ export default class ResendRangeRequest extends ControlMessage {
 }
 
 /* static */ ResendRangeRequest.TYPE = TYPE
-ControlMessageFactory.registerFactory(ResendRangeRequest.TYPE, ResendRangeRequest)
+ControlMessage.registerFactory(ResendRangeRequest.TYPE, ResendRangeRequest)

@@ -1,5 +1,4 @@
 import ControlMessage from '../ControlMessage'
-import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 0
 
@@ -19,7 +18,7 @@ export default class BroadcastMessage extends ControlMessage {
     }
 
     static create(streamMessage) {
-        return new (ControlMessage.getClass(1, TYPE))(streamMessage)
+        return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(streamMessage)
     }
 
     static deserialize(messageVersion, broadcastMessageSpecificArgsArray) {
@@ -29,4 +28,4 @@ export default class BroadcastMessage extends ControlMessage {
 }
 
 /* static */ BroadcastMessage.TYPE = TYPE
-ControlMessageFactory.registerFactory(BroadcastMessage.TYPE, BroadcastMessage)
+ControlMessage.registerFactory(BroadcastMessage.TYPE, BroadcastMessage)

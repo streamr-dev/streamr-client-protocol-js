@@ -1,6 +1,5 @@
 import ValidationError from '../../../errors/ValidationError'
 import ControlMessage from '../ControlMessage'
-import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 'resend'
 const VERSION = 0
@@ -66,4 +65,4 @@ export default class ResendRequestV0 extends ControlMessage {
 }
 
 /* static */ ResendRequestV0.TYPE = TYPE
-ControlMessageFactory.registerFactory(ResendRequestV0.TYPE, ResendRequestV0)
+ControlMessage.registerFactory(ResendRequestV0.TYPE, ResendRequestV0)

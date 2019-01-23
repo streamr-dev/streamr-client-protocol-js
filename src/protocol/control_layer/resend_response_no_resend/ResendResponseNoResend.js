@@ -1,5 +1,4 @@
 import ControlMessage from '../ControlMessage'
-import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 6
 
@@ -12,7 +11,7 @@ export default class ResendResponseNoResend extends ControlMessage {
     }
 
     static create(streamId, streamPartition, subId) {
-        return new (ControlMessage.getClass(1, TYPE))(streamId, streamPartition, subId)
+        return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(streamId, streamPartition, subId)
     }
 
     static deserialize(messageVersion, resendResponseNoResendSpecificArgsArray) {
@@ -22,4 +21,4 @@ export default class ResendResponseNoResend extends ControlMessage {
 }
 
 /* static */ ResendResponseNoResend.TYPE = TYPE
-ControlMessageFactory.registerFactory(ResendResponseNoResend.TYPE, ResendResponseNoResend)
+ControlMessage.registerFactory(ResendResponseNoResend.TYPE, ResendResponseNoResend)

@@ -1,6 +1,5 @@
 import ValidationError from '../../../errors/ValidationError'
 import ControlMessage from '../ControlMessage'
-import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 9
 
@@ -19,7 +18,7 @@ export default class SubscribeRequest extends ControlMessage {
     }
 
     static create(streamId, streamPartition, sessionToken) {
-        return new (ControlMessage.getClass(1, TYPE))(streamId, streamPartition, sessionToken)
+        return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(streamId, streamPartition, sessionToken)
     }
 
     static deserialize(messageVersion, subscribeRequestSpecificArgsArray) {
@@ -29,5 +28,5 @@ export default class SubscribeRequest extends ControlMessage {
 }
 
 /* static */ SubscribeRequest.TYPE = TYPE
-ControlMessageFactory.registerFactory(SubscribeRequest.TYPE, SubscribeRequest)
-ControlMessageFactory.registerFactory('subscribe', SubscribeRequest) // for version 0
+ControlMessage.registerFactory(SubscribeRequest.TYPE, SubscribeRequest)
+ControlMessage.registerFactory('subscribe', SubscribeRequest) // for version 0

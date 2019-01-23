@@ -49,7 +49,6 @@ import UnsubscribeResponseV0 from './protocol/control_layer/unsubscribe_response
 import UnsubscribeResponseV1 from './protocol/control_layer/unsubscribe_response/UnsubscribeResponseV1'
 
 import ControlMessage from './protocol/control_layer/ControlMessage'
-import ControlMessageFactory from './protocol/control_layer/ControlMessageFactory'
 import ResendResponsePayload from './protocol/control_layer/ResendResponsePayload'
 import StreamAndPartition from './protocol/control_layer/StreamAndPartition'
 
@@ -106,7 +105,6 @@ module.exports = {
         UnsubscribeResponseV0,
         UnsubscribeResponseV1,
         ControlMessage,
-        ControlMessageFactory,
         ResendResponsePayload,
         StreamAndPartition,
     },

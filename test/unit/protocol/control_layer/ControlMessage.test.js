@@ -1,5 +1,5 @@
 import assert from 'assert'
-import ControlMessageFactory from '../../../../src/protocol/control_layer/ControlMessageFactory'
+import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionError'
 import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 import PublishRequestV0 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV0'
@@ -117,8 +117,8 @@ const examplesByTypeV1 = {
 
 describe('ControlMessageFactory', () => {
     it('should throw when unsupported version', () => {
-        const arr = [123]
-        assert.throws(() => ControlMessageFactory.deserialize(arr), (err) => {
+        const arr = [123, 1]
+        assert.throws(() => ControlMessage.deserialize(arr), (err) => {
             assert(err instanceof UnsupportedVersionError)
             assert.equal(err.version, 123)
             return true
@@ -134,7 +134,7 @@ describe('ControlMessageFactory', () => {
                 clazz = null
             })
             afterEach(() => {
-                result = ControlMessageFactory.deserialize(JSON.stringify(array))
+                result = ControlMessage.deserialize(JSON.stringify(array))
                 assert(result instanceof clazz)
             })
             /* eslint-disable prefer-destructuring */
@@ -196,7 +196,7 @@ describe('ControlMessageFactory', () => {
                 serialized = null
             })
             afterEach(() => {
-                serialized = ControlMessageFactory.deserialize(array).serialize()
+                serialized = ControlMessage.deserialize(array).serialize()
                 assert(typeof serialized === 'string')
                 assert.deepEqual(array, JSON.parse(serialized))
             })
@@ -250,7 +250,7 @@ describe('ControlMessageFactory', () => {
                 clazz = null
             })
             afterEach(() => {
-                result = ControlMessageFactory.deserialize(JSON.stringify(array))
+                result = ControlMessage.deserialize(JSON.stringify(array))
                 assert(result instanceof clazz)
             })
             /* eslint-disable prefer-destructuring */
@@ -320,7 +320,7 @@ describe('ControlMessageFactory', () => {
                 serialized = null
             })
             afterEach(() => {
-                serialized = ControlMessageFactory.deserialize(array).serialize()
+                serialized = ControlMessage.deserialize(array).serialize()
                 assert(typeof serialized === 'string')
                 assert.deepEqual(array, JSON.parse(serialized))
             })

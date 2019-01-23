@@ -54,7 +54,9 @@ messageType | Description
 8 | PublishRequest
 9 | SubscribeRequest
 10 | UnsubscribeRequest
-11 | ResendRequest
+11 | ResendLastRequest
+12 | ResendRangeRequest
+13 | ResendRangeRequest
 
 We start by describing the requests and then the responses.
 

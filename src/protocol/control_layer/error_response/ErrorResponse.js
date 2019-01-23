@@ -1,5 +1,4 @@
 import ControlMessage from '../ControlMessage'
-import ControlMessageFactory from '../ControlMessageFactory'
 
 const TYPE = 7
 
@@ -12,7 +11,7 @@ export default class ErrorResponse extends ControlMessage {
     }
 
     static create(errorMessage) {
-        return new (ControlMessage.getClass(1, TYPE))(errorMessage)
+        return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(errorMessage)
     }
 
     static deserialize(messageVersion, errorResponseSpecificArgsArray) {
@@ -22,4 +21,4 @@ export default class ErrorResponse extends ControlMessage {
 }
 
 /* static */ ErrorResponse.TYPE = TYPE
-ControlMessageFactory.registerFactory(ErrorResponse.TYPE, ErrorResponse)
+ControlMessage.registerFactory(ErrorResponse.TYPE, ErrorResponse)
