@@ -21,4 +21,3 @@ export default class ErrorResponse extends ControlMessage {
 }
 
 /* static */ ErrorResponse.TYPE = TYPE
-ControlMessage.registerFactory(ErrorResponse.TYPE, ErrorResponse)

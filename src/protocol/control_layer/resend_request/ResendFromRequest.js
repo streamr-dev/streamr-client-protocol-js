@@ -26,4 +26,3 @@ export default class ResendFromRequest extends ControlMessage {
 }
 
 /* static */ ResendFromRequest.TYPE = TYPE
-ControlMessage.registerFactory(ResendFromRequest.TYPE, ResendFromRequest)

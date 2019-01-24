@@ -25,4 +25,3 @@ export default class ResendLastRequest extends ControlMessage {
 }
 
 /* static */ ResendLastRequest.TYPE = TYPE
-ControlMessage.registerFactory(ResendLastRequest.TYPE, ResendLastRequest)

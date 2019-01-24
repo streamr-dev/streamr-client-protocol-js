@@ -2,8 +2,7 @@ import ValidationError from '../../errors/ValidationError'
 import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
 import UnsupportedTypeError from '../../errors/UnsupportedTypeError'
 
-const classByType = {}
-const factoryByMessageType = {}
+const classByVersionAndType = {}
 const LATEST_VERSION = 1
 
 class ControlMessage {
@@ -41,22 +40,22 @@ class ControlMessage {
     }
 
     static registerClass(version, type, clazz) {
-        if (classByType[version] === undefined) {
-            classByType[version] = {}
+        if (classByVersionAndType[version] === undefined) {
+            classByVersionAndType[version] = {}
         }
-        classByType[version][type] = clazz
+        classByVersionAndType[version][type] = clazz
     }
 
     static getClass(version, type) {
-        const classesByVersion = classByType[version]
+        const classesByVersion = classByVersionAndType[version]
         if (!classesByVersion) {
-            throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
+            throw new UnsupportedVersionError(version, `Supported versions: [${Object.keys(classByVersionAndType)}]`)
         }
         const clazz = classesByVersion[type]
         if (!clazz) {
-            throw new UnsupportedTypeError(type, 'Supported types: [1-13]')
+            throw new UnsupportedTypeError(type, `Supported types: [${Object.keys(classesByVersion)}]`)
         }
-        return classByType[version][type]
+        return classByVersionAndType[version][type]
     }
 
     static deserialize(msg) {
@@ -76,11 +75,8 @@ class ControlMessage {
             /* eslint-enable prefer-destructuring */
             args = messageArray.slice(2)
         }
-        return factoryByMessageType[messageType].deserialize(messageVersion, args)
-    }
-
-    static registerFactory(type, clazz) {
-        factoryByMessageType[type] = clazz
+        const C = ControlMessage.getClass(messageVersion, messageType)
+        return new C(...C.getConstructorArgs(args))
     }
 }
 module.exports = ControlMessage

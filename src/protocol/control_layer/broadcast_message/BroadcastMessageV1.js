@@ -30,7 +30,7 @@ export default class BroadcastMessageV1 extends BroadcastMessage {
     }
 
     static getConstructorArgs(array) {
-        return StreamMessageFactory.deserialize(array[0])
+        return [StreamMessageFactory.deserialize(array[0])]
     }
 }
 

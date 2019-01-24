@@ -79,4 +79,4 @@ export default class PublishRequestV0 extends PublishRequest {
     }
 }
 
-ControlMessage.registerClass(VERSION, PublishRequest.TYPE, PublishRequestV0)
+ControlMessage.registerClass(VERSION, TYPE, PublishRequestV0)

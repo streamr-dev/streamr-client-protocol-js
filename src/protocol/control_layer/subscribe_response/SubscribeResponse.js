@@ -18,4 +18,3 @@ export default class SubscribeResponse extends ControlMessage {
 }
 
 /* static */ SubscribeResponse.TYPE = TYPE
-ControlMessage.registerFactory(SubscribeResponse.TYPE, SubscribeResponse)

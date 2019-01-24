@@ -65,4 +65,4 @@ export default class ResendRequestV0 extends ControlMessage {
 }
 
 /* static */ ResendRequestV0.TYPE = TYPE
-ControlMessage.registerFactory(ResendRequestV0.TYPE, ResendRequestV0)
+ControlMessage.registerClass(VERSION, TYPE, ResendRequestV0)

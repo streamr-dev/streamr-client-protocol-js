@@ -38,4 +38,3 @@ class UnicastMessage extends ControlMessage {
 }
 module.exports = UnicastMessage
 /* static */ UnicastMessage.TYPE = TYPE
-ControlMessage.registerFactory(UnicastMessage.TYPE, UnicastMessage)

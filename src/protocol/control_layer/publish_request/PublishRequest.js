@@ -22,5 +22,3 @@ export default class PublishRequest extends ControlMessage {
 }
 
 /* static */ PublishRequest.TYPE = TYPE
-ControlMessage.registerFactory(PublishRequest.TYPE, PublishRequest)
-ControlMessage.registerFactory('publish', PublishRequest) // for version 0

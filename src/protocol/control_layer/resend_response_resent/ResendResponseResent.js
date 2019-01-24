@@ -21,4 +21,3 @@ export default class ResendResponseResent extends ControlMessage {
 }
 
 /* static */ ResendResponseResent.TYPE = TYPE
-ControlMessage.registerFactory(ResendResponseResent.TYPE, ResendResponseResent)

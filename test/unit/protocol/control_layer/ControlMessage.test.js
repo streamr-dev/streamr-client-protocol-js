@@ -1,6 +1,7 @@
 import assert from 'assert'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionError'
+import UnsupportedTypeError from '../../../../src/errors/UnsupportedTypeError'
 import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 import PublishRequestV0 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV0'
 import PublishRequestV1 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV1'
@@ -115,12 +116,20 @@ const examplesByTypeV1 = {
     '13': [1, 13, 'streamId', 0, 'subId', [132846894, 0], [132847000, 0], 'publisherId', 'sessionToken'],
 }
 
-describe('ControlMessageFactory', () => {
+describe('ControlMessage', () => {
     it('should throw when unsupported version', () => {
         const arr = [123, 1]
         assert.throws(() => ControlMessage.deserialize(arr), (err) => {
             assert(err instanceof UnsupportedVersionError)
             assert.equal(err.version, 123)
+            return true
+        })
+    })
+    it('should throw when unsupported type', () => {
+        const arr = [1, 180]
+        assert.throws(() => ControlMessage.deserialize(arr), (err) => {
+            assert(err instanceof UnsupportedTypeError)
+            assert.equal(err.type, 180)
             return true
         })
     })

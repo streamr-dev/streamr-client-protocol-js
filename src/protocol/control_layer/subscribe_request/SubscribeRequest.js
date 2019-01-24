@@ -28,5 +28,3 @@ export default class SubscribeRequest extends ControlMessage {
 }
 
 /* static */ SubscribeRequest.TYPE = TYPE
-ControlMessage.registerFactory(SubscribeRequest.TYPE, SubscribeRequest)
-ControlMessage.registerFactory('subscribe', SubscribeRequest) // for version 0

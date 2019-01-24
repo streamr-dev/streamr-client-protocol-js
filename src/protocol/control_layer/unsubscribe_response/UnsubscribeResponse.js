@@ -21,4 +21,3 @@ export default class UnsubscribeResponse extends ControlMessage {
 }
 
 /* static */ UnsubscribeResponse.TYPE = TYPE
-ControlMessage.registerFactory(UnsubscribeResponse.TYPE, UnsubscribeResponse)

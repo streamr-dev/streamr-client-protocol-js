@@ -28,4 +28,3 @@ export default class BroadcastMessage extends ControlMessage {
 }
 
 /* static */ BroadcastMessage.TYPE = TYPE
-ControlMessage.registerFactory(BroadcastMessage.TYPE, BroadcastMessage)

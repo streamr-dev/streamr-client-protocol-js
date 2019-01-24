@@ -28,4 +28,3 @@ export default class ResendRangeRequest extends ControlMessage {
 }
 
 /* static */ ResendRangeRequest.TYPE = TYPE
-ControlMessage.registerFactory(ResendRangeRequest.TYPE, ResendRangeRequest)
