@@ -14,11 +14,6 @@ export default class PublishRequest extends ControlMessage {
     static create(streamMessage, sessionToken) {
         return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(streamMessage, sessionToken)
     }
-
-    static deserialize(messageVersion, publishRequestSpecificArgsArray) {
-        const C = ControlMessage.getClass(messageVersion, TYPE)
-        return new C(...C.getConstructorArgs(publishRequestSpecificArgsArray))
-    }
 }
 
 /* static */ PublishRequest.TYPE = TYPE

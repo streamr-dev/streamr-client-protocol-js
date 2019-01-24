@@ -13,11 +13,6 @@ export default class ErrorResponse extends ControlMessage {
     static create(errorMessage) {
         return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(errorMessage)
     }
-
-    static deserialize(messageVersion, errorResponseSpecificArgsArray) {
-        const C = ControlMessage.getClass(messageVersion, TYPE)
-        return new C(...C.getConstructorArgs(errorResponseSpecificArgsArray))
-    }
 }
 
 /* static */ ErrorResponse.TYPE = TYPE

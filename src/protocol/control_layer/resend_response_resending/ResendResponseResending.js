@@ -13,11 +13,6 @@ export default class ResendResponseResending extends ControlMessage {
     static create(streamId, streamPartition, subId) {
         return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(streamId, streamPartition, subId)
     }
-
-    static deserialize(messageVersion, resendResponseResendingSpecificArgsArray) {
-        const C = ControlMessage.getClass(messageVersion, TYPE)
-        return new C(...C.getConstructorArgs(resendResponseResendingSpecificArgsArray))
-    }
 }
 
 /* static */ ResendResponseResending.TYPE = TYPE

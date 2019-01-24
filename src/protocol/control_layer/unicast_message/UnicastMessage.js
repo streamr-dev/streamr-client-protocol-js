@@ -30,11 +30,6 @@ class UnicastMessage extends ControlMessage {
         const C = ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE)
         return new C(subId, streamMessage)
     }
-
-    static deserialize(messageVersion, unicastMessageSpecificArgsArray) {
-        const C = ControlMessage.getClass(messageVersion, TYPE)
-        return new C(...C.getConstructorArgs(unicastMessageSpecificArgsArray))
-    }
 }
 module.exports = UnicastMessage
 /* static */ UnicastMessage.TYPE = TYPE

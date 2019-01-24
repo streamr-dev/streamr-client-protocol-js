@@ -20,11 +20,6 @@ export default class BroadcastMessage extends ControlMessage {
     static create(streamMessage) {
         return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(streamMessage)
     }
-
-    static deserialize(messageVersion, broadcastMessageSpecificArgsArray) {
-        const C = ControlMessage.getClass(messageVersion, TYPE)
-        return new C(C.getConstructorArgs(broadcastMessageSpecificArgsArray))
-    }
 }
 
 /* static */ BroadcastMessage.TYPE = TYPE

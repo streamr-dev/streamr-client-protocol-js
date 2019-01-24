@@ -20,11 +20,6 @@ export default class SubscribeRequest extends ControlMessage {
     static create(streamId, streamPartition, sessionToken) {
         return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(streamId, streamPartition, sessionToken)
     }
-
-    static deserialize(messageVersion, subscribeRequestSpecificArgsArray) {
-        const C = ControlMessage.getClass(messageVersion, TYPE)
-        return new C(...C.getConstructorArgs(subscribeRequestSpecificArgsArray))
-    }
 }
 
 /* static */ SubscribeRequest.TYPE = TYPE
