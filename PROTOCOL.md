@@ -358,11 +358,11 @@ Signature Type | Description
 Uniquely identifies a `StreamMessage`.
 
 ```
-[streamId, streamPartition, timestamp, sequenceNumber, publisherId, chainId]
+[streamId, streamPartition, timestamp, sequenceNumber, publisherId, msgChainId]
 ```
 Example:
 ```
-["stream-id", 0, 425354887214, 0, "0xAd23Ba54d26D3f0Ac057...", 3]
+["stream-id", 0, 425354887214, 0, "0xAd23Ba54d26D3f0Ac057...", "msg-chain-id"]
 ```
 
 Field    | Type | Description
@@ -372,11 +372,11 @@ Field    | Type | Description
 `timestamp` | `number` | Timestamp of the `StreamMessage` (milliseconds format).
 `sequenceNumber` | `number` | Sequence number of the `StreamMessage` within the same timestamp. Defaults to 0.
 `publisherId` | `string` | Id of the publisher of the `StreamMessage`. Must be an Ethereum address if the `StreamMessage` has an Ethereum signature (`signatureType` = 1).
-`chainId` | `number` | Id of the message chain this `StreamMessage` is part of. This chain id is chosen by the publisher and defined locally for the `streamId`-`streamPartition`-`publisherId` triplet.
+`msgChainId` | `string` | Id of the message chain this `StreamMessage` is part of. This message chain id is chosen by the publisher and defined locally for the `streamId`-`streamPartition`-`publisherId` triplet.
 
 ### MessageRef
 
-Used inside a `StreamMessage` to identify the previous message on the same `chainId` (defined above).
+Used inside a `StreamMessage` to identify the previous message on the same `msgChainId` (defined above).
 
 ```
 [timestamp, sequenceNumber]
