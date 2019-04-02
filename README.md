@@ -14,14 +14,16 @@ This section describes how to use the Javascript implementation of the [protocol
 
 #### Creating messages from arguments
 
-Every message type from both the Control Layer and the Message Layer is defined as a class and has a static `create` method that takes class-specific arguments to build an instance of the latest version of the message type.
+Every message type from both the Control Layer and the Message Layer is defined as a class and has a static `create` method that takes class-specific arguments to build an instance of the latest version of the message type. The arguments for each message type are defined in the [protocol documentation](PROTOCOL.md) and in the definition of the `create` method.
 
 This example shows how to build a `StreamMessage` and encapsulate it in a  `UnicastMessage`.
 
 ```javascript
 const content = {
-                foo: 'bar',
-            }
+    foo: 'bar',
+}
+// arguments in order: stream id, stream partition, timestamp, sequence number, publisher id, message chain id,
+// previous message reference, content type, content, signature type, signature
 const streamMessage = StreamMessage.create(['streamId', 0, Date.now(), 0, 'publisherId', 'msgChainId'],
                                              null, StreamMessage.CONTENT_TYPES.JSON, content,
                                              StreamMessage.SIGNATURE_TYPES.NONE, null)
@@ -30,7 +32,7 @@ const unicastMessage = UnicastMessage.create("subscriptionId", streamMessage)
 
 #### Serializing messages to JSON arrays or strings
 
-Every message type from both the Control Layer and the Message Layer has a `serialize` method that takes different optional arguments depending on the message type. By default, it serializes to the latest version of the message type and the result is a string.
+Every message type from both the Control Layer and the Message Layer has a `serialize` method that takes different optional arguments depending on the message type. For every message type, the first argument is the version of the resulting serialized message. By default, it serializes to the latest version of the message type and the result is a string.
 
 ```javascript
 const streamMessage = StreamMessage.create(...)
