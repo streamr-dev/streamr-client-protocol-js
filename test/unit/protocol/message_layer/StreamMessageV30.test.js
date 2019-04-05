@@ -108,6 +108,18 @@ describe('StreamMessageV30', () => {
 
             assert.deepEqual(serialized, JSON.stringify(arr))
         })
+        it('correctly serializes messages to v31', () => {
+            const arr = [31, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId', 'msg-chain-id'], [1529549961000, 0],
+                StreamMessage.CONTENT_TYPES.JSON, StreamMessage.ENCRYPTION_TYPES.NONE, '{"valid": "json"}',
+                StreamMessage.SIGNATURE_TYPES.ETH, 'signature']
+
+            const serialized = new StreamMessageV30(
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId', 'msg-chain-id'],
+                [1529549961000, 0], StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature',
+            ).serialize(31)
+
+            assert.deepEqual(serialized, JSON.stringify(arr))
+        })
     })
 
     describe('getParsedContent()', () => {
@@ -158,18 +170,6 @@ describe('StreamMessageV30', () => {
             )
 
             assert.deepEqual(msg.toArray(), array)
-        })
-    })
-
-    describe('validation', () => {
-        it('should throw if id does not define all fields', () => {
-            assert.throws(() => StreamMessage.create(
-                [undefined, 0], null, StreamMessage.CONTENT_TYPES.JSON, {},
-                StreamMessage.SIGNATURE_TYPES.NONE, null,
-            ), (err) => {
-                assert.equal(err.message, 'streamId must be defined!')
-                return true
-            })
         })
     })
 })

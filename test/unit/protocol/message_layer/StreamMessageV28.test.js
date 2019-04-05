@@ -69,6 +69,17 @@ describe('StreamMessageV28', () => {
 
             assert.deepEqual(serialized, JSON.stringify(arr))
         })
+        it('correctly serializes messages to v31', () => {
+            const arr = [31, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, '', ''],
+                [null, null], StreamMessage.CONTENT_TYPES.JSON, StreamMessage.ENCRYPTION_TYPES.NONE, '{"valid": "json"}', 0, null]
+
+            const serialized = new StreamMessageV28(
+                'TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0,
+                941516902, 941499898, StreamMessage.CONTENT_TYPES.JSON, '{"valid": "json"}',
+            ).serialize(31)
+
+            assert.deepEqual(serialized, JSON.stringify(arr))
+        })
     })
 
     describe('getParsedContent()', () => {

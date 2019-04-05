@@ -37,11 +37,15 @@ export default class StreamMessage {
     getMessageRef() {
         throw new Error('getMessageRef must be implemented')
     }
+
+    getEncryptionType() {
+        return StreamMessage.ENCRYPTION_TYPES.NONE
+    }
     /* eslint-enable class-methods-use-this */
 
     serializeContent(content) {
         if (typeof content === 'string') {
-            return content
+            return content // GROUP_KEY_REQUEST, GROUP_KEY_RESPONSE_SIMPLE and GROUP_KEY_RESET_SIMPLE are always strings
         } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof content === 'object') {
             return JSON.stringify(content)
         } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON) {
@@ -65,6 +69,11 @@ export default class StreamMessage {
                     this,
                 )
             }
+        } else if ((this.contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_REQUEST ||
+            this.contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_RESPONSE_SIMPLE ||
+            this.contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_RESET_SIMPLE) &&
+            typeof content === 'string') {
+            return content
         } else {
             throw new Error(`Unsupported content type: ${this.contentType}`)
         }
@@ -98,10 +107,20 @@ export default class StreamMessage {
 
 StreamMessage.CONTENT_TYPES = {
     JSON: 27,
+    GROUP_KEY_REQUEST: 28,
+    GROUP_KEY_RESPONSE_SIMPLE: 29,
+    GROUP_KEY_RESET_SIMPLE: 30,
 }
 
 StreamMessage.SIGNATURE_TYPES = {
     NONE: 0,
     ETH_LEGACY: 1,
     ETH: 2,
+}
+
+StreamMessage.ENCRYPTION_TYPES = {
+    NONE: 0,
+    RSA: 1,
+    AES: 2,
+    NEW_KEY_AND_AES: 3,
 }
