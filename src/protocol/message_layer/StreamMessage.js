@@ -98,9 +98,9 @@ export default class StreamMessage {
         return !!this.getParsedContent()[BYE_KEY]
     }
 
-    static create(messageIdArgsArray, prevMessageRefArgsArray, contentType, content, signatureType, signature) {
+    static create(messageIdArgsArray, prevMessageRefArgsArray, contentType, encryptionType, content, signatureType, signature) {
         const C = StreamMessage.latestClass
-        return new C(messageIdArgsArray, prevMessageRefArgsArray, contentType, content, signatureType, signature)
+        return new C(messageIdArgsArray, prevMessageRefArgsArray, contentType, encryptionType, content, signatureType, signature)
     }
 }
 /* static */ StreamMessage.LATEST_VERSION = LATEST_VERSION
