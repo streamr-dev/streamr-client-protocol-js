@@ -1,5 +1,4 @@
 import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
-import InvalidJsonError from '../../errors/InvalidJsonError'
 import StreamMessage from './StreamMessage'
 import MessageID from './MessageID'
 import MessageRef from './MessageRef'
@@ -11,31 +10,12 @@ const VERSION = 31
 
 export default class StreamMessageV31 extends StreamMessage {
     constructor(messageIdArgsArray, prevMessageRefArgsArray, contentType, encryptionType, content, signatureType, signature) {
-        super(VERSION, undefined, contentType, content)
+        super(VERSION, undefined, contentType, encryptionType, content)
         this.messageId = new MessageID(...messageIdArgsArray)
         this.prevMsgRef = prevMessageRefArgsArray ? new MessageRef(...prevMessageRefArgsArray) : null
         this.encryptionType = encryptionType
         this.signatureType = signatureType
         this.signature = signature
-    }
-
-    parseContent(content) {
-        if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof content === 'object') {
-            return content
-        } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof content === 'string') {
-            try {
-                return JSON.parse(content)
-            } catch (err) {
-                throw new InvalidJsonError(
-                    this.streamId,
-                    content,
-                    err,
-                    this,
-                )
-            }
-        } else {
-            throw new Error(`Unsupported content type: ${this.contentType}`)
-        }
     }
 
     getStreamId() {
@@ -56,10 +36,6 @@ export default class StreamMessageV31 extends StreamMessage {
 
     getMessageRef() {
         return new MessageRef(this.getTimestamp(), this.messageId.sequenceNumber)
-    }
-
-    getEncryptionType() {
-        return this.encryptionType
     }
 
     toArray(parsedContent = false) {

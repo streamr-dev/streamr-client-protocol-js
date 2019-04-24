@@ -8,7 +8,7 @@ const VERSION = 29
 
 export default class StreamMessageV29 extends StreamMessage {
     constructor(streamId, streamPartition, timestamp, ttl, offset, previousOffset, contentType, content, signatureType, publisherAddress, signature) {
-        super(VERSION, streamId, contentType, content)
+        super(VERSION, streamId, contentType, StreamMessage.ENCRYPTION_TYPES.NONE, content)
         this.ttl = ttl
         this.streamPartition = streamPartition
         this.timestamp = timestamp

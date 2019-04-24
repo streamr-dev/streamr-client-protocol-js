@@ -4,13 +4,14 @@ const BYE_KEY = '_bye'
 const LATEST_VERSION = 30
 
 export default class StreamMessage {
-    constructor(version, streamId, contentType, content) {
+    constructor(version, streamId, contentType, encryptionType, content) {
         if (new.target === StreamMessage) {
             throw new TypeError('StreamMessage is abstract.')
         }
         this.version = version
         this.streamId = streamId
         this.contentType = contentType
+        this.encryptionType = encryptionType
         if (!content) {
             throw new Error('Content cannot be empty.')
         }
@@ -37,10 +38,6 @@ export default class StreamMessage {
     getMessageRef() {
         throw new Error('getMessageRef must be implemented')
     }
-
-    getEncryptionType() {
-        return StreamMessage.ENCRYPTION_TYPES.NONE
-    }
     /* eslint-enable class-methods-use-this */
 
     serializeContent(content) {
@@ -59,24 +56,26 @@ export default class StreamMessage {
         if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof content === 'object') {
             return content
         } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof content === 'string') {
-            try {
-                return JSON.parse(content)
-            } catch (err) {
-                throw new InvalidJsonError(
-                    this.streamId,
-                    content,
-                    err,
-                    this,
-                )
+            if (this.encryptionType === StreamMessage.ENCRYPTION_TYPES.NONE) {
+                try {
+                    return JSON.parse(content)
+                } catch (err) {
+                    throw new InvalidJsonError(
+                        this.streamId,
+                        content,
+                        err,
+                        this,
+                    )
+                }
             }
+            return content
         } else if ((this.contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_REQUEST ||
             this.contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_RESPONSE_SIMPLE ||
             this.contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_RESET_SIMPLE) &&
             typeof content === 'string') {
             return content
-        } else {
-            throw new Error(`Unsupported content type: ${this.contentType}`)
         }
+        throw new Error(`Unsupported content type: ${this.contentType}`)
     }
 
     getSerializedContent() {
