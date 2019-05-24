@@ -10,11 +10,10 @@ export default class StreamMessage {
         }
         this.version = version
         this.streamId = streamId
+        StreamMessage.validateContentType(contentType)
         this.contentType = contentType
         this.encryptionType = encryptionType
-        if (!content) {
-            throw new Error('Content cannot be empty.')
-        }
+        StreamMessage.validateContent(content, contentType)
         this.serializedContent = this.serializeContent(content)
         this.parsedContent = this.parseContent(content)
     }
@@ -38,44 +37,33 @@ export default class StreamMessage {
     getMessageRef() {
         throw new Error('getMessageRef must be implemented')
     }
-    /* eslint-enable class-methods-use-this */
 
     serializeContent(content) {
         if (typeof content === 'string') {
-            return content // GROUP_KEY_REQUEST, GROUP_KEY_RESPONSE_SIMPLE and GROUP_KEY_RESET_SIMPLE are always strings
-        } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof content === 'object') {
+            return content
+        } else if (typeof content === 'object') {
             return JSON.stringify(content)
-        } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON) {
-            throw new Error('Stream payloads can only be objects!')
-        } else {
-            throw new Error(`Unsupported content type: ${this.contentType}`)
         }
+        throw new Error('Stream payloads can only be objects!')
     }
+    /* eslint-enable class-methods-use-this */
 
     parseContent(content) {
-        if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof content === 'object') {
+        if (typeof content === 'object' || this.encryptionType !== StreamMessage.ENCRYPTION_TYPES.NONE) {
             return content
-        } else if (this.contentType === StreamMessage.CONTENT_TYPES.JSON && typeof content === 'string') {
-            if (this.encryptionType === StreamMessage.ENCRYPTION_TYPES.NONE) {
-                try {
-                    return JSON.parse(content)
-                } catch (err) {
-                    throw new InvalidJsonError(
-                        this.streamId,
-                        content,
-                        err,
-                        this,
-                    )
-                }
+        } else if (typeof content === 'string') {
+            try {
+                return JSON.parse(content)
+            } catch (err) {
+                throw new InvalidJsonError(
+                    this.streamId,
+                    content,
+                    err,
+                    this,
+                )
             }
-            return content
-        } else if ((this.contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_REQUEST ||
-            this.contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_RESPONSE_SIMPLE ||
-            this.contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_RESET_SIMPLE) &&
-            typeof content === 'string') {
-            return content
         }
-        throw new Error(`Unsupported content type: ${this.contentType}`)
+        throw new Error(`Unsupported content type: ${typeof content}`)
     }
 
     getSerializedContent() {
@@ -100,6 +88,40 @@ export default class StreamMessage {
     static create(messageIdArgsArray, prevMessageRefArgsArray, contentType, encryptionType, content, signatureType, signature) {
         const C = StreamMessage.latestClass
         return new C(messageIdArgsArray, prevMessageRefArgsArray, contentType, encryptionType, content, signatureType, signature)
+    }
+
+    static validateContentType(contentType) {
+        if (!Object.values(StreamMessage.CONTENT_TYPES).includes(contentType)) {
+            throw new Error(`Unsupported content type: ${contentType}`)
+        }
+    }
+
+    static validateContent(content, contentType) {
+        if (!content) {
+            throw new Error('Content cannot be empty.')
+        }
+        if (contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_REQUEST) {
+            if (!content.publicKey) {
+                throw new Error(`Content of type ${contentType} must contain a 'publicKey' field.`)
+            } else if (content.range && !content.range.start && !content.range.end) {
+                throw new Error(`Field 'range' in content of type ${contentType} must contain fields 'start' and 'end'.`)
+            }
+        } else if (contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_RESPONSE_SIMPLE) {
+            if (!Array.isArray(content)) {
+                throw new Error(`Content of type ${contentType} must be an array of objects.`)
+            } else if (content.range && !content.range.start && !content.range.end) {
+                throw new Error(`Field 'range' in content of type ${contentType} must contain fields 'start' and 'end'.`)
+            }
+            content.forEach((keyResponse) => {
+                if (!keyResponse.groupKey || !keyResponse.start) {
+                    throw new Error(`Each element in content of type ${contentType} must contain 'groupKey' and 'start' fields.`)
+                }
+            })
+        } else if (contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_RESET_SIMPLE) {
+            if (!content.groupKey || !content.start) {
+                throw new Error(`Content of type ${contentType} must contain 'groupKey' and 'start' fields.`)
+            }
+        }
     }
 }
 /* static */ StreamMessage.LATEST_VERSION = LATEST_VERSION

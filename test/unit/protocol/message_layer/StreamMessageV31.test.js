@@ -175,7 +175,7 @@ describe('StreamMessageV31', () => {
     })
 
     describe('validation', () => {
-        it('should throw if id does not define all fields', () => {
+        it('should throw if it does not define all fields', () => {
             assert.throws(() => StreamMessage.create(
                 [undefined, 0], null, StreamMessage.CONTENT_TYPES.JSON, StreamMessage.ENCRYPTION_TYPES.NONE, {
                     foo: 'bar',
@@ -183,6 +183,89 @@ describe('StreamMessageV31', () => {
                 StreamMessage.SIGNATURE_TYPES.NONE, null,
             ), (err) => {
                 assert.equal(err.message, 'streamId must be defined!')
+                return true
+            })
+        })
+        it('Throws with an invalid content type', () => {
+            assert.throws(() => StreamMessage.create(
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId', 'msg-chain-id'], null, 128, StreamMessage.ENCRYPTION_TYPES.NONE, {
+                    foo: 'bar',
+                },
+                StreamMessage.SIGNATURE_TYPES.NONE, null,
+            ), (err) => {
+                assert.equal(err.message, 'Unsupported content type: 128')
+                return true
+            })
+        })
+        it('Throws with an invalid content of type GROUP_KEY_REQUEST', () => {
+            assert.throws(() => StreamMessage.create(
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId', 'msg-chain-id'], null,
+                StreamMessage.CONTENT_TYPES.GROUP_KEY_REQUEST, StreamMessage.ENCRYPTION_TYPES.NONE, {
+                    wrongField: 'some-public-key',
+                },
+                StreamMessage.SIGNATURE_TYPES.NONE, null,
+            ), (err) => {
+                assert.equal(err.message, 'Content of type 28 must contain a \'publicKey\' field.')
+                return true
+            })
+        })
+        it('Does not throws with a valid content of type GROUP_KEY_REQUEST', () => {
+            StreamMessage.create(
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId', 'msg-chain-id'], null,
+                StreamMessage.CONTENT_TYPES.GROUP_KEY_REQUEST, StreamMessage.ENCRYPTION_TYPES.NONE, {
+                    publicKey: 'some-public-key',
+                },
+                StreamMessage.SIGNATURE_TYPES.NONE, null,
+            )
+        })
+        it('Throws with an invalid content of type GROUP_KEY_RESPONSE_SIMPLE (1)', () => {
+            assert.throws(() => StreamMessage.create(
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId', 'msg-chain-id'], null,
+                StreamMessage.CONTENT_TYPES.GROUP_KEY_RESPONSE_SIMPLE, StreamMessage.ENCRYPTION_TYPES.NONE, {
+                    foo: 'bar',
+                },
+                StreamMessage.SIGNATURE_TYPES.NONE, null,
+            ), (err) => {
+                assert.equal(err.message, 'Content of type 29 must be an array of objects.')
+                return true
+            })
+        })
+        it('Throws with an invalid content of type GROUP_KEY_RESPONSE_SIMPLE (2)', () => {
+            assert.throws(() => StreamMessage.create(
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId', 'msg-chain-id'], null,
+                StreamMessage.CONTENT_TYPES.GROUP_KEY_RESPONSE_SIMPLE, StreamMessage.ENCRYPTION_TYPES.NONE, [{
+                    groupKey: 'some-group-key',
+                    start: 23314,
+                }, {
+                    groupKey: 'some-group-key2',
+                    wrong: 233142345,
+                }],
+                StreamMessage.SIGNATURE_TYPES.NONE, null,
+            ), (err) => {
+                assert.equal(err.message, 'Each element in content of type 29 must contain \'groupKey\' and \'start\' fields.')
+                return true
+            })
+        })
+        it('Does not throws with a valid content of type GROUP_KEY_RESET_SIMPLE', () => {
+            StreamMessage.create(
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId', 'msg-chain-id'], null,
+                StreamMessage.CONTENT_TYPES.GROUP_KEY_RESET_SIMPLE, StreamMessage.ENCRYPTION_TYPES.NONE, {
+                    groupKey: 'some-group-key',
+                    start: 96789,
+                },
+                StreamMessage.SIGNATURE_TYPES.NONE, null,
+            )
+        })
+        it('Throws with an invalid content of type GROUP_KEY_RESET_SIMPLE', () => {
+            assert.throws(() => StreamMessage.create(
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId', 'msg-chain-id'], null,
+                StreamMessage.CONTENT_TYPES.GROUP_KEY_RESET_SIMPLE, StreamMessage.ENCRYPTION_TYPES.NONE, {
+                    groupKey: 'some-group-key2',
+                    wrong: 233142345,
+                },
+                StreamMessage.SIGNATURE_TYPES.NONE, null,
+            ), (err) => {
+                assert.equal(err.message, 'Content of type 30 must contain \'groupKey\' and \'start\' fields.')
                 return true
             })
         })
