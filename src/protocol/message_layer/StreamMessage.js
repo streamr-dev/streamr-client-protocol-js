@@ -127,7 +127,7 @@ export default class StreamMessage {
 /* static */ StreamMessage.LATEST_VERSION = LATEST_VERSION
 
 StreamMessage.CONTENT_TYPES = {
-    JSON: 27,
+    MESSAGE: 27,
     GROUP_KEY_REQUEST: 28,
     GROUP_KEY_RESPONSE_SIMPLE: 29,
     GROUP_KEY_RESET_SIMPLE: 30,
