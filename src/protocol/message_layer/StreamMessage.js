@@ -107,14 +107,12 @@ export default class StreamMessage {
                 throw new Error(`Field 'range' in content of type ${contentType} must contain fields 'start' and 'end'.`)
             }
         } else if (contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_RESPONSE_SIMPLE) {
-            if (!Array.isArray(content)) {
-                throw new Error(`Content of type ${contentType} must be an array of objects.`)
-            } else if (content.range && !content.range.start && !content.range.end) {
-                throw new Error(`Field 'range' in content of type ${contentType} must contain fields 'start' and 'end'.`)
+            if (!content.keys) {
+                throw new Error(`Content of type ${contentType} must contain a 'keys' field.`)
             }
-            content.forEach((keyResponse) => {
+            content.keys.forEach((keyResponse) => {
                 if (!keyResponse.groupKey || !keyResponse.start) {
-                    throw new Error(`Each element in content of type ${contentType} must contain 'groupKey' and 'start' fields.`)
+                    throw new Error(`Each element in field 'keys' of content of type ${contentType} must contain 'groupKey' and 'start' fields.`)
                 }
             })
         } else if (contentType === StreamMessage.CONTENT_TYPES.GROUP_KEY_RESET_SIMPLE) {

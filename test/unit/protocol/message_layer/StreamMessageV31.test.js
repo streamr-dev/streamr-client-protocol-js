@@ -226,25 +226,42 @@ describe('StreamMessageV31', () => {
                 },
                 StreamMessage.SIGNATURE_TYPES.NONE, null,
             ), (err) => {
-                assert.equal(err.message, 'Content of type 29 must be an array of objects.')
+                assert.equal(err.message, 'Content of type 29 must contain a \'keys\' field.')
                 return true
             })
         })
         it('Throws with an invalid content of type GROUP_KEY_RESPONSE_SIMPLE (2)', () => {
             assert.throws(() => StreamMessage.create(
                 ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId', 'msg-chain-id'], null,
-                StreamMessage.CONTENT_TYPES.GROUP_KEY_RESPONSE_SIMPLE, StreamMessage.ENCRYPTION_TYPES.NONE, [{
-                    groupKey: 'some-group-key',
-                    start: 23314,
-                }, {
-                    groupKey: 'some-group-key2',
-                    wrong: 233142345,
-                }],
+                StreamMessage.CONTENT_TYPES.GROUP_KEY_RESPONSE_SIMPLE, StreamMessage.ENCRYPTION_TYPES.NONE, {
+                    keys: [{
+                        groupKey: 'some-group-key',
+                        start: 23314,
+                    }, {
+                        groupKey: 'some-group-key2',
+                        wrong: 233142345,
+                    }],
+                },
                 StreamMessage.SIGNATURE_TYPES.NONE, null,
             ), (err) => {
-                assert.equal(err.message, 'Each element in content of type 29 must contain \'groupKey\' and \'start\' fields.')
+                assert.equal(err.message, 'Each element in field \'keys\' of content of type 29 must contain \'groupKey\' and \'start\' fields.')
                 return true
             })
+        })
+        it('Does not throw with a valid content of type GROUP_KEY_RESPONSE_SIMPLE', () => {
+            StreamMessage.create(
+                ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'publisherId', 'msg-chain-id'], null,
+                StreamMessage.CONTENT_TYPES.GROUP_KEY_RESPONSE_SIMPLE, StreamMessage.ENCRYPTION_TYPES.NONE, {
+                    keys: [{
+                        groupKey: 'some-group-key',
+                        start: 23314,
+                    }, {
+                        groupKey: 'some-group-key2',
+                        start: 233142345,
+                    }],
+                },
+                StreamMessage.SIGNATURE_TYPES.NONE, null,
+            )
         })
         it('Does not throws with a valid content of type GROUP_KEY_RESET_SIMPLE', () => {
             StreamMessage.create(
