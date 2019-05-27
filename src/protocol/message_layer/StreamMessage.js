@@ -91,7 +91,7 @@ export default class StreamMessage {
     }
 
     static validateContentType(contentType) {
-        if (!Object.values(StreamMessage.CONTENT_TYPES).includes(contentType)) {
+        if (!StreamMessage.VALID_CONTENTS.has(contentType)) {
             throw new Error(`Unsupported content type: ${contentType}`)
         }
     }
@@ -130,6 +130,7 @@ StreamMessage.CONTENT_TYPES = {
     GROUP_KEY_RESPONSE_SIMPLE: 29,
     GROUP_KEY_RESET_SIMPLE: 30,
 }
+StreamMessage.VALID_CONTENTS = new Set([27, 28, 29, 30])
 
 StreamMessage.SIGNATURE_TYPES = {
     NONE: 0,
