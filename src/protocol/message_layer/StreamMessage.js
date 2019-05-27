@@ -130,7 +130,7 @@ StreamMessage.CONTENT_TYPES = {
     GROUP_KEY_RESPONSE_SIMPLE: 29,
     GROUP_KEY_RESET_SIMPLE: 30,
 }
-StreamMessage.VALID_CONTENTS = new Set([27, 28, 29, 30])
+StreamMessage.VALID_CONTENTS = new Set(Object.values(StreamMessage.CONTENT_TYPES))
 
 StreamMessage.SIGNATURE_TYPES = {
     NONE: 0,
