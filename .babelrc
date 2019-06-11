@@ -1,6 +1,9 @@
 {
     "presets": [
-        "@babel/preset-env"
+        ["@babel/preset-env", {
+            "useBuiltIns": "usage",
+            "corejs": 3,
+        }]
     ],
     "plugins": [
         "@babel/plugin-syntax-dynamic-import",
@@ -10,6 +13,9 @@
         "@babel/plugin-proposal-function-sent",
         "@babel/plugin-proposal-export-namespace-from",
         "@babel/plugin-proposal-numeric-separator",
-        "@babel/plugin-proposal-throw-expressions"
+        "@babel/plugin-proposal-throw-expressions",
+        ["@babel/plugin-transform-runtime", {
+            "corejs": 3,
+        }],
     ]
 }
