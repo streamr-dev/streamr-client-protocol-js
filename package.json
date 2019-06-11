@@ -16,6 +16,7 @@
     "prepare": "npm run build",
     "dev": "webpack --progress --colors --watch",
     "eslint": "eslint src/** test/**",
+    "pretest": "npm run eslint",
     "test": "jest"
   },
   "engines": {
