@@ -21,10 +21,12 @@ describe('deserialize()', () => {
         const hrend = process.hrtime(hrstart)
 
         console.info('Execution time: %dms', end)
-        // console.info('Execution time (hr): %ds %dms', hrend[0], hrend[1] / 1000000)
+        console.info('Execution time (hr): %ds %dms', hrend[0], hrend[1] / 1000000)
         const used = process.memoryUsage()
         Object.keys(used).forEach((key) => {
+            /* eslint-disable no-mixed-operators */
             console.log(`${key} ${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB`)
+            /* eslint-enable no-mixed-operators */
         })
     }
     it('compare deserialize to other parsing functions', () => {
