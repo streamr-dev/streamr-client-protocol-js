@@ -4,11 +4,11 @@ import ResendLastRequest from './ResendLastRequest'
 const VERSION = 1
 
 export default class ResendLastRequestV1 extends ResendLastRequest {
-    constructor(streamId, streamPartition, subId, numberLast, sessionToken) {
+    constructor(streamId, streamPartition, requestId, numberLast, sessionToken) {
         super(VERSION)
         this.streamId = streamId
         this.streamPartition = streamPartition
-        this.subId = subId
+        this.requestId = requestId
         this.numberLast = numberLast
         this.sessionToken = sessionToken
     }
@@ -18,7 +18,7 @@ export default class ResendLastRequestV1 extends ResendLastRequest {
         array.push(...[
             this.streamId,
             this.streamPartition,
-            this.subId,
+            this.requestId,
             this.numberLast,
             this.sessionToken,
         ])

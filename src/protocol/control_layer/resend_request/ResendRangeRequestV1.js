@@ -6,11 +6,11 @@ import ResendRangeRequest from './ResendRangeRequest'
 const VERSION = 1
 
 export default class ResendRangeRequestV1 extends ResendRangeRequest {
-    constructor(streamId, streamPartition, subId, fromMsgRefArgsArray, toMsgRefArgsArray, publisherId, msgChainId, sessionToken) {
+    constructor(streamId, streamPartition, requestId, fromMsgRefArgsArray, toMsgRefArgsArray, publisherId, msgChainId, sessionToken) {
         super(VERSION)
         this.streamId = streamId
         this.streamPartition = streamPartition
-        this.subId = subId
+        this.requestId = requestId
         this.fromMsgRef = new MessageRef(...fromMsgRefArgsArray)
         this.toMsgRef = new MessageRef(...toMsgRefArgsArray)
         if (this.fromMsgRef.timestamp > this.toMsgRef.timestamp) {
@@ -26,7 +26,7 @@ export default class ResendRangeRequestV1 extends ResendRangeRequest {
         array.push(...[
             this.streamId,
             this.streamPartition,
-            this.subId,
+            this.requestId,
             JSON.parse(this.fromMsgRef.serialize(messageLayerVersion)),
             JSON.parse(this.toMsgRef.serialize(messageLayerVersion)),
             this.publisherId,
