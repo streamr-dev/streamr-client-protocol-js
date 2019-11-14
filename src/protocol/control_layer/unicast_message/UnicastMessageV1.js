@@ -7,8 +7,8 @@ import UnicastMessageV0 from './UnicastMessageV0'
 const VERSION = 1
 
 export default class UnicastMessageV1 extends UnicastMessage {
-    constructor(subId, streamMessage) {
-        super(VERSION, subId)
+    constructor(requestId, streamMessage) {
+        super(VERSION, requestId)
         this.streamMessage = streamMessage
     }
 
@@ -26,16 +26,16 @@ export default class UnicastMessageV1 extends UnicastMessage {
             if (messageLayerVersion && messageLayerVersion !== this.streamMessage.version) {
                 streamMsg = this.streamMessage.toOtherVersion(messageLayerVersion)
             }
-            return new UnicastMessageV0(streamMsg, this.subId)
+            return new UnicastMessageV0(streamMsg, this.requestId)
         }
         throw new UnsupportedVersionError(version, 'Supported versions: [0, 1]')
     }
 
     static getConstructorArgs(array) {
-        const subId = array[0]
+        const requestId = array[0]
         const streamMessageArray = array[1]
         const streamMessage = StreamMessageFactory.deserialize(streamMessageArray)
-        return [subId, streamMessage]
+        return [requestId, streamMessage]
     }
 }
 

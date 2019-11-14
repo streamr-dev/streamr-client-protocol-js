@@ -99,7 +99,7 @@ const examplesByTypeV0 = {
 const examplesByTypeV1 = {
     '0': [1, 0, [30, ['streamId', 0, 1529549961116, 0, 'address', 'msg-chain-id'],
         [1529549961000, 0], StreamMessage.CONTENT_TYPES.MESSAGE, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']],
-    '1': [1, 1, 'subId', [30, ['streamId', 0, 1529549961116, 0, 'address', 'msg-chain-id'],
+    '1': [1, 1, 'requestId', [30, ['streamId', 0, 1529549961116, 0, 'address', 'msg-chain-id'],
         [1529549961000, 0], StreamMessage.CONTENT_TYPES.MESSAGE, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']],
     '2': [1, 2, 'streamId', 0],
     '3': [1, 3, 'streamId', 0],

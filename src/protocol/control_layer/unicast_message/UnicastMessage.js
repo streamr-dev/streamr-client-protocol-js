@@ -3,18 +3,18 @@ import ControlMessage from '../ControlMessage'
 const TYPE = 1
 
 export default class UnicastMessage extends ControlMessage {
-    constructor(version, subId) {
+    constructor(version, requestId) {
         if (new.target === UnicastMessage) {
             throw new TypeError('UnicastMessage is abstract.')
         }
         super(version, TYPE)
-        this.subId = subId
+        this.requestId = requestId
     }
 
     toArray() {
         const array = super.toArray()
         array.push(...[
-            this.subId,
+            this.requestId,
         ])
         return array
     }

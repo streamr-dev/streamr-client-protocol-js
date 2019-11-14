@@ -199,19 +199,19 @@ Field    | Type | Description
 
 #### UnicastMessage
 
-A message addressed to a specific subscription. It contains a `StreamMessage` as a payload at the Message Layer level. The `StreamMessage` representation is also an array (nested in the `UnicastMessage` array) which is described in the [StreamMessage](#streammessage) section.
+A message addressed in response to a specific request. It contains a `StreamMessage` as a payload at the Message Layer level. The `StreamMessage` representation is also an array (nested in the `UnicastMessage` array) which is described in the [StreamMessage](#streammessage) section.
 
 ```
-[version, type, subId, streamMessage]
+[version, type, requestId, streamMessage]
 ```
 Example:
 ```
-[1, 1, "sub-id", [...streamMessageFields]]
+[1, 1, "requestId", [...streamMessageFields]]
 ```
 
 Field    | Type | Description
 -------- | ---- | --------
-`subId` | `string` | The subscription id to deliver the message to. Corresponds to the subscription id sent in a `ResendLastRequest`, a `ResendRangeRequest` or a `ResendFromRequest`.
+`requestId` | `string` | The request id to deliver the message to. Corresponds to the request id sent in a `ResendLastRequest`, a `ResendRangeRequest` or a `ResendFromRequest`.
 `streamMessage` | StreamMessage | The array representation of the `StreamMessage` to be delivered. Defined in the Message Layer.
 
 #### SubscribeResponse
