@@ -1,3 +1,4 @@
+import { validateIsInteger, validateIsString } from '../../utils/validations'
 import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
 import StreamMessage from './StreamMessage'
 import StreamMessageV28 from './StreamMessageV28'
@@ -11,6 +12,10 @@ const VERSION = 30
 export default class StreamMessageV30 extends StreamMessage {
     constructor(messageIdArgsArray, prevMessageRefArgsArray, contentType, content, signatureType, signature, parseContent = true) {
         super(VERSION, undefined, contentType, StreamMessage.ENCRYPTION_TYPES.NONE, content, parseContent)
+
+        validateIsInteger('signatureType', signatureType)
+        validateIsString('signature', signature, true)
+
         this.messageId = new MessageID(...messageIdArgsArray)
         this.prevMsgRef = prevMessageRefArgsArray ? new MessageRef(...prevMessageRefArgsArray) : null
         this.signatureType = signatureType
