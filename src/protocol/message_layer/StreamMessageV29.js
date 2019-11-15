@@ -101,16 +101,15 @@ export default class StreamMessageV29 extends StreamMessage {
                 this.ttl, this.offset, this.previousOffset, this.contentType, this.getContent(), this.parseContentOption,
             )
         } else if (version === 30) {
-            // null fields in order: prevMsgRef.timestamp, prevMsgRef.sequenceNumber
             return new StreamMessageV30(
                 [this.streamId, this.streamPartition, this.timestamp, 0, this.publisherAddress || '', ''],
-                [null, null], this.contentType, this.getContent(), this.signatureType, this.signature, this.parseContentOption,
+                null, this.contentType, this.getContent(), this.signatureType, this.signature, this.parseContentOption,
             )
         } else if (version === 31) {
             // null fields in order: prevMsgRef.timestamp, prevMsgRef.sequenceNumber
             return new StreamMessageV31(
                 [this.streamId, this.streamPartition, this.timestamp, 0, this.publisherAddress || '', ''],
-                [null, null], this.contentType, StreamMessage.ENCRYPTION_TYPES.NONE, this.getContent(),
+                null, this.contentType, StreamMessage.ENCRYPTION_TYPES.NONE, this.getContent(),
                 this.signatureType, this.signature, this.parseContentOption,
             )
         }
