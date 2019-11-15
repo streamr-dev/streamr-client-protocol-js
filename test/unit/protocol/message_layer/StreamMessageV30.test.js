@@ -128,7 +128,7 @@ describe('StreamMessageV30', () => {
                 foo: 'bar',
             }
             const msg = new StreamMessageV30(
-                ['streamId', 0, Date.now(), 0, 'publisherId', 1], [1529549961000, 0], StreamMessage.CONTENT_TYPES.MESSAGE, content,
+                ['streamId', 0, Date.now(), 0, 'publisherId', '1'], [1529549961000, 0], StreamMessage.CONTENT_TYPES.MESSAGE, content,
                 StreamMessage.SIGNATURE_TYPES.ETH, 'signature',
             )
             assert.deepEqual(msg.getParsedContent(), content)
@@ -138,7 +138,7 @@ describe('StreamMessageV30', () => {
                 foo: 'bar',
             }
             const msg = new StreamMessageV30(
-                ['streamId', 0, Date.now(), 0, 'publisherId', 1], [1529549961000, 0], StreamMessage.CONTENT_TYPES.MESSAGE, JSON.stringify(content),
+                ['streamId', 0, Date.now(), 0, 'publisherId', '1'], [1529549961000, 0], StreamMessage.CONTENT_TYPES.MESSAGE, JSON.stringify(content),
                 StreamMessage.SIGNATURE_TYPES.ETH, 'signature',
             )
             assert.deepEqual(msg.getParsedContent(), content)
