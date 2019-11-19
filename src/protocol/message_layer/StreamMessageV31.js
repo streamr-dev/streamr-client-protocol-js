@@ -2,7 +2,7 @@ import { validateIsInteger, validateIsString } from '../../utils/validations'
 import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
 import StreamMessage from './StreamMessage'
 import MessageID from './MessageID'
-import MessageRef from './MessageRef'
+import MessageRefStrict from './MessageRefStrict'
 import StreamMessageV28 from './StreamMessageV28'
 import StreamMessageV29 from './StreamMessageV29'
 import StreamMessageV30 from './StreamMessageV30'
@@ -17,7 +17,7 @@ export default class StreamMessageV31 extends StreamMessage {
         validateIsString('signature', signature, true)
 
         this.messageId = new MessageID(...messageIdArgsArray)
-        this.prevMsgRef = prevMessageRefArgsArray ? new MessageRef(...prevMessageRefArgsArray) : null
+        this.prevMsgRef = prevMessageRefArgsArray ? new MessageRefStrict(...prevMessageRefArgsArray) : null
         this.encryptionType = encryptionType
         this.signatureType = signatureType
         this.signature = signature
@@ -48,7 +48,7 @@ export default class StreamMessageV31 extends StreamMessage {
     }
 
     getMessageRef() {
-        return new MessageRef(this.getTimestamp(), this.getSequenceNumber())
+        return new MessageRefStrict(this.getTimestamp(), this.getSequenceNumber())
     }
 
     toArray(parsedContent = false) {

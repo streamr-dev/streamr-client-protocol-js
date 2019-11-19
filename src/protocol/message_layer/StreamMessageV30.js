@@ -5,7 +5,7 @@ import StreamMessageV28 from './StreamMessageV28'
 import StreamMessageV29 from './StreamMessageV29'
 import StreamMessageV31 from './StreamMessageV31'
 import MessageID from './MessageID'
-import MessageRef from './MessageRef'
+import MessageRefStrict from './MessageRefStrict'
 
 const VERSION = 30
 
@@ -17,7 +17,7 @@ export default class StreamMessageV30 extends StreamMessage {
         validateIsString('signature', signature, true)
 
         this.messageId = new MessageID(...messageIdArgsArray)
-        this.prevMsgRef = prevMessageRefArgsArray ? new MessageRef(...prevMessageRefArgsArray) : null
+        this.prevMsgRef = prevMessageRefArgsArray ? new MessageRefStrict(...prevMessageRefArgsArray) : null
         this.signatureType = signatureType
         this.signature = signature
     }
@@ -47,7 +47,7 @@ export default class StreamMessageV30 extends StreamMessage {
     }
 
     getMessageRef() {
-        return new MessageRef(this.getTimestamp(), this.getSequenceNumber())
+        return new MessageRefStrict(this.getTimestamp(), this.getSequenceNumber())
     }
 
     toArray(parsedContent = false) {

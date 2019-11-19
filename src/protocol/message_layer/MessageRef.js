@@ -3,7 +3,7 @@ import { validateIsNotNegativeInteger } from '../../utils/validations'
 export default class MessageRef {
     constructor(timestamp, sequenceNumber) {
         validateIsNotNegativeInteger('timestamp', timestamp)
-        validateIsNotNegativeInteger('sequenceNumber', sequenceNumber)
+        validateIsNotNegativeInteger('sequenceNumber', sequenceNumber, true)
         this.timestamp = timestamp
         this.sequenceNumber = sequenceNumber
     }
