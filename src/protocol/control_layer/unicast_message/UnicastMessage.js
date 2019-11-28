@@ -1,3 +1,4 @@
+import { validateIsNotEmptyString } from '../../../utils/validations'
 import ControlMessage from '../ControlMessage'
 
 const TYPE = 1
@@ -8,6 +9,7 @@ export default class UnicastMessage extends ControlMessage {
             throw new TypeError('UnicastMessage is abstract.')
         }
         super(version, TYPE)
+        validateIsNotEmptyString('requestId', requestId)
         this.requestId = requestId
     }
 
@@ -26,9 +28,9 @@ export default class UnicastMessage extends ControlMessage {
         return this.toOtherVersion(version, messageLayerVersion).serialize()
     }
 
-    static create(subId, streamMessage) {
+    static create(requestId, streamMessage) {
         const C = ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE)
-        return new C(subId, streamMessage)
+        return new C(requestId, streamMessage)
     }
 }
 

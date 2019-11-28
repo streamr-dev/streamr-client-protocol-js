@@ -1,3 +1,4 @@
+import { validateIsNotEmptyString, validateIsNotNegativeInteger } from '../../../utils/validations'
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import ControlMessage from '../ControlMessage'
 import ResendResponseResent from './ResendResponseResent'
@@ -8,6 +9,11 @@ const VERSION = 1
 export default class ResendResponseResentV1 extends ResendResponseResent {
     constructor(streamId, streamPartition, requestId) {
         super(VERSION)
+
+        validateIsNotEmptyString('streamId', streamId)
+        validateIsNotNegativeInteger('streamPartition', streamPartition)
+        validateIsNotEmptyString('requestId', requestId)
+
         this.streamId = streamId
         this.streamPartition = streamPartition
         this.requestId = requestId

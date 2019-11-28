@@ -1,3 +1,4 @@
+import { validateIsNotEmptyString, validateIsNotNegativeInteger, validateIsString } from '../../../utils/validations'
 import ValidationError from '../../../errors/ValidationError'
 import ControlMessage from '../ControlMessage'
 
@@ -5,22 +6,24 @@ const TYPE = 'resend'
 const VERSION = 0
 
 export default class ResendRequestV0 extends ControlMessage {
-    constructor(streamId, streamPartition, subId, resendOptions, apiKey, sessionToken) {
+    constructor(streamId, streamPartition, requestId, resendOptions, apiKey, sessionToken) {
         super(VERSION, TYPE)
+
+        validateIsNotEmptyString('streamId', streamId)
+        validateIsNotNegativeInteger('streamPartition', streamPartition)
+        validateIsNotEmptyString('requestId', requestId)
+        validateIsString('apiKey', apiKey, true)
+        validateIsString('sessionToken', sessionToken, true)
+        if (!resendOptions.resend_all && !resendOptions.resend_last
+            && resendOptions.resend_from == null && resendOptions.resend_from_time == null) {
+            throw new ValidationError('Invalid resend options!')
+        }
+
         this.streamId = streamId
         this.apiKey = apiKey
         this.sessionToken = sessionToken
-
-        if (!resendOptions.resend_all && !resendOptions.resend_last
-          && resendOptions.resend_from == null && resendOptions.resend_from_time == null) {
-            throw new ValidationError('Invalid resend options!')
-        }
-        if (!subId) {
-            throw new ValidationError('Subscription ID not given!')
-        }
-
         this.streamPartition = streamPartition
-        this.subId = subId
+        this.requestId = requestId
         this.resendOptions = resendOptions
     }
 
@@ -31,7 +34,7 @@ export default class ResendRequestV0 extends ControlMessage {
             authKey: this.apiKey,
             sessionToken: this.sessionToken,
             partition: this.streamPartition,
-            sub: this.subId,
+            sub: this.requestId,
             ...this.resendOptions,
         }
     }

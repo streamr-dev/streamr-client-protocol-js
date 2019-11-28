@@ -1,3 +1,4 @@
+import { validateIsNotEmptyString } from '../../../utils/validations'
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import ControlMessage from '../ControlMessage'
 import ErrorResponse from './ErrorResponse'
@@ -9,13 +10,14 @@ const VERSION = 0
 export default class ErrorResponseV0 extends ErrorResponse {
     constructor(errorMessage) {
         super(VERSION)
+        validateIsNotEmptyString('errorMessage', errorMessage)
         this.payload = new ErrorPayload(errorMessage)
     }
 
     toArray() {
         const array = super.toArray()
         array.push(...[
-            null, // subId
+            null, // requestId
             this.payload.toObject(),
         ])
         return array
@@ -29,7 +31,7 @@ export default class ErrorResponseV0 extends ErrorResponse {
     }
 
     static getConstructorArgs(array) {
-        const errorObject = array[1] // index 0 is the null subId
+        const errorObject = array[1] // index 0 is the null requestId
         const payload = ErrorPayload.deserialize(errorObject)
         return [payload.error]
     }

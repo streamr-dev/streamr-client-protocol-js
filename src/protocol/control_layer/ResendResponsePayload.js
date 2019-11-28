@@ -1,18 +1,17 @@
+import { validateIsNotEmptyString } from '../../utils/validations'
 import StreamAndPartition from './StreamAndPartition'
 
 export default class ResendResponsePayload extends StreamAndPartition {
-    constructor(streamId, streamPartition, subId) {
+    constructor(streamId, streamPartition, requestId) {
         super(streamId, streamPartition)
-        if (subId == null) {
-            throw new Error('Subscription id cannot be null!')
-        }
-        this.subId = subId
+        validateIsNotEmptyString('requestId', requestId)
+        this.requestId = requestId
     }
 
     toObject() {
         return {
             ...super.toObject(),
-            sub: this.subId,
+            sub: this.requestId,
         }
     }
 

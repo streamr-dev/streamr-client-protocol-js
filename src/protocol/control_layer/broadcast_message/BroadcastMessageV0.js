@@ -1,3 +1,4 @@
+import { validateIsNotNullOrUndefined } from '../../../utils/validations'
 import UnsupportedVersionError from '../../../errors/UnsupportedVersionError'
 import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
 import ControlMessage from '../ControlMessage'
@@ -9,13 +10,14 @@ const VERSION = 0
 export default class BroadcastMessageV0 extends BroadcastMessage {
     constructor(streamMessage) {
         super(VERSION)
+        validateIsNotNullOrUndefined('streamMessage', streamMessage)
         this.payload = streamMessage
     }
 
     toArray(messageLayerVersion) {
         const array = super.toArray()
         array.push(...[
-            null, // subId
+            null, // requestId
             JSON.parse(this.payload.serialize(messageLayerVersion)),
         ])
         return array
