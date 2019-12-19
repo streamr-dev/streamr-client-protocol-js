@@ -2,6 +2,7 @@ import { validateIsString, validateIsNotEmptyString, validateIsNotNegativeIntege
 import ControlMessage from '../ControlMessage'
 import ValidationError from '../../../errors/ValidationError'
 import MessageRef from '../../message_layer/MessageRef'
+
 import ResendRangeRequest from './ResendRangeRequest'
 
 const VERSION = 1

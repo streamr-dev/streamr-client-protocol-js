@@ -2,8 +2,10 @@
 /* eslint-disable prefer-destructuring */
 
 const path = require('path')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const merge = require('lodash').merge
+
+const TerserPlugin = require('terser-webpack-plugin')
+const merge = require('webpack-merge')
+
 const pkg = require('./package.json')
 
 const libraryName = pkg.name
@@ -49,7 +51,20 @@ const clientConfig = merge({}, commonConfig, {
 })
 
 const clientMinifiedConfig = merge({}, clientConfig, {
-    plugins: [new UglifyJsPlugin()],
+    optimization: {
+        minimizer: [
+            new TerserPlugin({
+                cache: true,
+                parallel: true,
+                sourceMap: true,
+                terserOptions: {
+                    output: {
+                        comments: false,
+                    },
+                },
+            }),
+        ],
+    },
     output: {
         filename: libraryName + '.min.js',
     },
