@@ -205,9 +205,8 @@ describe('ControlMessage', () => {
                 serialized = null
             })
             afterEach(() => {
-                const clone = {
-                    ...array,
-                }
+                // deep clone array or object
+                const clone = Array.isArray(array) ? Array.from(array) : Object.assign({}, array)
                 serialized = ControlMessage.deserialize(array).serialize()
                 assert(typeof serialized === 'string')
                 assert.deepEqual(clone, JSON.parse(serialized))
@@ -332,9 +331,8 @@ describe('ControlMessage', () => {
                 serialized = null
             })
             afterEach(() => {
-                const clone = {
-                    ...array,
-                }
+                // deep clone array or object
+                const clone = Array.isArray(array) ? Array.from(array) : Object.assign({}, array)
                 serialized = ControlMessage.deserialize(array).serialize()
                 assert(typeof serialized === 'string')
                 assert.deepEqual(clone, JSON.parse(serialized))
