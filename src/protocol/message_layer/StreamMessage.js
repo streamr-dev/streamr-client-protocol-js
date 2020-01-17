@@ -184,8 +184,11 @@ export default class StreamMessage {
                 throw new Error(`Content of type ${contentType} must contain 'streamId', 'groupKey' and 'start' fields.`)
             }
         } else if (contentType === StreamMessage.CONTENT_TYPES.ERROR_MSG) {
+            if (!content.code) {
+                throw new Error(`Content of type ${contentType} must contain 'code' and 'message' fields.`)
+            }
             if (!content.message) {
-                throw new Error(`Content of type ${contentType} must contain 'message' field.`)
+                throw new Error(`Content of type ${contentType} must contain 'code' and 'message' fields.`)
             }
         }
     }
