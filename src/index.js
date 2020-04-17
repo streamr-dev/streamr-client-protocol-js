@@ -69,6 +69,7 @@ import UnsupportedVersionError from './errors/UnsupportedVersionError'
 import GapFillFailedError from './errors/GapFillFailedError'
 import TimestampUtil from './utils/TimestampUtil'
 import OrderingUtil from './utils/OrderingUtil'
+import StreamMessageValidator from './utils/StreamMessageValidator'
 
 export const ControlLayer = {
     BroadcastMessage,
@@ -137,6 +138,7 @@ export const Errors = {
 export const Utils = {
     TimestampUtil,
     OrderingUtil,
+    StreamMessageValidator,
 }
 
 export default {
