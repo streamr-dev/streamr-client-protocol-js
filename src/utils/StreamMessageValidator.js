@@ -1,5 +1,3 @@
-import { ethers } from 'ethers'
-
 import StreamMessage from '../protocol/message_layer/StreamMessage'
 import ValidationError from '../errors/ValidationError'
 
@@ -8,17 +6,22 @@ const KEY_EXCHANGE_STREAM_PREFIX = 'SYSTEM/keyexchange/'
 /**
  * Validates observed StreamMessages according to protocol rules, regardless of observer.
  * Functions needed for external interactions are injected as constructor args.
+ *
+ * The recoverAddress function could be imported from eg. ethers, but it would explode the bundle size, so
+ * better leave it up to whoever is the end user of this class to choose which library they use.
  */
 export default class StreamMessageValidator {
     /**
-     * @param getStream async function(streamId): returns the stream metadata object for streamId
-     * @param isPublisher async function(address, streamId): returns true if address is a permitted publisher on streamId
-     * @param isSubscriber async function(address, streamId): returns true if address is a permitted subscriber on streamId
+     * @param getStreamFn async function(streamId): returns the stream metadata object for streamId
+     * @param isPublisherFn async function(address, streamId): returns true if address is a permitted publisher on streamId
+     * @param isSubscriberFn async function(address, streamId): returns true if address is a permitted subscriber on streamId
+     * @param recoverAddressFn function(payload, signature): returns the Ethereum address that signed the payload to generate signature
      */
-    constructor(getStream, isPublisher, isSubscriber) {
-        this.getStream = getStream
-        this.isPublisher = isPublisher
-        this.isSubscriber = isSubscriber
+    constructor(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn) {
+        this.getStream = getStreamFn || throw new Error('getStream must be: async function(streamId): returns the stream metadata object for streamId')
+        this.isPublisher = isPublisherFn || throw new Error('async function(address, streamId): returns true if address is a permitted publisher on streamId')
+        this.isSubscriber = isSubscriberFn || throw new Error('async function(address, streamId): returns true if address is a permitted subscriber on streamId')
+        this.recoverAddress = recoverAddressFn || throw new Error('function(payload, signature): returns the Ethereum address that signed the payload to generate signature')
     }
 
     async validate(streamMessage) {
@@ -43,7 +46,7 @@ export default class StreamMessageValidator {
                 throw new ValidationError(`Stream requires signed data but message was not signed: ${streamMessage.serialize()}`)
             }
         } else {
-            StreamMessageValidator.checkSignature(streamMessage)
+            StreamMessageValidator.checkSignature(streamMessage, this.recoverAddress)
             const sender = streamMessage.getPublisherId()
 
             // Check that the sender of the message is a valid publisher of the stream
@@ -66,7 +69,7 @@ export default class StreamMessageValidator {
         const sender = streamMessage.getPublisherId()
         const recipient = streamMessage.getStreamId().substring(KEY_EXCHANGE_STREAM_PREFIX.length)
 
-        StreamMessageValidator.checkSignature(streamMessage)
+        StreamMessageValidator.checkSignature(streamMessage, this.recoverAddress)
 
         // Check that the recipient of the request is a valid publisher of the stream
         const recipientIsPublisher = await this.isPublisher(recipient, request.streamId)
@@ -89,7 +92,7 @@ export default class StreamMessageValidator {
             throw new ValidationError(`Group key responses can only occur on stream ids of form ${`${KEY_EXCHANGE_STREAM_PREFIX}{address}`}. Message: ${streamMessage.serialize()}`)
         }
 
-        StreamMessageValidator.checkSignature(streamMessage)
+        StreamMessageValidator.checkSignature(streamMessage, this.recoverAddress)
 
         const response = streamMessage.getParsedContent()
         const sender = streamMessage.getPublisherId()
@@ -108,13 +111,13 @@ export default class StreamMessageValidator {
         }
     }
 
-    static checkSignature(streamMessage) {
+    static checkSignature(streamMessage, recoverFn) {
         const payload = streamMessage.getPayloadToSign()
 
         if (streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH_LEGACY
             || streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH) {
             try {
-                const recoveredAddress = ethers.utils.verifyMessage(payload, streamMessage.signature)
+                const recoveredAddress = recoverFn(payload, streamMessage.signature)
                 if (recoveredAddress.toLowerCase() !== streamMessage.getPublisherId().toLowerCase()) {
                     throw new ValidationError(`Signature validation failed for message! Recovered address: ${recoveredAddress}, message: ${streamMessage.serialize()}`)
                 }
