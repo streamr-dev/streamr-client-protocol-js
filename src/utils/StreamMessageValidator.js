@@ -10,7 +10,6 @@ const KEY_EXCHANGE_STREAM_PREFIX = 'SYSTEM/keyexchange/'
  * Functions needed for external interactions are injected as constructor args.
  */
 export default class StreamMessageValidator {
-
     /**
      * @param getStream async function(streamId): returns the stream metadata object for streamId
      * @param isPublisher async function(address, streamId): returns true if address is a permitted publisher on streamId
@@ -29,8 +28,8 @@ export default class StreamMessageValidator {
             case StreamMessage.CONTENT_TYPES.GROUP_KEY_REQUEST:
                 return this._validateGroupKeyRequest(streamMessage)
             case StreamMessage.CONTENT_TYPES.GROUP_KEY_RESPONSE_SIMPLE:
-            case StreamMessage.GROUP_KEY_RESET_SIMPLE:
-                return this._validateGroupKeyResponse(streamMessage)
+            case StreamMessage.CONTENT_TYPES.GROUP_KEY_RESET_SIMPLE:
+                return this._validateGroupKeyResponseOrReset(streamMessage)
             default:
                 throw new ValidationError(`Unknown content type: ${streamMessage.contentType}!`)
         }
@@ -60,7 +59,7 @@ export default class StreamMessageValidator {
             throw new ValidationError(`Received unsigned group key request (the public key must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
         }
         if (!streamMessage.getStreamId().startsWith(KEY_EXCHANGE_STREAM_PREFIX)) {
-            throw new ValidationError(`Group key requests can only occur on stream ids of form ${KEY_EXCHANGE_STREAM_PREFIX + '{address}'}. Message: ${streamMessage.serialize()}`)
+            throw new ValidationError(`Group key requests can only occur on stream ids of form ${`${KEY_EXCHANGE_STREAM_PREFIX}{address}`}. Message: ${streamMessage.serialize()}`)
         }
 
         const request = streamMessage.getParsedContent()
@@ -76,18 +75,18 @@ export default class StreamMessageValidator {
         }
 
         // Check that the sender of the request is a valid subscriber of the stream
-        const senderIsSubscriber = await this.isSubscriber(streamMessage.getPublisherId(), request.streamId)
+        const senderIsSubscriber = await this.isSubscriber(sender, request.streamId)
         if (!senderIsSubscriber) {
-            throw new ValidationError(`${recipient} is not a publisher on stream ${request.streamId}. Group key request: ${streamMessage.serialize()}`)
+            throw new ValidationError(`${sender} is not a publisher on stream ${request.streamId}. Group key request: ${streamMessage.serialize()}`)
         }
     }
 
-    async _validateGroupKeyResponse(streamMessage) {
+    async _validateGroupKeyResponseOrReset(streamMessage) {
         if (!streamMessage.signature) {
             throw new ValidationError(`Received unsigned group key response (it must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
         }
         if (!streamMessage.getStreamId().startsWith(KEY_EXCHANGE_STREAM_PREFIX)) {
-            throw new ValidationError(`Group key responses can only occur on stream ids of form ${KEY_EXCHANGE_STREAM_PREFIX + '{address}'}. Message: ${streamMessage.serialize()}`)
+            throw new ValidationError(`Group key responses can only occur on stream ids of form ${`${KEY_EXCHANGE_STREAM_PREFIX}{address}`}. Message: ${streamMessage.serialize()}`)
         }
 
         StreamMessageValidator.checkSignature(streamMessage)
@@ -112,7 +111,8 @@ export default class StreamMessageValidator {
     static checkSignature(streamMessage) {
         const payload = streamMessage.getPayloadToSign()
 
-        if (streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH_LEGACY || streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH) {
+        if (streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH_LEGACY
+            || streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH) {
             try {
                 const recoveredAddress = ethers.utils.verifyMessage(payload, streamMessage.signature)
                 if (recoveredAddress.toLowerCase() !== streamMessage.getPublisherId().toLowerCase()) {
@@ -123,7 +123,7 @@ export default class StreamMessageValidator {
             }
         } else {
             // We should never end up here, as StreamMessage construction throws if the signature type is invalid
-            throw new ValidationError(`Unrecognized signature type: ${signatureType}`)
+            throw new ValidationError(`Unrecognized signature type: ${streamMessage.signatureType}`)
         }
     }
 }

@@ -130,8 +130,11 @@ export default class StreamMessage {
     }
 
     static create(messageIdArgsArray, prevMessageRefArgsArray, contentType, encryptionType, content, signatureType, signature) {
-        const C = StreamMessage.latestClass
-        return new C(messageIdArgsArray, prevMessageRefArgsArray, contentType, encryptionType, content, signatureType, signature)
+        if (StreamMessage.latestClass) {
+            const C = StreamMessage.latestClass
+            return new C(messageIdArgsArray, prevMessageRefArgsArray, contentType, encryptionType, content, signatureType, signature)
+        }
+        throw new Error('StreamMessage.latestClass is not defined! It should be defined by the latest StreamMessageVXX.js file.')
     }
 
     static from({
