@@ -7,7 +7,7 @@ const KEY_EXCHANGE_STREAM_PREFIX = 'SYSTEM/keyexchange/'
  * Validates observed StreamMessages according to protocol rules, regardless of observer.
  * Functions needed for external interactions are injected as constructor args.
  *
- * The recoverAddress function could be imported from eg. ethers, but it would explode the bundle size, so
+ * The recoverAddressFn function could be imported from eg. ethers, but it would explode the bundle size, so
  * better leave it up to whoever is the end user of this class to choose which library they use.
  */
 export default class StreamMessageValidator {
@@ -24,6 +24,15 @@ export default class StreamMessageValidator {
         this.recoverAddress = recoverAddressFn || throw new Error('function(payload, signature): returns the Ethereum address that signed the payload to generate signature')
     }
 
+    /**
+     * Checks that the given StreamMessage is satisfies the requirements of the protocol.
+     * This includes checking permissions as well as signature. The method supports all
+     * content types defined by the protocol.
+     *
+     * Resolves the promise if the message is valid, rejects otherwise.
+     *
+     * @param streamMessage the StreamMessage to validate.
+     */
     async validate(streamMessage) {
         switch (streamMessage.contentType) {
             case StreamMessage.CONTENT_TYPES.MESSAGE:
@@ -35,6 +44,34 @@ export default class StreamMessageValidator {
                 return this._validateGroupKeyResponseOrReset(streamMessage)
             default:
                 throw new ValidationError(`Unknown content type: ${streamMessage.contentType}!`)
+        }
+    }
+
+    /**
+     * Checks that the signature in the given StreamMessage is cryptographically valid.
+     * Resolves if valid, rejects otherwise.
+     *
+     * It's left up to the user of this method to decide which implementation to pass in as the recoverFn.
+     *
+     * @param streamMessage the StreamMessage to validate.
+     * @param recoverFn function(payload, signature): returns the Ethereum address that signed the payload to generate signature
+     */
+    static checkSignature(streamMessage, recoverFn) {
+        const payload = streamMessage.getPayloadToSign()
+
+        if (streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH_LEGACY
+            || streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH) {
+            try {
+                const recoveredAddress = recoverFn(payload, streamMessage.signature)
+                if (recoveredAddress.toLowerCase() !== streamMessage.getPublisherId().toLowerCase()) {
+                    throw new ValidationError(`Signature validation failed for message! Recovered address: ${recoveredAddress}, message: ${streamMessage.serialize()}`)
+                }
+            } catch (err) {
+                throw new ValidationError(`Signature validation failed for message! An error occurred: ${err}`)
+            }
+        } else {
+            // We should never end up here, as StreamMessage construction throws if the signature type is invalid
+            throw new ValidationError(`Unrecognized signature type: ${streamMessage.signatureType}`)
         }
     }
 
@@ -111,22 +148,4 @@ export default class StreamMessageValidator {
         }
     }
 
-    static checkSignature(streamMessage, recoverFn) {
-        const payload = streamMessage.getPayloadToSign()
-
-        if (streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH_LEGACY
-            || streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH) {
-            try {
-                const recoveredAddress = recoverFn(payload, streamMessage.signature)
-                if (recoveredAddress.toLowerCase() !== streamMessage.getPublisherId().toLowerCase()) {
-                    throw new ValidationError(`Signature validation failed for message! Recovered address: ${recoveredAddress}, message: ${streamMessage.serialize()}`)
-                }
-            } catch (err) {
-                throw new ValidationError(`Signature validation failed for message! An error occurred: ${err}`)
-            }
-        } else {
-            // We should never end up here, as StreamMessage construction throws if the signature type is invalid
-            throw new ValidationError(`Unrecognized signature type: ${streamMessage.signatureType}`)
-        }
-    }
 }
