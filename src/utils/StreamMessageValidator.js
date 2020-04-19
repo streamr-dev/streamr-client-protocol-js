@@ -147,5 +147,4 @@ export default class StreamMessageValidator {
             throw new ValidationError(`${recipient} is not a subscriber on stream ${response.streamId}. Group key response: ${streamMessage.serialize()}`)
         }
     }
-
 }
