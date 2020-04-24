@@ -70,6 +70,7 @@ import GapFillFailedError from './errors/GapFillFailedError'
 import TimestampUtil from './utils/TimestampUtil'
 import OrderingUtil from './utils/OrderingUtil'
 import StreamMessageValidator from './utils/StreamMessageValidator'
+import CachingStreamMessageValidator from './utils/CachingStreamMessageValidator'
 
 export const ControlLayer = {
     BroadcastMessage,
@@ -139,6 +140,7 @@ export const Utils = {
     TimestampUtil,
     OrderingUtil,
     StreamMessageValidator,
+    CachingStreamMessageValidator,
 }
 
 export default {

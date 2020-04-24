@@ -18,10 +18,26 @@ export default class StreamMessageValidator {
      * @param recoverAddressFn function(payload, signature): returns the Ethereum address that signed the payload to generate signature
      */
     constructor(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn) {
-        this.getStream = getStreamFn || throw new Error('getStream must be: async function(streamId): returns the stream metadata object for streamId')
-        this.isPublisher = isPublisherFn || throw new Error('async function(address, streamId): returns true if address is a permitted publisher on streamId')
-        this.isSubscriber = isSubscriberFn || throw new Error('async function(address, streamId): returns true if address is a permitted subscriber on streamId')
-        this.recoverAddress = recoverAddressFn || throw new Error('function(payload, signature): returns the Ethereum address that signed the payload to generate signature')
+        StreamMessageValidator.checkInjectedFunctions(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn)
+        this.getStream = getStreamFn
+        this.isPublisher = isPublisherFn
+        this.isSubscriber = isSubscriberFn
+        this.recoverAddress = recoverAddressFn
+    }
+
+    static checkInjectedFunctions(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn) {
+        if (!getStreamFn) {
+            throw new Error('getStream must be: async function(streamId): returns the stream metadata object for streamId')
+        }
+        if (!isPublisherFn) {
+            throw new Error('async function(address, streamId): returns true if address is a permitted publisher on streamId')
+        }
+        if (!isSubscriberFn) {
+            throw new Error('async function(address, streamId): returns true if address is a permitted subscriber on streamId')
+        }
+        if (!recoverAddressFn) {
+            throw new Error('function(payload, signature): returns the Ethereum address that signed the payload to generate signature')
+        }
     }
 
     /**
