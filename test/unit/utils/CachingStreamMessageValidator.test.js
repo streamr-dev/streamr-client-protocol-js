@@ -60,6 +60,8 @@ describe('CachingStreamMessageValidator', () => {
     })
 
     it('expires items from cache after timeout', (done) => {
+        // TODO: Tried sinon fake timers, but for some reason they didn't work. Going with wall-clock time for now.
+
         timeoutMillis = 1000
         validator = getValidator()
 
@@ -73,7 +75,7 @@ describe('CachingStreamMessageValidator', () => {
             validator.validate(msg)
             assert.equal(isPublisher.callCount, 2)
             done()
-        }, timeoutMillis + 1)
+        }, timeoutMillis * 3)
     })
 
     // Further tests would basically be just testing the memoizee library. Add more tests if the implementation grows.
