@@ -5,7 +5,6 @@ import CachingStreamMessageValidator from '../../../src/utils/CachingStreamMessa
 import StreamMessageFactory from '../../../src/protocol/message_layer/StreamMessageFactory'
 
 describe('CachingStreamMessageValidator', () => {
-
     let timeoutMillis
     let validator
     let getStream
@@ -42,9 +41,7 @@ describe('CachingStreamMessageValidator', () => {
     })
 
     it('only calls the expensive function once, even while promises are resolving', () => {
-        isPublisher = sinon.spy(function() {
-            return new Promise((resolve, reject) => {}) // Never resolves
-        })
+        isPublisher = sinon.spy(() => new Promise(() => {})) // Never resolves
         validator = getValidator()
         validator.validate(msg)
         validator.validate(msg)
@@ -77,9 +74,7 @@ describe('CachingStreamMessageValidator', () => {
             assert.equal(isPublisher.callCount, 2)
             done()
         }, timeoutMillis + 1)
-
     })
 
     // Further tests would basically be just testing the memoizee library. Add more tests if the implementation grows.
-
 })

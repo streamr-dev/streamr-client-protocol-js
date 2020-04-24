@@ -1,5 +1,5 @@
-import StreamMessageValidator from './StreamMessageValidator'
 import memoize from 'memoizee'
+import StreamMessageValidator from './StreamMessageValidator'
 
 /**
  * A thin wrapper around StreamMessageValidator that adds caching for the following
@@ -39,7 +39,7 @@ export default class CachingStreamMessageValidator extends StreamMessageValidato
                 ...memoizeOpts,
                 length: 2,
             }),
-            recoverAddressFn
+            recoverAddressFn,
         )
     }
 }
