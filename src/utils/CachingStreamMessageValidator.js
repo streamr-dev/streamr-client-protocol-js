@@ -1,4 +1,4 @@
-import memoize from 'memoizee'
+import memoize from 'promise-memoize'
 import StreamMessageValidator from './StreamMessageValidator'
 
 /**
@@ -18,27 +18,16 @@ export default class CachingStreamMessageValidator extends StreamMessageValidato
      * @param recoverAddressFn function(payload, signature): returns the Ethereum address that signed the payload to generate signature
      * @param cacheTimeoutMillis Number: Cache timeout in milliseconds. Default 15 minutes.
      */
-    constructor(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn, cacheTimeoutMillis = 15 * 60 * 1000) {
+    constructor(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn, cacheTimeoutMillis = 15 * 60 * 1000, cacheErrorsTimeoutMillis = 60 * 1000) {
         StreamMessageValidator.checkInjectedFunctions(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn)
         const memoizeOpts = {
-            primitive: true,
             maxAge: cacheTimeoutMillis,
-            preFetch: 0.1,
-            promise: true,
+            maxErrorAge: cacheErrorsTimeoutMillis,
         }
         super(
-            memoize(getStreamFn, {
-                ...memoizeOpts,
-                length: 1,
-            }),
-            memoize(isPublisherFn, {
-                ...memoizeOpts,
-                length: 2,
-            }),
-            memoize(isSubscriberFn, {
-                ...memoizeOpts,
-                length: 2,
-            }),
+            memoize(getStreamFn, memoizeOpts),
+            memoize(isPublisherFn, memoizeOpts),
+            memoize(isSubscriberFn, memoizeOpts),
             recoverAddressFn,
         )
     }

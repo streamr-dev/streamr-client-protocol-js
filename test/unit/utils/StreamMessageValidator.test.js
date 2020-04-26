@@ -98,6 +98,36 @@ describe('StreamMessageValidator', () => {
             msg.signatureType = 666
             await assert.rejects(getValidator().validate(msg))
         })
+
+        it('rejects if getStream rejects', async () => {
+            msg.signature = null
+            msg.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
+            const testError = new Error('test error')
+            getStream = sinon.stub().rejects(testError)
+
+            await assert.rejects(getValidator().validate(msg), (err) => {
+                assert(err === testError)
+                return true
+            })
+        })
+
+        it('rejects if isPublisher rejects', async () => {
+            const testError = new Error('test error')
+            isPublisher = sinon.stub().rejects(testError)
+            await assert.rejects(getValidator().validate(msg), (err) => {
+                assert(err === testError)
+                return true
+            })
+        })
+
+        it('rejects with ValidationError if recoverAddress throws', async () => {
+            const testError = new Error('test error')
+            recoverAddress = sinon.stub().throws(testError)
+            await assert.rejects(getValidator().validate(msg), (err) => {
+                assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
+                return true
+            })
+        })
     })
 
     describe('validate(group key request)', () => {
@@ -151,6 +181,33 @@ describe('StreamMessageValidator', () => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 assert(isSubscriber.calledOnce, 'isSubscriber not called!')
                 assert(isSubscriber.calledWith('0xFeAACDBBc318EbBF9BB5835D4173C1a7fC24B3b9', 'tagHE6nTQ9SJV2wPoCxBFw'), `isPublisher called with wrong args: ${isPublisher.getCall(0).args}`)
+                return true
+            })
+        })
+
+        it('rejects if isPublisher rejects', async () => {
+            const testError = new Error('test error')
+            isPublisher = sinon.stub().rejects(testError)
+            await assert.rejects(getValidator().validate(groupKeyRequest), (err) => {
+                assert(err === testError)
+                return true
+            })
+        })
+
+        it('rejects if isSubscriber rejects', async () => {
+            const testError = new Error('test error')
+            isSubscriber = sinon.stub().rejects(testError)
+            await assert.rejects(getValidator().validate(groupKeyRequest), (err) => {
+                assert(err === testError)
+                return true
+            })
+        })
+
+        it('rejects with ValidationError if recoverAddress throws', async () => {
+            const testError = new Error('test error')
+            recoverAddress = sinon.stub().throws(testError)
+            await assert.rejects(getValidator().validate(groupKeyRequest), (err) => {
+                assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 return true
             })
         })
@@ -210,6 +267,33 @@ describe('StreamMessageValidator', () => {
                 return true
             })
         })
+
+        it('rejects if isPublisher rejects', async () => {
+            const testError = new Error('test error')
+            isPublisher = sinon.stub().rejects(testError)
+            await assert.rejects(getValidator().validate(groupKeyResponse), (err) => {
+                assert(err === testError)
+                return true
+            })
+        })
+
+        it('rejects if isSubscriber rejects', async () => {
+            const testError = new Error('test error')
+            isSubscriber = sinon.stub().rejects(testError)
+            await assert.rejects(getValidator().validate(groupKeyResponse), (err) => {
+                assert(err === testError)
+                return true
+            })
+        })
+
+        it('rejects with ValidationError if recoverAddress throws', async () => {
+            const testError = new Error('test error')
+            recoverAddress = sinon.stub().throws(testError)
+            await assert.rejects(getValidator().validate(groupKeyResponse), (err) => {
+                assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
+                return true
+            })
+        })
     })
 
     describe('validate(group key reset)', () => {
@@ -263,6 +347,33 @@ describe('StreamMessageValidator', () => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 assert(isSubscriber.calledOnce, 'isSubscriber not called!')
                 assert(isSubscriber.calledWith('0xbce3217F2AC9c8a2D14A6303F87506c4FC124014', 'tagHE6nTQ9SJV2wPoCxBFw'), `isSubscriber called with wrong args: ${isSubscriber.getCall(0).args}`)
+                return true
+            })
+        })
+
+        it('rejects if isPublisher rejects', async () => {
+            const testError = new Error('test error')
+            isPublisher = sinon.stub().rejects(testError)
+            await assert.rejects(getValidator().validate(groupKeyReset), (err) => {
+                assert(err === testError)
+                return true
+            })
+        })
+
+        it('rejects if isSubscriber rejects', async () => {
+            const testError = new Error('test error')
+            isSubscriber = sinon.stub().rejects(testError)
+            await assert.rejects(getValidator().validate(groupKeyReset), (err) => {
+                assert(err === testError)
+                return true
+            })
+        })
+
+        it('rejects with ValidationError if recoverAddress throws', async () => {
+            const testError = new Error('test error')
+            recoverAddress = sinon.stub().throws(testError)
+            await assert.rejects(getValidator().validate(groupKeyReset), (err) => {
+                assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 return true
             })
         })

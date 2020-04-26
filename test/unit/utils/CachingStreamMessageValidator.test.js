@@ -1,11 +1,13 @@
 import assert from 'assert'
 import sinon from 'sinon'
+import sleep from 'await-sleep'
 
 import CachingStreamMessageValidator from '../../../src/utils/CachingStreamMessageValidator'
 import StreamMessageFactory from '../../../src/protocol/message_layer/StreamMessageFactory'
 
 describe('CachingStreamMessageValidator', () => {
     let timeoutMillis
+    let errorTimeoutMillis
     let validator
     let getStream
     let isPublisher
@@ -13,7 +15,7 @@ describe('CachingStreamMessageValidator', () => {
     let recoverAddress
     let msg
 
-    const getValidator = () => new CachingStreamMessageValidator(getStream, isPublisher, isSubscriber, recoverAddress, timeoutMillis)
+    const getValidator = () => new CachingStreamMessageValidator(getStream, isPublisher, isSubscriber, recoverAddress, timeoutMillis, errorTimeoutMillis)
 
     beforeEach(() => {
         // Default stubs
@@ -40,7 +42,7 @@ describe('CachingStreamMessageValidator', () => {
         assert.equal(recoverAddress.callCount, 2) // recoverAddress is not cached
     })
 
-    it('only calls the expensive function once, even while promises are resolving', () => {
+    it('only calls the expensive function once, even while promises are resolving', /* not async! */ () => {
         isPublisher = sinon.spy(() => new Promise(() => {})) // Never resolves
         validator = getValidator()
         validator.validate(msg)
@@ -59,9 +61,8 @@ describe('CachingStreamMessageValidator', () => {
         assert(isPublisher.calledWith('0xbce3217F2AC9c8a2D14A6303F87506c4FC124014', 'tagHE6nTQ9SJV2wPoCxBFw'), `Unexpected calls: ${isPublisher.getCalls()}`)
     })
 
-    it('expires items from cache after timeout', (done) => {
-        // TODO: Tried sinon fake timers, but for some reason they didn't work. Going with wall-clock time for now.
-
+    it('expires items from cache after timeout', async () => {
+        // Tried sinon fake timers, but for some reason they didn't work. Going with wall-clock time for now.
         timeoutMillis = 1000
         validator = getValidator()
 
@@ -69,13 +70,40 @@ describe('CachingStreamMessageValidator', () => {
         validator.validate(msg)
         assert.equal(isPublisher.callCount, 1)
 
-        // Make more calls after expiration
-        setTimeout(() => {
-            validator.validate(msg)
-            validator.validate(msg)
-            assert.equal(isPublisher.callCount, 2)
-            done()
-        }, timeoutMillis * 3)
+        await sleep(timeoutMillis * 3)
+
+        // Results should have been expired
+        validator.validate(msg)
+        validator.validate(msg)
+        assert.equal(isPublisher.callCount, 2)
+    })
+
+    it('does not swallow rejections', async () => {
+        const testError = new Error('test error')
+        isPublisher = sinon.stub().rejects(testError)
+        await assert.rejects(getValidator().validate(msg), (err) => {
+            assert(err === testError)
+            return true
+        })
+    })
+
+    it('caches errors and expires them with separate timeout', async () => {
+        // Tried sinon fake timers, but for some reason they didn't work. Going with wall-clock time for now.
+        errorTimeoutMillis = 1000
+        const testError = new Error('test error')
+        isPublisher = sinon.stub().rejects(testError)
+
+        validator = getValidator()
+        assert.rejects(validator.validate(msg))
+        assert.rejects(validator.validate(msg))
+        assert.equal(isPublisher.callCount, 1)
+
+        await sleep(errorTimeoutMillis * 3)
+        
+        // Error results should have been expired
+        assert.rejects(validator.validate(msg))
+        assert.rejects(validator.validate(msg))
+        assert.equal(isPublisher.callCount, 2)
     })
 
     // Further tests would basically be just testing the memoizee library. Add more tests if the implementation grows.
