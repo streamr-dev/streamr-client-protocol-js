@@ -10,7 +10,6 @@ import StreamMessageFactory from '../../../src/protocol/message_layer/StreamMess
 import ValidationError from '../../../src/errors/ValidationError'
 
 describe('StreamMessageValidator', () => {
-    let getStream
     let isPublisher
     let isSubscriber
     let recoverAddress
@@ -19,13 +18,9 @@ describe('StreamMessageValidator', () => {
     let groupKeyResponse
     let groupKeyReset
 
-    const getValidator = () => new StreamMessageValidator(getStream, isPublisher, isSubscriber, recoverAddress)
+    const getValidator = () => new StreamMessageValidator(isPublisher, isSubscriber, recoverAddress)
 
     beforeEach(() => {
-        // Default stubs
-        getStream = sinon.stub().resolves({
-            requireSignedData: true,
-        })
         isPublisher = sinon.stub().resolves(true)
         isSubscriber = sinon.stub().resolves(true)
         recoverAddress = (payload, signature) => ethers.utils.verifyMessage(payload, signature)
@@ -51,25 +46,13 @@ describe('StreamMessageValidator', () => {
             await getValidator().validate(msg)
         })
 
-        it('accepts unsigned messages that dont need to be signed', async () => {
-            getStream = sinon.stub().resolves({
-                requireSignedData: false,
-            })
-
-            msg.signature = null
-            msg.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
-
-            await getValidator().validate(msg)
-        })
-
-        it('rejects unsigned messages that should be signed', async () => {
+        it('rejects unsigned messages', async () => {
             msg.signature = null
             msg.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
 
             await assert.rejects(getValidator().validate(msg), (err) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
-                assert(getStream.calledOnce, 'getStream not called once!')
-                assert(getStream.calledWith(msg.getStreamId()), `getStream called with wrong args: ${getStream.getCall(0).args}`)
+                assert(isPublisher.notCalled, 'isPublisher was called!')
                 return true
             })
         })
@@ -97,18 +80,6 @@ describe('StreamMessageValidator', () => {
         it('rejects messages with unknown signature type', async () => {
             msg.signatureType = 666
             await assert.rejects(getValidator().validate(msg))
-        })
-
-        it('rejects if getStream rejects', async () => {
-            msg.signature = null
-            msg.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
-            const testError = new Error('test error')
-            getStream = sinon.stub().rejects(testError)
-
-            await assert.rejects(getValidator().validate(msg), (err) => {
-                assert(err === testError)
-                return true
-            })
         })
 
         it('rejects if isPublisher rejects', async () => {
