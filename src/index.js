@@ -134,6 +134,7 @@ export const Errors = {
     InvalidJsonError,
     UnsupportedVersionError,
     GapFillFailedError,
+    ValidationError,
 }
 
 export const Utils = {
