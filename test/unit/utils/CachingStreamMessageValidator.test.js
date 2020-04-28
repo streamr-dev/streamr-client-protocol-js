@@ -9,15 +9,19 @@ describe('CachingStreamMessageValidator', () => {
     let timeoutMillis
     let errorTimeoutMillis
     let validator
+    let getStream
     let isPublisher
     let isSubscriber
     let recoverAddress
     let msg
 
-    const getValidator = () => new CachingStreamMessageValidator(isPublisher, isSubscriber, recoverAddress, timeoutMillis, errorTimeoutMillis)
+    const getValidator = () => new CachingStreamMessageValidator(getStream, isPublisher, isSubscriber, recoverAddress, timeoutMillis, errorTimeoutMillis)
 
     beforeEach(() => {
         // Default stubs
+        getStream = sinon.stub().resolves({
+            requireSignedData: false,
+        })
         isPublisher = sinon.stub().resolves(true)
         isSubscriber = sinon.stub().resolves(true)
         recoverAddress = sinon.stub().returns('0xbce3217F2AC9c8a2D14A6303F87506c4FC124014')
@@ -28,7 +32,7 @@ describe('CachingStreamMessageValidator', () => {
         validator = getValidator()
     })
 
-    // Note: this test assumes that isPublisher and isSubscriber are cached in the same way.
+    // Note: this test assumes that the passed getStream, isPublisher, and isSubscriber are cached in the same way.
     // Only validation of normal messages is tested, which uses only isPublisher.
 
     it('only calls the expensive function once, after the promise of first call has resolved', async () => {
@@ -95,7 +99,7 @@ describe('CachingStreamMessageValidator', () => {
         assert.equal(isPublisher.callCount, 1)
 
         await sleep(errorTimeoutMillis * 3)
-
+        
         // Error results should have been expired
         assert.rejects(validator.validate(msg))
         assert.rejects(validator.validate(msg))

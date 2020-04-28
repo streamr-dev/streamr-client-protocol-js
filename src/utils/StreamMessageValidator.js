@@ -5,26 +5,30 @@ const KEY_EXCHANGE_STREAM_PREFIX = 'SYSTEM/keyexchange/'
 
 /**
  * Validates observed StreamMessages according to protocol rules, regardless of observer.
- * Functions needed for external interactions are injected as constructor args. Note that
- * only signed messages can be validated.
+ * Functions needed for external interactions are injected as constructor args.
  *
  * The recoverAddressFn function could be imported from eg. ethers, but it would explode the bundle size, so
  * better leave it up to whoever is the end user of this class to choose which library they use.
  */
 export default class StreamMessageValidator {
     /**
+     * @param getStreamFn async function(streamId): returns the stream metadata object for streamId
      * @param isPublisherFn async function(address, streamId): returns true if address is a permitted publisher on streamId
      * @param isSubscriberFn async function(address, streamId): returns true if address is a permitted subscriber on streamId
      * @param recoverAddressFn function(payload, signature): returns the Ethereum address that signed the payload to generate signature
      */
-    constructor(isPublisherFn, isSubscriberFn, recoverAddressFn) {
-        StreamMessageValidator.checkInjectedFunctions(isPublisherFn, isSubscriberFn, recoverAddressFn)
+    constructor(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn) {
+        StreamMessageValidator.checkInjectedFunctions(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn)
+        this.getStream = getStreamFn
         this.isPublisher = isPublisherFn
         this.isSubscriber = isSubscriberFn
         this.recoverAddress = recoverAddressFn
     }
 
-    static checkInjectedFunctions(isPublisherFn, isSubscriberFn, recoverAddressFn) {
+    static checkInjectedFunctions(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn) {
+        if (!getStreamFn) {
+            throw new Error('getStream must be: async function(streamId): returns the stream metadata object for streamId')
+        }
         if (!isPublisherFn) {
             throw new Error('async function(address, streamId): returns true if address is a permitted publisher on streamId')
         }
@@ -89,16 +93,20 @@ export default class StreamMessageValidator {
 
     async _validateMessage(streamMessage) {
         if (!streamMessage.signature) {
-            throw new ValidationError(`Message is missing signature: ${streamMessage.serialize()}`)
-        }
+            // Check that not having a signature is ok
+            const stream = await this.getStream(streamMessage.getStreamId())
+            if (stream.requireSignedData) {
+                throw new ValidationError(`Stream requires signed data but message was not signed: ${streamMessage.serialize()}`)
+            }
+        } else {
+            StreamMessageValidator.checkSignature(streamMessage, this.recoverAddress)
+            const sender = streamMessage.getPublisherId()
 
-        StreamMessageValidator.checkSignature(streamMessage, this.recoverAddress)
-        const sender = streamMessage.getPublisherId()
-
-        // Check that the sender of the message is a valid publisher of the stream
-        const senderIsPublisher = await this.isPublisher(sender, streamMessage.getStreamId())
-        if (!senderIsPublisher) {
-            throw new ValidationError(`${sender} is not a publisher on stream ${streamMessage.getStreamId()}. Message: ${streamMessage.serialize()}`)
+            // Check that the sender of the message is a valid publisher of the stream
+            const senderIsPublisher = await this.isPublisher(sender, streamMessage.getStreamId())
+            if (!senderIsPublisher) {
+                throw new ValidationError(`${sender} is not a publisher on stream ${streamMessage.getStreamId()}. Message: ${streamMessage.serialize()}`)
+            }
         }
     }
 
