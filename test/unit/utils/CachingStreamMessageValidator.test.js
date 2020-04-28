@@ -15,12 +15,17 @@ describe('CachingStreamMessageValidator', () => {
     let recoverAddress
     let msg
 
-    const getValidator = () => new CachingStreamMessageValidator(getStream, isPublisher, isSubscriber, recoverAddress, timeoutMillis, errorTimeoutMillis)
+    const getValidator = () => new CachingStreamMessageValidator(
+        getStream, isPublisher, isSubscriber,
+        recoverAddress, timeoutMillis, errorTimeoutMillis,
+    )
 
     beforeEach(() => {
         // Default stubs
         getStream = sinon.stub().resolves({
-            requireSignedData: false,
+            partitions: 10,
+            requireSignedData: true,
+            requireEncryptedData: false,
         })
         isPublisher = sinon.stub().resolves(true)
         isSubscriber = sinon.stub().resolves(true)
@@ -38,16 +43,17 @@ describe('CachingStreamMessageValidator', () => {
     it('only calls the expensive function once, after the promise of first call has resolved', async () => {
         await validator.validate(msg)
         await validator.validate(msg)
-        assert.equal(isPublisher.callCount, 1) // isPublisher is cached
-        assert.equal(recoverAddress.callCount, 2) // recoverAddress is not cached
+        assert.equal(getStream.callCount, 1) // cached
+        assert.equal(isPublisher.callCount, 1) // cached
+        assert.equal(recoverAddress.callCount, 2) // not cached
     })
 
     it('only calls the expensive function once, even while promises are resolving', /* not async! */ () => {
-        isPublisher = sinon.spy(() => new Promise(() => {})) // Never resolves
+        getStream = sinon.spy(() => new Promise(() => {})) // Never resolves
         validator = getValidator()
         validator.validate(msg)
         validator.validate(msg)
-        assert.equal(isPublisher.callCount, 1)
+        assert.equal(getStream.callCount, 1)
     })
 
     it('only calls the expensive function once for each different stream', async () => {
@@ -66,15 +72,15 @@ describe('CachingStreamMessageValidator', () => {
         timeoutMillis = 1000
         validator = getValidator()
 
-        validator.validate(msg)
-        validator.validate(msg)
+        await validator.validate(msg)
+        await validator.validate(msg)
         assert.equal(isPublisher.callCount, 1)
 
         await sleep(timeoutMillis * 3)
 
         // Results should have been expired
-        validator.validate(msg)
-        validator.validate(msg)
+        await validator.validate(msg)
+        await validator.validate(msg)
         assert.equal(isPublisher.callCount, 2)
     })
 
@@ -94,15 +100,15 @@ describe('CachingStreamMessageValidator', () => {
         isPublisher = sinon.stub().rejects(testError)
 
         validator = getValidator()
-        assert.rejects(validator.validate(msg))
-        assert.rejects(validator.validate(msg))
+        await assert.rejects(validator.validate(msg))
+        await assert.rejects(validator.validate(msg))
         assert.equal(isPublisher.callCount, 1)
 
         await sleep(errorTimeoutMillis * 3)
-        
+
         // Error results should have been expired
-        assert.rejects(validator.validate(msg))
-        assert.rejects(validator.validate(msg))
+        await assert.rejects(validator.validate(msg))
+        await assert.rejects(validator.validate(msg))
         assert.equal(isPublisher.callCount, 2)
     })
 

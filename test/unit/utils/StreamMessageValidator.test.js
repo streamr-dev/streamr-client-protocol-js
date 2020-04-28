@@ -19,13 +19,17 @@ describe('StreamMessageValidator', () => {
     let groupKeyResponse
     let groupKeyReset
 
+    const defaultGetStreamResponse = {
+        partitions: 10,
+        requireSignedData: true,
+        requireEncryptedData: false,
+    }
+
     const getValidator = () => new StreamMessageValidator(getStream, isPublisher, isSubscriber, recoverAddress)
 
     beforeEach(() => {
         // Default stubs
-        getStream = sinon.stub().resolves({
-            requireSignedData: true,
-        })
+        getStream = sinon.stub().resolves(defaultGetStreamResponse)
         isPublisher = sinon.stub().resolves(true)
         isSubscriber = sinon.stub().resolves(true)
         recoverAddress = (payload, signature) => ethers.utils.verifyMessage(payload, signature)
@@ -53,6 +57,7 @@ describe('StreamMessageValidator', () => {
 
         it('accepts unsigned messages that dont need to be signed', async () => {
             getStream = sinon.stub().resolves({
+                ...defaultGetStreamResponse,
                 requireSignedData: false,
             })
 
@@ -65,6 +70,30 @@ describe('StreamMessageValidator', () => {
         it('rejects unsigned messages that should be signed', async () => {
             msg.signature = null
             msg.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
+
+            await assert.rejects(getValidator().validate(msg), (err) => {
+                assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
+                assert(getStream.calledOnce, 'getStream not called once!')
+                assert(getStream.calledWith(msg.getStreamId()), `getStream called with wrong args: ${getStream.getCall(0).args}`)
+                return true
+            })
+        })
+
+        it('accepts valid encrypted messages', async () => {
+            getStream = sinon.stub().resolves({
+                ...defaultGetStreamResponse,
+                requireEncryptedData: true,
+            })
+            msg.encryptionType = StreamMessage.ENCRYPTION_TYPES.AES
+            await getValidator().validate(msg)
+        })
+
+        it('rejects unencrypted messages if encryption is required', async () => {
+            getStream = sinon.stub().resolves({
+                ...defaultGetStreamResponse,
+                requireEncryptedData: true,
+            })
+            msg.encryptionType = StreamMessage.ENCRYPTION_TYPES.NONE
 
             await assert.rejects(getValidator().validate(msg), (err) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)

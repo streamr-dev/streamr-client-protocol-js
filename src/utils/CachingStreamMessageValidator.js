@@ -18,7 +18,10 @@ export default class CachingStreamMessageValidator extends StreamMessageValidato
      * @param recoverAddressFn function(payload, signature): returns the Ethereum address that signed the payload to generate signature
      * @param cacheTimeoutMillis Number: Cache timeout in milliseconds. Default 15 minutes.
      */
-    constructor(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn, cacheTimeoutMillis = 15 * 60 * 1000, cacheErrorsTimeoutMillis = 60 * 1000) {
+    constructor(
+        getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn,
+        cacheTimeoutMillis = 15 * 60 * 1000, cacheErrorsTimeoutMillis = 60 * 1000,
+    ) {
         StreamMessageValidator.checkInjectedFunctions(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn)
         const memoizeOpts = {
             maxAge: cacheTimeoutMillis,

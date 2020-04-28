@@ -9,10 +9,16 @@ const KEY_EXCHANGE_STREAM_PREFIX = 'SYSTEM/keyexchange/'
  *
  * The recoverAddressFn function could be imported from eg. ethers, but it would explode the bundle size, so
  * better leave it up to whoever is the end user of this class to choose which library they use.
+ *
+ * Note that most checks can not be performed for unsigned messages. Checking message integrity is impossible,
+ * and checking permissions would require knowing the identity of the publisher, so it can't be done here.
+ *
+ * TODO later: support for unsigned messages can be removed when deprecated system-wide.
  */
 export default class StreamMessageValidator {
     /**
-     * @param getStreamFn async function(streamId): returns the stream metadata object for streamId
+     * @param getStreamFn async function(streamId): returns the metadata required for stream validation for streamId.
+     *        The included fields should be at least: { partitions, requireSignedData, requireEncryptedData }
      * @param isPublisherFn async function(address, streamId): returns true if address is a permitted publisher on streamId
      * @param isSubscriberFn async function(address, streamId): returns true if address is a permitted subscriber on streamId
      * @param recoverAddressFn function(payload, signature): returns the Ethereum address that signed the payload to generate signature
@@ -92,13 +98,21 @@ export default class StreamMessageValidator {
     }
 
     async _validateMessage(streamMessage) {
-        if (!streamMessage.signature) {
-            // Check that not having a signature is ok
-            const stream = await this.getStream(streamMessage.getStreamId())
-            if (stream.requireSignedData) {
-                throw new ValidationError(`Stream requires signed data but message was not signed: ${streamMessage.serialize()}`)
-            }
-        } else {
+        const stream = await this.getStream(streamMessage.getStreamId())
+
+        // Checks against stream metadata
+        if (stream.requireSignedData && !streamMessage.signature) {
+            throw new ValidationError(`This stream requires data to be signed. Message: ${streamMessage.serialize()}`)
+        }
+        if (stream.requireEncryptedData && streamMessage.encryptionType === StreamMessage.ENCRYPTION_TYPES.NONE) {
+            throw new ValidationError(`This stream requires data to be encrypted. Message: ${streamMessage.serialize()}`)
+        }
+        if (streamMessage.getStreamPartition() < 0 || streamMessage.getStreamPartition() >= stream.partitions) {
+            throw new ValidationError(`Partition ${streamMessage.getStreamPartition()} is out of range (0..${stream.partitions - 1}). Message: ${streamMessage.serialize()}`)
+        }
+
+        // Cryptographic integrity and publisher permission checks. Note that only signed messages can be validated this way.
+        if (streamMessage.signature) {
             StreamMessageValidator.checkSignature(streamMessage, this.recoverAddress)
             const sender = streamMessage.getPublisherId()
 
