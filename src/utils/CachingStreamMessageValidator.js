@@ -4,34 +4,35 @@ import StreamMessageValidator from './StreamMessageValidator'
 /**
  * A thin wrapper around StreamMessageValidator that adds caching for the following
  * expensive functions passed to the constructor:
- * - getStreamFn
- * - isPublisherFn
- * - recoverAddressFn
+ * - getStream
+ * - isPublisher
+ * - isSubscriber
  *
- * Caching the recoverAddressFn does not make sense, because the input is always unique.
+ * Caching the recoverAddress does not make sense, because the input is always unique.
  */
 export default class CachingStreamMessageValidator extends StreamMessageValidator {
     /**
-     * @param getStreamFn async function(streamId): returns the stream metadata object for streamId
-     * @param isPublisherFn async function(address, streamId): returns true if address is a permitted publisher on streamId
-     * @param isSubscriberFn async function(address, streamId): returns true if address is a permitted subscriber on streamId
-     * @param recoverAddressFn function(payload, signature): returns the Ethereum address that signed the payload to generate signature
+     * @param getStream async function(streamId): returns the stream metadata object for streamId
+     * @param isPublisher async function(address, streamId): returns true if address is a permitted publisher on streamId
+     * @param isSubscriber async function(address, streamId): returns true if address is a permitted subscriber on streamId
+     * @param recoverAddress function(payload, signature): returns the Ethereum address that signed the payload to generate signature. Not cached.
      * @param cacheTimeoutMillis Number: Cache timeout in milliseconds. Default 15 minutes.
+     * @param cacheErrorsTimeoutMillis Number: Cache timeout for error responses. Default 1 minute.
      */
-    constructor(
-        getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn,
+    constructor({
+        getStream, isPublisher, isSubscriber, recoverAddress,
         cacheTimeoutMillis = 15 * 60 * 1000, cacheErrorsTimeoutMillis = 60 * 1000,
-    ) {
-        StreamMessageValidator.checkInjectedFunctions(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn)
+    }) {
+        StreamMessageValidator.checkInjectedFunctions(getStream, isPublisher, isSubscriber, recoverAddress)
         const memoizeOpts = {
             maxAge: cacheTimeoutMillis,
             maxErrorAge: cacheErrorsTimeoutMillis,
         }
-        super(
-            memoize(getStreamFn, memoizeOpts),
-            memoize(isPublisherFn, memoizeOpts),
-            memoize(isSubscriberFn, memoizeOpts),
-            recoverAddressFn,
-        )
+        super({
+            getStream: memoize(getStream, memoizeOpts),
+            isPublisher: memoize(isPublisher, memoizeOpts),
+            isSubscriber: memoize(isSubscriber, memoizeOpts),
+            recoverAddress,
+        })
     }
 }

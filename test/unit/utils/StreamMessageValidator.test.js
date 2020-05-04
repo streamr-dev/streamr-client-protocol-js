@@ -25,7 +25,9 @@ describe('StreamMessageValidator', () => {
         requireEncryptedData: false,
     }
 
-    const getValidator = () => new StreamMessageValidator(getStream, isPublisher, isSubscriber, recoverAddress)
+    const getValidator = () => new StreamMessageValidator({
+        getStream, isPublisher, isSubscriber, recoverAddress,
+    })
 
     beforeEach(() => {
         // Default stubs

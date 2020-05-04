@@ -23,26 +23,26 @@ export default class StreamMessageValidator {
      * @param isSubscriberFn async function(address, streamId): returns true if address is a permitted subscriber on streamId
      * @param recoverAddressFn function(payload, signature): returns the Ethereum address that signed the payload to generate signature
      */
-    constructor(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn) {
-        StreamMessageValidator.checkInjectedFunctions(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn)
-        this.getStream = getStreamFn
-        this.isPublisher = isPublisherFn
-        this.isSubscriber = isSubscriberFn
-        this.recoverAddress = recoverAddressFn
+    constructor({ getStream, isPublisher, isSubscriber, recoverAddress }) {
+        StreamMessageValidator.checkInjectedFunctions(getStream, isPublisher, isSubscriber, recoverAddress)
+        this.getStream = getStream
+        this.isPublisher = isPublisher
+        this.isSubscriber = isSubscriber
+        this.recoverAddress = recoverAddress
     }
 
     static checkInjectedFunctions(getStreamFn, isPublisherFn, isSubscriberFn, recoverAddressFn) {
-        if (!getStreamFn) {
-            throw new Error('getStream must be: async function(streamId): returns the stream metadata object for streamId')
+        if (typeof getStreamFn !== 'function') {
+            throw new Error('getStreamFn must be: async function(streamId): returns the validation metadata object for streamId')
         }
-        if (!isPublisherFn) {
-            throw new Error('async function(address, streamId): returns true if address is a permitted publisher on streamId')
+        if (typeof isPublisherFn !== 'function') {
+            throw new Error('isPublisherFn must be: async function(address, streamId): returns true if address is a permitted publisher on streamId')
         }
-        if (!isSubscriberFn) {
-            throw new Error('async function(address, streamId): returns true if address is a permitted subscriber on streamId')
+        if (typeof isSubscriberFn !== 'function') {
+            throw new Error('isSubscriberFn must be: async function(address, streamId): returns true if address is a permitted subscriber on streamId')
         }
-        if (!recoverAddressFn) {
-            throw new Error('function(payload, signature): returns the Ethereum address that signed the payload to generate signature')
+        if (typeof recoverAddressFn !== 'function') {
+            throw new Error('recoverAddressFn must be: function(payload, signature): returns the Ethereum address that signed the payload to generate signature')
         }
     }
 
@@ -56,6 +56,10 @@ export default class StreamMessageValidator {
      * @param streamMessage the StreamMessage to validate.
      */
     async validate(streamMessage) {
+        if (!streamMessage) {
+            throw new ValidationError('Falsey argument passed to validate()!')
+        }
+
         switch (streamMessage.contentType) {
             case StreamMessage.CONTENT_TYPES.MESSAGE:
                 return this._validateMessage(streamMessage)
@@ -83,13 +87,15 @@ export default class StreamMessageValidator {
 
         if (streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH_LEGACY
             || streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH) {
+            let recoveredAddress
             try {
-                const recoveredAddress = recoverFn(payload, streamMessage.signature)
-                if (recoveredAddress.toLowerCase() !== streamMessage.getPublisherId().toLowerCase()) {
-                    throw new ValidationError(`Signature validation failed for message! Recovered address: ${recoveredAddress}, message: ${streamMessage.serialize()}`)
-                }
+                recoveredAddress = recoverFn(payload, streamMessage.signature)
             } catch (err) {
-                throw new ValidationError(`Signature validation failed for message! An error occurred: ${err}`)
+                throw new ValidationError(`An error occurred during address recovery from signature: ${err}`)
+            }
+
+            if (!recoveredAddress || recoveredAddress.toLowerCase() !== streamMessage.getPublisherId().toLowerCase()) {
+                throw new ValidationError(`Signature validation failed for message! Recovered address: ${recoveredAddress}, message: ${streamMessage.serialize()}`)
             }
         } else {
             // We should never end up here, as StreamMessage construction throws if the signature type is invalid
@@ -147,7 +153,7 @@ export default class StreamMessageValidator {
         // Check that the sender of the request is a valid subscriber of the stream
         const senderIsSubscriber = await this.isSubscriber(sender, request.streamId)
         if (!senderIsSubscriber) {
-            throw new ValidationError(`${sender} is not a publisher on stream ${request.streamId}. Group key request: ${streamMessage.serialize()}`)
+            throw new ValidationError(`${sender} is not a subscriber on stream ${request.streamId}. Group key request: ${streamMessage.serialize()}`)
         }
     }
 
@@ -172,8 +178,8 @@ export default class StreamMessageValidator {
         }
 
         // Check that the recipient of the request is a valid subscriber of the stream
-        const recipientIsPublisher = await this.isSubscriber(recipient, response.streamId)
-        if (!recipientIsPublisher) {
+        const recipientIsSubscriber = await this.isSubscriber(recipient, response.streamId)
+        if (!recipientIsSubscriber) {
             throw new ValidationError(`${recipient} is not a subscriber on stream ${response.streamId}. Group key response: ${streamMessage.serialize()}`)
         }
     }
