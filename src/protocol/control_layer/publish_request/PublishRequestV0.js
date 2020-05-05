@@ -57,7 +57,9 @@ export default class PublishRequestV0 extends PublishRequest {
     getSerializedContent() {
         if (typeof this.content === 'string') {
             return this.content
-        } if (typeof this.content === 'object') {
+        }
+
+        if (typeof this.content === 'object') {
             return JSON.stringify(this.content)
         }
         throw new Error('Stream payloads can only be objects!')

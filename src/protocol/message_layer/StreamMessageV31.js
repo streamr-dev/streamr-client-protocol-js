@@ -73,14 +73,16 @@ export default class StreamMessageV31 extends StreamMessage {
                 this.messageId.streamId, this.messageId.streamPartition, this.messageId.timestamp,
                 0, this.messageId.timestamp, prevTimestamp, this.contentType, this.getContent(), this.parseContentOption,
             )
-        } if (version === 29) {
+        }
+        if (version === 29) {
             // hack for resend and gap detection: messageId.timestamp --> offset, prevMessageRef.timestamp --> previousOffset
             return new StreamMessageV29(
                 this.messageId.streamId, this.messageId.streamPartition, this.messageId.timestamp,
                 0, this.messageId.timestamp, prevTimestamp, this.contentType, this.getContent(),
                 this.signatureType, this.messageId.publisherId, this.signature, this.parseContentOption,
             )
-        } if (version === 30) {
+        }
+        if (version === 30) {
             const prevArray = this.prevMsgRef ? this.prevMsgRef.toArray() : null
             return new StreamMessageV30(
                 this.messageId.toArray(), prevArray, this.contentType,

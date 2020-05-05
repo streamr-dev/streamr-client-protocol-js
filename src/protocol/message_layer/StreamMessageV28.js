@@ -85,13 +85,15 @@ export default class StreamMessageV28 extends StreamMessage {
                 this.streamId, this.streamPartition, this.timestamp,
                 this.ttl, this.offset, this.previousOffset, this.contentType, this.getContent(), 0, null, null, this.parseContentOption,
             )
-        } if (version === 30) {
+        }
+        if (version === 30) {
             // null fields in order: msgId.publisherId, prevMsgRef.timestamp, prevMsgRef.sequenceNumber, signature
             return new StreamMessageV30(
                 [this.streamId, this.streamPartition, this.timestamp, 0, '', ''],
                 null, this.contentType, this.getContent(), 0, null, this.parseContentOption,
             )
-        } if (version === 31) {
+        }
+        if (version === 31) {
             // null fields in order: msgId.publisherId, prevMsgRef.timestamp, prevMsgRef.sequenceNumber, signature
             return new StreamMessageV31(
                 [this.streamId, this.streamPartition, this.timestamp, 0, '', ''],

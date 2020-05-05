@@ -1,7 +1,8 @@
 export function parse(millisOrString) {
     if (typeof millisOrString === 'number') {
         return millisOrString
-    } if (typeof millisOrString === 'string') {
+    }
+    if (typeof millisOrString === 'string') {
         // Try if this string represents a number
         const timestamp = Number(millisOrString) || Date.parse(millisOrString)
         if (Number.isNaN(timestamp)) {
