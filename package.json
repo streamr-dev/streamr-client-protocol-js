@@ -12,9 +12,9 @@
     "test": "test"
   },
   "scripts": {
-    "build": "rm dist/*; NODE_ENV=production webpack --mode=production",
+    "build": "NODE_ENV=production webpack",
+    "prepare": "npm run build",
     "dev": "webpack --progress --colors --watch",
-    "eslint-version": "eslint --version",
     "eslint": "eslint src/** test/**",
     "pretest": "npm run eslint",
     "test": "jest"
