@@ -24,8 +24,7 @@ export default class ResendRangeRequestV1 extends ResendRangeRequest {
         this.fromMsgRef = new MessageRef(...fromMsgRefArgsArray)
         this.toMsgRef = new MessageRef(...toMsgRefArgsArray)
         if (this.fromMsgRef.timestamp > this.toMsgRef.timestamp) {
-            throw new ValidationError('fromMsgRef.timestamp must be less than '
-                + 'or equal to toMsgRef.timestamp')
+            throw new ValidationError('fromMsgRef.timestamp must be less than or equal to toMsgRef.timestamp')
         }
         this.publisherId = publisherId
         this.msgChainId = msgChainId
