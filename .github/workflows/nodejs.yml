@@ -28,6 +28,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: versions
+        run: |
+          node --version
+          npm --version
+          eslint --version
+
       - name: npm ci
         run: npm ci
 
