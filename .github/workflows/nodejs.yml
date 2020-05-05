@@ -32,7 +32,9 @@ jobs:
         run: npm ci
 
       - name: eslint
-        run: npm run eslint
+        run: |
+          eslint --version
+          npm run eslint
 
       - name: test
         run: npm run test
