@@ -32,7 +32,8 @@ jobs:
         run: |
           node --version
           npm --version
-          eslint --version
+          ./node_modules/.bin/eslint --version
+          ./node_modules/.bin/eslint --fix
 
       - name: npm ci
         run: npm ci
