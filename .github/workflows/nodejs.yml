@@ -33,7 +33,7 @@ jobs:
 
       - name: eslint
         run: |
-          eslint --version
+          npm run eslint-version
           npm run eslint
 
       - name: test
