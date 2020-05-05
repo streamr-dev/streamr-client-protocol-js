@@ -16,27 +16,26 @@ jobs:
 
     runs-on: ubuntu-latest
 
-      strategy:
-        matrix:
-          node-version: [10.x, 12.x, 13.x]
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 13.x]
 
-      steps:
-        - uses: actions/checkout@v1
+    steps:
+      - uses: actions/checkout@v1
 
-        - name: Use Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v1
-          with:
-            node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-        - name: npm ci
-          run: npm ci
+      - name: npm ci
+        run: npm ci
 
-        - name: eslint
-          run: npm run eslint
+      - name: eslint
+        run: npm run eslint
 
-        - name: test
-          run: npm run test
+      - name: test
+        run: npm run test
 
-        - name: test-build
-          run: npm run build
-
+      - name: test-build
+        run: npm run build
