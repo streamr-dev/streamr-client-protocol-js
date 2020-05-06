@@ -1,4 +1,5 @@
 import assert from 'assert'
+
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionError'
 import UnsupportedTypeError from '../../../../src/errors/UnsupportedTypeError'
