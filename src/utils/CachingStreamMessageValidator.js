@@ -1,4 +1,5 @@
 import memoize from 'promise-memoize'
+
 import StreamMessageValidator from './StreamMessageValidator'
 
 /**

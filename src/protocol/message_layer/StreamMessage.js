@@ -128,7 +128,9 @@ export default class StreamMessage {
             }
             return `${this.getStreamId()}${this.getStreamPartition()}${this.getTimestamp()}${this.messageId.sequenceNumber}`
                 + `${this.getPublisherId().toLowerCase()}${this.messageId.msgChainId}${prev}${this.getSerializedContent()}`
-        } else if (this.signatureType === StreamMessage.SIGNATURE_TYPES.ETH_LEGACY) {
+        }
+
+        if (this.signatureType === StreamMessage.SIGNATURE_TYPES.ETH_LEGACY) {
             // verification of messages signed by old clients
             return `${this.getStreamId()}${this.getTimestamp()}${this.getPublisherId().toLowerCase()}${this.getSerializedContent()}`
         }
