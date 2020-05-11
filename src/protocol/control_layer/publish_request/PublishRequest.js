@@ -14,8 +14,8 @@ export default class PublishRequest extends ControlMessage {
         this.sessionToken = sessionToken
     }
 
-    static create(...args) {
-        return new PublishRequest(ControlMessage.LATEST_VERSION, ...args)
+    static create(requestId, streamMessage, sessionToken) {
+        return new PublishRequest(ControlMessage.LATEST_VERSION, requestId, streamMessage, sessionToken)
     }
 }
 

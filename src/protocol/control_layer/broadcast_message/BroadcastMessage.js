@@ -1,5 +1,6 @@
 import ControlMessage from '../ControlMessage'
-import { validateIsNotNullOrUndefined } from '../../../utils/validations'
+import { validateIsType } from '../../../utils/validations'
+import StreamMessage from '../../message_layer/StreamMessage'
 
 const TYPE = 0
 
@@ -7,12 +8,12 @@ export default class BroadcastMessage extends ControlMessage {
     constructor(version, requestId, streamMessage) {
         super(version, TYPE, requestId)
 
-        validateIsNotNullOrUndefined('streamMessage', streamMessage)
+        validateIsType('streamMessage', streamMessage, 'StreamMessage', StreamMessage)
         this.streamMessage = streamMessage
     }
 
-    static create(...args) {
-        return new BroadcastMessage(ControlMessage.LATEST_VERSION, ...args)
+    static create(requestId, streamMessage) {
+        return new BroadcastMessage(ControlMessage.LATEST_VERSION, requestId, streamMessage)
     }
 }
 

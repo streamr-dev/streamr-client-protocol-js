@@ -6,7 +6,7 @@ const serializerByVersionAndType = {}
 const LATEST_VERSION = 2
 
 export default class ControlMessage {
-    constructor(version, type, requestId) {
+    constructor(version = LATEST_VERSION, type, requestId) {
         if (new.target === ControlMessage) {
             throw new TypeError('ControlMessage is abstract.')
         }
@@ -42,13 +42,13 @@ export default class ControlMessage {
     }
 
     serialize(version = this.version, ...typeSpecificSerializeArgs) {
-        return JSON.stringify(ControlMessage.getSerializer(this.version, this.type).toArray(this, ...typeSpecificSerializeArgs))
+        return JSON.stringify(ControlMessage.getSerializer(version, this.type).toArray(this, ...typeSpecificSerializeArgs))
     }
 
     /**
      * Takes a serialized representation (array or string) of a message, and returns a ControlMessage instance.
      */
-    static deserialize(msg, parseContent = true) {
+    static deserialize(msg, ...typeSpecificDeserializeArgs) {
         const messageArray = (typeof msg === 'string' ? JSON.parse(msg) : msg)
 
         /* eslint-disable prefer-destructuring */
@@ -57,7 +57,7 @@ export default class ControlMessage {
         /* eslint-enable prefer-destructuring */
 
         const C = ControlMessage.getSerializer(messageVersion, messageType)
-        return C.deserialize(messageArray)
+        return C.fromArray(messageArray, ...typeSpecificDeserializeArgs)
     }
 }
 

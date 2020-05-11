@@ -17,8 +17,8 @@ export default class ErrorResponse extends ControlMessage {
         }
     }
 
-    static create(...args) {
-        return new ErrorResponse(ControlMessage.LATEST_VERSION, ...args)
+    static create(requestId, errorMessage, errorCode) {
+        return new ErrorResponse(ControlMessage.LATEST_VERSION, requestId, errorMessage, errorCode)
     }
 }
 

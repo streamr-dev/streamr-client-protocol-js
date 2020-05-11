@@ -18,8 +18,8 @@ export default class ResendLastRequest extends ControlMessage {
         this.sessionToken = sessionToken
     }
 
-    static create(...args) {
-        return new ResendLastRequest(ControlMessage.LATEST_VERSION, ...args)
+    static create(requestId, streamId, streamPartition, numberLast, sessionToken) {
+        return new ResendLastRequest(ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, numberLast, sessionToken)
     }
 }
 

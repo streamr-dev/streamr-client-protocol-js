@@ -14,8 +14,8 @@ export default class UnicastMessage extends ControlMessage {
         this.streamMessage = streamMessage
     }
 
-    static create(...args) {
-        new UnicastMessage(ControlMessage.LATEST_VERSION, ...args)
+    static create(requestId, streamMessage) {
+        return new UnicastMessage(ControlMessage.LATEST_VERSION, requestId, streamMessage)
     }
 }
 

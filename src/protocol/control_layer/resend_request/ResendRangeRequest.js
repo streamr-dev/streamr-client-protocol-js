@@ -28,8 +28,9 @@ export default class ResendRangeRequest extends ControlMessage {
         this.sessionToken = sessionToken
     }
 
-    static create(...args) {
-        return new ResendRangeRequest(ControlMessage.LATEST_VERSION, ...args)
+    static create(requestId, streamId, streamPartition, fromMsgRefArgsArray, toMsgRefArgsArray, publisherId, msgChainId, sessionToken) {
+        return new ResendRangeRequest(ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition,
+            fromMsgRefArgsArray, toMsgRefArgsArray, publisherId, msgChainId, sessionToken)
     }
 }
 

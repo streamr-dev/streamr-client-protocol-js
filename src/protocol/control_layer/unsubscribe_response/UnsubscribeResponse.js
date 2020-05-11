@@ -14,8 +14,8 @@ export default class UnsubscribeResponse extends ControlMessage {
         this.streamPartition = streamPartition
     }
 
-    static create(...args) {
-        return new UnsubscribeResponse(ControlMessage.LATEST_VERSION, ...args)
+    static create(requestId, streamId, streamPartition) {
+        return new UnsubscribeResponse(ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition)
     }
 }
 

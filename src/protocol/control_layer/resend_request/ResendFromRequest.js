@@ -21,8 +21,8 @@ export default class ResendFromRequest extends ControlMessage {
         this.sessionToken = sessionToken
     }
 
-    static create(...args) {
-        return new ResendFromRequest(ControlMessage.LATEST_VERSION, ...args)
+    static create(requestId, streamId, streamPartition, msgRefArgsArray, publisherId, sessionToken) {
+        return new ResendFromRequest(ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, msgRefArgsArray, publisherId, sessionToken)
     }
 }
 

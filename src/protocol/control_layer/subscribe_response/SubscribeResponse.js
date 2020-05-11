@@ -14,8 +14,8 @@ export default class SubscribeResponse extends ControlMessage {
         this.streamPartition = streamPartition
     }
 
-    static create(...args) {
-        return new SubscribeResponse(ControlMessage.LATEST_VERSION, ...args)
+    static create(requestId, streamId, streamPartition) {
+        return new SubscribeResponse(ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition)
     }
 }
 

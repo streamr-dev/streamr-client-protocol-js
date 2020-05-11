@@ -1,17 +1,18 @@
 import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
 import ControlMessage from '../ControlMessage'
-import BroadcastMessage from '../broadcast_message/BroadcastMessage'
+import StreamMessage from '../../message_layer/StreamMessage'
+
 import PublishRequest from './PublishRequest'
 
 const VERSION = 1
 
 export default class PublishRequestSerializerV1 {
-
-    static toArray(publishRequest) {
+    static toArray(publishRequest, streamMessageVersion = StreamMessage.LATEST_VERSION) {
         return [
             VERSION,
-            BroadcastMessage.TYPE,
-            publishRequest.streamMessage.serialize(),
+            PublishRequest.TYPE,
+            // TODO: use StreamMessage.getSerializer(streamMessageVersion).toArray() once refactored
+            JSON.parse(publishRequest.streamMessage.serialize(streamMessageVersion)),
             publishRequest.sessionToken,
         ]
     }

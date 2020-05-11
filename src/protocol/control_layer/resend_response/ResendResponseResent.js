@@ -16,8 +16,8 @@ export default class ResendResponseResent extends ControlMessage {
         this.requestId = requestId // unnecessary line once V1 is dropped
     }
 
-    static create(...args) {
-        return new ResendResponseResent(ControlMessage.LATEST_VERSION, ...args)
+    static create(requestId, streamId, streamPartition) {
+        return new ResendResponseResent(ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition)
     }
 }
 

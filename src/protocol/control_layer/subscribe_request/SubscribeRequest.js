@@ -16,8 +16,8 @@ export default class SubscribeRequest extends ControlMessage {
         this.sessionToken = sessionToken
     }
 
-    static create(...args) {
-        return new SubscribeRequest(ControlMessage.LATEST_VERSION, ...args)
+    static create(requestId, streamId, streamPartition, sessionToken) {
+        return new SubscribeRequest(ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, sessionToken)
     }
 }
 
