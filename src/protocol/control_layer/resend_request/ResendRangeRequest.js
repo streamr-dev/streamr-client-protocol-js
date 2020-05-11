@@ -1,20 +1,35 @@
 import ControlMessage from '../ControlMessage'
+import { validateIsNotEmptyString, validateIsNotNegativeInteger, validateIsString } from '../../../utils/validations'
+import MessageRef from '../../message_layer/MessageRef'
+import ValidationError from '../../../errors/ValidationError'
 
 const TYPE = 13
 
 export default class ResendRangeRequest extends ControlMessage {
-    constructor(version) {
-        if (new.target === ResendRangeRequest) {
-            throw new TypeError('ResendRangeRequest is abstract.')
+    constructor(version, requestId, streamId, streamPartition, fromMsgRefArgsArray, toMsgRefArgsArray, publisherId, msgChainId, sessionToken) {
+        super(version, TYPE, requestId)
+
+        validateIsNotEmptyString('streamId', streamId)
+        validateIsNotNegativeInteger('streamPartition', streamPartition)
+        validateIsString('publisherId', publisherId, true)
+        validateIsString('msgChainId', msgChainId, true)
+        validateIsString('sessionToken', sessionToken, true)
+
+        this.streamId = streamId
+        this.streamPartition = streamPartition
+        this.fromMsgRef = new MessageRef(...fromMsgRefArgsArray)
+        this.toMsgRef = new MessageRef(...toMsgRefArgsArray)
+        if (this.fromMsgRef.timestamp > this.toMsgRef.timestamp) {
+            throw new ValidationError(`fromMsgRef.timestamp (${this.fromMsgRef.timestamp})`
+                + `must be less than or equal to toMsgRef.timestamp (${this.toMsgRef.timestamp})`)
         }
-        super(version, TYPE)
+        this.publisherId = publisherId
+        this.msgChainId = msgChainId
+        this.sessionToken = sessionToken
     }
 
-    static create(streamId, streamPartition, requestId, fromMsgRefArgsArray, toMsgRefArgsArray, publisherId, msgChainId, sessionToken) {
-        return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(
-            streamId, streamPartition, requestId, fromMsgRefArgsArray,
-            toMsgRefArgsArray, publisherId, msgChainId, sessionToken,
-        )
+    static create(...args) {
+        return new ResendRangeRequest(ControlMessage.LATEST_VERSION, ...args)
     }
 }
 

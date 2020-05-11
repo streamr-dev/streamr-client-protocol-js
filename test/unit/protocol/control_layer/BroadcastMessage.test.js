@@ -1,7 +1,7 @@
 import assert from 'assert'
 
 import BroadcastMessage from '../../../../src/protocol/control_layer/broadcast_message/BroadcastMessage'
-import BroadcastMessageV1 from '../../../../src/protocol/control_layer/broadcast_message/BroadcastMessageV1'
+import BroadcastMessageSerializerV1 from '../../../../src/protocol/control_layer/broadcast_message/BroadcastMessageSerializerV1'
 import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 import StreamMessageFactory from '../../../../src/protocol/message_layer/StreamMessageFactory'
 
@@ -11,7 +11,7 @@ describe('BroadcastMessage', () => {
             const streamMessage = StreamMessageFactory.deserialize([30, ['TsvTbqshTsuLg_HyUjxigA', 0, 1529549961116, 0, 'address', 'msg-chain-id'],
                 [1529549961000, 0], StreamMessage.CONTENT_TYPES.MESSAGE, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature'])
             const msg = BroadcastMessage.create(streamMessage)
-            assert(msg instanceof BroadcastMessageV1)
+            assert(msg instanceof BroadcastMessageSerializerV1)
             assert(msg.streamMessage instanceof StreamMessage)
         })
     })

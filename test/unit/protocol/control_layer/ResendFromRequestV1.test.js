@@ -1,14 +1,14 @@
 import assert from 'assert'
 
-import ResendFromRequestV1 from '../../../../src/protocol/control_layer/resend_request/ResendFromRequestV1'
+import ResendFromRequestSerializerV1 from '../../../../src/protocol/control_layer/resend_request/ResendFromRequestSerializerV1'
 import MessageRef from '../../../../src/protocol/message_layer/MessageRef'
 
-describe('ResendFromRequestV1', () => {
+describe('ResendFromRequestSerializerV1', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             const arr = ['streamId', 0, 'requestId', [132846894, 0], 'publisherId', 'msgChainId', 'sessionToken']
-            const result = new ResendFromRequestV1(...arr)
-            assert(result instanceof ResendFromRequestV1)
+            const result = new ResendFromRequestSerializerV1(...arr)
+            assert(result instanceof ResendFromRequestSerializerV1)
             assert.equal(result.streamId, 'streamId')
             assert.equal(result.streamPartition, 0)
             assert.equal(result.requestId, 'requestId')
@@ -23,7 +23,7 @@ describe('ResendFromRequestV1', () => {
     describe('serialize', () => {
         it('correctly serializes messages', () => {
             const arr = [1, 12, 'streamId', 0, 'requestId', [132846894, 0], 'publisherId', 'msgChainId', 'sessionToken']
-            const serialized = new ResendFromRequestV1(
+            const serialized = new ResendFromRequestSerializerV1(
                 'streamId', 0, 'requestId', [132846894, 0], 'publisherId',
                 'msgChainId', 'sessionToken',
             ).serialize()

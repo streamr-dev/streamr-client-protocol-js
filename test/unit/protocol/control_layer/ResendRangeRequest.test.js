@@ -1,6 +1,6 @@
 import assert from 'assert'
 
-import ResendRangeRequestV1 from '../../../../src/protocol/control_layer/resend_request/ResendRangeRequestV1'
+import ResendRangeRequestSerializerV1 from '../../../../src/protocol/control_layer/resend_request/ResendRangeRequestSerializerV1'
 import ResendRangeRequest from '../../../../src/protocol/control_layer/resend_request/ResendRangeRequest'
 import MessageRef from '../../../../src/protocol/message_layer/MessageRef'
 
@@ -11,7 +11,7 @@ describe('ResendRangeRequest', () => {
                 'streamId', 0, 'requestId', [132846894, 0], [132847000, 0],
                 'publisherId', 'msgChainId', 'sessionToken',
             )
-            assert(msg instanceof ResendRangeRequestV1)
+            assert(msg instanceof ResendRangeRequestSerializerV1)
             assert.equal(msg.streamId, 'streamId')
             assert.equal(msg.streamPartition, 0)
             assert.equal(msg.requestId, 'requestId')

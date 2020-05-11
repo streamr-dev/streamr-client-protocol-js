@@ -1,17 +1,21 @@
 import ControlMessage from '../ControlMessage'
+import { validateIsNotEmptyString, validateIsNotNegativeInteger } from '../../../utils/validations'
 
 const TYPE = 3
 
 export default class UnsubscribeResponse extends ControlMessage {
-    constructor(version) {
-        if (new.target === UnsubscribeResponse) {
-            throw new TypeError('UnsubscribeResponse is abstract.')
-        }
-        super(version, TYPE)
+    constructor(version, requestId, streamId, streamPartition) {
+        super(version, TYPE, requestId)
+
+        validateIsNotEmptyString('streamId', streamId)
+        validateIsNotNegativeInteger('streamPartition', streamPartition)
+
+        this.streamId = streamId
+        this.streamPartition = streamPartition
     }
 
-    static create(streamId, streamPartition) {
-        return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(streamId, streamPartition)
+    static create(...args) {
+        return new UnsubscribeResponse(ControlMessage.LATEST_VERSION, ...args)
     }
 }
 

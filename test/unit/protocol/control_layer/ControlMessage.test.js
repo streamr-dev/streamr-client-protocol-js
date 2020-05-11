@@ -5,30 +5,30 @@ import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionEr
 import UnsupportedTypeError from '../../../../src/errors/UnsupportedTypeError'
 import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 import PublishRequestV0 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV0'
-import PublishRequestV1 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV1'
+import PublishRequestSerializerV1 from '../../../../src/protocol/control_layer/publish_request/PublishRequestSerializerV1'
 import SubscribeRequestV0 from '../../../../src/protocol/control_layer/subscribe_request/SubscribeRequestV0'
-import SubscribeRequestV1 from '../../../../src/protocol/control_layer/subscribe_request/SubscribeRequestV1'
+import SubscribeRequestSerializerV1 from '../../../../src/protocol/control_layer/subscribe_request/SubscribeRequestSerializerV1'
 import UnsubscribeRequestV0 from '../../../../src/protocol/control_layer/unsubscribe_request/UnsubscribeRequestV0'
-import UnsubscribeRequestV1 from '../../../../src/protocol/control_layer/unsubscribe_request/UnsubscribeRequestV1'
-import BroadcastMessageV0 from '../../../../src/protocol/control_layer/broadcast_message/BroadcastMessageV0'
-import BroadcastMessageV1 from '../../../../src/protocol/control_layer/broadcast_message/BroadcastMessageV1'
+import UnsubscribeRequestSerializerV1 from '../../../../src/protocol/control_layer/unsubscribe_request/UnsubscribeRequestSerializerV1'
+import BroadcastMessageSerializerV0 from '../../../../src/protocol/control_layer/broadcast_message/BroadcastMessageSerializerV0'
+import BroadcastMessageSerializerV1 from '../../../../src/protocol/control_layer/broadcast_message/BroadcastMessageSerializerV1'
 import UnicastMessageV0 from '../../../../src/protocol/control_layer/unicast_message/UnicastMessageV0'
-import UnicastMessageV1 from '../../../../src/protocol/control_layer/unicast_message/UnicastMessageV1'
+import UnicastMessageSerializerV1 from '../../../../src/protocol/control_layer/unicast_message/UnicastMessageSerializerV1'
 import SubscribeResponseV0 from '../../../../src/protocol/control_layer/subscribe_response/SubscribeResponseV0'
-import SubscribeResponseV1 from '../../../../src/protocol/control_layer/subscribe_response/SubscribeResponseV1'
+import SubscribeResponseSerializerV1 from '../../../../src/protocol/control_layer/subscribe_response/SubscribeResponseSerializerV1'
 import UnsubscribeResponseV0 from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseV0'
-import UnsubscribeResponseV1 from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseV1'
+import UnsubscribeResponseSerializerV1 from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseSerializerV1'
 import ResendResponseResendingV0 from '../../../../src/protocol/control_layer/resend_response_resending/ResendResponseResendingV0'
-import ResendResponseResendingV1 from '../../../../src/protocol/control_layer/resend_response_resending/ResendResponseResendingV1'
+import ResendResponseResendingV1 from '../../../../src/protocol/control_layer/resend_response_resending/ResendResponseResendingSerializerV1'
 import ResendResponseResentV0 from '../../../../src/protocol/control_layer/resend_response_resent/ResendResponseResentV0'
-import ResendResponseResentV1 from '../../../../src/protocol/control_layer/resend_response_resent/ResendResponseResentV1'
+import ResendResponseResentV1 from '../../../../src/protocol/control_layer/resend_response_resent/ResendResponseResentSerializerV1'
 import ResendResponseNoResendV0 from '../../../../src/protocol/control_layer/resend_response_no_resend/ResendResponseNoResendV0'
-import ResendResponseNoResendV1 from '../../../../src/protocol/control_layer/resend_response_no_resend/ResendResponseNoResendV1'
-import ResendLastRequestV1 from '../../../../src/protocol/control_layer/resend_request/ResendLastRequestV1'
-import ResendFromRequestV1 from '../../../../src/protocol/control_layer/resend_request/ResendFromRequestV1'
-import ResendRangeRequestV1 from '../../../../src/protocol/control_layer/resend_request/ResendRangeRequestV1'
+import ResendResponseNoResendSerializerV1 from '../../../../src/protocol/control_layer/resend_response_no_resend/ResendResponseNoResendSerializerV1'
+import ResendLastRequestSerializerV1 from '../../../../src/protocol/control_layer/resend_request/ResendLastRequestSerializerV1'
+import ResendFromRequestSerializerV1 from '../../../../src/protocol/control_layer/resend_request/ResendFromRequestSerializerV1'
+import ResendRangeRequestSerializerV1 from '../../../../src/protocol/control_layer/resend_request/ResendRangeRequestSerializerV1'
 import ErrorResponseV0 from '../../../../src/protocol/control_layer/error_response/ErrorResponseV0'
-import ErrorResponseV1 from '../../../../src/protocol/control_layer/error_response/ErrorResponseV1'
+import ErrorResponseSerializerV1 from '../../../../src/protocol/control_layer/error_response/ErrorResponseSerializerV1'
 import ResendRequestV0 from '../../../../src/protocol/control_layer/resend_request/ResendRequestV0'
 
 const examplesByTypeV0 = {
@@ -148,8 +148,8 @@ describe('ControlMessage', () => {
                 assert(result instanceof clazz)
             })
             /* eslint-disable prefer-destructuring */
-            it('BroadcastMessageV0', () => {
-                clazz = BroadcastMessageV0
+            it('BroadcastMessageSerializerV0', () => {
+                clazz = BroadcastMessageSerializerV0
                 array = examplesByTypeV0[0]
             })
             it('UnicastMessageV0', () => {
@@ -211,7 +211,7 @@ describe('ControlMessage', () => {
                 assert.deepEqual(array, JSON.parse(serialized))
             })
             /* eslint-disable prefer-destructuring */
-            it('BroadcastMessageV0', () => {
+            it('BroadcastMessageSerializerV0', () => {
                 array = examplesByTypeV0[0]
             })
             it('UnicastMessageV0', () => {
@@ -264,20 +264,20 @@ describe('ControlMessage', () => {
                 assert(result instanceof clazz)
             })
             /* eslint-disable prefer-destructuring */
-            it('BroadcastMessageV1', () => {
-                clazz = BroadcastMessageV1
+            it('BroadcastMessageSerializerV1', () => {
+                clazz = BroadcastMessageSerializerV1
                 array = examplesByTypeV1[0]
             })
-            it('UnicastMessageV1', () => {
-                clazz = UnicastMessageV1
+            it('UnicastMessageSerializerV1', () => {
+                clazz = UnicastMessageSerializerV1
                 array = examplesByTypeV1[1]
             })
-            it('SubscribeResponseV1', () => {
-                clazz = SubscribeResponseV1
+            it('SubscribeResponseSerializerV1', () => {
+                clazz = SubscribeResponseSerializerV1
                 array = examplesByTypeV1[2]
             })
-            it('UnsubscribeResponseV1', () => {
-                clazz = UnsubscribeResponseV1
+            it('UnsubscribeResponseSerializerV1', () => {
+                clazz = UnsubscribeResponseSerializerV1
                 array = examplesByTypeV1[3]
             })
             it('ResendResponseResendingV1', () => {
@@ -288,36 +288,36 @@ describe('ControlMessage', () => {
                 clazz = ResendResponseResentV1
                 array = examplesByTypeV1[5]
             })
-            it('ResendResponseNoResendV1', () => {
-                clazz = ResendResponseNoResendV1
+            it('ResendResponseNoResendSerializerV1', () => {
+                clazz = ResendResponseNoResendSerializerV1
                 array = examplesByTypeV1[6]
             })
-            it('ErrorResponseV1', () => {
-                clazz = ErrorResponseV1
+            it('ErrorResponseSerializerV1', () => {
+                clazz = ErrorResponseSerializerV1
                 array = examplesByTypeV1[7]
             })
-            it('PublishRequestV1', () => {
-                clazz = PublishRequestV1
+            it('PublishRequestSerializerV1', () => {
+                clazz = PublishRequestSerializerV1
                 array = examplesByTypeV1[8]
             })
-            it('SubscribeRequestV1', () => {
-                clazz = SubscribeRequestV1
+            it('SubscribeRequestSerializerV1', () => {
+                clazz = SubscribeRequestSerializerV1
                 array = examplesByTypeV1[9]
             })
-            it('UnsubscribeRequestV1', () => {
-                clazz = UnsubscribeRequestV1
+            it('UnsubscribeRequestSerializerV1', () => {
+                clazz = UnsubscribeRequestSerializerV1
                 array = examplesByTypeV1[10]
             })
-            it('ResendLastRequestV1', () => {
-                clazz = ResendLastRequestV1
+            it('ResendLastRequestSerializerV1', () => {
+                clazz = ResendLastRequestSerializerV1
                 array = examplesByTypeV1[11]
             })
-            it('ResendFromRequestV1', () => {
-                clazz = ResendFromRequestV1
+            it('ResendFromRequestSerializerV1', () => {
+                clazz = ResendFromRequestSerializerV1
                 array = examplesByTypeV1[12]
             })
-            it('ResendRangeRequestV1', () => {
-                clazz = ResendRangeRequestV1
+            it('ResendRangeRequestSerializerV1', () => {
+                clazz = ResendRangeRequestSerializerV1
                 array = examplesByTypeV1[13]
             })
             /* eslint-enable prefer-destructuring */
@@ -335,16 +335,16 @@ describe('ControlMessage', () => {
                 assert.deepEqual(array, JSON.parse(serialized))
             })
             /* eslint-disable prefer-destructuring */
-            it('BroadcastMessageV1', () => {
+            it('BroadcastMessageSerializerV1', () => {
                 array = examplesByTypeV1[0]
             })
-            it('UnicastMessageV1', () => {
+            it('UnicastMessageSerializerV1', () => {
                 array = examplesByTypeV1[1]
             })
-            it('SubscribeResponseV1', () => {
+            it('SubscribeResponseSerializerV1', () => {
                 array = examplesByTypeV1[2]
             })
-            it('UnsubscribeResponseV1', () => {
+            it('UnsubscribeResponseSerializerV1', () => {
                 array = examplesByTypeV1[3]
             })
             it('ResendResponseResendingV1', () => {
@@ -353,28 +353,28 @@ describe('ControlMessage', () => {
             it('ResendResponseResentV1', () => {
                 array = examplesByTypeV1[5]
             })
-            it('ResendResponseNoResendV1', () => {
+            it('ResendResponseNoResendSerializerV1', () => {
                 array = examplesByTypeV1[6]
             })
-            it('ErrorResponseV1', () => {
+            it('ErrorResponseSerializerV1', () => {
                 array = examplesByTypeV1[7]
             })
-            it('PublishRequestV1', () => {
+            it('PublishRequestSerializerV1', () => {
                 array = examplesByTypeV1[8]
             })
-            it('SubscribeRequestV1', () => {
+            it('SubscribeRequestSerializerV1', () => {
                 array = examplesByTypeV1[9]
             })
-            it('UnsubscribeRequestV1', () => {
+            it('UnsubscribeRequestSerializerV1', () => {
                 array = examplesByTypeV1[10]
             })
-            it('ResendLastRequestV1', () => {
+            it('ResendLastRequestSerializerV1', () => {
                 array = examplesByTypeV1[11]
             })
-            it('ResendFromRequestV1', () => {
+            it('ResendFromRequestSerializerV1', () => {
                 array = examplesByTypeV1[12]
             })
-            it('ResendRangeRequestV1', () => {
+            it('ResendRangeRequestSerializerV1', () => {
                 array = examplesByTypeV1[13]
             })
             /* eslint-enable prefer-destructuring */

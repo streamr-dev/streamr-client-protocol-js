@@ -1,13 +1,13 @@
 import assert from 'assert'
 
-import UnsubscribeResponseV1 from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseV1'
+import UnsubscribeResponseSerializerV1 from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseSerializerV1'
 
-describe('UnsubscribeResponseV1', () => {
+describe('UnsubscribeResponseSerializerV1', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             const arr = ['streamId', 0]
-            const result = new UnsubscribeResponseV1(...arr)
-            assert(result instanceof UnsubscribeResponseV1)
+            const result = new UnsubscribeResponseSerializerV1(...arr)
+            assert(result instanceof UnsubscribeResponseSerializerV1)
             assert.equal(result.streamId, 'streamId')
             assert.equal(result.streamPartition, 0)
         })
@@ -15,7 +15,7 @@ describe('UnsubscribeResponseV1', () => {
     describe('serialize', () => {
         it('correctly serializes messages', () => {
             const arr = [1, 3, 'streamId', 0]
-            const serialized = new UnsubscribeResponseV1('streamId', 0).serialize()
+            const serialized = new UnsubscribeResponseSerializerV1('streamId', 0).serialize()
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })
@@ -24,7 +24,7 @@ describe('UnsubscribeResponseV1', () => {
                 stream: 'streamId',
                 partition: 0,
             }]
-            const serialized = new UnsubscribeResponseV1('streamId', 0).serialize(0)
+            const serialized = new UnsubscribeResponseSerializerV1('streamId', 0).serialize(0)
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })

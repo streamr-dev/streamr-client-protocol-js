@@ -1,24 +1,18 @@
 import ControlMessage from '../ControlMessage'
+import { validateIsNotNullOrUndefined } from '../../../utils/validations'
 
 const TYPE = 0
 
 export default class BroadcastMessage extends ControlMessage {
-    constructor(version) {
-        if (new.target === BroadcastMessage) {
-            throw new TypeError('BroadcastMessage is abstract.')
-        }
-        super(version, TYPE)
+    constructor(version, requestId, streamMessage) {
+        super(version, TYPE, requestId)
+
+        validateIsNotNullOrUndefined('streamMessage', streamMessage)
+        this.streamMessage = streamMessage
     }
 
-    serialize(controlLayerVersion = this.version, messageLayerVersion) {
-        if (controlLayerVersion === this.version) {
-            return JSON.stringify(this.toArray(messageLayerVersion))
-        }
-        return this.toOtherVersion(controlLayerVersion, messageLayerVersion).serialize()
-    }
-
-    static create(streamMessage) {
-        return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(streamMessage)
+    static create(...args) {
+        return new BroadcastMessage(ControlMessage.LATEST_VERSION, ...args)
     }
 }
 

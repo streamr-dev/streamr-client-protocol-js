@@ -1,13 +1,13 @@
 import assert from 'assert'
 
-import ResendResponseNoResendV1 from '../../../../src/protocol/control_layer/resend_response_no_resend/ResendResponseNoResendV1'
+import ResendResponseNoResendSerializerV1 from '../../../../src/protocol/control_layer/resend_response_no_resend/ResendResponseNoResendSerializerV1'
 
-describe('ResendResponseNoResendV1', () => {
+describe('ResendResponseNoResendSerializerV1', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             const arr = ['streamId', 0, 'requestId']
-            const result = new ResendResponseNoResendV1(...arr)
-            assert(result instanceof ResendResponseNoResendV1)
+            const result = new ResendResponseNoResendSerializerV1(...arr)
+            assert(result instanceof ResendResponseNoResendSerializerV1)
             assert.equal(result.streamId, 'streamId')
             assert.equal(result.streamPartition, 0)
             assert.equal(result.requestId, 'requestId')
@@ -16,7 +16,7 @@ describe('ResendResponseNoResendV1', () => {
     describe('serialize', () => {
         it('correctly serializes messages', () => {
             const arr = [1, 6, 'streamId', 0, 'requestId']
-            const serialized = new ResendResponseNoResendV1('streamId', 0, 'requestId').serialize()
+            const serialized = new ResendResponseNoResendSerializerV1('streamId', 0, 'requestId').serialize()
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })
@@ -26,7 +26,7 @@ describe('ResendResponseNoResendV1', () => {
                 partition: 0,
                 sub: 'requestId',
             }]
-            const serialized = new ResendResponseNoResendV1('streamId', 0, 'requestId').serialize(0)
+            const serialized = new ResendResponseNoResendSerializerV1('streamId', 0, 'requestId').serialize(0)
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })

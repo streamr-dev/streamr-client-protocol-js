@@ -1,44 +1,44 @@
 import BroadcastMessage from './protocol/control_layer/broadcast_message/BroadcastMessage'
-import BroadcastMessageV0 from './protocol/control_layer/broadcast_message/BroadcastMessageV0'
-import BroadcastMessageV1 from './protocol/control_layer/broadcast_message/BroadcastMessageV1'
+import BroadcastMessageSerializerV0 from './protocol/control_layer/broadcast_message/BroadcastMessageSerializerV0'
+import BroadcastMessageSerializerV1 from './protocol/control_layer/broadcast_message/BroadcastMessageSerializerV1'
 import ErrorPayload from './protocol/control_layer/error_response/ErrorPayload'
 import ErrorResponse from './protocol/control_layer/error_response/ErrorResponse'
 import ErrorResponseV0 from './protocol/control_layer/error_response/ErrorResponseV0'
-import ErrorResponseV1 from './protocol/control_layer/error_response/ErrorResponseV1'
+import ErrorResponseSerializerV1 from './protocol/control_layer/error_response/ErrorResponseSerializerV1'
 import PublishRequest from './protocol/control_layer/publish_request/PublishRequest'
 import PublishRequestV0 from './protocol/control_layer/publish_request/PublishRequestV0'
-import PublishRequestV1 from './protocol/control_layer/publish_request/PublishRequestV1'
-import ResendFromRequestV1 from './protocol/control_layer/resend_request/ResendFromRequestV1'
+import PublishRequestSerializerV1 from './protocol/control_layer/publish_request/PublishRequestSerializerV1'
+import ResendFromRequestSerializerV1 from './protocol/control_layer/resend_request/ResendFromRequestSerializerV1'
 import ResendFromRequest from './protocol/control_layer/resend_request/ResendFromRequest'
-import ResendLastRequestV1 from './protocol/control_layer/resend_request/ResendLastRequestV1'
+import ResendLastRequestSerializerV1 from './protocol/control_layer/resend_request/ResendLastRequestSerializerV1'
 import ResendLastRequest from './protocol/control_layer/resend_request/ResendLastRequest'
-import ResendRangeRequestV1 from './protocol/control_layer/resend_request/ResendRangeRequestV1'
+import ResendRangeRequestSerializerV1 from './protocol/control_layer/resend_request/ResendRangeRequestSerializerV1'
 import ResendRangeRequest from './protocol/control_layer/resend_request/ResendRangeRequest'
 import ResendRequestV0 from './protocol/control_layer/resend_request/ResendRequestV0'
 import ResendResponseNoResend from './protocol/control_layer/resend_response_no_resend/ResendResponseNoResend'
 import ResendResponseNoResendV0 from './protocol/control_layer/resend_response_no_resend/ResendResponseNoResendV0'
-import ResendResponseNoResendV1 from './protocol/control_layer/resend_response_no_resend/ResendResponseNoResendV1'
+import ResendResponseNoResendSerializerV1 from './protocol/control_layer/resend_response_no_resend/ResendResponseNoResendSerializerV1'
 import ResendResponseResending from './protocol/control_layer/resend_response_resending/ResendResponseResending'
 import ResendResponseResendingV0 from './protocol/control_layer/resend_response_resending/ResendResponseResendingV0'
-import ResendResponseResendingV1 from './protocol/control_layer/resend_response_resending/ResendResponseResendingV1'
+import ResendResponseResendingV1 from './protocol/control_layer/resend_response_resending/ResendResponseResendingSerializerV1'
 import ResendResponseResent from './protocol/control_layer/resend_response_resent/ResendResponseResent'
 import ResendResponseResentV0 from './protocol/control_layer/resend_response_resent/ResendResponseResentV0'
-import ResendResponseResentV1 from './protocol/control_layer/resend_response_resent/ResendResponseResentV1'
+import ResendResponseResentV1 from './protocol/control_layer/resend_response_resent/ResendResponseResentSerializerV1'
 import SubscribeRequest from './protocol/control_layer/subscribe_request/SubscribeRequest'
 import SubscribeRequestV0 from './protocol/control_layer/subscribe_request/SubscribeRequestV0'
-import SubscribeRequestV1 from './protocol/control_layer/subscribe_request/SubscribeRequestV1'
+import SubscribeRequestSerializerV1 from './protocol/control_layer/subscribe_request/SubscribeRequestSerializerV1'
 import SubscribeResponse from './protocol/control_layer/subscribe_response/SubscribeResponse'
 import SubscribeResponseV0 from './protocol/control_layer/subscribe_response/SubscribeResponseV0'
-import SubscribeResponseV1 from './protocol/control_layer/subscribe_response/SubscribeResponseV1'
+import SubscribeResponseSerializerV1 from './protocol/control_layer/subscribe_response/SubscribeResponseSerializerV1'
 import UnicastMessage from './protocol/control_layer/unicast_message/UnicastMessage'
 import UnicastMessageV0 from './protocol/control_layer/unicast_message/UnicastMessageV0'
-import UnicastMessageV1 from './protocol/control_layer/unicast_message/UnicastMessageV1'
+import UnicastMessageSerializerV1 from './protocol/control_layer/unicast_message/UnicastMessageSerializerV1'
 import UnsubscribeRequest from './protocol/control_layer/unsubscribe_request/UnsubscribeRequest'
 import UnsubscribeRequestV0 from './protocol/control_layer/unsubscribe_request/UnsubscribeRequestV0'
-import UnsubscribeRequestV1 from './protocol/control_layer/unsubscribe_request/UnsubscribeRequestV1'
+import UnsubscribeRequestSerializerV1 from './protocol/control_layer/unsubscribe_request/UnsubscribeRequestSerializerV1'
 import UnsubscribeResponse from './protocol/control_layer/unsubscribe_response/UnsubscribeResponse'
 import UnsubscribeResponseV0 from './protocol/control_layer/unsubscribe_response/UnsubscribeResponseV0'
-import UnsubscribeResponseV1 from './protocol/control_layer/unsubscribe_response/UnsubscribeResponseV1'
+import UnsubscribeResponseSerializerV1 from './protocol/control_layer/unsubscribe_response/UnsubscribeResponseSerializerV1'
 import ControlMessage from './protocol/control_layer/ControlMessage'
 import ResendResponsePayload from './protocol/control_layer/ResendResponsePayload'
 import StreamAndPartition from './protocol/control_layer/StreamAndPartition'
@@ -61,25 +61,25 @@ import CachingStreamMessageValidator from './utils/CachingStreamMessageValidator
 
 export const ControlLayer = {
     BroadcastMessage,
-    BroadcastMessageV0,
-    BroadcastMessageV1,
+    BroadcastMessageV0: BroadcastMessageSerializerV0,
+    BroadcastMessageV1: BroadcastMessageSerializerV1,
     ErrorPayload,
     ErrorResponse,
     ErrorResponseV0,
-    ErrorResponseV1,
+    ErrorResponseV1: ErrorResponseSerializerV1,
     PublishRequest,
     PublishRequestV0,
-    PublishRequestV1,
+    PublishRequestV1: PublishRequestSerializerV1,
     ResendFromRequest,
-    ResendFromRequestV1,
+    ResendFromRequestV1: ResendFromRequestSerializerV1,
     ResendLastRequest,
-    ResendLastRequestV1,
+    ResendLastRequestV1: ResendLastRequestSerializerV1,
     ResendRangeRequest,
-    ResendRangeRequestV1,
+    ResendRangeRequestV1: ResendRangeRequestSerializerV1,
     ResendRequestV0,
     ResendResponseNoResend,
     ResendResponseNoResendV0,
-    ResendResponseNoResendV1,
+    ResendResponseNoResendV1: ResendResponseNoResendSerializerV1,
     ResendResponseResending,
     ResendResponseResendingV0,
     ResendResponseResendingV1,
@@ -88,19 +88,19 @@ export const ControlLayer = {
     ResendResponseResentV1,
     SubscribeRequest,
     SubscribeRequestV0,
-    SubscribeRequestV1,
+    SubscribeRequestV1: SubscribeRequestSerializerV1,
     SubscribeResponse,
     SubscribeResponseV0,
-    SubscribeResponseV1,
+    SubscribeResponseV1: SubscribeResponseSerializerV1,
     UnicastMessage,
     UnicastMessageV0,
-    UnicastMessageV1,
+    UnicastMessageV1: UnicastMessageSerializerV1,
     UnsubscribeRequest,
     UnsubscribeRequestV0,
-    UnsubscribeRequestV1,
+    UnsubscribeRequestV1: UnsubscribeRequestSerializerV1,
     UnsubscribeResponse,
     UnsubscribeResponseV0,
-    UnsubscribeResponseV1,
+    UnsubscribeResponseV1: UnsubscribeResponseSerializerV1,
     ControlMessage,
     ResendResponsePayload,
     StreamAndPartition,

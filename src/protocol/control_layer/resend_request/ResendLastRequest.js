@@ -1,17 +1,25 @@
 import ControlMessage from '../ControlMessage'
+import { validateIsNotEmptyString, validateIsNotNegativeInteger, validateIsString } from '../../../utils/validations'
 
 const TYPE = 11
 
 export default class ResendLastRequest extends ControlMessage {
-    constructor(version) {
-        if (new.target === ResendLastRequest) {
-            throw new TypeError('ResendLastRequest is abstract.')
-        }
-        super(version, TYPE)
+    constructor(version, requestId, streamId, streamPartition, numberLast, sessionToken) {
+        super(version, TYPE, requestId)
+
+        validateIsNotEmptyString('streamId', streamId)
+        validateIsNotNegativeInteger('streamPartition', streamPartition)
+        validateIsNotNegativeInteger('numberLast', numberLast)
+        validateIsString('sessionToken', sessionToken, true)
+
+        this.streamId = streamId
+        this.streamPartition = streamPartition
+        this.numberLast = numberLast
+        this.sessionToken = sessionToken
     }
 
-    static create(streamId, streamPartition, requestId, numberLast, sessionToken) {
-        return new (ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE))(streamId, streamPartition, requestId, numberLast, sessionToken)
+    static create(...args) {
+        return new ResendLastRequest(ControlMessage.LATEST_VERSION, ...args)
     }
 }
 

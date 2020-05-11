@@ -1,36 +1,21 @@
-import { validateIsNotEmptyString } from '../../../utils/validations'
+import { validateIsNotEmptyString, validateIsNotNullOrUndefined } from '../../../utils/validations'
 import ControlMessage from '../ControlMessage'
 
 const TYPE = 1
 
 export default class UnicastMessage extends ControlMessage {
-    constructor(version, requestId) {
-        if (new.target === UnicastMessage) {
-            throw new TypeError('UnicastMessage is abstract.')
-        }
-        super(version, TYPE)
-        validateIsNotEmptyString('requestId', requestId)
-        this.requestId = requestId
+    constructor(version, requestId, streamMessage) {
+        super(version, TYPE, requestId)
+
+        validateIsNotEmptyString('requestId', requestId) // unnecessary line once V1 is dropped
+        this.requestId = requestId // unnecessary line once V1 is dropped
+
+        validateIsNotNullOrUndefined('streamMessage', streamMessage)
+        this.streamMessage = streamMessage
     }
 
-    toArray() {
-        const array = super.toArray()
-        array.push(...[
-            this.requestId,
-        ])
-        return array
-    }
-
-    serialize(version = this.version, messageLayerVersion) {
-        if (version === this.version) {
-            return JSON.stringify(this.toArray(messageLayerVersion))
-        }
-        return this.toOtherVersion(version, messageLayerVersion).serialize()
-    }
-
-    static create(requestId, streamMessage) {
-        const C = ControlMessage.getClass(ControlMessage.LATEST_VERSION, TYPE)
-        return new C(requestId, streamMessage)
+    static create(...args) {
+        new UnicastMessage(ControlMessage.LATEST_VERSION, ...args)
     }
 }
 

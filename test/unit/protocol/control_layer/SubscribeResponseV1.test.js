@@ -1,13 +1,13 @@
 import assert from 'assert'
 
-import SubscribeResponseV1 from '../../../../src/protocol/control_layer/subscribe_response/SubscribeResponseV1'
+import SubscribeResponseSerializerV1 from '../../../../src/protocol/control_layer/subscribe_response/SubscribeResponseSerializerV1'
 
-describe('SubscribeResponseV1', () => {
+describe('SubscribeResponseSerializerV1', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             const arr = ['streamId', 0]
-            const result = new SubscribeResponseV1(...arr)
-            assert(result instanceof SubscribeResponseV1)
+            const result = new SubscribeResponseSerializerV1(...arr)
+            assert(result instanceof SubscribeResponseSerializerV1)
             assert.equal(result.streamId, 'streamId')
             assert.equal(result.streamPartition, 0)
         })
@@ -15,7 +15,7 @@ describe('SubscribeResponseV1', () => {
     describe('serialize', () => {
         it('correctly serializes messages', () => {
             const arr = [1, 2, 'streamId', 0]
-            const serialized = new SubscribeResponseV1('streamId', 0).serialize()
+            const serialized = new SubscribeResponseSerializerV1('streamId', 0).serialize()
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })
@@ -24,7 +24,7 @@ describe('SubscribeResponseV1', () => {
                 stream: 'streamId',
                 partition: 0,
             }]
-            const serialized = new SubscribeResponseV1('streamId', 0).serialize(0)
+            const serialized = new SubscribeResponseSerializerV1('streamId', 0).serialize(0)
             assert(typeof serialized === 'string')
             assert.deepEqual(arr, JSON.parse(serialized))
         })

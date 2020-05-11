@@ -1,7 +1,7 @@
 import assert from 'assert'
 
 import ResendResponseResending from '../../../../src/protocol/control_layer/resend_response_resending/ResendResponseResending'
-import ResendResponseResendingV1 from '../../../../src/protocol/control_layer/resend_response_resending/ResendResponseResendingV1'
+import ResendResponseResendingV1 from '../../../../src/protocol/control_layer/resend_response_resending/ResendResponseResendingSerializerV1'
 
 describe('ResendResponseResending', () => {
     describe('create', () => {

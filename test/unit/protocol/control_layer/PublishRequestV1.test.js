@@ -1,17 +1,17 @@
 import assert from 'assert'
 
 import PublishRequest from '../../../../src/protocol/control_layer/publish_request/PublishRequest'
-import PublishRequestV1 from '../../../../src/protocol/control_layer/publish_request/PublishRequestV1'
+import PublishRequestSerializerV1 from '../../../../src/protocol/control_layer/publish_request/PublishRequestSerializerV1'
 import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 import StreamMessageFactory from '../../../../src/protocol/message_layer/StreamMessageFactory'
 
-describe('PublishRequestV1', () => {
+describe('PublishRequestSerializerV1', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             const arr = [[30, ['streamId', 0, 1529549961116, 0, 'address', 'msg-chain-id'], [1529549961000, 0],
                 StreamMessage.CONTENT_TYPES.MESSAGE, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature'], 'sessionToken']
             const streamMsg = StreamMessageFactory.deserialize(arr[0])
-            const result = new PublishRequestV1(streamMsg, arr[1])
+            const result = new PublishRequestSerializerV1(streamMsg, arr[1])
             assert(result.getStreamMessage() instanceof StreamMessage)
             assert.equal(result.sessionToken, 'sessionToken')
         })
@@ -23,7 +23,7 @@ describe('PublishRequestV1', () => {
         beforeEach(() => {
             const streamMessageArray = [30, ['streamId', 0, 1529549961116, 0, 'address', 'msg-chain-id'], [1529549961000, 0],
                 StreamMessage.CONTENT_TYPES.MESSAGE, '{"valid": "json"}', StreamMessage.SIGNATURE_TYPES.ETH, 'signature']
-            publishRequest = new PublishRequestV1(StreamMessageFactory.deserialize(streamMessageArray), 'sessionToken')
+            publishRequest = new PublishRequestSerializerV1(StreamMessageFactory.deserialize(streamMessageArray), 'sessionToken')
         })
         afterEach(() => {
             const arr = [1, PublishRequest.TYPE, expectedPayloadArray, 'sessionToken']

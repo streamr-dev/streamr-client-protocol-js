@@ -1,5 +1,5 @@
 import ControlMessage from '../../src/protocol/control_layer/ControlMessage'
-import PublishRequestV1 from '../../src/protocol/control_layer/publish_request/PublishRequestV1'
+import PublishRequestSerializerV1 from '../../src/protocol/control_layer/publish_request/PublishRequestSerializerV1'
 import StreamMessageV31 from '../../src/protocol/message_layer/StreamMessageV31'
 
 const ITERATIONS = 1000000
@@ -38,8 +38,8 @@ describe('deserialize()', () => {
         const test = (msg) => {
             const messageArray = (typeof msg === 'string' ? JSON.parse(msg) : msg)
             const args = messageArray.slice(2)
-            return new PublishRequestV1(new StreamMessageV31(...args[0].slice(1), false), args[1])
+            return new PublishRequestSerializerV1(new StreamMessageV31(...args[0].slice(1), false), args[1])
         }
-        run((json) => test(json), 'new PublishRequestV1(new StreamMessageV31(...)) without parsing content')
+        run((json) => test(json), 'new PublishRequestSerializerV1(new StreamMessageV31(...)) without parsing content')
     })
 })

@@ -1,85 +1,63 @@
-import ValidationError from '../../errors/ValidationError'
 import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
 import UnsupportedTypeError from '../../errors/UnsupportedTypeError'
+import { validateIsInteger, validateIsString } from '../../utils/validations'
 
-const classByVersionAndType = {}
-const LATEST_VERSION = 1
+const serializerByVersionAndType = {}
+const LATEST_VERSION = 2
 
 export default class ControlMessage {
-    constructor(version, type) {
+    constructor(version, type, requestId) {
         if (new.target === ControlMessage) {
             throw new TypeError('ControlMessage is abstract.')
         }
+        validateIsInteger('version', version)
         this.version = version
-        if (type === undefined) {
-            throw new ValidationError('No message type given!')
-        }
+        validateIsInteger('type', type)
         this.type = type
-    }
 
-    toArray() {
-        return [
-            this.version,
-            this.type,
-        ]
-    }
-
-    toOtherVersion() {
-        throw new Error(`Class ${this.constructor.name} must override ControlMessage.toOtherVersion(version) or ControlMessage.serialize(version)`)
-    }
-
-    serialize(version = this.version) {
-        if (version === this.version) {
-            return JSON.stringify(this.toArray())
+        // Since V2
+        if (version >= 2) {
+            validateIsString('requestId', requestId)
+            this.requestId = requestId
         }
-        return this.toOtherVersion(version).serialize()
     }
 
-    static getConstructorArgs(array) {
-        return array
-    }
-
-    static registerClass(version, type, clazz) {
-        if (classByVersionAndType[version] === undefined) {
-            classByVersionAndType[version] = {}
+    static registerSerializer(version, type, clazz) {
+        if (serializerByVersionAndType[version] === undefined) {
+            serializerByVersionAndType[version] = {}
         }
-        classByVersionAndType[version][type] = clazz
+        serializerByVersionAndType[version][type] = clazz
     }
 
-    static getClass(version, type) {
-        const classesByVersion = classByVersionAndType[version]
-        if (!classesByVersion) {
-            throw new UnsupportedVersionError(version, `Supported versions: [${Object.keys(classByVersionAndType)}]`)
+    static getSerializer(version, type) {
+        const serializersByType = serializerByVersionAndType[version]
+        if (!serializersByType) {
+            throw new UnsupportedVersionError(version, `Supported versions: [${Object.keys(serializerByVersionAndType)}]`)
         }
-        const clazz = classesByVersion[type]
+        const clazz = serializersByType[type]
         if (!clazz) {
-            throw new UnsupportedTypeError(type, `Supported types: [${Object.keys(classesByVersion)}]`)
+            throw new UnsupportedTypeError(type, `Supported types: [${Object.keys(serializersByType)}]`)
         }
-        return classByVersionAndType[version][type]
+        return serializerByVersionAndType[version][type]
+    }
+
+    serialize(version = this.version, ...typeSpecificSerializeArgs) {
+        return JSON.stringify(ControlMessage.getSerializer(this.version, this.type).toArray(this, ...typeSpecificSerializeArgs))
     }
 
     /**
      * Takes a serialized representation (array or string) of a message, and returns a ControlMessage instance.
-     * WARNING: if you pass an array, it gets mutated!
      */
     static deserialize(msg, parseContent = true) {
         const messageArray = (typeof msg === 'string' ? JSON.parse(msg) : msg)
-        let messageVersion
-        let messageType
 
-        // Version 0 (deprecated) uses objects instead of arrays for request types. In this case, messageArray is not an array but an object.
-        if (!Array.isArray(messageArray)) {
-            messageVersion = messageArray.version || 0
-            messageType = messageArray.type
-        } else {
-            /* eslint-disable prefer-destructuring */
-            messageVersion = messageArray[0]
-            messageType = messageArray[1]
-            /* eslint-enable prefer-destructuring */
-            messageArray.splice(0, 2)
-        }
-        const C = ControlMessage.getClass(messageVersion, messageType)
-        return new C(...C.getConstructorArgs(messageArray, parseContent))
+        /* eslint-disable prefer-destructuring */
+        const messageVersion = messageArray[0]
+        const messageType = messageArray[1]
+        /* eslint-enable prefer-destructuring */
+
+        const C = ControlMessage.getSerializer(messageVersion, messageType)
+        return C.deserialize(messageArray)
     }
 }
 
