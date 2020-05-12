@@ -1,10 +1,9 @@
 import assert from 'assert'
 
-import ResendRangeRequestSerializerV2
-    from '../../../../src/protocol/control_layer/resend_request/ResendRangeRequestSerializerV2'
-import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
-import ResendRangeRequest from '../../../../src/protocol/control_layer/resend_request/ResendRangeRequest'
-import MessageRef from '../../../../src/protocol/message_layer/MessageRef'
+import { ControlLayer, MessageLayer } from '../../../../src/index'
+
+const { MessageRef } = MessageLayer
+const { ResendRangeRequest, ControlMessage } = ControlLayer
 
 const VERSION = 2
 

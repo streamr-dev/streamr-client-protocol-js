@@ -1,9 +1,8 @@
 import assert from 'assert'
 
-import ResendResponseNoResendSerializerV2
-    from '../../../../src/protocol/control_layer/resend_response/ResendResponseNoResendSerializerV2'
-import ResendResponseNoResend from '../../../../src/protocol/control_layer/resend_response/ResendResponseNoResend'
-import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
+import { ControlLayer } from '../../../../src/index'
+
+const { ResendResponseNoResend, ControlMessage } = ControlLayer
 
 const VERSION = 2
 

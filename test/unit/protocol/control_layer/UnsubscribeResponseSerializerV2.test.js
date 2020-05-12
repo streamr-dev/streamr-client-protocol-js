@@ -1,9 +1,8 @@
 import assert from 'assert'
 
-import UnsubscribeResponseSerializerV2
-    from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponseSerializerV2'
-import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
-import UnsubscribeResponse from '../../../../src/protocol/control_layer/unsubscribe_response/UnsubscribeResponse'
+import { ControlLayer } from '../../../../src/index'
+
+const { UnsubscribeResponse, ControlMessage } = ControlLayer
 
 const VERSION = 2
 

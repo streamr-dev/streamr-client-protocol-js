@@ -20,7 +20,7 @@ export default class ResendLastRequestSerializerV1 {
     static fromArray(arr) {
         const [
             version,
-            type,
+            type, // eslint-disable-line no-unused-vars
             streamId,
             streamPartition,
             requestId,

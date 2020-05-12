@@ -53,7 +53,7 @@ export default class ControlMessage {
         if (!clazz) {
             throw new UnsupportedTypeError(type, `Supported types: [${Object.keys(serializersByType)}]`)
         }
-        return serializerByVersionAndType[version][type]
+        return clazz
     }
 
     serialize(version = this.version, ...typeSpecificSerializeArgs) {

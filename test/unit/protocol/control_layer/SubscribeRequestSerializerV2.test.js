@@ -1,9 +1,8 @@
 import assert from 'assert'
 
-import SubscribeRequest from '../../../../src/protocol/control_layer/subscribe_request/SubscribeRequest'
-import SubscribeRequestSerializerV2
-    from '../../../../src/protocol/control_layer/subscribe_request/SubscribeRequestSerializerV2'
-import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
+import { ControlLayer } from '../../../../src/index'
+
+const { SubscribeRequest, ControlMessage } = ControlLayer
 
 const VERSION = 2
 

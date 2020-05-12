@@ -1,10 +1,9 @@
 import assert from 'assert'
 
-import ResendFromRequestSerializerV1
-    from '../../../../src/protocol/control_layer/resend_request/ResendFromRequestSerializerV1'
-import ResendFromRequest from '../../../../src/protocol/control_layer/resend_request/ResendFromRequest'
-import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import MessageRef from '../../../../src/protocol/message_layer/MessageRef'
+import { ControlLayer } from '../../../../src/index'
+
+const { ResendFromRequest, ControlMessage } = ControlLayer
 
 const VERSION = 1
 

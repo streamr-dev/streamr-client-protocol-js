@@ -18,7 +18,7 @@ export default class ErrorResponseSerializerV2 {
     static fromArray(arr) {
         const [
             version,
-            type,
+            type, // eslint-disable-line no-unused-vars
             requestId,
             errorMessage,
             errorCode,

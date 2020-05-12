@@ -1,5 +1,4 @@
 import ControlMessage from '../ControlMessage'
-import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
 import StreamMessage from '../../message_layer/StreamMessage'
 
 import BroadcastMessage from './BroadcastMessage'
@@ -12,20 +11,19 @@ export default class BroadcastMessageSerializerV2 {
             VERSION,
             BroadcastMessage.TYPE,
             broadcastMessage.requestId,
-            // TODO: use StreamMessage.getSerializer(streamMessageVersion).toArray() once refactored
-            JSON.parse(broadcastMessage.streamMessage.serialize(streamMessageVersion)),
+            StreamMessage.getSerializer(streamMessageVersion).toArray(broadcastMessage.streamMessage),
         ]
     }
 
-    static fromArray(arr, parseContent = true) {
+    static fromArray(arr) {
         const [
             version,
-            type,
+            type, // eslint-disable-line no-unused-vars
             requestId,
             serializedStreamMsg,
         ] = arr
 
-        return new BroadcastMessage(version, requestId, StreamMessageFactory.deserialize(serializedStreamMsg, parseContent))
+        return new BroadcastMessage(version, requestId, StreamMessage.deserialize(serializedStreamMsg))
     }
 }
 

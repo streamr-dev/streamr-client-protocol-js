@@ -1,8 +1,8 @@
 import assert from 'assert'
 
-import ErrorResponseSerializerV1 from '../../../../src/protocol/control_layer/error_response/ErrorResponseSerializerV1'
-import ErrorResponse from '../../../../src/protocol/control_layer/error_response/ErrorResponse'
-import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
+import { ControlLayer } from '../../../../src/index'
+
+const { ErrorResponse, ControlMessage } = ControlLayer
 
 const VERSION = 1
 

@@ -23,13 +23,14 @@ export default class ResendFromRequestSerializerV1 {
     static fromArray(arr) {
         const [
             version,
-            type,
+            type, // eslint-disable-line no-unused-vars
             streamId,
             streamPartition,
             requestId,
             fromMsgRefArray,
             publisherId,
-            msgChainId, // unused: in V1 accidentally
+            // unused: in V1 accidentally
+            msgChainId, // eslint-disable-line no-unused-vars
             sessionToken,
         ] = arr
 

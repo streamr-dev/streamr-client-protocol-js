@@ -1,7 +1,5 @@
 import assert from 'assert'
 
-import ResendRangeRequestSerializerV1
-    from '../../../../src/protocol/control_layer/resend_request/ResendRangeRequestSerializerV1'
 import ResendRangeRequest from '../../../../src/protocol/control_layer/resend_request/ResendRangeRequest'
 import MessageRef from '../../../../src/protocol/message_layer/MessageRef'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'

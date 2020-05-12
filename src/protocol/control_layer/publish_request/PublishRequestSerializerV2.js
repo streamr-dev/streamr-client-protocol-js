@@ -1,4 +1,3 @@
-import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
 import ControlMessage from '../ControlMessage'
 import StreamMessage from '../../message_layer/StreamMessage'
 
@@ -12,8 +11,7 @@ export default class PublishRequestSerializerV2 {
             VERSION,
             PublishRequest.TYPE,
             publishRequest.requestId,
-            // TODO: use StreamMessage.getSerializer(streamMessageVersion).toArray() once refactored
-            JSON.parse(publishRequest.streamMessage.serialize(streamMessageVersion)),
+            StreamMessage.getSerializer(streamMessageVersion).toArray(publishRequest.streamMessage),
             publishRequest.sessionToken,
         ]
     }
@@ -21,13 +19,13 @@ export default class PublishRequestSerializerV2 {
     static fromArray(arr) {
         const [
             version,
-            type,
+            type, // eslint-disable-line no-unused-vars
             requestId,
             serializedStreamMsg,
             sessionToken,
         ] = arr
 
-        return new PublishRequest(version, requestId, StreamMessageFactory.deserialize(serializedStreamMsg), sessionToken)
+        return new PublishRequest(version, requestId, StreamMessage.deserialize(serializedStreamMsg), sessionToken)
     }
 }
 

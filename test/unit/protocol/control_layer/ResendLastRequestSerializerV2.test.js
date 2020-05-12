@@ -1,9 +1,8 @@
 import assert from 'assert'
 
-import ResendLastRequestSerializerV2
-    from '../../../../src/protocol/control_layer/resend_request/ResendLastRequestSerializerV2'
-import ResendLastRequest from '../../../../src/protocol/control_layer/resend_request/ResendLastRequest'
-import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
+import { ControlLayer } from '../../../../src/index'
+
+const { ResendLastRequest, ControlMessage } = ControlLayer
 
 const VERSION = 2
 

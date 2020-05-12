@@ -1,4 +1,4 @@
-import { validateIsNotEmptyString, validateIsNotNullOrUndefined, validateIsType } from '../../../utils/validations'
+import { validateIsNotEmptyString, validateIsType } from '../../../utils/validations'
 import ControlMessage from '../ControlMessage'
 import StreamMessage from '../../message_layer/StreamMessage'
 
