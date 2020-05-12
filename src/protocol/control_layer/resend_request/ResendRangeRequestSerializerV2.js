@@ -1,4 +1,5 @@
 import ControlMessage from '../ControlMessage'
+import MessageRef from '../../message_layer/MessageRef'
 
 import ResendRangeRequest from './ResendRangeRequest'
 
@@ -27,14 +28,15 @@ export default class ResendRangeRequestSerializerV2 {
             requestId,
             streamId,
             streamPartition,
-            fromMsgRef,
-            toMsgRef,
+            fromMsgRefArr,
+            toMsgRefArr,
             publisherId,
             msgChainId,
             sessionToken,
         ] = arr
 
-        return new ResendRangeRequest(version, requestId, streamId, streamPartition, fromMsgRef, toMsgRef, publisherId, msgChainId, sessionToken)
+        return new ResendRangeRequest(version, requestId, streamId, streamPartition,
+            new MessageRef(...fromMsgRefArr), new MessageRef(...toMsgRefArr), publisherId, msgChainId, sessionToken)
     }
 }
 

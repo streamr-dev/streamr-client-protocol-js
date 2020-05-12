@@ -1,4 +1,5 @@
 import ControlMessage from '../ControlMessage'
+import MessageRef from '../../message_layer/MessageRef'
 
 import ResendFromRequest from './ResendFromRequest'
 
@@ -25,12 +26,12 @@ export default class ResendFromRequestSerializerV2 {
             requestId,
             streamId,
             streamPartition,
-            fromMsgRef,
+            fromMsgRefArray,
             publisherId,
             sessionToken,
         ] = arr
 
-        return new ResendFromRequest(version, requestId, streamId, streamPartition, fromMsgRef, publisherId, sessionToken)
+        return new ResendFromRequest(version, requestId, streamId, streamPartition, new MessageRef(...fromMsgRefArray), publisherId, sessionToken)
     }
 }
 

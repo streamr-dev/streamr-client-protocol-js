@@ -8,13 +8,13 @@ import ValidationError from '../../../../src/errors/ValidationError'
 describe('ResendFromRequest', () => {
     describe('validation', () => {
         it('throws on null requestId', () => {
-            assert.throws(() => new ResendFromRequest(ControlMessage.LATEST_VERSION, null, 'streamId', 0, [132846894, 0], 'publisherId', 'sessionToken'), ValidationError)
+            assert.throws(() => new ResendFromRequest(ControlMessage.LATEST_VERSION, null, 'streamId', 0, new MessageRef(132846894, 0), 'publisherId', 'sessionToken'), ValidationError)
         })
     })
 
     describe('create', () => {
         it('should create the latest version', () => {
-            const msg = ResendFromRequest.create('requestId', 'streamId', 0, [132846894, 0], 'publisherId', 'sessionToken')
+            const msg = ResendFromRequest.create('requestId', 'streamId', 0, new MessageRef(132846894, 0), 'publisherId', 'sessionToken')
             assert(msg instanceof ResendFromRequest)
             assert.strictEqual(msg.requestId, 'requestId')
             assert.strictEqual(msg.streamId, 'streamId')

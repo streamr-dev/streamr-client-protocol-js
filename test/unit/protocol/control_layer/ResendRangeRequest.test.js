@@ -11,12 +11,15 @@ describe('ResendRangeRequest', () => {
     describe('validation', () => {
         it('throws on null requestId', () => {
             assert.throws(() => new ResendRangeRequest(ControlMessage.LATEST_VERSION,
-                null, 'streamId', 0, [132846894, 0], [132847000, 0], 'publisherId',
+                null, 'streamId', 0, new MessageRef(132846894, 0),
+                new MessageRef(132847000, 0), 'publisherId',
                 'msgChainId', 'sessionToken'), ValidationError)
         })
         it('throws if from > to', () => {
             assert.throws(() => new ResendRangeRequest(ControlMessage.LATEST_VERSION,
-                'requestId', 'streamId', 0, [132847000, 0], [132846894, 0], 'publisherId',
+                'requestId', 'streamId', 0,
+                new MessageRef(132847000, 0),
+                new MessageRef(132846894, 0), 'publisherId',
                 'msgChainId', 'sessionToken'), ValidationError)
         })
     })
@@ -24,7 +27,8 @@ describe('ResendRangeRequest', () => {
     describe('create', () => {
         it('should create the latest version', () => {
             const msg = ResendRangeRequest.create(
-                'requestId', 'streamId', 0, [132846894, 0], [132847000, 0],
+                'requestId', 'streamId', 0,
+                new MessageRef(132846894, 0), new MessageRef(132847000, 0),
                 'publisherId', 'msgChainId', 'sessionToken',
             )
             assert(msg instanceof ResendRangeRequest)

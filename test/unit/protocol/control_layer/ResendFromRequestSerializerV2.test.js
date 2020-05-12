@@ -4,12 +4,14 @@ import ResendFromRequestSerializerV2
     from '../../../../src/protocol/control_layer/resend_request/ResendFromRequestSerializerV2'
 import ResendFromRequest from '../../../../src/protocol/control_layer/resend_request/ResendFromRequest'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
+import MessageRef from '../../../../src/protocol/message_layer/MessageRef'
 
 const VERSION = 2
 
 // Message definitions
 const message = new ResendFromRequest(VERSION, 'requestId', 'streamId', 0,
-    [132846894, 0], 'publisherId', 'sessionToken')
+    new MessageRef(132846894, 0), 'publisherId', 'sessionToken')
+
 const serializedMessage = JSON.stringify([VERSION, ResendFromRequest.TYPE, 'requestId', 'streamId', 0, [132846894, 0], 'publisherId', 'sessionToken'])
 
 describe('ResendFromRequestSerializerV2', () => {
