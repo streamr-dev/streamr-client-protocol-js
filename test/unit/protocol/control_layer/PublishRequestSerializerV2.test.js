@@ -16,7 +16,6 @@ const message = new PublishRequest(VERSION, 'requestId', streamMessage, 'session
 const serializedMessage = JSON.stringify([VERSION, PublishRequest.TYPE, 'requestId', JSON.parse(streamMessage.serialize()), 'sessionToken'])
 
 describe('PublishRequestSerializerV2', () => {
-
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             assert.deepStrictEqual(ControlMessage.deserialize(serializedMessage), message)

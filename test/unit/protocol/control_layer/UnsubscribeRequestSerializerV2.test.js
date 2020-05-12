@@ -1,16 +1,17 @@
 import assert from 'assert'
 
-import ErrorResponseSerializerV2 from '../../../../src/protocol/control_layer/error_response/ErrorResponseSerializerV2'
-import ErrorResponse from '../../../../src/protocol/control_layer/error_response/ErrorResponse'
+import UnsubscribeRequest from '../../../../src/protocol/control_layer/unsubscribe_request/UnsubscribeRequest'
+import UnsubscribeRequestSerializerV2
+    from '../../../../src/protocol/control_layer/unsubscribe_request/UnsubscribeRequestSerializerV2'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 
 const VERSION = 2
 
 // Message definitions
-const message = new ErrorResponse(VERSION, 'requestId', 'error message', 'ERROR_CODE')
-const serializedMessage = JSON.stringify([VERSION, ErrorResponse.TYPE, 'requestId', 'error message', 'ERROR_CODE'])
+const message = new UnsubscribeRequest(VERSION, 'requestId', 'streamId', 0)
+const serializedMessage = JSON.stringify([VERSION, UnsubscribeRequest.TYPE, 'requestId', 'streamId', 0])
 
-describe('ErrorResponseSerializerV2', () => {
+describe('UnsubscribeRequestSerializerV2', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             assert.deepStrictEqual(ControlMessage.deserialize(serializedMessage), message)

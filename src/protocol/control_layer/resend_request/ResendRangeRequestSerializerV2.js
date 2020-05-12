@@ -5,7 +5,6 @@ import ResendRangeRequest from './ResendRangeRequest'
 const VERSION = 2
 
 export default class ResendRangeRequestSerializerV2 {
-
     static toArray(resendRangeRequest) {
         return [
             VERSION,

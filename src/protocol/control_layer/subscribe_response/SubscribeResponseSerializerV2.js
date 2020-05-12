@@ -5,7 +5,6 @@ import SubscribeResponse from './SubscribeResponse'
 const VERSION = 2
 
 export default class SubscribeResponseSerializerV2 {
-
     static toArray(subscribeResponse) {
         return [
             VERSION,
@@ -27,7 +26,6 @@ export default class SubscribeResponseSerializerV2 {
 
         return new SubscribeResponse(version, requestId, streamId, streamPartition)
     }
-
 }
 
 ControlMessage.registerSerializer(VERSION, SubscribeResponse.TYPE, SubscribeResponseSerializerV2)

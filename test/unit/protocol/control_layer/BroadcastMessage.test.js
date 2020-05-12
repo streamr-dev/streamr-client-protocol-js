@@ -12,7 +12,9 @@ describe('BroadcastMessage', () => {
             assert.throws(() => new BroadcastMessage(ControlMessage.LATEST_VERSION, 'requestId', null), ValidationError)
         })
         it('throws on bogus streamMessage', () => {
-            assert.throws(() => new BroadcastMessage(ControlMessage.LATEST_VERSION, 'requestId', {fake: true}), ValidationError)
+            assert.throws(() => new BroadcastMessage(ControlMessage.LATEST_VERSION, 'requestId', {
+                fake: true
+            }), ValidationError)
         })
     })
 

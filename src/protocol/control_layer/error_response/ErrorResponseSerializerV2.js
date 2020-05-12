@@ -5,7 +5,6 @@ import ErrorResponse from './ErrorResponse'
 const VERSION = 2
 
 export default class ErrorResponseSerializerV2 {
-
     static toArray(errorResponse) {
         return [
             VERSION,
@@ -27,7 +26,6 @@ export default class ErrorResponseSerializerV2 {
 
         return new ErrorResponse(version, requestId, errorMessage, errorCode)
     }
-
 }
 
 ControlMessage.registerSerializer(VERSION, ErrorResponse.TYPE, ErrorResponseSerializerV2)

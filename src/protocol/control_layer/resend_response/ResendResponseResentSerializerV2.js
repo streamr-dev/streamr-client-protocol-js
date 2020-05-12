@@ -5,7 +5,6 @@ import ResendResponseResent from './ResendResponseResent'
 const VERSION = 2
 
 export default class ResendResponseResentSerializerV2 {
-
     static toArray(resendResponseResent) {
         return [
             VERSION,

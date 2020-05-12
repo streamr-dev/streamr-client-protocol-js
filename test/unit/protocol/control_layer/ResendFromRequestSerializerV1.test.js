@@ -13,7 +13,6 @@ const message = new ResendFromRequest(VERSION, 'requestId', 'streamId', 0,
 const serializedMessage = JSON.stringify([VERSION, ResendFromRequest.TYPE, 'streamId', 0, 'requestId', [132846894, 0], 'publisherId', null, 'sessionToken'])
 
 describe('ResendFromRequestSerializerV1', () => {
-
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             assert.deepStrictEqual(ControlMessage.deserialize(serializedMessage), message)

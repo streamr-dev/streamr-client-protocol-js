@@ -1,19 +1,19 @@
 import ControlMessage from '../ControlMessage'
 import StreamMessageFactory from '../../message_layer/StreamMessageFactory'
+import StreamMessage from '../../message_layer/StreamMessage'
 
 import UnicastMessage from './UnicastMessage'
-import StreamMessage from '../../message_layer/StreamMessage'
 
 const VERSION = 2
 
 export default class UnicastMessageSerializerV2 {
-
     static toArray(unicastMessage, streamMessageVersion = StreamMessage.LATEST_VERSION) {
         return [
             VERSION,
             UnicastMessage.TYPE,
             unicastMessage.requestId,
-            unicastMessage.streamMessage.serialize(streamMessageVersion)
+            // TODO: use StreamMessage.getSerializer(streamMessageVersion).toArray() once refactored
+            JSON.parse(unicastMessage.streamMessage.serialize(streamMessageVersion)),
         ]
     }
 
@@ -27,7 +27,6 @@ export default class UnicastMessageSerializerV2 {
 
         return new UnicastMessage(version, requestId, StreamMessageFactory.deserialize(serializedStreamMsg))
     }
-
 }
 
 ControlMessage.registerSerializer(VERSION, UnicastMessage.TYPE, UnicastMessageSerializerV2)

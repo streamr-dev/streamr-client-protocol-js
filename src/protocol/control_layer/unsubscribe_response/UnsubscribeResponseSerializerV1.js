@@ -5,7 +5,6 @@ import UnsubscribeResponse from './UnsubscribeResponse'
 const VERSION = 1
 
 export default class UnsubscribeResponseSerializerV1 {
-
     static toArray(unsubscribeResponse) {
         return [
             VERSION,

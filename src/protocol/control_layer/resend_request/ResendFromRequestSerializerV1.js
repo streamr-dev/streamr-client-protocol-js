@@ -5,7 +5,6 @@ import ResendFromRequest from './ResendFromRequest'
 const VERSION = 1
 
 export default class ResendFromRequestSerializerV1 {
-
     static toArray(resendFromRequest) {
         return [
             VERSION,

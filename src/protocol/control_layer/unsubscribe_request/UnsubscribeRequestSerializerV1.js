@@ -1,10 +1,10 @@
 import ControlMessage from '../ControlMessage'
+
 import UnsubscribeRequest from './UnsubscribeRequest'
 
 const VERSION = 1
 
 export default class UnsubscribeRequestSerializerV1 {
-
     static toArray(unsubscribeRequest) {
         return [
             VERSION,

@@ -13,11 +13,10 @@ const streamMessage = StreamMessageFactory.deserialize([30, ['streamId', 0, 1529
 const VERSION = 1
 
 // Message definitions
-const message = new BroadcastMessage(VERSION, 'requestId', streamMessage)
+const message = new BroadcastMessage(VERSION, null, streamMessage)
 const serializedMessage = JSON.stringify([VERSION, BroadcastMessage.TYPE, JSON.parse(streamMessage.serialize())])
 
 describe('BroadcastMessageSerializerV1', () => {
-
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             assert.deepStrictEqual(ControlMessage.deserialize(serializedMessage), message)

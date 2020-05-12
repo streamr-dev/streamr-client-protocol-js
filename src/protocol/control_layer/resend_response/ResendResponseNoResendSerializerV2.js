@@ -5,7 +5,6 @@ import ResendResponseNoResend from './ResendResponseNoResend'
 const VERSION = 2
 
 export default class ResendResponseNoResendSerializerV2 {
-
     static toArray(resendResponseNoResend) {
         return [
             VERSION,
@@ -27,7 +26,6 @@ export default class ResendResponseNoResendSerializerV2 {
 
         return new ResendResponseNoResend(version, requestId, streamId, streamPartition)
     }
-
 }
 
 ControlMessage.registerSerializer(VERSION, ResendResponseNoResend.TYPE, ResendResponseNoResendSerializerV2)

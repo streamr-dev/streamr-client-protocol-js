@@ -11,7 +11,6 @@ const message = new ErrorResponse(VERSION, null, 'error message', null)
 const serializedMessage = JSON.stringify([VERSION, ErrorResponse.TYPE, 'error message'])
 
 describe('ErrorResponseSerializerV1', () => {
-
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             assert.deepStrictEqual(ControlMessage.deserialize(serializedMessage), message)

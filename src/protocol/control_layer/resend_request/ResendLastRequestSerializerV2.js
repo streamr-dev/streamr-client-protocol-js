@@ -5,7 +5,6 @@ import ResendLastRequest from './ResendLastRequest'
 const VERSION = 2
 
 export default class ResendLastRequestSerializerV2 {
-
     static toArray(resendLastRequest) {
         return [
             VERSION,
