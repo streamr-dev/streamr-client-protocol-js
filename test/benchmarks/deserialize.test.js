@@ -33,6 +33,7 @@ describe('deserialize()', () => {
     }
     it('compare deserialize to other parsing functions', () => {
         run((json) => JSON.parse(json), 'JSON.parse')
+        run((json) => JSON.parse(json), 'JSON.parse')
         run((json) => ControlMessage.deserialize(json), 'ControlLayer.ControlMessage.deserialize')
         run((json) => ControlMessage.deserialize(json, false), 'ControlLayer.ControlMessage.deserialize without parsing content')
         const test = (msg) => {

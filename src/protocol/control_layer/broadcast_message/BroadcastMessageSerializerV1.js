@@ -16,14 +16,14 @@ export default class BroadcastMessageSerializerV1 {
         ]
     }
 
-    static fromArray(arr) {
+    static fromArray(arr, parseContent = true) {
         const [
             version,
             type,
             serializedStreamMsg
         ] = arr
 
-        return new BroadcastMessage(version, null, StreamMessageFactory.deserialize(serializedStreamMsg))
+        return new BroadcastMessage(version, null, StreamMessageFactory.deserialize(serializedStreamMsg, parseContent))
     }
 }
 

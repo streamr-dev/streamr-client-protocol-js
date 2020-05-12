@@ -17,7 +17,7 @@ export default class BroadcastMessageSerializerV2 {
         ]
     }
 
-    static fromArray(arr) {
+    static fromArray(arr, parseContent = true) {
         const [
             version,
             type,
@@ -25,7 +25,7 @@ export default class BroadcastMessageSerializerV2 {
             serializedStreamMsg,
         ] = arr
 
-        return new BroadcastMessage(version, requestId, StreamMessageFactory.deserialize(serializedStreamMsg))
+        return new BroadcastMessage(version, requestId, StreamMessageFactory.deserialize(serializedStreamMsg, parseContent))
     }
 }
 

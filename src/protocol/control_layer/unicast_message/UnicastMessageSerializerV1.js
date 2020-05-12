@@ -17,7 +17,7 @@ export default class UnicastMessageSerializerV1 {
         ]
     }
 
-    static fromArray(arr) {
+    static fromArray(arr, parseContent = true) {
         const [
             version,
             type,
@@ -25,7 +25,7 @@ export default class UnicastMessageSerializerV1 {
             serializedStreamMsg,
         ] = arr
 
-        return new UnicastMessage(version, requestId, StreamMessageFactory.deserialize(serializedStreamMsg))
+        return new UnicastMessage(version, requestId, StreamMessageFactory.deserialize(serializedStreamMsg, parseContent))
     }
 }
 

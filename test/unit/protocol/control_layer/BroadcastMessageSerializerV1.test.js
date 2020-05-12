@@ -21,6 +21,14 @@ describe('BroadcastMessageSerializerV1', () => {
         it('correctly parses messages', () => {
             assert.deepStrictEqual(ControlMessage.deserialize(serializedMessage), message)
         })
+        it('will parse StreamMessage content if instructed to do so', () => {
+            const sm = ControlMessage.deserialize(serializedMessage, true).streamMessage
+            assert(sm.parsedContent != null)
+        })
+        it('will not parse StreamMessage content if instructed to do so', () => {
+            const sm = ControlMessage.deserialize(serializedMessage, false).streamMessage
+            assert(sm.parsedContent == null)
+        })
     })
     describe('serialize', () => {
         it('correctly serializes messages (specific StreamMessage version)', () => {
