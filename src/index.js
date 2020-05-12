@@ -13,8 +13,6 @@ import UnicastMessage from './protocol/control_layer/unicast_message/UnicastMess
 import UnsubscribeRequest from './protocol/control_layer/unsubscribe_request/UnsubscribeRequest'
 import UnsubscribeResponse from './protocol/control_layer/unsubscribe_response/UnsubscribeResponse'
 import ControlMessage from './protocol/control_layer/ControlMessage'
-import ResendResponsePayload from './protocol/control_layer/ResendResponsePayload'
-import StreamAndPartition from './protocol/control_layer/StreamAndPartition'
 import MessageID from './protocol/message_layer/MessageID'
 import MessageRef from './protocol/message_layer/MessageRef'
 import StreamMessage from './protocol/message_layer/StreamMessage'
@@ -48,8 +46,6 @@ export const ControlLayer = {
     UnsubscribeRequest,
     UnsubscribeResponse,
     ControlMessage,
-    ResendResponsePayload,
-    StreamAndPartition,
 }
 
 export const MessageLayer = {
