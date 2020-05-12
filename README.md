@@ -29,10 +29,10 @@ Every message type from both the Control Layer and the Message Layer has a `seri
 
 ```javascript
 const streamMessage = new StreamMessage(...)
-streamMessage.serialize()
+streamMessage.serialize() // to latest version
 // > '[31,["streamId",0,1529549961116,"publisherId","msgChainId"],null,27,0,{"foo":"bar"},0,null]'
-streamMessage.serialize(30)
-// > '[31,["streamId",0,1529549961116,"publisherId","msgChainId"],null,27,{"foo":"bar"},0,null]'
+streamMessage.serialize(30) // to version 30
+// > '[30,["streamId",0,1529549961116,"publisherId","msgChainId"],null,27,{"foo":"bar"},0,null]'
 
 const subscribeRequest = SubscribeRequest.create('streamId', 0, 'sessionToken')
 subscribeRequest.serialize()
