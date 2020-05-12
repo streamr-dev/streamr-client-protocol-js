@@ -1,17 +1,17 @@
 import assert from 'assert'
 
-import ErrorResponseSerializerV2 from '../../../../src/protocol/control_layer/error_response/ErrorResponseSerializerV2'
-import ErrorResponse from '../../../../src/protocol/control_layer/error_response/ErrorResponse'
+import ResendLastRequestSerializerV2
+    from '../../../../src/protocol/control_layer/resend_request/ResendLastRequestSerializerV2'
+import ResendLastRequest from '../../../../src/protocol/control_layer/resend_request/ResendLastRequest'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 
 const VERSION = 2
 
 // Message definitions
-const message = new ErrorResponse(VERSION, 'requestId', 'error message', 'ERROR_CODE')
-const serializedMessage = JSON.stringify([VERSION, ErrorResponse.TYPE, 'requestId', 'error message', 'ERROR_CODE'])
+const message = new ResendLastRequest(VERSION, 'requestId', 'streamId', 0, 100, 'sessionToken')
+const serializedMessage = JSON.stringify([VERSION, ResendLastRequest.TYPE, 'requestId', 'streamId', 0, 100, 'sessionToken'])
 
-describe('ErrorResponseSerializerV2', () => {
-
+describe('ResendLastRequestSerializerV2', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             assert.deepStrictEqual(ControlMessage.deserialize(serializedMessage), message)

@@ -10,7 +10,6 @@ export default class ResendFromRequest extends ControlMessage {
 
         validateIsNotEmptyString('streamId', streamId)
         validateIsNotNegativeInteger('streamPartition', streamPartition)
-        validateIsNotEmptyString('requestId', requestId)
         validateIsString('publisherId', publisherId, true)
         validateIsString('sessionToken', sessionToken, true)
 
@@ -19,6 +18,8 @@ export default class ResendFromRequest extends ControlMessage {
         this.fromMsgRef = new MessageRef(...msgRefArgsArray)
         this.publisherId = publisherId
         this.sessionToken = sessionToken
+
+        validateIsNotEmptyString('requestId', requestId) // unnecessary line once V1 is dropped
     }
 
     static create(requestId, streamId, streamPartition, msgRefArgsArray, publisherId, sessionToken) {

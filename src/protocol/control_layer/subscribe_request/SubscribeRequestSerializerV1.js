@@ -5,8 +5,7 @@ import SubscribeRequest from './SubscribeRequest'
 const VERSION = 1
 
 export default class SubscribeRequestSerializerV1 {
-
-    toArray(subscribeRequest) {
+    static toArray(subscribeRequest) {
         return [
             VERSION,
             SubscribeRequest.TYPE,
@@ -16,7 +15,7 @@ export default class SubscribeRequestSerializerV1 {
         ]
     }
 
-    fromArray(arr) {
+    static fromArray(arr) {
         const [
             version,
             type,

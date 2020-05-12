@@ -15,18 +15,33 @@ export default class ControlMessage {
         validateIsInteger('type', type)
         this.type = type
 
-        // Since V2
-        if (version >= 2) {
-            validateIsString('requestId', requestId)
-            this.requestId = requestId
-        }
+        // Since V2 - allow null in older versions
+        validateIsString('requestId', requestId, version < 2)
+        this.requestId = requestId
     }
 
-    static registerSerializer(version, type, clazz) {
+    static registerSerializer(version, type, serializer) {
+        // Check the serializer interface
+        if (!serializer.fromArray) {
+            throw new Error(`Serializer ${JSON.stringify(serializer)} doesn't implement a method fromArray!`)
+        }
+        if (!serializer.toArray) {
+            throw new Error(`Serializer ${JSON.stringify(serializer)} doesn't implement a method toArray!`)
+        }
+
         if (serializerByVersionAndType[version] === undefined) {
             serializerByVersionAndType[version] = {}
         }
-        serializerByVersionAndType[version][type] = clazz
+        if (serializerByVersionAndType[version][type] !== undefined) {
+            throw new Error(`Serializer for version ${version} and type ${type} is already registered: ${
+                JSON.stringify(serializerByVersionAndType[version][type])
+            }`)
+        }
+        serializerByVersionAndType[version][type] = serializer
+    }
+
+    static unregisterSerializer(version, type) {
+        delete serializerByVersionAndType[version][type]
     }
 
     static getSerializer(version, type) {

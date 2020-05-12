@@ -9,11 +9,11 @@ export default class ResendResponseResending extends ControlMessage {
 
         validateIsNotEmptyString('streamId', streamId)
         validateIsNotNegativeInteger('streamPartition', streamPartition)
-        validateIsNotEmptyString('requestId', requestId) // unnecessary line once V1 is dropped
 
         this.streamId = streamId
         this.streamPartition = streamPartition
-        this.requestId = requestId // unnecessary line once V1 is dropped
+
+        validateIsNotEmptyString('requestId', requestId) // unnecessary line once V1 is dropped
     }
 
     static create(requestId, streamId, streamPartition) {

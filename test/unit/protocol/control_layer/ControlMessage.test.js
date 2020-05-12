@@ -26,13 +26,15 @@ describe('ControlMessage', () => {
     let serializer
 
     beforeEach(() => {
-        serializer = {}
+        serializer = {
+            fromArray: sinon.stub(),
+            toArray: sinon.stub(),
+        }
         ControlMessage.registerSerializer(VERSION, TYPE, serializer)
     })
 
     afterEach(() => {
-        delete serializer.fromArray
-        delete serializer.toArray
+        ControlMessage.unregisterSerializer(VERSION, TYPE)
     })
 
     describe('constructor', () => {
@@ -54,9 +56,26 @@ describe('ControlMessage', () => {
     })
 
     describe('registerSerializer', () => {
+        beforeEach(() => {
+            // Start from a clean slate
+            ControlMessage.unregisterSerializer(VERSION, TYPE)
+        })
+
         it('registers a Serializer retrievable by getSerializer()', () => {
-            ControlMessage.registerSerializer(666, 0, serializer)
-            assert.strictEqual(ControlMessage.getSerializer(666, 0), serializer)
+            ControlMessage.registerSerializer(VERSION, TYPE, serializer)
+            assert.strictEqual(ControlMessage.getSerializer(VERSION, TYPE), serializer)
+        })
+        it('throws if the Serializer for a [version, type] is already registered', () => {
+            ControlMessage.registerSerializer(VERSION, TYPE, serializer)
+            assert.throws(() => ControlMessage.registerSerializer(VERSION, TYPE, serializer))
+        })
+        it('throws if the Serializer does not implement fromArray', () => {
+            delete serializer.fromArray
+            assert.throws(() => ControlMessage.registerSerializer(VERSION, TYPE, serializer))
+        })
+        it('throws if the Serializer does not implement toArray', () => {
+            delete serializer.toArray
+            assert.throws(() => ControlMessage.registerSerializer(VERSION, TYPE, serializer))
         })
     })
 

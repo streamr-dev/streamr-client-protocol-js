@@ -16,6 +16,8 @@ export default class ResendLastRequest extends ControlMessage {
         this.streamPartition = streamPartition
         this.numberLast = numberLast
         this.sessionToken = sessionToken
+
+        validateIsNotEmptyString('requestId', requestId) // unnecessary line once V1 is dropped
     }
 
     static create(requestId, streamId, streamPartition, numberLast, sessionToken) {

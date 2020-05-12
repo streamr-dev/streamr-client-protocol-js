@@ -20,7 +20,7 @@ describe('PublishRequest', () => {
     })
 
     describe('create', () => {
-        it('should create a BroadcastMessage with correct fields', () => {
+        it('should create the latest version', () => {
             const msg = PublishRequest.create('requestId', streamMessage, 'sessionToken')
             assert(msg instanceof PublishRequest)
             assert(msg.version = ControlMessage.LATEST_VERSION)

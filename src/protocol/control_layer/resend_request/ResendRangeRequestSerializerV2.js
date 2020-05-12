@@ -21,7 +21,7 @@ export default class ResendRangeRequestSerializerV2 {
         ]
     }
 
-    static serialize(arr) {
+    static fromArray(arr) {
         const [
             version,
             type,

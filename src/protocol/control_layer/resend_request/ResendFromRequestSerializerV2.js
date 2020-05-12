@@ -5,7 +5,6 @@ import ResendFromRequest from './ResendFromRequest'
 const VERSION = 2
 
 export default class ResendFromRequestSerializerV2 {
-
     static toArray(resendFromRequest) {
         return [
             VERSION,
@@ -23,9 +22,9 @@ export default class ResendFromRequestSerializerV2 {
         const [
             version,
             type,
+            requestId,
             streamId,
             streamPartition,
-            requestId,
             fromMsgRef,
             publisherId,
             sessionToken,

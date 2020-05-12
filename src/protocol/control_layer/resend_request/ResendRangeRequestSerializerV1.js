@@ -5,7 +5,6 @@ import ResendRangeRequest from './ResendRangeRequest'
 const VERSION = 1
 
 export default class ResendRangeRequestSerializerV1 {
-
     static toArray(resendRangeRequest) {
         return [
             VERSION,
@@ -21,7 +20,7 @@ export default class ResendRangeRequestSerializerV1 {
         ]
     }
 
-    static serialize(arr) {
+    static fromArray(arr) {
         const [
             version,
             type,
