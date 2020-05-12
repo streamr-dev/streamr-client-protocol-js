@@ -16,7 +16,7 @@ describe('ResendRangeRequest', () => {
         })
         it('throws if from > to', () => {
             assert.throws(() => new ResendRangeRequest(ControlMessage.LATEST_VERSION,
-                null, 'streamId', 0, [132847000, 0], [132846894, 0], 'publisherId',
+                'requestId', 'streamId', 0, [132847000, 0], [132846894, 0], 'publisherId',
                 'msgChainId', 'sessionToken'), ValidationError)
         })
     })
