@@ -1,11 +1,9 @@
 import { validateIsNotEmptyString, validateIsNotNegativeInteger } from '../../../utils/validations'
 import ControlMessage from '../ControlMessage'
 
-const TYPE = 10
-
 export default class UnsubscribeRequest extends ControlMessage {
     constructor(version, requestId, streamId, streamPartition) {
-        super(version, TYPE, requestId)
+        super(version, ControlMessage.TYPES.UnsubscribeRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)
         validateIsNotNegativeInteger('streamPartition', streamPartition)
@@ -18,6 +16,3 @@ export default class UnsubscribeRequest extends ControlMessage {
         return new UnsubscribeRequest(ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition)
     }
 }
-
-/* static */
-UnsubscribeRequest.TYPE = TYPE

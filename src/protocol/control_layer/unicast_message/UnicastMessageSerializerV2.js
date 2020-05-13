@@ -9,7 +9,7 @@ export default class UnicastMessageSerializerV2 {
     static toArray(unicastMessage, streamMessageVersion = StreamMessage.LATEST_VERSION) {
         return [
             VERSION,
-            UnicastMessage.TYPE,
+            ControlMessage.TYPES.UnicastMessage,
             unicastMessage.requestId,
             StreamMessage.getSerializer(streamMessageVersion).toArray(unicastMessage.streamMessage),
         ]
@@ -27,4 +27,4 @@ export default class UnicastMessageSerializerV2 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, UnicastMessage.TYPE, UnicastMessageSerializerV2)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.UnicastMessage, UnicastMessageSerializerV2)

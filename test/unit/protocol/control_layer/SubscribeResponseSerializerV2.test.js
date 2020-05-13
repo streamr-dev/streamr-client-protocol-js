@@ -8,7 +8,7 @@ const VERSION = 2
 
 // Message definitions
 const message = new SubscribeResponse(VERSION, 'requestId', 'streamId', 0)
-const serializedMessage = JSON.stringify([VERSION, SubscribeResponse.TYPE, 'requestId', 'streamId', 0])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.SubscribeResponse, 'requestId', 'streamId', 0])
 
 describe('SubscribeResponseSerializerV2', () => {
     describe('deserialize', () => {

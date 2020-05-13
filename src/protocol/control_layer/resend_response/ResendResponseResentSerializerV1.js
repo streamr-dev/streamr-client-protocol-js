@@ -8,7 +8,7 @@ export default class ResendResponseResentSerializerV1 {
     static toArray(resendResponseResent) {
         return [
             VERSION,
-            ResendResponseResent.TYPE,
+            ControlMessage.TYPES.ResendResponseResent,
             resendResponseResent.streamId,
             resendResponseResent.streamPartition,
             resendResponseResent.requestId,
@@ -28,4 +28,4 @@ export default class ResendResponseResentSerializerV1 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ResendResponseResent.TYPE, ResendResponseResentSerializerV1)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.ResendResponseResent, ResendResponseResentSerializerV1)

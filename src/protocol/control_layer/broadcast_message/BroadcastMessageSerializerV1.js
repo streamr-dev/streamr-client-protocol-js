@@ -9,7 +9,7 @@ export default class BroadcastMessageSerializerV1 {
     static toArray(broadcastMessage, streamMessageVersion = StreamMessage.LATEST_VERSION) {
         return [
             VERSION,
-            BroadcastMessage.TYPE,
+            ControlMessage.TYPES.BroadcastMessage,
             StreamMessage.getSerializer(streamMessageVersion).toArray(broadcastMessage.streamMessage),
         ]
     }
@@ -25,4 +25,4 @@ export default class BroadcastMessageSerializerV1 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, BroadcastMessage.TYPE, BroadcastMessageSerializerV1)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.BroadcastMessage, BroadcastMessageSerializerV1)

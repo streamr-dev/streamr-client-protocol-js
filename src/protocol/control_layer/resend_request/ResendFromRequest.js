@@ -7,11 +7,9 @@ import {
 } from '../../../utils/validations'
 import MessageRef from '../../message_layer/MessageRef'
 
-const TYPE = 12
-
 export default class ResendFromRequest extends ControlMessage {
     constructor(version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, fromMsgRef, publisherId, sessionToken) {
-        super(version, TYPE, requestId)
+        super(version, ControlMessage.TYPES.ResendFromRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)
         validateIsNotNegativeInteger('streamPartition', streamPartition)
@@ -32,6 +30,3 @@ export default class ResendFromRequest extends ControlMessage {
         return new ResendFromRequest(ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, fromMsgRef, publisherId, sessionToken)
     }
 }
-
-/* static */
-ResendFromRequest.TYPE = TYPE

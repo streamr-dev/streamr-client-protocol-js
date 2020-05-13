@@ -1,11 +1,9 @@
 import ControlMessage from '../ControlMessage'
 import { validateIsNotEmptyString, validateIsNotNegativeInteger } from '../../../utils/validations'
 
-const TYPE = 5
-
 export default class ResendResponseResent extends ControlMessage {
     constructor(version, requestId, streamId, streamPartition) {
-        super(version, TYPE, requestId)
+        super(version, ControlMessage.TYPES.ResendResponseResent, requestId)
 
         validateIsNotEmptyString('streamId', streamId)
         validateIsNotNegativeInteger('streamPartition', streamPartition)
@@ -20,6 +18,3 @@ export default class ResendResponseResent extends ControlMessage {
         return new ResendResponseResent(ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition)
     }
 }
-
-/* static */
-ResendResponseResent.TYPE = TYPE

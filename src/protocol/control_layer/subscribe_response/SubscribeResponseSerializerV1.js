@@ -8,7 +8,7 @@ export default class SubscribeResponseSerializerV1 {
     static toArray(subscribeResponse) {
         return [
             VERSION,
-            SubscribeResponse.TYPE,
+            ControlMessage.TYPES.SubscribeResponse,
             subscribeResponse.streamId,
             subscribeResponse.streamPartition,
         ]
@@ -26,4 +26,4 @@ export default class SubscribeResponseSerializerV1 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, SubscribeResponse.TYPE, SubscribeResponseSerializerV1)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.SubscribeResponse, SubscribeResponseSerializerV1)

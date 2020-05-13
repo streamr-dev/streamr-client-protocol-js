@@ -12,7 +12,7 @@ const VERSION = 2
 
 // Message definitions
 const message = new BroadcastMessage(VERSION, 'requestId', streamMessage)
-const serializedMessage = JSON.stringify([VERSION, BroadcastMessage.TYPE, 'requestId', JSON.parse(streamMessage.serialize(30))])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.BroadcastMessage, 'requestId', JSON.parse(streamMessage.serialize(30))])
 
 describe('BroadcastMessageSerializerV2', () => {
     describe('deserialize', () => {

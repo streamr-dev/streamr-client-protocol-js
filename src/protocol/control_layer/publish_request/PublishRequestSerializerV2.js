@@ -9,7 +9,7 @@ export default class PublishRequestSerializerV2 {
     static toArray(publishRequest, streamMessageVersion = StreamMessage.LATEST_VERSION) {
         return [
             VERSION,
-            PublishRequest.TYPE,
+            ControlMessage.TYPES.PublishRequest,
             publishRequest.requestId,
             StreamMessage.getSerializer(streamMessageVersion).toArray(publishRequest.streamMessage),
             publishRequest.sessionToken,
@@ -29,4 +29,4 @@ export default class PublishRequestSerializerV2 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, PublishRequest.TYPE, PublishRequestSerializerV2)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.PublishRequest, PublishRequestSerializerV2)

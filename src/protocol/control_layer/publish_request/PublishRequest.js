@@ -1,11 +1,9 @@
 import ControlMessage from '../ControlMessage'
 import { validateIsNotNullOrUndefined, validateIsString } from '../../../utils/validations'
 
-const TYPE = 8
-
 export default class PublishRequest extends ControlMessage {
     constructor(version, requestId, streamMessage, sessionToken) {
-        super(version, TYPE, requestId)
+        super(version, ControlMessage.TYPES.PublishRequest, requestId)
 
         validateIsNotNullOrUndefined('streamMessage', streamMessage)
         this.streamMessage = streamMessage
@@ -18,6 +16,3 @@ export default class PublishRequest extends ControlMessage {
         return new PublishRequest(ControlMessage.LATEST_VERSION, requestId, streamMessage, sessionToken)
     }
 }
-
-/* static */
-PublishRequest.TYPE = TYPE

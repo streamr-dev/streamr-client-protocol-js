@@ -1,11 +1,9 @@
 import ControlMessage from '../ControlMessage'
 import { validateIsNotEmptyString, validateIsNotNegativeInteger, validateIsString } from '../../../utils/validations'
 
-const TYPE = 11
-
 export default class ResendLastRequest extends ControlMessage {
     constructor(version, requestId, streamId, streamPartition, numberLast, sessionToken) {
-        super(version, TYPE, requestId)
+        super(version, ControlMessage.TYPES.ResendLastRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)
         validateIsNotNegativeInteger('streamPartition', streamPartition)
@@ -24,6 +22,3 @@ export default class ResendLastRequest extends ControlMessage {
         return new ResendLastRequest(ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, numberLast, sessionToken)
     }
 }
-
-/* static */
-ResendLastRequest.TYPE = TYPE

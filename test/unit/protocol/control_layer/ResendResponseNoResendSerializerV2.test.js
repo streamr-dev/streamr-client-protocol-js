@@ -8,7 +8,7 @@ const VERSION = 2
 
 // Message definitions
 const message = new ResendResponseNoResend(VERSION, 'requestId', 'streamId', 0)
-const serializedMessage = JSON.stringify([VERSION, ResendResponseNoResend.TYPE, 'requestId', 'streamId', 0])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.ResendResponseNoResend, 'requestId', 'streamId', 0])
 
 describe('ResendResponseNoResendSerializerV2', () => {
     describe('deserialize', () => {

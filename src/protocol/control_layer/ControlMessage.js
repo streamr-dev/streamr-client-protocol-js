@@ -78,3 +78,20 @@ export default class ControlMessage {
 
 /* static */
 ControlMessage.LATEST_VERSION = LATEST_VERSION
+
+ControlMessage.TYPES = {
+    BroadcastMessage: 0,
+    UnicastMessage: 1,
+    SubscribeResponse: 2,
+    UnsubscribeResponse: 3,
+    ResendResponseResending: 4,
+    ResendResponseResent: 5,
+    ResendResponseNoResend: 6,
+    ErrorResponse: 7,
+    PublishRequest: 8,
+    SubscribeRequest: 9,
+    UnsubscribeRequest: 10,
+    ResendLastRequest: 11,
+    ResendFromRequest: 12,
+    ResendRangeRequest: 13,
+}

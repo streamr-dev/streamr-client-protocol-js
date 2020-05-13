@@ -11,7 +11,7 @@ const VERSION = 2
 const message = new ResendFromRequest(VERSION, 'requestId', 'streamId', 0,
     new MessageRef(132846894, 0), 'publisherId', 'sessionToken')
 
-const serializedMessage = JSON.stringify([VERSION, ResendFromRequest.TYPE, 'requestId', 'streamId', 0, [132846894, 0], 'publisherId', 'sessionToken'])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.ResendFromRequest, 'requestId', 'streamId', 0, [132846894, 0], 'publisherId', 'sessionToken'])
 
 describe('ResendFromRequestSerializerV2', () => {
     describe('deserialize', () => {

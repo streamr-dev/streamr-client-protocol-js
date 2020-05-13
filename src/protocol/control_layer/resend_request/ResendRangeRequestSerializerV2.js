@@ -9,7 +9,7 @@ export default class ResendRangeRequestSerializerV2 {
     static toArray(resendRangeRequest) {
         return [
             VERSION,
-            ResendRangeRequest.TYPE,
+            ControlMessage.TYPES.ResendRangeRequest,
             resendRangeRequest.requestId,
             resendRangeRequest.streamId,
             resendRangeRequest.streamPartition,
@@ -40,4 +40,4 @@ export default class ResendRangeRequestSerializerV2 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ResendRangeRequest.TYPE, ResendRangeRequestSerializerV2)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.ResendRangeRequest, ResendRangeRequestSerializerV2)

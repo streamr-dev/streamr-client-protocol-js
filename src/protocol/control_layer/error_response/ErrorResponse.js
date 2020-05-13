@@ -1,11 +1,9 @@
 import ControlMessage from '../ControlMessage'
 import { validateIsString } from '../../../utils/validations'
 
-const TYPE = 7
-
 export default class ErrorResponse extends ControlMessage {
     constructor(version, requestId, errorMessage, errorCode) {
-        super(version, TYPE, requestId)
+        super(version, ControlMessage.TYPES.ErrorResponse, requestId)
 
         validateIsString('errorMessage', errorMessage)
         this.errorMessage = errorMessage
@@ -21,5 +19,3 @@ export default class ErrorResponse extends ControlMessage {
         return new ErrorResponse(ControlMessage.LATEST_VERSION, requestId, errorMessage, errorCode)
     }
 }
-
-/* static */ ErrorResponse.TYPE = TYPE

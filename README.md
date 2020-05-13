@@ -53,9 +53,9 @@ On the other hand, the Control Layer has many different message types. So we can
 ```javascript
 const serializedMessage = '[1,9,"streamId",0,"sessionToken"]'
 const controlMessage = ControlMessage.deserialize(serializedMessage)
-if (controlMessage.type === UnicastMessage.TYPE) {
+if (controlMessage.type === ControlMessage.TYPES.UnicastMessage) {
     //treat it as a UnicastMessage
-} else if (controlMessage.type === SubscribeRequest.TYPE) {
+} else if (controlMessage.type === ControlMessage.TYPES.SubscribeRequest) {
     //treat it as a SubscribeRequest
 } else if (...) {
     

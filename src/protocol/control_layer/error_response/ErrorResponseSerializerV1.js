@@ -8,7 +8,7 @@ export default class ErrorResponseSerializerV1 {
     static toArray(errorResponse) {
         return [
             VERSION,
-            ErrorResponse.TYPE,
+            ControlMessage.TYPES.ErrorResponse,
             errorResponse.errorMessage,
         ]
     }
@@ -24,4 +24,4 @@ export default class ErrorResponseSerializerV1 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ErrorResponse.TYPE, ErrorResponseSerializerV1)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.ErrorResponse, ErrorResponseSerializerV1)

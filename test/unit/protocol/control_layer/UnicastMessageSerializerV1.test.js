@@ -12,7 +12,7 @@ const VERSION = 1
 
 // Message definitions
 const message = new UnicastMessage(VERSION, 'requestId', streamMessage)
-const serializedMessage = JSON.stringify([VERSION, UnicastMessage.TYPE, 'requestId', JSON.parse(streamMessage.serialize(30))])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.UnicastMessage, 'requestId', JSON.parse(streamMessage.serialize(30))])
 
 describe('UnicastMessageSerializerV1', () => {
     describe('deserialize', () => {

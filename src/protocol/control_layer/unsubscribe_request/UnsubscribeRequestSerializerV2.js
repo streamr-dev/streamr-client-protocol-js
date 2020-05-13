@@ -8,7 +8,7 @@ export default class UnsubscribeRequestSerializerV2 {
     static toArray(unsubscribeRequest) {
         return [
             VERSION,
-            UnsubscribeRequest.TYPE,
+            ControlMessage.TYPES.UnsubscribeRequest,
             unsubscribeRequest.requestId,
             unsubscribeRequest.streamId,
             unsubscribeRequest.streamPartition,
@@ -28,4 +28,4 @@ export default class UnsubscribeRequestSerializerV2 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, UnsubscribeRequest.TYPE, UnsubscribeRequestSerializerV2)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.UnsubscribeRequest, UnsubscribeRequestSerializerV2)

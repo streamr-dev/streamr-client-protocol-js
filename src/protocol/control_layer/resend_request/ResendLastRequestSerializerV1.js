@@ -8,7 +8,7 @@ export default class ResendLastRequestSerializerV1 {
     static toArray(resendLastRequest) {
         return [
             VERSION,
-            ResendLastRequest.TYPE,
+            ControlMessage.TYPES.ResendLastRequest,
             resendLastRequest.streamId,
             resendLastRequest.streamPartition,
             resendLastRequest.requestId,
@@ -32,4 +32,4 @@ export default class ResendLastRequestSerializerV1 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ResendLastRequest.TYPE, ResendLastRequestSerializerV1)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.ResendLastRequest, ResendLastRequestSerializerV1)

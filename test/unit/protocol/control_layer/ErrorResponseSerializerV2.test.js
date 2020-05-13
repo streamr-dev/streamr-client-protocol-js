@@ -8,7 +8,7 @@ const VERSION = 2
 
 // Message definitions
 const message = new ErrorResponse(VERSION, 'requestId', 'error message', 'ERROR_CODE')
-const serializedMessage = JSON.stringify([VERSION, ErrorResponse.TYPE, 'requestId', 'error message', 'ERROR_CODE'])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.ErrorResponse, 'requestId', 'error message', 'ERROR_CODE'])
 
 describe('ErrorResponseSerializerV2', () => {
     describe('deserialize', () => {

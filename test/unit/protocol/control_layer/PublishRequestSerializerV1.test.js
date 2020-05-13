@@ -12,7 +12,7 @@ const VERSION = 1
 
 // Message definitions
 const message = new PublishRequest(VERSION, null, streamMessage, 'sessionToken')
-const serializedMessage = JSON.stringify([VERSION, PublishRequest.TYPE, JSON.parse(streamMessage.serialize(30)), 'sessionToken'])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.PublishRequest, JSON.parse(streamMessage.serialize(30)), 'sessionToken'])
 
 describe('PublishRequestSerializerV1', () => {
     describe('deserialize', () => {

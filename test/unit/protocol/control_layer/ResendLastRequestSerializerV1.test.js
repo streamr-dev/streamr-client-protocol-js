@@ -8,7 +8,7 @@ const VERSION = 1
 
 // Message definitions
 const message = new ResendLastRequest(VERSION, 'requestId', 'streamId', 0, 100, 'sessionToken')
-const serializedMessage = JSON.stringify([VERSION, ResendLastRequest.TYPE, 'streamId', 0, 'requestId', 100, 'sessionToken'])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.ResendLastRequest, 'streamId', 0, 'requestId', 100, 'sessionToken'])
 
 describe('ResendLastRequestSerializerV1', () => {
     describe('deserialize', () => {

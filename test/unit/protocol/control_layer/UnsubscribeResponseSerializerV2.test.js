@@ -8,7 +8,7 @@ const VERSION = 2
 
 // Message definitions
 const message = new UnsubscribeResponse(VERSION, 'requestId', 'streamId', 0)
-const serializedMessage = JSON.stringify([VERSION, UnsubscribeResponse.TYPE, 'requestId', 'streamId', 0])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.UnsubscribeResponse, 'requestId', 'streamId', 0])
 
 describe('UnsubscribeResponseSerializerV2', () => {
     describe('deserialize', () => {

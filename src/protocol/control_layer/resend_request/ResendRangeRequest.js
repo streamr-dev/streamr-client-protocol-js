@@ -8,11 +8,9 @@ import {
 import MessageRef from '../../message_layer/MessageRef'
 import ValidationError from '../../../errors/ValidationError'
 
-const TYPE = 13
-
 export default class ResendRangeRequest extends ControlMessage {
     constructor(version, requestId, streamId, streamPartition, fromMsgRef, toMsgRef, publisherId, msgChainId, sessionToken) {
-        super(version, TYPE, requestId)
+        super(version, ControlMessage.TYPES.ResendRangeRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)
         validateIsNotNegativeInteger('streamPartition', streamPartition)
@@ -40,6 +38,3 @@ export default class ResendRangeRequest extends ControlMessage {
             fromMsgRef, toMsgRef, publisherId, msgChainId, sessionToken)
     }
 }
-
-/* static */
-ResendRangeRequest.TYPE = TYPE
