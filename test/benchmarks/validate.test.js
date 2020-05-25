@@ -7,10 +7,8 @@ import secp256k1 from 'secp256k1'
 
 import StreamMessage from '../../src/protocol/message_layer/StreamMessage'
 import StreamMessageValidator from '../../src/utils/StreamMessageValidator'
-import { sign, recover } from '../../src/utils/SigningUtil'
+import SigningUtil from '../../src/utils/SigningUtil'
 import '../../src/protocol/message_layer/StreamMessageSerializerV31'
-
-const ITERATIONS = 1000
 
 const privateKey = '5765eb50ed4eb3aeec7e4199e9c21f5b9d23336b65d31a60ac20bbdee7493bc8'
 const address = '0xD12b87c9325eB36801d6114A0D5334AC2A8D25D8'
@@ -29,12 +27,12 @@ const defaults = {
 const accounts = new Web3EthAccounts()
 
 describe('validate', () => {
-    const run = async (functionToTest, name) => {
+    const run = async (functionToTest, name, iterations) => {
         const start = new Date()
 
         let resultString = `Benchmarking ${name}...\n`
 
-        for (let i = 0; i < ITERATIONS; i++) {
+        for (let i = 0; i < iterations; i++) {
             // eslint-disable-next-line no-await-in-loop
             await functionToTest()
         }
@@ -42,7 +40,8 @@ describe('validate', () => {
         const end = new Date() - start
 
         resultString += `Execution time: ${end} ms\n`
-        resultString += `Iterations / second: ${ITERATIONS / (end / 1000)}\n`
+        resultString += `Iterations: ${iterations}\n`
+        resultString += `Iterations / second: ${iterations / (end / 1000)}\n`
         const used = process.memoryUsage()
         Object.keys(used).forEach((key) => {
             /* eslint-disable no-mixed-operators */
@@ -54,33 +53,33 @@ describe('validate', () => {
 
     it('no signature checking at all', async () => {
         const validator = new StreamMessageValidator({
-            recoverAddress: () => streamMessage.getPublisherId(), // just return the publisherId instead of computing it
+            verify: () => true, // always pass
             ...defaults,
         })
 
-        await run(() => validator.validate(streamMessage), 'no signature checking')
+        await run(() => validator.validate(streamMessage), 'no signature checking', 10000)
     })
 
     it('using ethers.js', async () => {
         const validator = new StreamMessageValidator({
-            recoverAddress: (payload, signature) => {
-                return ethers.utils.verifyMessage(payload, signature)
+            verify: (addr, payload, signature) => {
+                return ethers.utils.verifyMessage(payload, signature).toLowerCase() === addr.toLowerCase()
             },
             ...defaults,
         })
 
-        await run(() => validator.validate(streamMessage), 'using ethers.js')
+        await run(() => validator.validate(streamMessage), 'using ethers.js', 100)
     })
 
     it('using web3.js', async () => {
         const validator = new StreamMessageValidator({
-            recoverAddress: (payload, signature) => {
-                return accounts.recover(payload, signature)
+            verify: (addr, payload, signature) => {
+                return accounts.recover(payload, signature).toLowerCase() === addr.toLowerCase()
             },
             ...defaults,
         })
 
-        await run(() => validator.validate(streamMessage), 'using web3.js')
+        await run(() => validator.validate(streamMessage), 'using web3.js', 100)
     })
 
     it('raw secp256k1', async () => {
@@ -104,21 +103,32 @@ describe('validate', () => {
 
         await run(() => {
             secp256k1.ecdsaVerify(sigObj.signature, msg, pubKey)
-        }, 'raw secp256k1 (verify)')
+        }, 'raw secp256k1 (verify)', 10000)
 
         await run(() => {
             secp256k1.ecdsaRecover(sigObj.signature, sigObj.recid, msg, true, Buffer.alloc)
-        }, 'raw secp256k1 (recover)')
+        }, 'raw secp256k1 (recover)', 10000)
     })
 
-    it('own impl', async () => {
+    it('recover (our implementation)', async () => {
         const validator = new StreamMessageValidator({
-            recoverAddress: (payload, signature) => {
-                return recover(signature, payload)
+            verify: (addr, payload, signature) => {
+                return SigningUtil.recover(signature, payload).toLowerCase() === addr.toLowerCase()
             },
             ...defaults,
         })
 
-        await run(() => validator.validate(streamMessage), 'using ethers.js')
+        await run(() => validator.validate(streamMessage), 'recover (our implementation)', 10000)
+    })
+
+    it('verify (our implementation)', async () => {
+        const validator = new StreamMessageValidator({
+            verify: (addr, payload, signature) => {
+                return SigningUtil.verify(addr, payload, signature)
+            },
+            ...defaults,
+        })
+
+        await run(() => validator.validate(streamMessage), 'recover (our implementation)', 10000)
     })
 })

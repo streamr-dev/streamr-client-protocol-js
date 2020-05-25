@@ -52,8 +52,6 @@
     "eslint-plugin-promise": "^4.2.1",
     "ethers": "^4.0.47",
     "jest": "^26.0.1",
-    "secp256k1": "^4.0.1",
-    "sha3": "^2.1.2",
     "sinon": "^9.0.2",
     "terser-webpack-plugin": "^3.0.0",
     "web3-eth-accounts": "^1.2.7",
@@ -67,6 +65,8 @@
     "debug": "^4.1.1",
     "eventemitter3": "^4.0.0",
     "heap": "^0.2.6",
-    "promise-memoize": "^1.2.1"
+    "promise-memoize": "^1.2.1",
+    "secp256k1": "^4.0.1",
+    "sha3": "^2.1.2"
   }
 }
