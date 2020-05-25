@@ -129,6 +129,6 @@ describe('validate', () => {
             ...defaults,
         })
 
-        await run(() => validator.validate(streamMessage), 'recover (our implementation)', 10000)
+        await run(() => validator.validate(streamMessage), 'verify (our implementation)', 10000)
     })
 })
