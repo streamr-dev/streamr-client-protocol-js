@@ -54,27 +54,4 @@ export default class SigningUtil {
         const recoveredAddress = SigningUtil.recover(signature, payload)
         return recoveredAddress.toLowerCase() === address.toLowerCase()
     }
-
-    /*
-    // TODO: for some reason using ecdsaVerify returns true for invalid signatures, need to find out why
-    verify(address, payload, signature) {
-        const lowerCaseAddress = address.toLowerCase()
-        const signatureBuffer = Buffer.from(signature.substring(2), 'hex') // remove '0x' prefix and last byte
-        const payloadBuffer = Buffer.from(payload, 'utf-8')
-
-        // Is the public key cached?
-        let publicKeyBuffer = this.publicKeyCache.get(lowerCaseAddress)
-        if (!publicKeyBuffer) {
-            // Recover public key and cache it
-            publicKeyBuffer = recoverPublicKey(signatureBuffer, payloadBuffer)
-            this.publicKeyCache.put(lowerCaseAddress, publicKeyBuffer)
-        }
-
-        return secp256k1.ecdsaVerify(
-            signatureBuffer.subarray(0, signatureBuffer.length - 1), // last byte is the recoveryId, not used here
-            hash(payloadBuffer),
-            publicKeyBuffer
-        )
-    }
-     */
 }
