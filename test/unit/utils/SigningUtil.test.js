@@ -21,14 +21,43 @@ describe('SigningUtil', () => {
             const recoveredAddress = SigningUtil.recover(signature, payload)
             assert.strictEqual(recoveredAddress.toLowerCase(), address.toLowerCase())
         })
+
+        it('throws if the address can not be recovered (invalid signature)', () => {
+            const address = '0x752C8dCAC0788759aCB1B4BB7A9103596BEe3e6c'
+            const payload = 'ogzCJrTdQGuKQO7nkLd3Rw0156700333876720x752c8dcac0788759acb1b4bb7a9103596bee3e6ckxYyLiSUQO0SRvMx6gA115670033387671{"numero":86}'
+            const signature = '0xf00f00bb4f506a53ecb838db59017f687892494a9073315f8a187846865bf8325333315b116f1142921a97e49e3881eced2b176c69f9d60666b98b7641ad11e01b'
+            assert.throws(() => SigningUtil.recover(signature, payload))
+        })
+
+        it('returns a different address if the content is tampered', () => {
+            const address = '0x752C8dCAC0788759aCB1B4BB7A9103596BEe3e6c'
+            const payload = 'foo_ogzCJrTdQGuKQO7nkLd3Rw0156700333876720x752c8dcac0788759acb1b4bb7a9103596bee3e6ckxYyLiSUQO0SRvMx6gA115670033387671{"numero":86}'
+            const signature = '0xc97f1fbb4f506a53ecb838db59017f687892494a9073315f8a187846865bf8325333315b116f1142921a97e49e3881eced2b176c69f9d60666b98b7641ad11e01b'
+            const recoveredAddress = SigningUtil.recover(signature, payload)
+            assert.notStrictEqual(recoveredAddress.toLowerCase(), address.toLowerCase())
+        })
     })
 
     describe('verify', () => {
-        it('returns true on valid messages', () => {
+        it('returns true on valid signature', () => {
             const address = '0x752C8dCAC0788759aCB1B4BB7A9103596BEe3e6c'
             const payload = 'ogzCJrTdQGuKQO7nkLd3Rw0156700333876720x752c8dcac0788759acb1b4bb7a9103596bee3e6ckxYyLiSUQO0SRvMx6gA115670033387671{"numero":86}'
             const signature = '0xc97f1fbb4f506a53ecb838db59017f687892494a9073315f8a187846865bf8325333315b116f1142921a97e49e3881eced2b176c69f9d60666b98b7641ad11e01b'
             assert(SigningUtil.verify(address, payload, signature))
+        })
+
+        it('returns false on invalid signature', () => {
+            const address = '0x752C8dCAC0788759aCB1B4BB7A9103596BEe3e6c'
+            const payload = 'ogzCJrTdQGuKQO7nkLd3Rw0156700333876720x752c8dcac0788759acb1b4bb7a9103596bee3e6ckxYyLiSUQO0SRvMx6gA115670033387671{"numero":86}'
+            const signature = '0xf00f00bb4f506a53ecb838db59017f687892494a9073315f8a187846865bf8325333315b116f1142921a97e49e3881eced2b176c69f9d60666b98b7641ad11e01b'
+            assert(!SigningUtil.verify(address, payload, signature))
+        })
+
+        it('returns false if the message is tampered', () => {
+            const address = '0x752C8dCAC0788759aCB1B4BB7A9103596BEe3e6c'
+            const payload = 'foo_ogzCJrTdQGuKQO7nkLd3Rw0156700333876720x752c8dcac0788759acb1b4bb7a9103596bee3e6ckxYyLiSUQO0SRvMx6gA115670033387671{"numero":86}'
+            const signature = '0xc97f1fbb4f506a53ecb838db59017f687892494a9073315f8a187846865bf8325333315b116f1142921a97e49e3881eced2b176c69f9d60666b98b7641ad11e01b'
+            assert(!SigningUtil.verify(address, payload, signature))
         })
     })
 })

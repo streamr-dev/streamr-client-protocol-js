@@ -51,7 +51,11 @@ export default class SigningUtil {
     }
 
     static verify(address, payload, signature) {
-        const recoveredAddress = SigningUtil.recover(signature, payload)
-        return recoveredAddress.toLowerCase() === address.toLowerCase()
+        try {
+            const recoveredAddress = SigningUtil.recover(signature, payload)
+            return recoveredAddress.toLowerCase() === address.toLowerCase()
+        } catch (err) {
+            return false
+        }
     }
 }
