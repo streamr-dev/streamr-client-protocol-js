@@ -1,13 +1,20 @@
+import { randomBytes } from 'crypto'
+import assert from 'assert'
+
 import { ethers } from 'ethers'
 import Web3EthAccounts from 'web3-eth-accounts'
+import secp256k1 from 'secp256k1'
 
 import StreamMessage from '../../src/protocol/message_layer/StreamMessage'
 import StreamMessageValidator from '../../src/utils/StreamMessageValidator'
+import { sign, recover } from '../../src/utils/SigningUtil'
 import '../../src/protocol/message_layer/StreamMessageSerializerV31'
 
-const ITERATIONS = 100
+const ITERATIONS = 1000
 
-const streamMessage = StreamMessage.deserialize('[31,["tagHE6nTQ9SJV2wPoCxBFw",0,1587141844396,0,"0xbce3217F2AC9c8a2D14A6303F87506c4FC124014","k000EDTMtqOTLM8sirFj"],[1587141844312,0],27,0,"{\\"eventType\\":\\"trade\\",\\"eventTime\\":1587141844398,\\"symbol\\":\\"ETHBTC\\",\\"tradeId\\":172530352,\\"price\\":0.02415,\\"quantity\\":0.296,\\"buyerOrderId\\":687544144,\\"sellerOrderId\\":687544104,\\"time\\":1587141844396,\\"maker\\":false,\\"ignored\\":true}",2,"0x91c47df28dc3014a49ef50313efa8e40015eeeccea0cf006ab2c7b05efbb0ddc7e10e430aaa7ea6dd0ca5e05761eaf0c14c8ca09b57c8d8626da7bb9ea2d50fa1b"]')
+const privateKey = '5765eb50ed4eb3aeec7e4199e9c21f5b9d23336b65d31a60ac20bbdee7493bc8'
+const address = '0xD12b87c9325eB36801d6114A0D5334AC2A8D25D8'
+const streamMessage = StreamMessage.deserialize('[31,["tagHE6nTQ9SJV2wPoCxBFw",0,1587141844396,0,"0xD12b87c9325eB36801d6114A0D5334AC2A8D25D8","k000EDTMtqOTLM8sirFj"],[1587141844312,0],27,0,"{\\"eventType\\":\\"trade\\",\\"eventTime\\":1587141844398,\\"symbol\\":\\"ETHBTC\\",\\"tradeId\\":172530352,\\"price\\":0.02415,\\"quantity\\":0.296,\\"buyerOrderId\\":687544144,\\"sellerOrderId\\":687544104,\\"time\\":1587141844396,\\"maker\\":false,\\"ignored\\":true}",2,"0x31453f26d0fedbf2101f6a1535c8c1dc1646de809fcde3a1068dfda9e5d2af42105efd40fe26840f1cb1d81a8872180e5ff0b0404234e179bcd413ec2bbb8aa01b"]')
 
 const defaults = {
     getStream: () => ({
@@ -74,5 +81,44 @@ describe('validate', () => {
         })
 
         await run(() => validator.validate(streamMessage), 'using web3.js')
+    })
+
+    it('raw secp256k1', async () => {
+        const msg = randomBytes(32)
+
+        // generate privKey
+        let privKey
+        do {
+            privKey = randomBytes(32)
+        } while (!secp256k1.privateKeyVerify(privKey))
+
+        // get the public key in a compressed format
+        const pubKey = secp256k1.publicKeyCreate(privKey)
+
+        // sign the message
+        const sigObj = secp256k1.ecdsaSign(msg, privKey)
+        // const sigObj = secp256k1.ecdsaSign(message, privateKey, {}, Buffer.alloc)
+
+        const isValid = secp256k1.ecdsaVerify(sigObj.signature, msg, pubKey)
+        assert(isValid)
+
+        await run(() => {
+            secp256k1.ecdsaVerify(sigObj.signature, msg, pubKey)
+        }, 'raw secp256k1 (verify)')
+
+        await run(() => {
+            secp256k1.ecdsaRecover(sigObj.signature, sigObj.recid, msg, true, Buffer.alloc)
+        }, 'raw secp256k1 (recover)')
+    })
+
+    it('own impl', async () => {
+        const validator = new StreamMessageValidator({
+            recoverAddress: (payload, signature) => {
+                return recover(signature, payload)
+            },
+            ...defaults,
+        })
+
+        await run(() => validator.validate(streamMessage), 'using ethers.js')
     })
 })
