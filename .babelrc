@@ -15,7 +15,8 @@
                     "not dead",
                     "not ie <= 11",
                     "not ie_mob <= 11"
-                ]
+                ],
+                "node": 10
             }
         }]
     ],
