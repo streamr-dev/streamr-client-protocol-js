@@ -7,14 +7,13 @@ import secp256k1 from 'secp256k1'
 
 import StreamMessage from '../../src/protocol/message_layer/StreamMessage'
 import StreamMessageValidator from '../../src/utils/StreamMessageValidator'
-import SigningUtil from '../../src/utils/SigningUtil'
 import '../../src/protocol/message_layer/StreamMessageSerializerV31'
 
 const privateKey = '5765eb50ed4eb3aeec7e4199e9c21f5b9d23336b65d31a60ac20bbdee7493bc8'
 const address = '0xD12b87c9325eB36801d6114A0D5334AC2A8D25D8'
 const streamMessage = StreamMessage.deserialize('[31,["tagHE6nTQ9SJV2wPoCxBFw",0,1587141844396,0,"0xD12b87c9325eB36801d6114A0D5334AC2A8D25D8","k000EDTMtqOTLM8sirFj"],[1587141844312,0],27,0,"{\\"eventType\\":\\"trade\\",\\"eventTime\\":1587141844398,\\"symbol\\":\\"ETHBTC\\",\\"tradeId\\":172530352,\\"price\\":0.02415,\\"quantity\\":0.296,\\"buyerOrderId\\":687544144,\\"sellerOrderId\\":687544104,\\"time\\":1587141844396,\\"maker\\":false,\\"ignored\\":true}",2,"0x31453f26d0fedbf2101f6a1535c8c1dc1646de809fcde3a1068dfda9e5d2af42105efd40fe26840f1cb1d81a8872180e5ff0b0404234e179bcd413ec2bbb8aa01b"]')
 
-const defaults = {
+const mocks = {
     getStream: () => ({
         partitions: 10,
         requireSignedData: true,
@@ -54,7 +53,7 @@ describe('validate', () => {
     it('no signature checking at all', async () => {
         const validator = new StreamMessageValidator({
             verify: () => true, // always pass
-            ...defaults,
+            ...mocks,
         })
 
         await run(() => validator.validate(streamMessage), 'no signature checking', 10000)
@@ -65,7 +64,7 @@ describe('validate', () => {
             verify: (addr, payload, signature) => {
                 return ethers.utils.verifyMessage(payload, signature).toLowerCase() === addr.toLowerCase()
             },
-            ...defaults,
+            ...mocks,
         })
 
         await run(() => validator.validate(streamMessage), 'using ethers.js', 100)
@@ -76,7 +75,7 @@ describe('validate', () => {
             verify: (addr, payload, signature) => {
                 return accounts.recover(payload, signature).toLowerCase() === addr.toLowerCase()
             },
-            ...defaults,
+            ...mocks,
         })
 
         await run(() => validator.validate(streamMessage), 'using web3.js', 100)
@@ -110,23 +109,10 @@ describe('validate', () => {
         }, 'raw secp256k1 (recover)', 10000)
     })
 
-    it('recover (our implementation)', async () => {
-        const validator = new StreamMessageValidator({
-            verify: (addr, payload, signature) => {
-                return SigningUtil.recover(signature, payload).toLowerCase() === addr.toLowerCase()
-            },
-            ...defaults,
-        })
-
-        await run(() => validator.validate(streamMessage), 'recover (our implementation)', 10000)
-    })
-
     it('verify (our implementation)', async () => {
         const validator = new StreamMessageValidator({
-            verify: (addr, payload, signature) => {
-                return SigningUtil.verify(addr, payload, signature)
-            },
-            ...defaults,
+            // use default value for 'verify'
+            ...mocks,
         })
 
         await run(() => validator.validate(streamMessage), 'verify (our implementation)', 10000)

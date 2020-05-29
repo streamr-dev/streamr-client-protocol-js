@@ -17,7 +17,7 @@ export default class CachingStreamMessageValidator extends StreamMessageValidato
      * @param getStream async function(streamId): returns the stream metadata object for streamId
      * @param isPublisher async function(address, streamId): returns true if address is a permitted publisher on streamId
      * @param isSubscriber async function(address, streamId): returns true if address is a permitted subscriber on streamId
-     * @param verify function(address, payload, signature): returns true if the address and payload match the signature
+     * @param verify async function(address, payload, signature): returns true if the address and payload match the signature
      * @param cacheTimeoutMillis Number: Cache timeout in milliseconds. Default 15 minutes.
      * @param cacheErrorsTimeoutMillis Number: Cache timeout for error responses. Default 1 minute.
      */

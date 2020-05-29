@@ -1,7 +1,6 @@
 import assert from 'assert'
 
 import sinon from 'sinon'
-import { ethers } from 'ethers'
 
 import StreamMessageValidator from '../../../src/utils/StreamMessageValidator'
 import StreamMessage from '../../../src/protocol/message_layer/StreamMessage'

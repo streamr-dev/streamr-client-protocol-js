@@ -24,7 +24,7 @@ function recoverPublicKey(signatureBuffer, payloadBuffer) {
 }
 
 export default class SigningUtil {
-    static sign(payload, privateKey) {
+    static async sign(payload, privateKey) {
         const payloadBuffer = Buffer.from(payload, 'utf-8')
         const privateKeyBuffer = Buffer.from(privateKey, 'hex')
 
@@ -35,7 +35,7 @@ export default class SigningUtil {
         return '0x' + result.toString('hex')
     }
 
-    static recover(signature, payload, publicKeyBuffer = undefined) {
+    static async recover(signature, payload, publicKeyBuffer = undefined) {
         const signatureBuffer = Buffer.from(signature.substring(2), 'hex') // remove '0x' prefix
         const payloadBuffer = Buffer.from(payload, 'utf-8')
 
@@ -50,9 +50,9 @@ export default class SigningUtil {
         return '0x' + hashOfPubKey.subarray(12, hashOfPubKey.length).toString('hex')
     }
 
-    static verify(address, payload, signature) {
+    static async verify(address, payload, signature) {
         try {
-            const recoveredAddress = SigningUtil.recover(signature, payload)
+            const recoveredAddress = await SigningUtil.recover(signature, payload)
             return recoveredAddress.toLowerCase() === address.toLowerCase()
         } catch (err) {
             return false
