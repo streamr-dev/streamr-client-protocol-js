@@ -1,6 +1,7 @@
 import memoize from 'promise-memoize'
 
 import StreamMessageValidator from './StreamMessageValidator'
+import SigningUtil from './SigningUtil'
 
 /**
  * A thin wrapper around StreamMessageValidator that adds caching for the following
@@ -21,7 +22,7 @@ export default class CachingStreamMessageValidator extends StreamMessageValidato
      * @param cacheErrorsTimeoutMillis Number: Cache timeout for error responses. Default 1 minute.
      */
     constructor({
-        getStream, isPublisher, isSubscriber, verify,
+        getStream, isPublisher, isSubscriber, verify = SigningUtil.verify,
         cacheTimeoutMillis = 15 * 60 * 1000, cacheErrorsTimeoutMillis = 60 * 1000,
     }) {
         StreamMessageValidator.checkInjectedFunctions(getStream, isPublisher, isSubscriber, verify)
