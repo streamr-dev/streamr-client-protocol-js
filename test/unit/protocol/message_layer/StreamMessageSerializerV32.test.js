@@ -2,21 +2,19 @@ import assert from 'assert'
 
 import { MessageLayer } from '../../../../src/index'
 
-const { StreamMessage, MessageRef, MessageID } = MessageLayer
+const { StreamMessage, MessageRef, MessageIDStrict } = MessageLayer
 
-const VERSION = 30
-
-const content = {
-    hello: 'world',
-}
+const VERSION = 32
 
 // Message definitions
 const message = new StreamMessage({
-    messageId: new MessageID('streamId', 0, 1564046332168, 10, 'publisherId', 'msgChainId'),
+    messageId: new MessageIDStrict('streamId', 0, 1564046332168, 10, 'publisherId', 'msgChainId'),
     prevMsgRef: new MessageRef(1564046132168, 5),
-    content: JSON.stringify(content),
+    content: 'encrypted-content',
     messageType: StreamMessage.MESSAGE_TYPES.MESSAGE,
-    encryptionType: StreamMessage.ENCRYPTION_TYPES.NONE,
+    contentType: StreamMessage.CONTENT_TYPES.JSON,
+    groupKeyId: 'groupKeyId',
+    encryptionType: StreamMessage.ENCRYPTION_TYPES.AES,
     signatureType: StreamMessage.SIGNATURE_TYPES.ETH,
     signature: 'signature',
 })
@@ -25,12 +23,15 @@ const serializedMessage = JSON.stringify([
     ['streamId', 0, 1564046332168, 10, 'publisherId', 'msgChainId'],
     [1564046132168, 5],
     StreamMessage.MESSAGE_TYPES.MESSAGE,
-    JSON.stringify(content),
+    StreamMessage.CONTENT_TYPES.JSON,
+    StreamMessage.ENCRYPTION_TYPES.AES,
+    'groupKeyId',
+    'encrypted-content',
     StreamMessage.SIGNATURE_TYPES.ETH,
     'signature'
 ])
 
-describe('StreamMessageSerializerV30', () => {
+describe('StreamMessageSerializerV32', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             assert.deepStrictEqual(StreamMessage.deserialize(serializedMessage), message)

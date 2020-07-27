@@ -2,16 +2,18 @@ import StreamMessage from './StreamMessage'
 import MessageRef from './MessageRef'
 import MessageIDStrict from './MessageIDStrict'
 
-const VERSION = 31
+const VERSION = 32
 
-export default class StreamMessageSerializerV31 {
+export default class StreamMessageSerializerV32 {
     static toArray(streamMessage) {
         return [
             VERSION,
             streamMessage.messageId.toArray(),
             streamMessage.prevMsgRef ? streamMessage.prevMsgRef.toArray() : null,
             streamMessage.messageType,
+            streamMessage.contentType,
             streamMessage.encryptionType,
+            streamMessage.groupKeyId,
             streamMessage.serializedContent,
             streamMessage.signatureType,
             streamMessage.signature,
@@ -24,7 +26,9 @@ export default class StreamMessageSerializerV31 {
             messageIdArr,
             prevMsgRefArr,
             messageType,
+            contentType,
             encryptionType,
+            groupKeyId,
             serializedContent,
             signatureType,
             signature,
@@ -35,12 +39,13 @@ export default class StreamMessageSerializerV31 {
             prevMsgRef: prevMsgRefArr ? MessageRef.fromArray(prevMsgRefArr) : null,
             content: serializedContent,
             messageType,
-            contentType: StreamMessage.CONTENT_TYPES.JSON,
+            contentType,
             encryptionType,
+            groupKeyId,
             signatureType,
             signature,
         })
     }
 }
 
-StreamMessage.registerSerializer(VERSION, StreamMessageSerializerV31)
+StreamMessage.registerSerializer(VERSION, StreamMessageSerializerV32)

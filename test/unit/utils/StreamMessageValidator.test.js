@@ -2,11 +2,11 @@ import assert from 'assert'
 
 import sinon from 'sinon'
 
-import StreamMessageValidator from '../../../src/utils/StreamMessageValidator'
-import StreamMessage from '../../../src/protocol/message_layer/StreamMessage'
-// eslint-disable-next-line no-unused-vars
-import StreamMessageSerializerV31 from '../../../src/protocol/message_layer/StreamMessageSerializerV31'
-import ValidationError from '../../../src/errors/ValidationError'
+import { MessageLayer, Utils, Errors } from '../../../src'
+
+const { StreamMessage } = MessageLayer
+const { StreamMessageValidator } = Utils
+const { ValidationError } = Errors
 
 describe('StreamMessageValidator', () => {
     let getStream
@@ -49,9 +49,9 @@ describe('StreamMessageValidator', () => {
         groupKeyErrorResponse = StreamMessage.deserialize('[31,["SYSTEM/keyexchange/0xbe0ab87a1f5b09afe9101b09e3c86fd8f4162527",0,1587143432683,0,"0x6807295093ac5da6fb2a10f7dedc5edd620804fb","2hmxXpkhmaLcJipCDVDm"],null,31,1,"{\\"requestId\\":\\"groupKeyRequestId\\",\\"streamId\\":\\"tagHE6nTQ9SJV2wPoCxBFw\\",\\"code\\":\\"TEST_ERROR\\",\\"message\\":\\"Test error message\\"}",2,"0x74301e65c0cb8f553b7aa2e0eeac61aaff918726f6f7699bd05e9201e591cf0c304b5812c28dd2903b394c57dde1c23dae787ec0005d6e2bc1c03edeb7cdbfc41c"]')
     })
 
-    describe('validate(unknown content type)', () => {
-        it('throws on unknown content type', async () => {
-            msg.contentType = 666
+    describe('validate(unknown message type)', () => {
+        it('throws on unknown message type', async () => {
+            msg.messageType = 666
             await assert.rejects(getValidator().validate(msg), (err) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 return true
@@ -402,7 +402,7 @@ describe('StreamMessageValidator', () => {
             const testError = new Error('test error')
             isSubscriber = sinon.stub().rejects(testError)
             await assert.rejects(getValidator().validate(groupKeyReset), (err) => {
-                assert(err === testError)
+                assert(err === testError, `Unexpected error thrown: ${err}`)
                 return true
             })
         })

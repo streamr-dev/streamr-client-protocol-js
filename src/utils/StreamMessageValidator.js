@@ -63,17 +63,18 @@ export default class StreamMessageValidator {
             throw new ValidationError('Falsey argument passed to validate()!')
         }
 
-        switch (streamMessage.contentType) {
-            case StreamMessage.CONTENT_TYPES.MESSAGE:
+        switch (streamMessage.messageType) {
+            case StreamMessage.MESSAGE_TYPES.MESSAGE:
                 return this._validateMessage(streamMessage)
-            case StreamMessage.CONTENT_TYPES.GROUP_KEY_REQUEST:
+            case StreamMessage.MESSAGE_TYPES.GROUP_KEY_REQUEST:
                 return this._validateGroupKeyRequest(streamMessage)
-            case StreamMessage.CONTENT_TYPES.GROUP_KEY_RESPONSE_SIMPLE:
-            case StreamMessage.CONTENT_TYPES.GROUP_KEY_ERROR_RESPONSE:
-            case StreamMessage.CONTENT_TYPES.GROUP_KEY_RESET_SIMPLE:
-                return this._validateGroupKeyResponseOrReset(streamMessage)
+            case StreamMessage.MESSAGE_TYPES.GROUP_KEY_ANNOUNCE:
+                return this._validateGroupKeyAnnounce(streamMessage)
+            case StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE_SIMPLE:
+            case StreamMessage.MESSAGE_TYPES.GROUP_KEY_ERROR_RESPONSE:
+                return this._validateGroupKeyResponse(streamMessage)
             default:
-                throw new ValidationError(`Unknown content type: ${streamMessage.contentType}!`)
+                throw new ValidationError(`Unknown message type: ${streamMessage.messageType}!`)
         }
     }
 
@@ -161,7 +162,7 @@ export default class StreamMessageValidator {
         }
     }
 
-    async _validateGroupKeyResponseOrReset(streamMessage) {
+    async _validateGroupKeyResponse(streamMessage) {
         if (!streamMessage.signature) {
             throw new ValidationError(`Received unsigned group key response (it must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
         }
@@ -186,6 +187,20 @@ export default class StreamMessageValidator {
         if (!recipientIsSubscriber) {
             throw new ValidationError(`${recipient} is not a subscriber on stream ${response.streamId}. Group key response: ${streamMessage.serialize()}`)
         }
+    }
+
+    async _validateGroupKeyAnnounce(streamMessage) {
+        // Announce messages can appear in key exchange streams and normal streams and are validated differently
+        if (StreamMessageValidator.isKeyExchangeStream(streamMessage.getStreamId())) {
+            // Validate using the same logic as GroupKeyResponse
+            return this._validateGroupKeyResponse(streamMessage)
+        }
+
+        // Else validate like a StreamMessage (except always reject unsigned)
+        if (!streamMessage.signature) {
+            throw new ValidationError(`Received unsigned group key announce (it must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
+        }
+        return this._validateMessage(streamMessage)
     }
 
     static isKeyExchangeStream(streamId) {
