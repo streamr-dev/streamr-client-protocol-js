@@ -1,6 +1,7 @@
 import assert from 'assert'
 
 import { MessageLayer } from '../../../../src/index'
+import EncryptedGroupKey from '../../../../src/protocol/message_layer/EncryptedGroupKey'
 
 const {
     StreamMessage, MessageID, MessageRef, GroupKeyMessage, GroupKeyAnnounce
@@ -9,7 +10,10 @@ const {
 // Message definitions
 const message = new GroupKeyAnnounce({
     streamId: 'streamId',
-    encryptedGroupKeys: [['groupKeyId1', 'encryptedGroupKey1'], ['groupKeyId2', 'encryptedGroupKey2']]
+    encryptedGroupKeys: [
+        new EncryptedGroupKey('groupKeyId1', 'encryptedGroupKey1'),
+        new EncryptedGroupKey('groupKeyId2', 'encryptedGroupKey2'),
+    ],
 })
 const serializedMessage = JSON.stringify(['streamId', [['groupKeyId1', 'encryptedGroupKey1'], ['groupKeyId2', 'encryptedGroupKey2']]])
 

@@ -64,6 +64,7 @@ import GroupKeyRequest from './protocol/message_layer/GroupKeyRequest'
 import GroupKeyResponse from './protocol/message_layer/GroupKeyResponse'
 import GroupKeyAnnounce from './protocol/message_layer/GroupKeyAnnounce'
 import GroupKeyErrorResponse from './protocol/message_layer/GroupKeyErrorResponse'
+import EncryptedGroupKey from './protocol/message_layer/EncryptedGroupKey'
 
 export const ControlLayer = {
     BroadcastMessage,
@@ -94,6 +95,7 @@ export const MessageLayer = {
     GroupKeyResponse,
     GroupKeyAnnounce,
     GroupKeyErrorResponse,
+    EncryptedGroupKey,
 }
 
 export const Errors = {

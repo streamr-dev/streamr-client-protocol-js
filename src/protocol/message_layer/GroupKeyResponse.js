@@ -1,7 +1,9 @@
 import { validateIsArray, validateIsString } from '../../utils/validations'
+import ValidationError from '../../errors/ValidationError'
 
 import StreamMessage from './StreamMessage'
 import GroupKeyMessage from './GroupKeyMessage'
+import EncryptedGroupKey from './EncryptedGroupKey'
 
 export default class GroupKeyResponse extends GroupKeyMessage {
     constructor({ requestId, streamId, encryptedGroupKeys }) {
@@ -13,11 +15,16 @@ export default class GroupKeyResponse extends GroupKeyMessage {
         validateIsArray('encryptedGroupKeys', encryptedGroupKeys)
         this.encryptedGroupKeys = encryptedGroupKeys
 
-        // TODO: validate content of encryptedGroupKeys
+        // Validate content of encryptedGroupKeys
+        this.encryptedGroupKeys.forEach((it) => {
+            if (!(it instanceof EncryptedGroupKey)) {
+                throw new ValidationError(`Expected 'encryptedGroupKeys' to be a list of EncryptedGroupKey instances! Was: ${this.encryptedGroupKeys}`)
+            }
+        })
     }
 
     toArray() {
-        return [this.requestId, this.streamId, this.encryptedGroupKeys]
+        return [this.requestId, this.streamId, this.encryptedGroupKeys.map((it) => it.toArray())]
     }
 
     static fromArray(arr) {
@@ -25,7 +32,7 @@ export default class GroupKeyResponse extends GroupKeyMessage {
         return new GroupKeyResponse({
             requestId,
             streamId,
-            encryptedGroupKeys,
+            encryptedGroupKeys: encryptedGroupKeys.map((it) => EncryptedGroupKey.fromArray(it)),
         })
     }
 }
