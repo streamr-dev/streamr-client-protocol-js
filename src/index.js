@@ -59,6 +59,10 @@ import StreamMessageValidator from './utils/StreamMessageValidator'
 import CachingStreamMessageValidator from './utils/CachingStreamMessageValidator'
 import MessageIDStrict from './protocol/message_layer/MessageIDStrict'
 import MessageRefStrict from './protocol/message_layer/MessageRefStrict'
+import GroupKeyRequest from './protocol/message_layer/GroupKeyRequest'
+import GroupKeyResponse from './protocol/message_layer/GroupKeyResponse'
+import GroupKeyAnnounce from './protocol/message_layer/GroupKeyAnnounce'
+import GroupKeyErrorResponse from './protocol/message_layer/GroupKeyErrorResponse'
 
 export const ControlLayer = {
     BroadcastMessage,
@@ -83,7 +87,11 @@ export const MessageLayer = {
     MessageIDStrict,
     MessageRef,
     MessageRefStrict,
-    StreamMessage
+    StreamMessage,
+    GroupKeyRequest,
+    GroupKeyResponse,
+    GroupKeyAnnounce,
+    GroupKeyErrorResponse,
 }
 
 export const Errors = {

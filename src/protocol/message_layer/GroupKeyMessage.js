@@ -1,7 +1,6 @@
-import { MessageLayer } from '../../index'
 import { validateIsString } from '../../utils/validations'
 
-const { StreamMessage } = MessageLayer
+import StreamMessage from './StreamMessage'
 
 export default class GroupKeyMessage {
     constructor(streamId, messageType) {

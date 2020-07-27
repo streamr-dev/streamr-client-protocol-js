@@ -1,9 +1,7 @@
-import { MessageLayer } from '../../index'
 import { validateIsArray, validateIsString } from '../../utils/validations'
 
+import StreamMessage from './StreamMessage'
 import GroupKeyMessage from './GroupKeyMessage'
-
-const { StreamMessage } = MessageLayer
 
 export default class GroupKeyResponse extends GroupKeyMessage {
     constructor({ requestId, streamId, encryptedGroupKeys }) {
