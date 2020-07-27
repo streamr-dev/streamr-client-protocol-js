@@ -59,6 +59,7 @@ import StreamMessageValidator from './utils/StreamMessageValidator'
 import CachingStreamMessageValidator from './utils/CachingStreamMessageValidator'
 import MessageIDStrict from './protocol/message_layer/MessageIDStrict'
 import MessageRefStrict from './protocol/message_layer/MessageRefStrict'
+import GroupKeyMessage from './protocol/message_layer/GroupKeyMessage'
 import GroupKeyRequest from './protocol/message_layer/GroupKeyRequest'
 import GroupKeyResponse from './protocol/message_layer/GroupKeyResponse'
 import GroupKeyAnnounce from './protocol/message_layer/GroupKeyAnnounce'
@@ -88,6 +89,7 @@ export const MessageLayer = {
     MessageRef,
     MessageRefStrict,
     StreamMessage,
+    GroupKeyMessage,
     GroupKeyRequest,
     GroupKeyResponse,
     GroupKeyAnnounce,
