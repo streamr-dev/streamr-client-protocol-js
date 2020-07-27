@@ -70,7 +70,7 @@ export default class StreamMessageValidator {
                 return this._validateGroupKeyRequest(streamMessage)
             case StreamMessage.MESSAGE_TYPES.GROUP_KEY_ANNOUNCE:
                 return this._validateGroupKeyAnnounce(streamMessage)
-            case StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE_SIMPLE:
+            case StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE:
             case StreamMessage.MESSAGE_TYPES.GROUP_KEY_ERROR_RESPONSE:
                 return this._validateGroupKeyResponse(streamMessage)
             default:

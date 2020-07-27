@@ -22,13 +22,13 @@ const streamMessage = new StreamMessage({
     messageId: new MessageID('streamId', 0, 1, 0, 'publisherId', 'msgChainId'),
     prevMsgRef: new MessageRef(0, 0),
     content: serializedMessage,
-    messageType: StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE_SIMPLE,
+    messageType: StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE,
 })
 
 describe('GroupKeyResponse', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
-            assert.deepStrictEqual(GroupKeyMessage.deserialize(serializedMessage, StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE_SIMPLE), message)
+            assert.deepStrictEqual(GroupKeyMessage.deserialize(serializedMessage, StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE), message)
         })
     })
     describe('serialize', () => {

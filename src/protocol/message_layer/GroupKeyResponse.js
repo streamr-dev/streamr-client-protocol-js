@@ -7,7 +7,7 @@ import EncryptedGroupKey from './EncryptedGroupKey'
 
 export default class GroupKeyResponse extends GroupKeyMessage {
     constructor({ requestId, streamId, encryptedGroupKeys }) {
-        super(streamId, StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE_SIMPLE)
+        super(streamId, StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE)
 
         validateIsString('requestId', requestId)
         this.requestId = requestId
@@ -37,4 +37,4 @@ export default class GroupKeyResponse extends GroupKeyMessage {
     }
 }
 
-GroupKeyMessage.classByMessageType[StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE_SIMPLE] = GroupKeyResponse
+GroupKeyMessage.classByMessageType[StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE] = GroupKeyResponse
