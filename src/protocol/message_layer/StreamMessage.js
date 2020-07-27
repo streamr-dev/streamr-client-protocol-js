@@ -46,7 +46,7 @@ export default class StreamMessage {
         validateIsString('signature', signature, true)
         this.signature = signature
 
-        if (typeof content === 'object') {
+        if (typeof content === 'object' && contentType === StreamMessage.CONTENT_TYPES.JSON) {
             this.parsedContent = content
             this.serializedContent = JSON.stringify(content)
         } else {
@@ -54,11 +54,6 @@ export default class StreamMessage {
             this.serializedContent = content
         }
         validateIsNotEmptyString('content', this.serializedContent)
-
-        // Parse and validate content of message types related to key exchange (non-message types)
-        if (this.messageType !== StreamMessage.MESSAGE_TYPES.MESSAGE) {
-            StreamMessage.validateContent(this.getParsedContent(), this.messageType)
-        }
     }
 
     getStreamId() {
@@ -107,20 +102,23 @@ export default class StreamMessage {
     getParsedContent() {
         if (!this.parsedContent) {
             // Don't try to parse encrypted messages
-            if (this.contentType === StreamMessage.MESSAGE_TYPES.MESSAGE && this.encryptionType !== StreamMessage.ENCRYPTION_TYPES.NONE) {
+            if (this.messageType === StreamMessage.MESSAGE_TYPES.MESSAGE && this.encryptionType !== StreamMessage.ENCRYPTION_TYPES.NONE) {
                 return this.serializedContent
             }
 
-            try {
-                const parsed = JSON.parse(this.serializedContent)
-                this.parsedContent = parsed
-            } catch (err) {
-                throw new InvalidJsonError(
-                    this.streamId,
-                    this.serializedContent,
-                    err,
-                    this,
-                )
+            if (this.contentType === StreamMessage.CONTENT_TYPES.JSON) {
+                try {
+                    this.parsedContent = JSON.parse(this.serializedContent)
+                } catch (err) {
+                    throw new InvalidJsonError(
+                        this.streamId,
+                        this.serializedContent,
+                        err,
+                        this,
+                    )
+                }
+            } else {
+                throw new Error(`Unsupported contentType for getParsedContent: ${this.contentType}`)
             }
         }
         return this.parsedContent
