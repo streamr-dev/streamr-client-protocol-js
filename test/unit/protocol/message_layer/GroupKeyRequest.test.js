@@ -1,9 +1,10 @@
 import assert from 'assert'
 
 import { MessageLayer } from '../../../../src/index'
-import MessageRef from '../../../../src/protocol/message_layer/MessageRef'
 
-const { StreamMessage, MessageID, GroupKeyMessage, GroupKeyRequest } = MessageLayer
+const {
+    StreamMessage, MessageID, MessageRef, GroupKeyMessage, GroupKeyRequest
+} = MessageLayer
 
 // Message definitions
 const message = new GroupKeyRequest({
