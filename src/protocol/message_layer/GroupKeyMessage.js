@@ -11,10 +11,6 @@ export default class GroupKeyMessage {
         this.messageType = messageType
     }
 
-    getStreamId() {
-        return this.streamId
-    }
-
     serialize() {
         return JSON.stringify(this.toArray())
     }
