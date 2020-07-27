@@ -229,34 +229,6 @@ export default class StreamMessage {
         }
     }
 
-    static validateContent(content, contentType) {
-        if (contentType === StreamMessage.MESSAGE_TYPES.GROUP_KEY_REQUEST) {
-            this._requireFields(['requestId', 'publicKey', 'streamId'], content, contentType)
-            if (content.range && !content.range.start && !content.range.end) {
-                throw new ValidationError(`Field 'range' in content of type ${contentType} must contain fields 'start' and 'end'.`)
-            }
-        } else if (contentType === StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE_SIMPLE) {
-            this._requireFields(['requestId', 'streamId', 'keys'], content, contentType)
-            content.keys.forEach((keyResponse) => {
-                if (!keyResponse.groupKey || !keyResponse.start) {
-                    throw new Error(`Each element in field 'keys' of content of type ${contentType} must contain 'groupKey' and 'start' fields.`)
-                }
-            })
-        } else if (contentType === StreamMessage.MESSAGE_TYPES.GROUP_KEY_ANNOUNCE) {
-            this._requireFields(['streamId', 'groupKey', 'start'], content, contentType)
-        } else if (contentType === StreamMessage.MESSAGE_TYPES.GROUP_KEY_ERROR_RESPONSE) {
-            this._requireFields(['requestId', 'streamId', 'code', 'message'], content, contentType)
-        }
-    }
-
-    static _requireFields(fieldsArr, content, contentType) {
-        fieldsArr.forEach((fieldName) => {
-            if (!content[fieldName]) {
-                throw new ValidationError(`Content of type ${contentType} must contain fields ${JSON.stringify(fieldsArr)}. Content was: ${JSON.stringify(content)}`)
-            }
-        })
-    }
-
     static versionSupportsEncryption(streamMessageVersion) {
         return streamMessageVersion >= 31
     }
@@ -308,6 +280,5 @@ StreamMessage.ENCRYPTION_TYPES = {
     NONE: 0,
     RSA: 1,
     AES: 2,
-    NEW_KEY_AND_AES: 3,
 }
 StreamMessage.VALID_ENCRYPTIONS = new Set(Object.values(StreamMessage.ENCRYPTION_TYPES))
