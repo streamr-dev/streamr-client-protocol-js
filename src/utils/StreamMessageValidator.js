@@ -1,5 +1,7 @@
 import StreamMessage from '../protocol/message_layer/StreamMessage'
 import ValidationError from '../errors/ValidationError'
+import GroupKeyRequest from '../protocol/message_layer/GroupKeyRequest'
+import GroupKeyResponse from '../protocol/message_layer/GroupKeyResponse'
 
 import SigningUtil from './SigningUtil'
 
@@ -143,22 +145,22 @@ export default class StreamMessageValidator {
             throw new ValidationError(`Group key requests can only occur on stream ids of form ${`${KEY_EXCHANGE_STREAM_PREFIX}{address}`}. Message: ${streamMessage.serialize()}`)
         }
 
-        const request = streamMessage.getParsedContent()
+        const groupKeyRequest = GroupKeyRequest.fromStreamMessage(streamMessage)
         const sender = streamMessage.getPublisherId()
         const recipient = streamMessage.getStreamId().substring(KEY_EXCHANGE_STREAM_PREFIX.length)
 
         await StreamMessageValidator.assertSignatureIsValid(streamMessage, this.verify)
 
         // Check that the recipient of the request is a valid publisher of the stream
-        const recipientIsPublisher = await this.isPublisher(recipient, request.streamId)
+        const recipientIsPublisher = await this.isPublisher(recipient, groupKeyRequest.streamId)
         if (!recipientIsPublisher) {
-            throw new ValidationError(`${recipient} is not a publisher on stream ${request.streamId}. Group key request: ${streamMessage.serialize()}`)
+            throw new ValidationError(`${recipient} is not a publisher on stream ${groupKeyRequest.streamId}. Group key request: ${streamMessage.serialize()}`)
         }
 
         // Check that the sender of the request is a valid subscriber of the stream
-        const senderIsSubscriber = await this.isSubscriber(sender, request.streamId)
+        const senderIsSubscriber = await this.isSubscriber(sender, groupKeyRequest.streamId)
         if (!senderIsSubscriber) {
-            throw new ValidationError(`${sender} is not a subscriber on stream ${request.streamId}. Group key request: ${streamMessage.serialize()}`)
+            throw new ValidationError(`${sender} is not a subscriber on stream ${groupKeyRequest.streamId}. Group key request: ${streamMessage.serialize()}`)
         }
     }
 
@@ -172,20 +174,20 @@ export default class StreamMessageValidator {
 
         await StreamMessageValidator.assertSignatureIsValid(streamMessage, this.verify)
 
-        const response = streamMessage.getParsedContent()
+        const groupKeyResponse = GroupKeyResponse.fromStreamMessage(streamMessage)
         const sender = streamMessage.getPublisherId()
         const recipient = streamMessage.getStreamId().substring(KEY_EXCHANGE_STREAM_PREFIX.length)
 
         // Check that the sender of the request is a valid publisher of the stream
-        const senderIsPublisher = await this.isPublisher(sender, response.streamId)
+        const senderIsPublisher = await this.isPublisher(sender, groupKeyResponse.streamId)
         if (!senderIsPublisher) {
-            throw new ValidationError(`${sender} is not a publisher on stream ${response.streamId}. Group key response: ${streamMessage.serialize()}`)
+            throw new ValidationError(`${sender} is not a publisher on stream ${groupKeyResponse.streamId}. Group key response: ${streamMessage.serialize()}`)
         }
 
         // Check that the recipient of the request is a valid subscriber of the stream
-        const recipientIsSubscriber = await this.isSubscriber(recipient, response.streamId)
+        const recipientIsSubscriber = await this.isSubscriber(recipient, groupKeyResponse.streamId)
         if (!recipientIsSubscriber) {
-            throw new ValidationError(`${recipient} is not a subscriber on stream ${response.streamId}. Group key response: ${streamMessage.serialize()}`)
+            throw new ValidationError(`${recipient} is not a subscriber on stream ${groupKeyResponse.streamId}. Group key response: ${streamMessage.serialize()}`)
         }
     }
 
