@@ -99,4 +99,5 @@ ControlMessage.TYPES = {
     ResendFromRequest: 12,
     ResendRangeRequest: 13,
     StatusMessage: 14,
+    InstructionMessage: 15,
 }
