@@ -16,6 +16,7 @@ describe('StreamMessageValidator', () => {
     let isSubscriber
     let verify
     let msg
+    let msgWithNewGroupKey
 
     const publisherPrivateKey = 'd462a6f2ccd995a346a841d110e8c6954930a1c22851c0032d3116d8ccd2296a'
     const publisher = '0x6807295093ac5da6fb2a10f7dedc5edd620804fb'
@@ -24,8 +25,7 @@ describe('StreamMessageValidator', () => {
 
     let groupKeyRequest
     let groupKeyResponse
-    let groupKeyAnnounceRekey
-    let groupKeyAnnounceRotate
+    let groupKeyAnnounce
     let groupKeyErrorResponse
 
     const defaultGetStreamResponse = {
@@ -62,6 +62,14 @@ describe('StreamMessageValidator', () => {
         })
         await sign(msg, publisherPrivateKey)
 
+        msgWithNewGroupKey = new StreamMessage({
+            messageId: new MessageID('streamId', 0, 0, 0, publisher, 'msgChainId'),
+            content: '{}',
+            newGroupKey: new EncryptedGroupKey('groupKeyId', 'encryptedGroupKeyHex')
+        })
+        await sign(msgWithNewGroupKey, publisherPrivateKey)
+        assert.notStrictEqual(msg.signature, msgWithNewGroupKey.signature)
+
         groupKeyRequest = new GroupKeyRequest({
             requestId: 'requestId',
             streamId: 'streamId',
@@ -84,7 +92,7 @@ describe('StreamMessageValidator', () => {
         )
         await sign(groupKeyResponse, publisherPrivateKey)
 
-        groupKeyAnnounceRekey = new GroupKeyAnnounce({
+        groupKeyAnnounce = new GroupKeyAnnounce({
             streamId: 'streamId',
             encryptedGroupKeys: [
                 new EncryptedGroupKey('groupKeyId1', 'encryptedKey1'),
@@ -93,18 +101,7 @@ describe('StreamMessageValidator', () => {
         }).toStreamMessage(
             new MessageID(`SYSTEM/keyexchange/${subscriber.toLowerCase()}`, 0, 0, 0, publisher, 'msgChainId'), null,
         )
-        await sign(groupKeyAnnounceRekey, publisherPrivateKey)
-
-        groupKeyAnnounceRotate = new GroupKeyAnnounce({
-            streamId: 'streamId',
-            encryptedGroupKeys: [
-                new EncryptedGroupKey('groupKeyId1', 'encryptedKey1'),
-                new EncryptedGroupKey('groupKeyId2', 'encryptedKey2')
-            ],
-        }).toStreamMessage(
-            new MessageID('streamId', 0, 0, 0, publisher, 'msgChainId'), null,
-        )
-        await sign(groupKeyAnnounceRotate, publisherPrivateKey)
+        await sign(groupKeyAnnounce, publisherPrivateKey)
 
         groupKeyErrorResponse = new GroupKeyErrorResponse({
             requestId: 'requestId',
@@ -131,6 +128,10 @@ describe('StreamMessageValidator', () => {
     describe('validate(message)', () => {
         it('accepts valid messages', async () => {
             await getValidator().validate(msg)
+        })
+
+        it('accepts valid messages with a new group key', async () => {
+            await getValidator().validate(msgWithNewGroupKey)
         })
 
         it('accepts unsigned messages that dont need to be signed', async () => {
@@ -185,6 +186,24 @@ describe('StreamMessageValidator', () => {
             msg.signature = msg.signature.replace('a', 'b')
 
             await assert.rejects(getValidator().validate(msg), (err) => {
+                assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
+                return true
+            })
+        })
+
+        it('rejects tampered content', async () => {
+            msg.serializedContent = '{"attack":true}'
+
+            await assert.rejects(getValidator().validate(msg), (err) => {
+                assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
+                return true
+            })
+        })
+
+        it('rejects tampered newGroupKey', async () => {
+            msgWithNewGroupKey.newGroupKey.groupKeyId = 'foo'
+
+            await assert.rejects(getValidator().validate(msgWithNewGroupKey), (err) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 return true
             })
@@ -403,25 +422,25 @@ describe('StreamMessageValidator', () => {
         })
     })
 
-    describe('validate(group key announce, rekey)', () => {
+    describe('validate(group key announce)', () => {
         it('accepts valid group key announces', async () => {
-            await getValidator().validate(groupKeyAnnounceRekey)
+            await getValidator().validate(groupKeyAnnounce)
         })
 
         it('rejects unsigned group key announces', async () => {
-            groupKeyAnnounceRekey.signature = null
-            groupKeyAnnounceRekey.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
+            groupKeyAnnounce.signature = null
+            groupKeyAnnounce.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
 
-            await assert.rejects(getValidator().validate(groupKeyAnnounceRekey), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyAnnounce), (err) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 return true
             })
         })
 
         it('rejects invalid signatures', async () => {
-            groupKeyAnnounceRekey.signature = groupKeyAnnounceRekey.signature.replace('a', 'b')
+            groupKeyAnnounce.signature = groupKeyAnnounce.signature.replace('a', 'b')
 
-            await assert.rejects(getValidator().validate(groupKeyAnnounceRekey), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyAnnounce), (err) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 return true
             })
@@ -430,7 +449,7 @@ describe('StreamMessageValidator', () => {
         it('rejects messages from invalid publishers', async () => {
             isPublisher = sinon.stub().resolves(false)
 
-            await assert.rejects(getValidator().validate(groupKeyAnnounceRekey), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyAnnounce), (err) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 assert(isPublisher.calledOnce, 'isPublisher not called!')
                 assert(isPublisher.calledWith(publisher, 'streamId'), `isPublisher called with wrong args: ${isPublisher.getCall(0).args}`)
@@ -441,7 +460,7 @@ describe('StreamMessageValidator', () => {
         it('rejects messages to unpermitted subscribers', async () => {
             isSubscriber = sinon.stub().resolves(false)
 
-            await assert.rejects(getValidator().validate(groupKeyAnnounceRekey), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyAnnounce), (err) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 assert(isSubscriber.calledOnce, 'isSubscriber not called!')
                 assert(isSubscriber.calledWith(subscriber, 'streamId'), `isSubscriber called with wrong args: ${isSubscriber.getCall(0).args}`)
@@ -452,7 +471,7 @@ describe('StreamMessageValidator', () => {
         it('rejects if isPublisher rejects', async () => {
             const testError = new Error('test error')
             isPublisher = sinon.stub().rejects(testError)
-            await assert.rejects(getValidator().validate(groupKeyAnnounceRekey), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyAnnounce), (err) => {
                 assert(err === testError)
                 return true
             })
@@ -461,7 +480,7 @@ describe('StreamMessageValidator', () => {
         it('rejects if isSubscriber rejects', async () => {
             const testError = new Error('test error')
             isSubscriber = sinon.stub().rejects(testError)
-            await assert.rejects(getValidator().validate(groupKeyAnnounceRekey), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyAnnounce), (err) => {
                 assert(err === testError, `Unexpected error thrown: ${err}`)
                 return true
             })
@@ -470,61 +489,7 @@ describe('StreamMessageValidator', () => {
         it('rejects with ValidationError if verify throws', async () => {
             const testError = new Error('test error')
             verify = sinon.stub().throws(testError)
-            await assert.rejects(getValidator().validate(groupKeyAnnounceRekey), (err) => {
-                assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
-                return true
-            })
-        })
-    })
-
-    describe('validate(group key announce, rotate)', () => {
-        it('accepts valid group key announces', async () => {
-            await getValidator().validate(groupKeyAnnounceRotate)
-        })
-
-        it('rejects unsigned group key announces', async () => {
-            groupKeyAnnounceRotate.signature = null
-            groupKeyAnnounceRotate.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
-
-            await assert.rejects(getValidator().validate(groupKeyAnnounceRotate), (err) => {
-                assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
-                return true
-            })
-        })
-
-        it('rejects invalid signatures', async () => {
-            groupKeyAnnounceRotate.signature = groupKeyAnnounceRotate.signature.replace('a', 'b')
-
-            await assert.rejects(getValidator().validate(groupKeyAnnounceRotate), (err) => {
-                assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
-                return true
-            })
-        })
-
-        it('rejects messages from invalid publishers', async () => {
-            isPublisher = sinon.stub().resolves(false)
-
-            await assert.rejects(getValidator().validate(groupKeyAnnounceRotate), (err) => {
-                assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
-                assert(isPublisher.calledOnce, 'isPublisher not called!')
-                assert(isPublisher.calledWith(publisher, groupKeyAnnounceRotate.getStreamId()), `isPublisher called with wrong args: ${isPublisher.getCall(0).args}`)
-                return true
-            })
-        })
-
-        it('rejects if isPublisher rejects', async () => {
-            const testError = new Error('test error')
-            isPublisher = sinon.stub().rejects(testError)
-            await assert.rejects(getValidator().validate(groupKeyAnnounceRotate), (err) => {
-                assert(err === testError)
-                return true
-            })
-        })
-
-        it('rejects with ValidationError if verify throws', async () => {
-            const testError = new Error('test error')
-            verify = sinon.stub().throws(testError)
-            await assert.rejects(getValidator().validate(groupKeyAnnounceRotate), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyAnnounce), (err) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 return true
             })

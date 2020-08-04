@@ -2,7 +2,7 @@ import assert from 'assert'
 
 import { MessageLayer } from '../../../../src/index'
 
-const { StreamMessage, MessageRef, MessageIDStrict } = MessageLayer
+const { StreamMessage, MessageRef, MessageIDStrict, EncryptedGroupKey } = MessageLayer
 
 const VERSION = 32
 
@@ -15,6 +15,7 @@ const message = new StreamMessage({
     contentType: StreamMessage.CONTENT_TYPES.JSON,
     groupKeyId: 'groupKeyId',
     encryptionType: StreamMessage.ENCRYPTION_TYPES.AES,
+    newGroupKey: new EncryptedGroupKey('groupKeyId', 'encryptedGroupKeyHex', '["groupKeyId","encryptedGroupKeyHex"]'),
     signatureType: StreamMessage.SIGNATURE_TYPES.ETH,
     signature: 'signature',
 })
@@ -27,6 +28,7 @@ const serializedMessage = JSON.stringify([
     StreamMessage.ENCRYPTION_TYPES.AES,
     'groupKeyId',
     'encrypted-content',
+    '["groupKeyId","encryptedGroupKeyHex"]',
     StreamMessage.SIGNATURE_TYPES.ETH,
     'signature'
 ])

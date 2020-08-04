@@ -54,7 +54,7 @@ export default class StreamMessageValidator {
     /**
      * Checks that the given StreamMessage is satisfies the requirements of the protocol.
      * This includes checking permissions as well as signature. The method supports all
-     * content types defined by the protocol.
+     * message types defined by the protocol.
      *
      * Resolves the promise if the message is valid, rejects otherwise.
      *
@@ -71,10 +71,9 @@ export default class StreamMessageValidator {
             case StreamMessage.MESSAGE_TYPES.GROUP_KEY_REQUEST:
                 return this._validateGroupKeyRequest(streamMessage)
             case StreamMessage.MESSAGE_TYPES.GROUP_KEY_ANNOUNCE:
-                return this._validateGroupKeyAnnounce(streamMessage)
             case StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE:
             case StreamMessage.MESSAGE_TYPES.GROUP_KEY_ERROR_RESPONSE:
-                return this._validateGroupKeyResponse(streamMessage)
+                return this._validateGroupKeyResponseOrAnnounce(streamMessage)
             default:
                 throw new ValidationError(`Unknown message type: ${streamMessage.messageType}!`)
         }
@@ -164,12 +163,12 @@ export default class StreamMessageValidator {
         }
     }
 
-    async _validateGroupKeyResponse(streamMessage) {
+    async _validateGroupKeyResponseOrAnnounce(streamMessage) {
         if (!streamMessage.signature) {
-            throw new ValidationError(`Received unsigned group key response (it must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
+            throw new ValidationError(`Received unsigned ${streamMessage.messageType} (it must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
         }
         if (!StreamMessageValidator.isKeyExchangeStream(streamMessage.getStreamId())) {
-            throw new ValidationError(`Group key responses can only occur on stream ids of form ${`${KEY_EXCHANGE_STREAM_PREFIX}{address}`}. Message: ${streamMessage.serialize()}`)
+            throw new ValidationError(`${streamMessage.messageType} can only occur on stream ids of form ${`${KEY_EXCHANGE_STREAM_PREFIX}{address}`}. Message: ${streamMessage.serialize()}`)
         }
 
         await StreamMessageValidator.assertSignatureIsValid(streamMessage, this.verify)
@@ -181,28 +180,14 @@ export default class StreamMessageValidator {
         // Check that the sender of the request is a valid publisher of the stream
         const senderIsPublisher = await this.isPublisher(sender, groupKeyResponse.streamId)
         if (!senderIsPublisher) {
-            throw new ValidationError(`${sender} is not a publisher on stream ${groupKeyResponse.streamId}. Group key response: ${streamMessage.serialize()}`)
+            throw new ValidationError(`${sender} is not a publisher on stream ${groupKeyResponse.streamId}. ${streamMessage.messageType}: ${streamMessage.serialize()}`)
         }
 
         // Check that the recipient of the request is a valid subscriber of the stream
         const recipientIsSubscriber = await this.isSubscriber(recipient, groupKeyResponse.streamId)
         if (!recipientIsSubscriber) {
-            throw new ValidationError(`${recipient} is not a subscriber on stream ${groupKeyResponse.streamId}. Group key response: ${streamMessage.serialize()}`)
+            throw new ValidationError(`${recipient} is not a subscriber on stream ${groupKeyResponse.streamId}. ${streamMessage.messageType}: ${streamMessage.serialize()}`)
         }
-    }
-
-    async _validateGroupKeyAnnounce(streamMessage) {
-        // Announce messages can appear in key exchange streams and normal streams and are validated differently
-        if (StreamMessageValidator.isKeyExchangeStream(streamMessage.getStreamId())) {
-            // Validate using the same logic as GroupKeyResponse
-            return this._validateGroupKeyResponse(streamMessage)
-        }
-
-        // Else validate like a StreamMessage (except always reject unsigned)
-        if (!streamMessage.signature) {
-            throw new ValidationError(`Received unsigned group key announce (it must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
-        }
-        return this._validateMessage(streamMessage)
     }
 
     static isKeyExchangeStream(streamId) {

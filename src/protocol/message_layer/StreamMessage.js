@@ -5,6 +5,7 @@ import { validateIsNotEmptyString, validateIsString, validateIsType } from '../.
 
 import MessageRef from './MessageRef'
 import MessageID from './MessageID'
+import EncryptedGroupKey from './EncryptedGroupKey'
 
 const serializerByVersion = {}
 const BYE_KEY = '_bye'
@@ -19,6 +20,7 @@ export default class StreamMessage {
         contentType = StreamMessage.CONTENT_TYPES.JSON,
         encryptionType = StreamMessage.ENCRYPTION_TYPES.NONE,
         groupKeyId = null,
+        newGroupKey = null,
         signatureType = StreamMessage.SIGNATURE_TYPES.NONE,
         signature = null,
     }) {
@@ -39,6 +41,9 @@ export default class StreamMessage {
 
         validateIsString('groupKeyId', groupKeyId, true)
         this.groupKeyId = groupKeyId
+
+        validateIsType('newGroupKey', newGroupKey, 'EncryptedGroupKey', EncryptedGroupKey, true)
+        this.newGroupKey = newGroupKey
 
         StreamMessage.validateSignatureType(signatureType)
         this.signatureType = signatureType
@@ -131,18 +136,22 @@ export default class StreamMessage {
         return this.getSerializedContent()
     }
 
+    getNewGroupKey() {
+        return this.newGroupKey
+    }
+
     isByeMessage() {
         return !!this.getParsedContent()[BYE_KEY]
     }
 
     getPayloadToSign() {
         if (this.signatureType === StreamMessage.SIGNATURE_TYPES.ETH) {
-            let prev = ''
-            if (this.prevMsgRef) {
-                prev = `${this.prevMsgRef.timestamp}${this.prevMsgRef.sequenceNumber}`
-            }
+            // Nullable fields
+            const prev = (this.prevMsgRef ? `${this.prevMsgRef.timestamp}${this.prevMsgRef.sequenceNumber}` : '')
+            const newGroupKey = (this.newGroupKey ? this.newGroupKey.serialize() : '')
+
             return `${this.getStreamId()}${this.getStreamPartition()}${this.getTimestamp()}${this.messageId.sequenceNumber}`
-                + `${this.getPublisherId().toLowerCase()}${this.messageId.msgChainId}${prev}${this.getSerializedContent()}`
+                + `${this.getPublisherId().toLowerCase()}${this.messageId.msgChainId}${prev}${this.getSerializedContent()}${newGroupKey}`
         }
 
         if (this.signatureType === StreamMessage.SIGNATURE_TYPES.ETH_LEGACY) {

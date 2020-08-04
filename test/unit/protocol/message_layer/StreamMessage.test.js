@@ -7,11 +7,13 @@ import ValidationError from '../../../../src/errors/ValidationError'
 import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionError'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 
-const { StreamMessage, MessageRef, MessageIDStrict } = MessageLayer
+const { StreamMessage, MessageRef, MessageIDStrict, EncryptedGroupKey } = MessageLayer
 
 const content = {
     hello: 'world',
 }
+
+const newGroupKey = new EncryptedGroupKey('groupKeyId', 'encryptedGroupKeyHex')
 
 const msg = (overrides = {}) => {
     return new StreamMessage({
@@ -22,6 +24,7 @@ const msg = (overrides = {}) => {
         encryptionType: StreamMessage.ENCRYPTION_TYPES.NONE,
         signatureType: StreamMessage.SIGNATURE_TYPES.ETH,
         signature: 'signature',
+        newGroupKey,
         ...overrides
     })
 }
@@ -43,6 +46,7 @@ describe('StreamMessage', () => {
             assert.strictEqual(streamMessage.groupKeyId, null)
             assert.deepStrictEqual(streamMessage.getContent(), content)
             assert.strictEqual(streamMessage.getSerializedContent(), JSON.stringify(content))
+            assert.deepStrictEqual(streamMessage.getNewGroupKey(), newGroupKey)
             assert.strictEqual(streamMessage.signatureType, StreamMessage.SIGNATURE_TYPES.ETH)
             assert.strictEqual(streamMessage.signature, 'signature')
         })
@@ -65,6 +69,7 @@ describe('StreamMessage', () => {
             assert.strictEqual(streamMessage.groupKeyId, null)
             assert.deepStrictEqual(streamMessage.getContent(), content)
             assert.strictEqual(streamMessage.getSerializedContent(), JSON.stringify(content))
+            assert.strictEqual(streamMessage.getNewGroupKey(), null)
             assert.strictEqual(streamMessage.signatureType, StreamMessage.SIGNATURE_TYPES.NONE)
             assert.strictEqual(streamMessage.signature, null)
         })
@@ -102,6 +107,12 @@ describe('StreamMessage', () => {
         it('Throws with an invalid content type', () => {
             assert.throws(() => msg({
                 contentType: 999, // invalid
+            }), ValidationError)
+        })
+
+        it('Throws with an invalid newGroupKey', () => {
+            assert.throws(() => msg({
+                newGroupKey: 'foo', // invalid
             }), ValidationError)
         })
     })

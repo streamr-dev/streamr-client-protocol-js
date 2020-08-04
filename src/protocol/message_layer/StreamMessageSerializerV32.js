@@ -1,6 +1,7 @@
 import StreamMessage from './StreamMessage'
 import MessageRef from './MessageRef'
 import MessageIDStrict from './MessageIDStrict'
+import EncryptedGroupKey from './EncryptedGroupKey'
 
 const VERSION = 32
 
@@ -15,6 +16,7 @@ export default class StreamMessageSerializerV32 {
             streamMessage.encryptionType,
             streamMessage.groupKeyId,
             streamMessage.serializedContent,
+            streamMessage.newGroupKey ? streamMessage.newGroupKey.serialize() : null,
             streamMessage.signatureType,
             streamMessage.signature,
         ]
@@ -30,6 +32,7 @@ export default class StreamMessageSerializerV32 {
             encryptionType,
             groupKeyId,
             serializedContent,
+            serializedNewGroupKey,
             signatureType,
             signature,
         ] = arr
@@ -42,6 +45,7 @@ export default class StreamMessageSerializerV32 {
             contentType,
             encryptionType,
             groupKeyId,
+            newGroupKey: serializedNewGroupKey ? EncryptedGroupKey.deserialize(serializedNewGroupKey) : null,
             signatureType,
             signature,
         })
