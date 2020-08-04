@@ -1,4 +1,4 @@
-import {  validateIsNotNullOrUndefined } from '../../../utils/validations'
+import { validateIsNotNullOrUndefined } from '../../../utils/validations'
 import ControlMessage from '../ControlMessage'
 
 export default class StatusMessage extends ControlMessage {

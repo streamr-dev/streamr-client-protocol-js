@@ -5,6 +5,10 @@ import './protocol/control_layer/broadcast_message/BroadcastMessageSerializerV2'
 import ErrorResponse from './protocol/control_layer/error_response/ErrorResponse'
 import './protocol/control_layer/error_response/ErrorResponseSerializerV1'
 import './protocol/control_layer/error_response/ErrorResponseSerializerV2'
+import FindStorageNodesMessage from './protocol/control_layer/find_storage_nodes_message/FindStorageNodesMessage'
+import './protocol/control_layer/find_storage_nodes_message/FindStorageNodesMessageSerializerV2'
+import InstructionMessage from './protocol/control_layer/instruction_message/InstructionMessage'
+import './protocol/control_layer/instruction_message/InstructionMessageSerializerV2'
 import PublishRequest from './protocol/control_layer/publish_request/PublishRequest'
 import './protocol/control_layer/publish_request/PublishRequestSerializerV1'
 import './protocol/control_layer/publish_request/PublishRequestSerializerV2'
@@ -24,8 +28,12 @@ import ResendResponseResending from './protocol/control_layer/resend_response/Re
 import './protocol/control_layer/resend_response/ResendResponseResendingSerializerV1'
 import './protocol/control_layer/resend_response/ResendResponseResendingSerializerV2'
 import ResendResponseResent from './protocol/control_layer/resend_response/ResendResponseResent'
+import StatusMessage from './protocol/control_layer/status_message/StatusMessage'
+import './protocol/control_layer/status_message/StatusMessageSerializerV2'
 import './protocol/control_layer/resend_response/ResendResponseResentSerializerV1'
 import './protocol/control_layer/resend_response/ResendResponseResentSerializerV2'
+import StorageNodesMessage from './protocol/control_layer/storage_nodes_message/StorageNodesMessage'
+import './protocol/control_layer/storage_nodes_message/StorageNodesMessageSerializerV2'
 import SubscribeRequest from './protocol/control_layer/subscribe_request/SubscribeRequest'
 import './protocol/control_layer/subscribe_request/SubscribeRequestSerializerV1'
 import './protocol/control_layer/subscribe_request/SubscribeRequestSerializerV2'
@@ -62,6 +70,8 @@ import MessageRefStrict from './protocol/message_layer/MessageRefStrict'
 export const ControlLayer = {
     BroadcastMessage,
     ErrorResponse,
+    FindStorageNodesMessage,
+    InstructionMessage,
     PublishRequest,
     ResendFromRequest,
     ResendLastRequest,
@@ -69,6 +79,8 @@ export const ControlLayer = {
     ResendResponseNoResend,
     ResendResponseResending,
     ResendResponseResent,
+    StatusMessage,
+    StorageNodesMessage,
     SubscribeRequest,
     SubscribeResponse,
     UnicastMessage,
