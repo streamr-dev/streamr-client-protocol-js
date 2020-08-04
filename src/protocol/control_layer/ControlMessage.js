@@ -101,4 +101,5 @@ ControlMessage.TYPES = {
     StatusMessage: 14,
     InstructionMessage: 15,
     FindStorageNodesMessage: 16,
+    StorageNodesMessage: 17
 }
