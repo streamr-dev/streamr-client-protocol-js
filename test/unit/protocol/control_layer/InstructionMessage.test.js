@@ -6,12 +6,22 @@ import ValidationError from '../../../../src/errors/ValidationError'
 
 describe('InstructionMessage', () => {
     describe('constructor', () => {
+        it('throws on null counter', () => {
+            assert.throws(() => new InstructionMessage({
+                requestId: 'requestId',
+                streamId: 'streamId',
+                streamPartition: 0,
+                nodeAddresses: [],
+                counter: null
+            }), ValidationError)
+        })
         it('throws on null nodeAddresses', () => {
             assert.throws(() => new InstructionMessage({
                 requestId: 'requestId',
                 streamId: 'streamId',
                 streamPartition: 0,
-                nodeAddresses: null
+                nodeAddresses: null,
+                counter: 1
             }), ValidationError)
         })
         it('throws on null streamPartition', () => {
@@ -19,7 +29,8 @@ describe('InstructionMessage', () => {
                 requestId: 'requestId',
                 streamId: 'streamId',
                 streamPartition: null,
-                nodeAddresses: []
+                nodeAddresses: [],
+                counter: 1
             }), ValidationError)
         })
         it('throws on null streamId', () => {
@@ -27,7 +38,8 @@ describe('InstructionMessage', () => {
                 requestId: 'requestId',
                 streamId: null,
                 streamPartition: 0,
-                nodeAddresses: []
+                nodeAddresses: [],
+                counter: 1
             }), ValidationError)
         })
         it('throws on null requestId', () => {
@@ -35,7 +47,8 @@ describe('InstructionMessage', () => {
                 requestId: null,
                 streamId: 'streamId',
                 streamPartition: 0,
-                nodeAddresses: []
+                nodeAddresses: [],
+                counter: 1
             }), ValidationError)
         })
         it('should create the latest version', () => {
@@ -43,7 +56,8 @@ describe('InstructionMessage', () => {
                 requestId: 'requestId',
                 streamId: 'streamId',
                 streamPartition: 0,
-                nodeAddresses: []
+                nodeAddresses: [],
+                counter: 1
             })
             assert(msg instanceof InstructionMessage)
             assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
@@ -51,6 +65,7 @@ describe('InstructionMessage', () => {
             assert.strictEqual(msg.streamId, 'streamId')
             assert.strictEqual(msg.streamPartition, 0)
             assert.deepStrictEqual(msg.nodeAddresses, [])
+            assert.strictEqual(msg.counter, 1)
         })
     })
 })

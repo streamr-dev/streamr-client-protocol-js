@@ -12,7 +12,8 @@ const message = new InstructionMessage({
     requestId: 'requestId',
     streamId: 'streamId',
     streamPartition: 10,
-    nodeAddresses: ['ws://address-1', 'ws://address-2']
+    nodeAddresses: ['ws://address-1', 'ws://address-2'],
+    counter: 100
 })
 const serializedMessage = JSON.stringify([
     VERSION,
@@ -20,7 +21,8 @@ const serializedMessage = JSON.stringify([
     'requestId',
     'streamId',
     10,
-    ['ws://address-1', 'ws://address-2']
+    ['ws://address-1', 'ws://address-2'],
+    100
 ])
 
 describe('InstructionMessageSerializerV2', () => {
