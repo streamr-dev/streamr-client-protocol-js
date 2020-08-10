@@ -100,6 +100,6 @@ ControlMessage.TYPES = {
     ResendRangeRequest: 13,
     StatusMessage: 14,
     InstructionMessage: 15,
-    FindStorageNodesMessage: 16,
-    StorageNodesMessage: 17
+    StorageNodesRequest: 16,
+    StorageNodesResponse: 17
 }

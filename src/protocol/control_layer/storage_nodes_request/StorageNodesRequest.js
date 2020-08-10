@@ -4,9 +4,9 @@ import {
 } from '../../../utils/validations'
 import ControlMessage from '../ControlMessage'
 
-export default class FindStorageNodesMessage extends ControlMessage {
+export default class StorageNodesRequest extends ControlMessage {
     constructor({ version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition }) {
-        super(version, ControlMessage.TYPES.FindStorageNodesMessage, requestId)
+        super(version, ControlMessage.TYPES.StorageNodesRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)
         validateIsNotNegativeInteger('streamPartition', streamPartition)

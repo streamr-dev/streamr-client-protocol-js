@@ -1,56 +1,43 @@
 import assert from 'assert'
 
-import StorageNodesMessage from '../../../../src/protocol/control_layer/storage_nodes_message/StorageNodesMessage'
+import StorageNodesRequest from '../../../../src/protocol/control_layer/storage_nodes_request/StorageNodesRequest'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import ValidationError from '../../../../src/errors/ValidationError'
 
-describe('StorageNodesMessage', () => {
+describe('StorageNodesRequest', () => {
     describe('constructor', () => {
-        it('throws on null nodeAddresses', () => {
-            assert.throws(() => new StorageNodesMessage({
-                requestId: 'requestId',
-                streamId: 'streamId',
-                streamPartition: 0,
-                nodeAddresses: null
-            }), ValidationError)
-        })
         it('throws on null streamPartition', () => {
-            assert.throws(() => new StorageNodesMessage({
+            assert.throws(() => new StorageNodesRequest({
                 requestId: 'requestId',
                 streamId: 'streamId',
-                streamPartition: null,
-                nodeAddresses: []
+                streamPartition: null
             }), ValidationError)
         })
         it('throws on null streamId', () => {
-            assert.throws(() => new StorageNodesMessage({
+            assert.throws(() => new StorageNodesRequest({
                 requestId: 'requestId',
                 streamId: null,
-                streamPartition: 0,
-                nodeAddresses: []
+                streamPartition: 0
             }), ValidationError)
         })
         it('throws on null requestId', () => {
-            assert.throws(() => new StorageNodesMessage({
+            assert.throws(() => new StorageNodesRequest({
                 requestId: null,
                 streamId: 'streamId',
-                streamPartition: 0,
-                nodeAddresses: []
+                streamPartition: 0
             }), ValidationError)
         })
         it('should create the latest version', () => {
-            const msg = new StorageNodesMessage({
+            const msg = new StorageNodesRequest({
                 requestId: 'requestId',
                 streamId: 'streamId',
-                streamPartition: 0,
-                nodeAddresses: []
+                streamPartition: 0
             })
-            assert(msg instanceof StorageNodesMessage)
+            assert(msg instanceof StorageNodesRequest)
             assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
             assert.strictEqual(msg.requestId, 'requestId')
             assert.strictEqual(msg.streamId, 'streamId')
             assert.strictEqual(msg.streamPartition, 0)
-            assert.deepStrictEqual(msg.nodeAddresses, [])
         })
     })
 })

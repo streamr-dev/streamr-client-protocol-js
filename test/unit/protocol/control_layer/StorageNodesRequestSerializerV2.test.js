@@ -2,28 +2,26 @@ import assert from 'assert'
 
 import { ControlLayer } from '../../../../src/index'
 
-const { StorageNodesMessage, ControlMessage } = ControlLayer
+const { StorageNodesRequest, ControlMessage } = ControlLayer
 
 const VERSION = 2
 
 // Message definitions
-const message = new StorageNodesMessage({
+const message = new StorageNodesRequest({
     version: VERSION,
     requestId: 'requestId',
     streamId: 'streamId',
-    streamPartition: 10,
-    nodeAddresses: ['ws://address-1', 'ws://address-2']
+    streamPartition: 10
 })
 const serializedMessage = JSON.stringify([
     VERSION,
-    ControlMessage.TYPES.StorageNodesMessage,
+    ControlMessage.TYPES.StorageNodesRequest,
     'requestId',
     'streamId',
-    10,
-    ['ws://address-1', 'ws://address-2']
+    10
 ])
 
-describe('StorageNodesMessageSerializerV2', () => {
+describe('StorageNodesRequestSerializerV2', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             assert.deepStrictEqual(ControlMessage.deserialize(serializedMessage), message)
