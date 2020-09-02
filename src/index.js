@@ -66,6 +66,7 @@ import StreamMessageValidator from './utils/StreamMessageValidator'
 import CachingStreamMessageValidator from './utils/CachingStreamMessageValidator'
 import MessageIDStrict from './protocol/message_layer/MessageIDStrict'
 import MessageRefStrict from './protocol/message_layer/MessageRefStrict'
+import TrackerMessage from './protocol/tracker_layer/TrackerMessage'
 
 export const ControlLayer = {
     BroadcastMessage,
@@ -98,6 +99,7 @@ export const TrackerLayer = {
     StatusMessage,
     StorageNodesRequest,
     StorageNodesResponse,
+    TrackerMessage
 }
 
 export const Errors = {
