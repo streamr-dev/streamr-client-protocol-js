@@ -1,8 +1,8 @@
 import assert from 'assert'
 
 import { TrackerLayer } from '../../../../src'
-import TrackerMessage from "../../../../src/protocol/tracker_layer/TrackerMessage";
-import StorageNodesRequest from "../../../../src/protocol/tracker_layer/storage_nodes_request/StorageNodesRequest";
+import TrackerMessage from '../../../../src/protocol/tracker_layer/TrackerMessage'
+import StorageNodesRequest from '../../../../src/protocol/tracker_layer/storage_nodes_request/StorageNodesRequest'
 
 const VERSION = 1
 

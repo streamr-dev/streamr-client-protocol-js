@@ -1,9 +1,8 @@
 import assert from 'assert'
 
 import InstructionMessage from '../../../../src/protocol/tracker_layer/instruction_message/InstructionMessage'
-import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import ValidationError from '../../../../src/errors/ValidationError'
-import TrackerMessage from "../../../../src/protocol/tracker_layer/TrackerMessage";
+import TrackerMessage from '../../../../src/protocol/tracker_layer/TrackerMessage'
 
 describe('InstructionMessage', () => {
     describe('constructor', () => {

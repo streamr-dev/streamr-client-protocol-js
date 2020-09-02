@@ -1,5 +1,6 @@
+import TrackerMessage from '../TrackerMessage'
+
 import InstructionMessage from './InstructionMessage'
-import TrackerMessage from "../TrackerMessage";
 
 const VERSION = 1
 

@@ -3,7 +3,7 @@ import {
     validateIsNotNegativeInteger,
     validateIsArray
 } from '../../../utils/validations'
-import TrackerMessage from "../TrackerMessage";
+import TrackerMessage from '../TrackerMessage'
 
 export default class StorageNodesResponse extends TrackerMessage {
     constructor({

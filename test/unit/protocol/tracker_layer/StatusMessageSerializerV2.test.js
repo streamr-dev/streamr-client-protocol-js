@@ -1,7 +1,7 @@
 import assert from 'assert'
 
 import { TrackerLayer } from '../../../../src'
-import TrackerMessage from "../../../../src/protocol/tracker_layer/TrackerMessage";
+import TrackerMessage from '../../../../src/protocol/tracker_layer/TrackerMessage'
 
 const { StatusMessage } = TrackerLayer
 

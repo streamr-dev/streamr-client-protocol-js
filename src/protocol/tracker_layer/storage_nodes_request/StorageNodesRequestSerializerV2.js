@@ -1,5 +1,6 @@
+import TrackerMessage from '../TrackerMessage'
+
 import StorageNodesRequest from './StorageNodesRequest'
-import TrackerMessage from "../TrackerMessage";
 
 const VERSION = 1
 

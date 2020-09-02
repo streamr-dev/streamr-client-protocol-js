@@ -2,7 +2,7 @@ import {
     validateIsNotEmptyString,
     validateIsNotNegativeInteger,
 } from '../../../utils/validations'
-import TrackerMessage from "../TrackerMessage";
+import TrackerMessage from '../TrackerMessage'
 
 export default class StorageNodesRequest extends TrackerMessage {
     constructor({ version = TrackerMessage.LATEST_VERSION, requestId, streamId, streamPartition }) {

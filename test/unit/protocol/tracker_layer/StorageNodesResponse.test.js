@@ -1,9 +1,8 @@
 import assert from 'assert'
 
 import StorageNodesResponse from '../../../../src/protocol/tracker_layer/storage_nodes_response/StorageNodesResponse'
-import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import ValidationError from '../../../../src/errors/ValidationError'
-import TrackerMessage from "../../../../src/protocol/tracker_layer/TrackerMessage";
+import TrackerMessage from '../../../../src/protocol/tracker_layer/TrackerMessage'
 
 describe('StorageNodesResponse', () => {
     describe('constructor', () => {
