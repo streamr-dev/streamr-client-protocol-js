@@ -1,10 +1,10 @@
 import assert from 'assert'
 
-import { ControlLayer } from '../../../../src/index'
+import { TrackerLayer } from '../../../../src'
+import TrackerMessage from "../../../../src/protocol/tracker_layer/TrackerMessage";
+import StorageNodesRequest from "../../../../src/protocol/tracker_layer/storage_nodes_request/StorageNodesRequest";
 
-const { StorageNodesRequest, ControlMessage } = ControlLayer
-
-const VERSION = 2
+const VERSION = 1
 
 // Message definitions
 const message = new StorageNodesRequest({
@@ -15,7 +15,7 @@ const message = new StorageNodesRequest({
 })
 const serializedMessage = JSON.stringify([
     VERSION,
-    ControlMessage.TYPES.StorageNodesRequest,
+    TrackerMessage.TYPES.StorageNodesRequest,
     'requestId',
     'streamId',
     10
@@ -24,7 +24,7 @@ const serializedMessage = JSON.stringify([
 describe('StorageNodesRequestSerializerV2', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
-            assert.deepStrictEqual(ControlMessage.deserialize(serializedMessage), message)
+            assert.deepStrictEqual(TrackerMessage.deserialize(serializedMessage), message)
         })
     })
     describe('serialize', () => {

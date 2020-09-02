@@ -2,11 +2,11 @@ import {
     validateIsNotEmptyString,
     validateIsNotNegativeInteger,
 } from '../../../utils/validations'
-import ControlMessage from '../ControlMessage'
+import TrackerMessage from "../TrackerMessage";
 
-export default class StorageNodesRequest extends ControlMessage {
-    constructor({ version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition }) {
-        super(version, ControlMessage.TYPES.StorageNodesRequest, requestId)
+export default class StorageNodesRequest extends TrackerMessage {
+    constructor({ version = TrackerMessage.LATEST_VERSION, requestId, streamId, streamPartition }) {
+        super(version, TrackerMessage.TYPES.StorageNodesRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)
         validateIsNotNegativeInteger('streamPartition', streamPartition)

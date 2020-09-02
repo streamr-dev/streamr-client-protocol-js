@@ -1,10 +1,11 @@
 import assert from 'assert'
 
-import { ControlLayer } from '../../../../src/index'
+import { TrackerLayer } from '../../../../src'
+import TrackerMessage from "../../../../src/protocol/tracker_layer/TrackerMessage";
 
-const { StatusMessage, ControlMessage } = ControlLayer
+const { StatusMessage } = TrackerLayer
 
-const VERSION = 2
+const VERSION = 1
 
 // Message definitions
 const message = new StatusMessage({
@@ -12,12 +13,12 @@ const message = new StatusMessage({
     requestId: 'requestId',
     status: {}
 })
-const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.StatusMessage, 'requestId', {}])
+const serializedMessage = JSON.stringify([VERSION, TrackerMessage.TYPES.StatusMessage, 'requestId', {}])
 
 describe('StatusMessageSerializerV2', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
-            assert.deepStrictEqual(ControlMessage.deserialize(serializedMessage), message)
+            assert.deepStrictEqual(TrackerMessage.deserialize(serializedMessage), message)
         })
     })
     describe('serialize', () => {

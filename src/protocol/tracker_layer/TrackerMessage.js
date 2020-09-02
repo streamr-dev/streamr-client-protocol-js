@@ -3,20 +3,20 @@ import UnsupportedTypeError from '../../errors/UnsupportedTypeError'
 import { validateIsInteger, validateIsString } from '../../utils/validations'
 
 const serializerByVersionAndType = {}
-const LATEST_VERSION = 2
+const LATEST_VERSION = 1
 
-export default class ControlMessage {
+export default class TrackerMessage {
     constructor(version = LATEST_VERSION, type, requestId) {
-        if (new.target === ControlMessage) {
-            throw new TypeError('ControlMessage is abstract.')
+        if (new.target === TrackerMessage) {
+            throw new TypeError('TrackerMessage is abstract.')
         }
-        validateIsInteger('version', version)
-        this.version = version
-        validateIsInteger('type', type)
-        this.type = type
 
-        // Since V2 - allow null in older versions
-        validateIsString('requestId', requestId, version < 2)
+        validateIsInteger('version', version)
+        validateIsInteger('type', type)
+        validateIsString('requestId', requestId)
+
+        this.version = version
+        this.type = type
         this.requestId = requestId
     }
 
@@ -47,7 +47,7 @@ export default class ControlMessage {
     static getSerializer(version, type) {
         const serializersByType = serializerByVersionAndType[version]
         if (!serializersByType) {
-            throw new UnsupportedVersionError(version, `Supported versions: [${ControlMessage.getSupportedVersions()}]`)
+            throw new UnsupportedVersionError(version, `Supported versions: [${TrackerMessage.getSupportedVersions()}]`)
         }
         const clazz = serializersByType[type]
         if (!clazz) {
@@ -61,7 +61,7 @@ export default class ControlMessage {
     }
 
     serialize(version = this.version, ...typeSpecificSerializeArgs) {
-        return JSON.stringify(ControlMessage.getSerializer(version, this.type).toArray(this, ...typeSpecificSerializeArgs))
+        return JSON.stringify(TrackerMessage.getSerializer(version, this.type).toArray(this, ...typeSpecificSerializeArgs))
     }
 
     /**
@@ -75,27 +75,17 @@ export default class ControlMessage {
         const messageType = messageArray[1]
         /* eslint-enable prefer-destructuring */
 
-        const C = ControlMessage.getSerializer(messageVersion, messageType)
+        const C = TrackerMessage.getSerializer(messageVersion, messageType)
         return C.fromArray(messageArray, ...typeSpecificDeserializeArgs)
     }
 }
 
 /* static */
-ControlMessage.LATEST_VERSION = LATEST_VERSION
+TrackerMessage.LATEST_VERSION = LATEST_VERSION
 
-ControlMessage.TYPES = {
-    BroadcastMessage: 0,
-    UnicastMessage: 1,
-    SubscribeResponse: 2,
-    UnsubscribeResponse: 3,
-    ResendResponseResending: 4,
-    ResendResponseResent: 5,
-    ResendResponseNoResend: 6,
-    ErrorResponse: 7,
-    PublishRequest: 8,
-    SubscribeRequest: 9,
-    UnsubscribeRequest: 10,
-    ResendLastRequest: 11,
-    ResendFromRequest: 12,
-    ResendRangeRequest: 13,
+TrackerMessage.TYPES = {
+    StatusMessage: 1,
+    InstructionMessage: 2,
+    StorageNodesRequest: 3,
+    StorageNodesResponse: 4
 }

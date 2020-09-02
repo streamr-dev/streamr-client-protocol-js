@@ -1,14 +1,13 @@
-import ControlMessage from '../ControlMessage'
-
 import StatusMessage from './StatusMessage'
+import TrackerMessage from "../TrackerMessage";
 
-const VERSION = 2
+const VERSION = 1
 
 export default class StatusMessageSerializerV2 {
     static toArray(statusMessage) {
         return [
             VERSION,
-            ControlMessage.TYPES.StatusMessage,
+            TrackerMessage.TYPES.StatusMessage,
             statusMessage.requestId,
             statusMessage.status
         ]
@@ -28,4 +27,4 @@ export default class StatusMessageSerializerV2 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.StatusMessage, StatusMessageSerializerV2)
+TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.StatusMessage, StatusMessageSerializerV2)

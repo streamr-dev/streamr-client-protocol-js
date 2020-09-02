@@ -1,14 +1,13 @@
-import ControlMessage from '../ControlMessage'
-
 import StorageNodesRequest from './StorageNodesRequest'
+import TrackerMessage from "../TrackerMessage";
 
-const VERSION = 2
+const VERSION = 1
 
 export default class StorageNodesRequestSerializerV2 {
     static toArray(storageNodesRequest) {
         return [
             VERSION,
-            ControlMessage.TYPES.StorageNodesRequest,
+            TrackerMessage.TYPES.StorageNodesRequest,
             storageNodesRequest.requestId,
             storageNodesRequest.streamId,
             storageNodesRequest.streamPartition,
@@ -30,4 +29,4 @@ export default class StorageNodesRequestSerializerV2 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.StorageNodesRequest, StorageNodesRequestSerializerV2)
+TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.StorageNodesRequest, StorageNodesRequestSerializerV2)

@@ -1,14 +1,13 @@
-import ControlMessage from '../ControlMessage'
-
 import InstructionMessage from './InstructionMessage'
+import TrackerMessage from "../TrackerMessage";
 
-const VERSION = 2
+const VERSION = 1
 
 export default class InstructionMessageSerializerV2 {
     static toArray(instructionMessage) {
         return [
             VERSION,
-            ControlMessage.TYPES.InstructionMessage,
+            TrackerMessage.TYPES.InstructionMessage,
             instructionMessage.requestId,
             instructionMessage.streamId,
             instructionMessage.streamPartition,
@@ -34,4 +33,4 @@ export default class InstructionMessageSerializerV2 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.InstructionMessage, InstructionMessageSerializerV2)
+TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.InstructionMessage, InstructionMessageSerializerV2)

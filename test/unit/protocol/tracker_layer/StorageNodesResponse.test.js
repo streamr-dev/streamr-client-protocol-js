@@ -1,8 +1,9 @@
 import assert from 'assert'
 
-import StorageNodesResponse from '../../../../src/protocol/control_layer/storage_nodes_response/StorageNodesResponse'
+import StorageNodesResponse from '../../../../src/protocol/tracker_layer/storage_nodes_response/StorageNodesResponse'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import ValidationError from '../../../../src/errors/ValidationError'
+import TrackerMessage from "../../../../src/protocol/tracker_layer/TrackerMessage";
 
 describe('StorageNodesResponse', () => {
     describe('constructor', () => {
@@ -46,7 +47,7 @@ describe('StorageNodesResponse', () => {
                 nodeAddresses: []
             })
             assert(msg instanceof StorageNodesResponse)
-            assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
+            assert.strictEqual(msg.version, TrackerMessage.LATEST_VERSION)
             assert.strictEqual(msg.requestId, 'requestId')
             assert.strictEqual(msg.streamId, 'streamId')
             assert.strictEqual(msg.streamPartition, 0)

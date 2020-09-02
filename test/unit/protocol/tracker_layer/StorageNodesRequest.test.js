@@ -1,8 +1,9 @@
 import assert from 'assert'
 
-import StorageNodesRequest from '../../../../src/protocol/control_layer/storage_nodes_request/StorageNodesRequest'
+import StorageNodesRequest from '../../../../src/protocol/tracker_layer/storage_nodes_request/StorageNodesRequest'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import ValidationError from '../../../../src/errors/ValidationError'
+import TrackerMessage from "../../../../src/protocol/tracker_layer/TrackerMessage";
 
 describe('StorageNodesRequest', () => {
     describe('constructor', () => {
@@ -34,7 +35,7 @@ describe('StorageNodesRequest', () => {
                 streamPartition: 0
             })
             assert(msg instanceof StorageNodesRequest)
-            assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
+            assert.strictEqual(msg.version, TrackerMessage.LATEST_VERSION)
             assert.strictEqual(msg.requestId, 'requestId')
             assert.strictEqual(msg.streamId, 'streamId')
             assert.strictEqual(msg.streamPartition, 0)

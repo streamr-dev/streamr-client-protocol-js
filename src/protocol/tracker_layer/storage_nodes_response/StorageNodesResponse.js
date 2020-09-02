@@ -3,22 +3,20 @@ import {
     validateIsNotNegativeInteger,
     validateIsArray
 } from '../../../utils/validations'
-import ControlMessage from '../ControlMessage'
+import TrackerMessage from "../TrackerMessage";
 
-export default class InstructionMessage extends ControlMessage {
+export default class StorageNodesResponse extends TrackerMessage {
     constructor({
-        version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, nodeAddresses, counter
+        version = TrackerMessage.LATEST_VERSION, requestId, streamId, streamPartition, nodeAddresses
     }) {
-        super(version, ControlMessage.TYPES.InstructionMessage, requestId)
+        super(version, TrackerMessage.TYPES.StorageNodesResponse, requestId)
 
         validateIsNotEmptyString('streamId', streamId)
         validateIsNotNegativeInteger('streamPartition', streamPartition)
         validateIsArray('nodeAddresses', nodeAddresses)
-        validateIsNotNegativeInteger('counter', counter)
 
         this.streamId = streamId
         this.streamPartition = streamPartition
         this.nodeAddresses = nodeAddresses
-        this.counter = counter
     }
 }

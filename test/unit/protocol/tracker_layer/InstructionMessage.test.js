@@ -1,8 +1,9 @@
 import assert from 'assert'
 
-import InstructionMessage from '../../../../src/protocol/control_layer/instruction_message/InstructionMessage'
+import InstructionMessage from '../../../../src/protocol/tracker_layer/instruction_message/InstructionMessage'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import ValidationError from '../../../../src/errors/ValidationError'
+import TrackerMessage from "../../../../src/protocol/tracker_layer/TrackerMessage";
 
 describe('InstructionMessage', () => {
     describe('constructor', () => {
@@ -60,7 +61,7 @@ describe('InstructionMessage', () => {
                 counter: 1
             })
             assert(msg instanceof InstructionMessage)
-            assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
+            assert.strictEqual(msg.version, TrackerMessage.LATEST_VERSION)
             assert.strictEqual(msg.requestId, 'requestId')
             assert.strictEqual(msg.streamId, 'streamId')
             assert.strictEqual(msg.streamPartition, 0)

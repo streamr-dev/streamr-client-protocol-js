@@ -1,32 +1,35 @@
 import assert from 'assert'
 
-import { ControlLayer } from '../../../../src/index'
+import { TrackerLayer } from '../../../../src'
+import TrackerMessage from "../../../../src/protocol/tracker_layer/TrackerMessage";
 
-const { StorageNodesResponse, ControlMessage } = ControlLayer
+const { InstructionMessage } = TrackerLayer
 
-const VERSION = 2
+const VERSION = 1
 
 // Message definitions
-const message = new StorageNodesResponse({
+const message = new InstructionMessage({
     version: VERSION,
     requestId: 'requestId',
     streamId: 'streamId',
     streamPartition: 10,
-    nodeAddresses: ['ws://address-1', 'ws://address-2']
+    nodeAddresses: ['ws://address-1', 'ws://address-2'],
+    counter: 100
 })
 const serializedMessage = JSON.stringify([
     VERSION,
-    ControlMessage.TYPES.StorageNodesResponse,
+    TrackerMessage.TYPES.InstructionMessage,
     'requestId',
     'streamId',
     10,
-    ['ws://address-1', 'ws://address-2']
+    ['ws://address-1', 'ws://address-2'],
+    100
 ])
 
-describe('StorageNodesResponseSerializerV2', () => {
+describe('InstructionMessageSerializerV2', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
-            assert.deepStrictEqual(ControlMessage.deserialize(serializedMessage), message)
+            assert.deepStrictEqual(TrackerMessage.deserialize(serializedMessage), message)
         })
     })
     describe('serialize', () => {

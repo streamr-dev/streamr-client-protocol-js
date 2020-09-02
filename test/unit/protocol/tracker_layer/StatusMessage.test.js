@@ -1,8 +1,9 @@
 import assert from 'assert'
 
-import StatusMessage from '../../../../src/protocol/control_layer/status_message/StatusMessage'
+import StatusMessage from '../../../../src/protocol/tracker_layer/status_message/StatusMessage'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import ValidationError from '../../../../src/errors/ValidationError'
+import TrackerMessage from "../../../../src/protocol/tracker_layer/TrackerMessage";
 
 describe('StatusMessage', () => {
     describe('constructor', () => {
@@ -30,7 +31,7 @@ describe('StatusMessage', () => {
                 status: {}
             })
             assert(msg instanceof StatusMessage)
-            assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
+            assert.strictEqual(msg.version, TrackerMessage.LATEST_VERSION)
             assert.strictEqual(msg.requestId, 'requestId')
             assert.deepStrictEqual(msg.status, {})
         })

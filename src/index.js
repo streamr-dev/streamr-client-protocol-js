@@ -5,8 +5,8 @@ import './protocol/control_layer/broadcast_message/BroadcastMessageSerializerV2'
 import ErrorResponse from './protocol/control_layer/error_response/ErrorResponse'
 import './protocol/control_layer/error_response/ErrorResponseSerializerV1'
 import './protocol/control_layer/error_response/ErrorResponseSerializerV2'
-import InstructionMessage from './protocol/control_layer/instruction_message/InstructionMessage'
-import './protocol/control_layer/instruction_message/InstructionMessageSerializerV2'
+import InstructionMessage from './protocol/tracker_layer/instruction_message/InstructionMessage'
+import './protocol/tracker_layer/instruction_message/InstructionMessageSerializerV2'
 import PublishRequest from './protocol/control_layer/publish_request/PublishRequest'
 import './protocol/control_layer/publish_request/PublishRequestSerializerV1'
 import './protocol/control_layer/publish_request/PublishRequestSerializerV2'
@@ -26,14 +26,14 @@ import ResendResponseResending from './protocol/control_layer/resend_response/Re
 import './protocol/control_layer/resend_response/ResendResponseResendingSerializerV1'
 import './protocol/control_layer/resend_response/ResendResponseResendingSerializerV2'
 import ResendResponseResent from './protocol/control_layer/resend_response/ResendResponseResent'
-import StatusMessage from './protocol/control_layer/status_message/StatusMessage'
-import './protocol/control_layer/status_message/StatusMessageSerializerV2'
+import StatusMessage from './protocol/tracker_layer/status_message/StatusMessage'
+import './protocol/tracker_layer/status_message/StatusMessageSerializerV2'
 import './protocol/control_layer/resend_response/ResendResponseResentSerializerV1'
 import './protocol/control_layer/resend_response/ResendResponseResentSerializerV2'
-import StorageNodesRequest from './protocol/control_layer/storage_nodes_request/StorageNodesRequest'
-import './protocol/control_layer/storage_nodes_request/StorageNodesRequestSerializerV2'
-import StorageNodesResponse from './protocol/control_layer/storage_nodes_response/StorageNodesResponse'
-import './protocol/control_layer/storage_nodes_response/StorageNodesResponseSerializerV2'
+import StorageNodesRequest from './protocol/tracker_layer/storage_nodes_request/StorageNodesRequest'
+import './protocol/tracker_layer/storage_nodes_request/StorageNodesRequestSerializerV2'
+import StorageNodesResponse from './protocol/tracker_layer/storage_nodes_response/StorageNodesResponse'
+import './protocol/tracker_layer/storage_nodes_response/StorageNodesResponseSerializerV2'
 import SubscribeRequest from './protocol/control_layer/subscribe_request/SubscribeRequest'
 import './protocol/control_layer/subscribe_request/SubscribeRequestSerializerV1'
 import './protocol/control_layer/subscribe_request/SubscribeRequestSerializerV2'
@@ -70,7 +70,6 @@ import MessageRefStrict from './protocol/message_layer/MessageRefStrict'
 export const ControlLayer = {
     BroadcastMessage,
     ErrorResponse,
-    InstructionMessage,
     PublishRequest,
     ResendFromRequest,
     ResendLastRequest,
@@ -78,9 +77,6 @@ export const ControlLayer = {
     ResendResponseNoResend,
     ResendResponseResending,
     ResendResponseResent,
-    StatusMessage,
-    StorageNodesRequest,
-    StorageNodesResponse,
     SubscribeRequest,
     SubscribeResponse,
     UnicastMessage,
@@ -95,6 +91,13 @@ export const MessageLayer = {
     MessageRef,
     MessageRefStrict,
     StreamMessage
+}
+
+export const TrackerLayer = {
+    InstructionMessage,
+    StatusMessage,
+    StorageNodesRequest,
+    StorageNodesResponse,
 }
 
 export const Errors = {
