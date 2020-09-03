@@ -4,7 +4,7 @@ import StorageNodesRequest from './StorageNodesRequest'
 
 const VERSION = 1
 
-export default class StorageNodesRequestSerializerV2 {
+export default class StorageNodesRequestSerializerV1 {
     static toArray(storageNodesRequest) {
         return [
             VERSION,
@@ -30,4 +30,4 @@ export default class StorageNodesRequestSerializerV2 {
     }
 }
 
-TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.StorageNodesRequest, StorageNodesRequestSerializerV2)
+TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.StorageNodesRequest, StorageNodesRequestSerializerV1)

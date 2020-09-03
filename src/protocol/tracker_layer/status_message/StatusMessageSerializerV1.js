@@ -4,7 +4,7 @@ import StatusMessage from './StatusMessage'
 
 const VERSION = 1
 
-export default class StatusMessageSerializerV2 {
+export default class StatusMessageSerializerV1 {
     static toArray(statusMessage) {
         return [
             VERSION,
@@ -28,4 +28,4 @@ export default class StatusMessageSerializerV2 {
     }
 }
 
-TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.StatusMessage, StatusMessageSerializerV2)
+TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.StatusMessage, StatusMessageSerializerV1)

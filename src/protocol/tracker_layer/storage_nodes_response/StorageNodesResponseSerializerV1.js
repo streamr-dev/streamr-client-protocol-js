@@ -4,7 +4,7 @@ import StorageNodesResponse from './StorageNodesResponse'
 
 const VERSION = 1
 
-export default class StorageNodesResponseSerializerV2 {
+export default class StorageNodesResponseSerializerV1 {
     static toArray(storageNodesResponse) {
         return [
             VERSION,
@@ -32,4 +32,4 @@ export default class StorageNodesResponseSerializerV2 {
     }
 }
 
-TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.StorageNodesResponse, StorageNodesResponseSerializerV2)
+TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.StorageNodesResponse, StorageNodesResponseSerializerV1)

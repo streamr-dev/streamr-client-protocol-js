@@ -4,7 +4,7 @@ import InstructionMessage from './InstructionMessage'
 
 const VERSION = 1
 
-export default class InstructionMessageSerializerV2 {
+export default class InstructionMessageSerializerV1 {
     static toArray(instructionMessage) {
         return [
             VERSION,
@@ -34,4 +34,4 @@ export default class InstructionMessageSerializerV2 {
     }
 }
 
-TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.InstructionMessage, InstructionMessageSerializerV2)
+TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.InstructionMessage, InstructionMessageSerializerV1)

@@ -24,7 +24,7 @@ const serializedMessage = JSON.stringify([
     ['ws://address-1', 'ws://address-2']
 ])
 
-describe('StorageNodesResponseSerializerV2', () => {
+describe('StorageNodesResponseSerializerV1', () => {
     describe('deserialize', () => {
         it('correctly parses messages', () => {
             assert.deepStrictEqual(TrackerMessage.deserialize(serializedMessage), message)
