@@ -68,11 +68,3 @@ export function validateIsType(varName, varValue, typeName, typeClass, allowNull
     }
 }
 
-export function validateIsArray(varName, varValue, allowNull = false) {
-    if (allowNull && varValue == null) {
-        return
-    }
-    if (!Array.isArray(varValue)) {
-        throw new ValidationError(`Expected ${varName} to be an array but was a ${typeof varValue} (${varValue}).`)
-    }
-}

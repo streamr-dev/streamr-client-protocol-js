@@ -5,7 +5,6 @@ import sinon from 'sinon'
 import { MessageLayer } from '../../../../src/index'
 import ValidationError from '../../../../src/errors/ValidationError'
 import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionError'
-import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 
 const { StreamMessage, MessageRef, MessageIDStrict, EncryptedGroupKey } = MessageLayer
 
