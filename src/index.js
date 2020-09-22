@@ -66,6 +66,7 @@ import SigningUtil from './utils/SigningUtil'
 import StreamMessageValidator from './utils/StreamMessageValidator'
 import CachingStreamMessageValidator from './utils/CachingStreamMessageValidator'
 import fetchTrackers from './utils/fetchTrackers'
+import TrackersRing from './utils/TrackersRing'
 import MessageIDStrict from './protocol/message_layer/MessageIDStrict'
 import MessageRefStrict from './protocol/message_layer/MessageRefStrict'
 import GroupKeyMessage from './protocol/message_layer/GroupKeyMessage'
@@ -129,7 +130,8 @@ export const Utils = {
     StreamMessageValidator,
     CachingStreamMessageValidator,
     SigningUtil,
-    fetchTrackers
+    fetchTrackers,
+    TrackersRing
 }
 
 export default {
