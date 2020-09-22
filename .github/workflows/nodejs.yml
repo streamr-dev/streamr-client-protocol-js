@@ -86,7 +86,7 @@ jobs:
         run: npm run test-integration
 
   publish:
-    needs: [elint, test, integration]
+    needs: [eslint, test, integration]
     name: Publishing master using Node 12
     runs-on: ubuntu-latest
 
