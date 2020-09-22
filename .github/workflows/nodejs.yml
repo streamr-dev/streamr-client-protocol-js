@@ -53,7 +53,7 @@ jobs:
         run: npm run build
 
       - name: benchmarks
-        run: npm run benchmarks
+        run: npm run benchmark
 
   integration:
     name: Test Integration using Node ${{ matrix.node-version }}
