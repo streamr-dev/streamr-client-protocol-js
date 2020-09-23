@@ -253,12 +253,12 @@ export default class StreamMessage {
 
         // cannot have same timestamp + sequence
         if (comparison === 0) {
-            throw new ValidationError(`prevMessageRef cannot be identical to current. Current: ${messageId.toArray()} Previous: ${prevMsgRef.toArray()}`)
+            throw new ValidationError(`prevMessageRef cannot be identical to current. Current: ${messageId.toMessageRef().toArray()} Previous: ${prevMsgRef.toArray()}`)
         }
 
         // previous cannot be newer
         if (comparison < 0) {
-            throw new ValidationError(`prevMessageRef must come before current. Current: ${messageId.toArray()} Previous: ${prevMsgRef.toArray()}`)
+            throw new ValidationError(`prevMessageRef must come before current. Current: ${messageId.toMessageRef().toArray()} Previous: ${prevMsgRef.toArray()}`)
         }
     }
 
