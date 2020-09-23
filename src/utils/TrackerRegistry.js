@@ -1,16 +1,17 @@
 import HashRing from 'hashring'
 import { Contract, providers } from 'ethers'
 
+import * as trackerRegistryConfig from '../../contracts/TrackerRegistry.json'
+
 const { JsonRpcProvider } = providers
 
 class TrackerRegistry extends HashRing {
     constructor({
-        contractAddress, trackerRegistryConfig, jsonRpcProvider, servers, algorithm, hashRingOptions
+        contractAddress, jsonRpcProvider, servers, algorithm, hashRingOptions
     }) {
         super(servers, algorithm, hashRingOptions)
 
         this.contractAddress = contractAddress
-        this.trackerRegistryConfig = trackerRegistryConfig
         this.jsonRpcProvider = jsonRpcProvider
     }
 
@@ -19,7 +20,7 @@ class TrackerRegistry extends HashRing {
         // check that provider is connected and has some valid blockNumber
         await provider.getBlockNumber()
 
-        const contract = new Contract(this.contractAddress, this.trackerRegistryConfig.abi, provider)
+        const contract = new Contract(this.contractAddress, trackerRegistryConfig.abi, provider)
         // check that contract is connected
         await contract.addressPromise
 
@@ -44,10 +45,10 @@ class TrackerRegistry extends HashRing {
 
 // algorithm is from https://nodejs.org/api/crypto.html or by `openssl list -digest-algorithms`
 const getTrackerRegistry = async ({
-    contractAddress, trackerRegistryConfig, jsonRpcProvider, servers, algorithm = 'sha256', hashRingOptions
+    contractAddress, jsonRpcProvider, servers, algorithm = 'sha256', hashRingOptions
 }) => {
     const trackerRegistry = new TrackerRegistry({
-        contractAddress, trackerRegistryConfig, jsonRpcProvider, servers, algorithm, hashRingOptions
+        contractAddress, jsonRpcProvider, servers, algorithm, hashRingOptions
     })
     await trackerRegistry.fetchTrackers()
     return trackerRegistry

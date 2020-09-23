@@ -1,4 +1,3 @@
-import * as trackerRegistryConfig from '../../contracts/TrackerRegistryDev.json'
 import { getTrackerRegistry } from '../../src/utils/TrackerRegistry'
 
 const contractAddress = '0xBFCF120a8fD17670536f1B27D9737B775b2FD4CF'
@@ -7,7 +6,7 @@ const jsonRpcProvider = 'http://localhost:8545'
 describe('TrackerRegistry', () => {
     test('get array of trackers', async () => {
         const trackerRegistry = await getTrackerRegistry({
-            contractAddress, trackerRegistryConfig, jsonRpcProvider
+            contractAddress, jsonRpcProvider
         })
 
         expect(trackerRegistry.getAllTrackers()).toStrictEqual([
@@ -20,7 +19,7 @@ describe('TrackerRegistry', () => {
     test('throw exception if address is wrong (ENS)', async (done) => {
         try {
             await getTrackerRegistry({
-                contractAddress: 'address', trackerRegistryConfig, jsonRpcProvider
+                contractAddress: 'address', jsonRpcProvider
             })
         } catch (e) {
             expect(e.toString()).toContain('Error: network does not support ENS')
@@ -31,7 +30,7 @@ describe('TrackerRegistry', () => {
     test('throw exception if address is wrong', async (done) => {
         try {
             await getTrackerRegistry({
-                contractAddress: '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF', trackerRegistryConfig, jsonRpcProvider
+                contractAddress: '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF', jsonRpcProvider
             })
         } catch (e) {
             expect(e.toString()).toContain('Error: call revert exception')
@@ -42,7 +41,7 @@ describe('TrackerRegistry', () => {
     test('throw exception if jsonRpcProvider is wrong', async (done) => {
         try {
             await getTrackerRegistry({
-                contractAddress, trackerRegistryConfig, jsonRpcProvider: 'jsonRpcProvider'
+                contractAddress, jsonRpcProvider: 'jsonRpcProvider'
             })
         } catch (e) {
             expect(e.toString()).toContain('Error: could not detect network')
@@ -52,7 +51,7 @@ describe('TrackerRegistry', () => {
 
     test('has method', async () => {
         const trackerRegistry = await getTrackerRegistry({
-            contractAddress, trackerRegistryConfig, jsonRpcProvider
+            contractAddress, jsonRpcProvider
         })
 
         expect(trackerRegistry.has('ws://10.200.10.1:30301')).toBeTruthy()
@@ -62,7 +61,7 @@ describe('TrackerRegistry', () => {
 
     test('add/remove servers', async () => {
         const trackerRegistry = await getTrackerRegistry({
-            contractAddress, trackerRegistryConfig, jsonRpcProvider
+            contractAddress, jsonRpcProvider
         })
 
         trackerRegistry.remove('ws://10.200.10.1:30301')
@@ -83,7 +82,7 @@ describe('TrackerRegistry', () => {
 
     it('get tracker by stream key', async () => {
         const trackerRegistry = await getTrackerRegistry({
-            contractAddress, trackerRegistryConfig, jsonRpcProvider
+            contractAddress, jsonRpcProvider
         })
 
         expect(trackerRegistry.get('stream-1::0')).toEqual('ws://10.200.10.1:30302')
