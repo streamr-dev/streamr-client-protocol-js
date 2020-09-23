@@ -114,6 +114,34 @@ describe('StreamMessage', () => {
                 newGroupKey: 'foo', // invalid
             }), ValidationError)
         })
+
+        describe('prevMsgRef validation', () => {
+            it('Throws with an invalid ts', () => {
+                const ts = Date.now()
+                assert.throws(() => msg({
+                    timestamp: ts,
+                    prevMsgRef: new MessageRef(ts - 1, 0)
+                }), ValidationError)
+            })
+
+            it('Throws with an invalid sequence', () => {
+                const ts = Date.now()
+                assert.throws(() => msg({
+                    timestamp: ts,
+                    sequenceNumber: 1,
+                    prevMsgRef: new MessageRef(ts, 0)
+                }), ValidationError)
+            })
+
+            it('Throws with an invalid ts + seq', () => {
+                const ts = Date.now()
+                assert.throws(() => msg({
+                    timestamp: ts,
+                    sequenceNumber: 1,
+                    prevMsgRef: new MessageRef(ts - 1, 0)
+                }), ValidationError)
+            })
+        })
     })
 
     describe('serialization', () => {

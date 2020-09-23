@@ -59,6 +59,8 @@ export default class StreamMessage {
             this.serializedContent = content
         }
         validateIsNotEmptyString('content', this.serializedContent)
+
+        StreamMessage.validateSequence(this)
     }
 
     getStreamId() {
@@ -240,6 +242,21 @@ export default class StreamMessage {
 
     static versionSupportsEncryption(streamMessageVersion) {
         return streamMessageVersion >= 31
+    }
+
+    static validateSequence({ messageId, prevMsgRef }) {
+        if (!prevMsgRef) {
+            return
+        }
+        const comparison = messageId.toMessageRef().compareTo(prevMsgRef)
+        if (comparison === 0) {
+            // cannot have same timestamp + sequence
+            throw new ValidationError(`prevMessageRef cannot be identical to current. Current: ${messageId.toArray()} Previous: ${prevMsgRef.toArray()}`)
+        }
+        if (comparison < 0) {
+            // previous cannot be newer
+            throw new ValidationError(`prevMessageRef must come before current. Current: ${messageId.toArray()} Previous: ${prevMsgRef.toArray()}`)
+        }
     }
 
     toObject() {
