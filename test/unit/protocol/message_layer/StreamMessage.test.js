@@ -141,6 +141,33 @@ describe('StreamMessage', () => {
                     prevMsgRef: new MessageRef(ts - 1, 0)
                 }), ValidationError)
             })
+
+            it('works with valid seq', () => {
+                const ts = Date.now()
+                msg({
+                    timestamp: ts,
+                    sequenceNumber: 0,
+                    prevMsgRef: new MessageRef(ts, 1)
+                })
+            })
+
+            it('works with valid ts', () => {
+                const ts = Date.now()
+                msg({
+                    timestamp: ts,
+                    sequenceNumber: 0,
+                    prevMsgRef: new MessageRef(ts + 1, 0)
+                })
+            })
+
+            it('works with no prevMsgRef', () => {
+                const ts = Date.now()
+                msg({
+                    timestamp: ts,
+                    sequenceNumber: 0,
+                    prevMsgRef: null
+                })
+            })
         })
     })
 
