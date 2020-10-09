@@ -63,17 +63,18 @@ describe('TrackerRegistry', () => {
             contractAddress, jsonRpcProvider
         })
 
+        // 1->1, 2->2, 3->3 coincidence
         expect(trackerRegistry.getTracker('stream-1::0')).toEqual({
+            http: 'http://10.200.10.1:11111',
+            ws: 'ws://10.200.10.1:30301'
+        })
+        expect(trackerRegistry.getTracker('stream-2::0')).toEqual({
             http: 'http://10.200.10.1:11112',
             ws: 'ws://10.200.10.1:30302'
         })
         expect(trackerRegistry.getTracker('stream-3::0')).toEqual({
             http: 'http://10.200.10.1:11113',
             ws: 'ws://10.200.10.1:30303'
-        })
-        expect(trackerRegistry.getTracker('stream-6::0')).toEqual({
-            http: 'http://10.200.10.1:11111',
-            ws: 'ws://10.200.10.1:30301'
         })
     })
 
