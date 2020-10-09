@@ -1,4 +1,4 @@
-import { createTrackerRegistry, getTrackerRegistryFromContract, fetchTrackers } from '../../src/utils/TrackerRegistry'
+import { createTrackerRegistry, getTrackerRegistryFromContract } from '../../src/utils/TrackerRegistry'
 
 const contractAddress = '0xBFCF120a8fD17670536f1B27D9737B775b2FD4CF'
 const jsonRpcProvider = 'http://localhost:8545'
