@@ -5,17 +5,28 @@ import * as trackerRegistryConfig from '../../contracts/TrackerRegistry.json'
 
 const { JsonRpcProvider } = providers
 
-class TrackerRegistry extends HashRing {
+class TrackerRegistry {
+    constructor(servers) {
+        for (let i = 0; i < servers.length; ++i) {
+            try {
+                JSON.parse(servers[i])
+            } catch (e) {
+                throw new Error(`Element servers[${i}] not parsable as object: ${servers[i]}`)
+            }
+        }
+        this.ring = new HashRing(servers, 'sha256')
+    }
+
     getTracker(streamKey) {
-        return this.get(streamKey)
+        return JSON.parse(this.ring.get(streamKey))
     }
 
     getAllTrackers() {
-        return Object.keys(this.vnodes)
+        return Object.keys(this.ring.vnodes).map((record) => JSON.parse(record))
     }
 }
 
-const fetchTrackers = async (contractAddress, jsonRpcProvider) => {
+async function fetchTrackers(contractAddress, jsonRpcProvider) {
     const provider = new JsonRpcProvider(jsonRpcProvider)
     // check that provider is connected and has some valid blockNumber
     await provider.getBlockNumber()
@@ -25,24 +36,23 @@ const fetchTrackers = async (contractAddress, jsonRpcProvider) => {
     await contract.addressPromise
 
     if (typeof contract.getNodes !== 'function') {
-        throw Error('getNodes is not defined in contract')
+        throw Error(`getNodes function is not defined in smart contract (${contractAddress})`)
     }
 
     const result = await contract.getNodes()
     return result.map((tracker) => tracker.url)
 }
 
-// algorithm is from https://nodejs.org/api/crypto.html or by `openssl list -digest-algorithms`
-const getTrackerRegistryFromContract = async ({ contractAddress, jsonRpcProvider, algorithm = 'sha256', hashRingOptions }) => {
-    const trackers = await fetchTrackers(contractAddress, jsonRpcProvider)
-    return new TrackerRegistry(trackers, algorithm, hashRingOptions)
+function createTrackerRegistry(servers) {
+    return new TrackerRegistry(servers)
 }
 
-const createTrackerRegistry = (servers, algorithm = 'sha256', hashRingOptions) => new TrackerRegistry(servers, algorithm, hashRingOptions)
+async function getTrackerRegistryFromContract({ contractAddress, jsonRpcProvider }) {
+    const trackers = await fetchTrackers(contractAddress, jsonRpcProvider)
+    return createTrackerRegistry(trackers)
+}
 
 export {
-    TrackerRegistry,
-    getTrackerRegistryFromContract,
     createTrackerRegistry,
-    fetchTrackers
+    getTrackerRegistryFromContract,
 }
