@@ -206,14 +206,23 @@ describe('OrderedMsgChain', () => {
             }
         })
 
+        const skipped = []
+        const onSkip = jest.fn((msg) => {
+            skipped.push(msg)
+        })
+
         util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
             msgs.push(msg)
             if (msgs[msgs.length - 1].getMessageRef().timestamp === 5) {
                 assert.deepStrictEqual(msgs, [msg1, msg3, msg5]) // msg 2 & 3 will be missing
                 expect(gapHandler).toHaveBeenCalledTimes(1)
+                expect(onSkip).toHaveBeenCalledTimes(2)
+                expect(skipped).toEqual([msg2, msg4])
                 done()
             }
         }, gapHandler, 100, 100)
+
+        util.on('skip', onSkip)
 
         util.on('error', done)
 

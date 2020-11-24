@@ -107,6 +107,7 @@ export default class OrderedMsgChain extends EventEmitter {
 
         if (this.markedExplicitly.has(msg)) {
             this.markedExplicitly.delete(msg)
+            this.emit('skip', msg)
         } else {
             this.inOrderHandler(msg)
         }
