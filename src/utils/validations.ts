@@ -1,6 +1,6 @@
 import ValidationError from '../errors/ValidationError'
 
-export function validateIsNotNullOrUndefined(varName, varValue) {
+export function validateIsNotNullOrUndefined(varName: string, varValue: any): void | never {
     if (varValue === undefined) {
         throw new ValidationError(`Expected ${varName} to not be undefined.`)
     }
@@ -9,7 +9,7 @@ export function validateIsNotNullOrUndefined(varName, varValue) {
     }
 }
 
-export function validateIsString(varName, varValue, allowNull = false) {
+export function validateIsString(varName: string, varValue: any, allowNull = false): void | never {
     if (allowNull && varValue == null) {
         return
     }
@@ -19,7 +19,7 @@ export function validateIsString(varName, varValue, allowNull = false) {
     }
 }
 
-export function validateIsNotEmptyString(varName, varValue, allowNull = false) {
+export function validateIsNotEmptyString(varName: string, varValue: any, allowNull = false): void | never {
     if (allowNull && varValue == null) {
         return
     }
@@ -29,7 +29,7 @@ export function validateIsNotEmptyString(varName, varValue, allowNull = false) {
     }
 }
 
-export function validateIsInteger(varName, varValue, allowNull = false) {
+export function validateIsInteger(varName: string, varValue: any, allowNull = false): void | never {
     if (allowNull && varValue == null) {
         return
     }
@@ -39,7 +39,7 @@ export function validateIsInteger(varName, varValue, allowNull = false) {
     }
 }
 
-export function validateIsNotNegativeInteger(varName, varValue, allowNull = false) {
+export function validateIsNotNegativeInteger(varName: string, varValue: any, allowNull = false): void | never {
     if (allowNull && varValue == null) {
         return
     }
@@ -49,7 +49,7 @@ export function validateIsNotNegativeInteger(varName, varValue, allowNull = fals
     }
 }
 
-export function validateIsArray(varName, varValue, allowNull = false) {
+export function validateIsArray(varName: string, varValue: any, allowNull = false): void | never {
     if (allowNull && varValue == null) {
         return
     }
@@ -59,7 +59,7 @@ export function validateIsArray(varName, varValue, allowNull = false) {
     }
 }
 
-export function validateIsType(varName, varValue, typeName, typeClass, allowNull = false) {
+export function validateIsType(varName: string, varValue: any, typeName: string, typeClass: any, allowNull = false): void | never {
     if (allowNull && varValue == null) {
         return
     }
@@ -68,7 +68,7 @@ export function validateIsType(varName, varValue, typeName, typeClass, allowNull
     }
 }
 
-export function validateIsOneOf(varName, varValue, validValues, allowNull = false) {
+export function validateIsOneOf(varName: string, varValue: any, validValues: ReadonlyArray<any>, allowNull = false): void | never {
     if (allowNull && varValue == null) {
         return
     }
