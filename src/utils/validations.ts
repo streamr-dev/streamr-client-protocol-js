@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ValidationError from '../errors/ValidationError'
 
 export function validateIsNotNullOrUndefined(varName: string, varValue: any): void | never {

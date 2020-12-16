@@ -1,3 +1,4 @@
+// @ts-nocheck
 import secp256k1 from 'secp256k1'
 import { Keccak } from 'sha3'
 import { Todo } from "../sharedTypes"
