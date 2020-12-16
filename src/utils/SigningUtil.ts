@@ -1,10 +1,11 @@
 import secp256k1 from 'secp256k1'
 import { Keccak } from 'sha3'
+import { Todo } from "../sharedTypes"
 
 const SIGN_MAGIC = '\u0019Ethereum Signed Message:\n'
 const keccak = new Keccak(256)
 
-function hash(messageBuffer) {
+function hash(messageBuffer: Todo) {
     const prefixString = SIGN_MAGIC + messageBuffer.length
     const merged = Buffer.concat([Buffer.from(prefixString, 'utf-8'), messageBuffer])
     keccak.reset()
@@ -12,19 +13,20 @@ function hash(messageBuffer) {
     return keccak.digest('binary')
 }
 
-function recoverPublicKey(signatureBuffer, payloadBuffer) {
+function recoverPublicKey(signatureBuffer: Todo, payloadBuffer: Todo) {
     const recoveryId = signatureBuffer.readUInt8(signatureBuffer.length - 1) - 27
     return secp256k1.ecdsaRecover(
         signatureBuffer.subarray(0, signatureBuffer.length - 1),
         recoveryId,
         hash(payloadBuffer),
         false,
+        // @ts-ignore TODO: figure out why the library doesn't agree on this parameter
         Buffer.alloc,
     )
 }
 
 export default class SigningUtil {
-    static async sign(payload, privateKey) {
+    static async sign(payload: Todo, privateKey: Todo) {
         const payloadBuffer = Buffer.from(payload, 'utf-8')
         const privateKeyBuffer = Buffer.from(privateKey, 'hex')
 
@@ -35,7 +37,7 @@ export default class SigningUtil {
         return '0x' + result.toString('hex')
     }
 
-    static async recover(signature, payload, publicKeyBuffer = undefined) {
+    static async recover(signature: Todo, payload: Todo, publicKeyBuffer: Todo = undefined) {
         const signatureBuffer = Buffer.from(signature.substring(2), 'hex') // remove '0x' prefix
         const payloadBuffer = Buffer.from(payload, 'utf-8')
 
@@ -50,7 +52,7 @@ export default class SigningUtil {
         return '0x' + hashOfPubKey.subarray(12, hashOfPubKey.length).toString('hex')
     }
 
-    static async verify(address, payload, signature) {
+    static async verify(address: Todo, payload: Todo, signature: Todo) {
         try {
             const recoveredAddress = await SigningUtil.recover(signature, payload)
             return recoveredAddress.toLowerCase() === address.toLowerCase()
