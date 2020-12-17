@@ -43,5 +43,4 @@ export default class GroupKeyResponse extends GroupKeyMessage {
     }
 }
 
-// @ts-ignore TODO static
 GroupKeyMessage.classByMessageType[StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE] = GroupKeyResponse

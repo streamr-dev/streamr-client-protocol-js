@@ -5,6 +5,8 @@ import StreamMessage from './StreamMessage'
 
 export default class GroupKeyMessage {
 
+    static classByMessageType: Todo
+
     streamId: string
     messageType: Todo
 
@@ -22,11 +24,9 @@ export default class GroupKeyMessage {
     }
 
     static deserialize(serialized: Todo, messageType: Todo) {
-        // @ts-ignore TODO static
         if (!GroupKeyMessage.classByMessageType[messageType]) {
             throw new Error(`Unknown MessageType: ${messageType}`)
         }
-        // @ts-ignore TODO static
         return GroupKeyMessage.classByMessageType[messageType].fromArray(JSON.parse(serialized))
     }
 
@@ -44,5 +44,4 @@ export default class GroupKeyMessage {
     }
 }
 
-// @ts-ignore TODO static
 GroupKeyMessage.classByMessageType = {}

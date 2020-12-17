@@ -18,6 +18,8 @@ const MAX_GAP_REQUESTS = 10
 
 export default class OrderedMsgChain extends EventEmitter {
 
+    static MAX_GAP_REQUESTS = MAX_GAP_REQUESTS
+
     markedExplicitly: Todo
     publisherId: Todo
     msgChainId: Todo
@@ -168,5 +170,3 @@ export default class OrderedMsgChain extends EventEmitter {
         }
     }
 }
-// @ts-ignore TODO static
-OrderedMsgChain.MAX_GAP_REQUESTS = MAX_GAP_REQUESTS

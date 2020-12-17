@@ -39,5 +39,4 @@ export default class GroupKeyRequest extends GroupKeyMessage {
     }
 }
 
-// @ts-ignore TODO static
 GroupKeyMessage.classByMessageType[StreamMessage.MESSAGE_TYPES.GROUP_KEY_REQUEST] = GroupKeyRequest
