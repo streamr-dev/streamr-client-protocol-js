@@ -1,24 +1,27 @@
-// @ts-nocheck
 import { Contract, providers } from 'ethers'
 
 import * as trackerRegistryConfig from '../../contracts/TrackerRegistry.json'
+import { Todo } from '../sharedTypes'
 
 const { JsonRpcProvider } = providers
 
 // source: https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
-function hashCode(str) {
+function hashCode(str: string) {
     // eslint-disable-next-line no-bitwise
     const a = str.split('').reduce((prevHash, currVal) => (((prevHash << 5) - prevHash) + currVal.charCodeAt(0)) | 0, 0)
     return Math.abs(a)
 }
 
 class TrackerRegistry {
-    constructor(records) {
+
+    records: Todo
+
+    constructor(records: Todo) {
         this.records = records
         this.records.sort()
     }
 
-    getTracker(streamId, partition = 0) {
+    getTracker(streamId: Todo, partition = 0) {
         if (typeof streamId !== 'string' || streamId.indexOf('::') >= 0) {
             throw new Error(`invalid id: ${streamId}`)
         }
@@ -36,7 +39,7 @@ class TrackerRegistry {
     }
 }
 
-async function fetchTrackers(contractAddress, jsonRpcProvider) {
+async function fetchTrackers(contractAddress: Todo, jsonRpcProvider: Todo) {
     const provider = new JsonRpcProvider(jsonRpcProvider)
     // check that provider is connected and has some valid blockNumber
     await provider.getBlockNumber()
@@ -50,14 +53,14 @@ async function fetchTrackers(contractAddress, jsonRpcProvider) {
     }
 
     const result = await contract.getNodes()
-    return result.map((tracker) => tracker.url)
+    return result.map((tracker: Todo) => tracker.url)
 }
 
-function createTrackerRegistry(servers) {
+function createTrackerRegistry(servers: Todo) {
     return new TrackerRegistry(servers)
 }
 
-async function getTrackerRegistryFromContract({ contractAddress, jsonRpcProvider }) {
+async function getTrackerRegistryFromContract({ contractAddress, jsonRpcProvider }: Todo) {
     const trackers = await fetchTrackers(contractAddress, jsonRpcProvider)
     const records = []
     for (let i = 0; i < trackers.length; ++i) {

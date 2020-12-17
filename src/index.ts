@@ -1,4 +1,3 @@
-// @ts-nocheck
 // Serializers are imported because of their side effects: they statically register themselves to the factory class
 import BroadcastMessage from './protocol/control_layer/broadcast_message/BroadcastMessage'
 import './protocol/control_layer/broadcast_message/BroadcastMessageSerializerV1'

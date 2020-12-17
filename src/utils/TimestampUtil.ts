@@ -1,5 +1,6 @@
-// @ts-nocheck
-export function parse(millisOrString) {
+import { Todo } from '../sharedTypes'
+
+export function parse(millisOrString: Todo) {
     if (typeof millisOrString === 'number') {
         return millisOrString
     }

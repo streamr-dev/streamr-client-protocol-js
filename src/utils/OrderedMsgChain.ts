@@ -1,10 +1,11 @@
-// @ts-nocheck
 import debugFactory from 'debug'
 import Heap from 'heap'
 import EventEmitter from 'eventemitter3'
 
 import GapFillFailedError from '../errors/GapFillFailedError'
 import MessageRef from '../protocol/message_layer/MessageRef'
+
+import { Todo } from '../sharedTypes'
 
 const debug = debugFactory('StreamrClient::OrderedMsgChain')
 // The time it takes to propagate messages in the network. If we detect a gap, we first wait this amount of time because the missing
@@ -16,8 +17,23 @@ const DEFAULT_RESEND_TIMEOUT = 5000
 const MAX_GAP_REQUESTS = 10
 
 export default class OrderedMsgChain extends EventEmitter {
+
+    markedExplicitly: Todo
+    publisherId: Todo
+    msgChainId: Todo
+    inOrderHandler: Todo
+    gapHandler: Todo
+    lastReceivedMsgRef: Todo
+    propagationTimeout: Todo
+    resendTimeout: Todo
+    queue: Todo
+    inProgress: Todo
+    nextGaps: Todo
+    firstGap: Todo
+    gapRequestCount: Todo
+
     constructor(
-        publisherId, msgChainId, inOrderHandler, gapHandler,
+        publisherId: Todo, msgChainId: Todo, inOrderHandler: Todo, gapHandler: Todo,
         propagationTimeout = DEFAULT_PROPAGATION_TIMEOUT, resendTimeout = DEFAULT_RESEND_TIMEOUT,
     ) {
         super()
@@ -30,13 +46,13 @@ export default class OrderedMsgChain extends EventEmitter {
         this.propagationTimeout = propagationTimeout
         this.resendTimeout = resendTimeout
         /* eslint-disable arrow-body-style */
-        this.queue = new Heap((msg1, msg2) => {
+        this.queue = new Heap((msg1: Todo, msg2: Todo) => {
             return msg1.getMessageRef().compareTo(msg2.getMessageRef())
         })
         /* eslint-enable arrow-body-style */
     }
 
-    isStaleMessage(streamMessage) {
+    isStaleMessage(streamMessage: Todo) {
         const msgRef = streamMessage.getMessageRef()
         return (
             this.lastReceivedMsgRef
@@ -44,7 +60,7 @@ export default class OrderedMsgChain extends EventEmitter {
         )
     }
 
-    add(unorderedStreamMessage) {
+    add(unorderedStreamMessage: Todo) {
         if (this.isStaleMessage(unorderedStreamMessage)) {
             const msgRef = unorderedStreamMessage.getMessageRef()
             // Prevent double-processing of messages for any reason
@@ -61,7 +77,7 @@ export default class OrderedMsgChain extends EventEmitter {
         this._checkQueue()
     }
 
-    markMessageExplicitly(streamMessage) {
+    markMessageExplicitly(streamMessage: Todo) {
         if (!streamMessage || this.isStaleMessage(streamMessage)) {
             // do nothing if already past/handled this message
             return
@@ -79,7 +95,7 @@ export default class OrderedMsgChain extends EventEmitter {
         this.firstGap = undefined
     }
 
-    _isNextMessage(unorderedStreamMessage) {
+    _isNextMessage(unorderedStreamMessage: Todo) {
         const isFirstMessage = this.lastReceivedMsgRef === null
         return isFirstMessage
             // is chained and next
@@ -97,13 +113,14 @@ export default class OrderedMsgChain extends EventEmitter {
                 this.clearGap()
                 this._process(msg)
             } else {
+                // @ts-ignore TODO bug?
                 this._scheduleGap(msg)
                 break
             }
         }
     }
 
-    _process(msg) {
+    _process(msg: Todo) {
         this.lastReceivedMsgRef = msg.getMessageRef()
 
         if (this.markedExplicitly.has(msg)) {
@@ -151,4 +168,5 @@ export default class OrderedMsgChain extends EventEmitter {
         }
     }
 }
+// @ts-ignore TODO static
 OrderedMsgChain.MAX_GAP_REQUESTS = MAX_GAP_REQUESTS

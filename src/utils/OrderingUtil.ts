@@ -1,8 +1,17 @@
-// @ts-nocheck
+import { Todo } from '../sharedTypes'
 import OrderedMsgChain from './OrderedMsgChain'
 
 export default class OrderingUtil {
-    constructor(streamId, streamPartition, inOrderHandler, gapHandler, propagationTimeout, resendTimeout) {
+
+    streamId: Todo
+    streamPartition: Todo
+    inOrderHandler: Todo
+    gapHandler: Todo
+    propagationTimeout: Todo
+    resendTimeout: Todo
+    orderedChains: Todo
+
+    constructor(streamId: Todo, streamPartition: Todo, inOrderHandler: Todo, gapHandler: Todo, propagationTimeout: Todo, resendTimeout: Todo) {
         this.streamId = streamId
         this.streamPartition = streamPartition
         this.inOrderHandler = inOrderHandler
@@ -12,12 +21,12 @@ export default class OrderingUtil {
         this.orderedChains = {}
     }
 
-    add(unorderedStreamMessage) {
+    add(unorderedStreamMessage: Todo) {
         const chain = this._getChain(unorderedStreamMessage.getPublisherId(), unorderedStreamMessage.getMsgChainId())
         chain.add(unorderedStreamMessage)
     }
 
-    _getChain(publisherId, msgChainId) {
+    _getChain(publisherId: Todo, msgChainId: Todo) {
         const key = publisherId + msgChainId
         if (!this.orderedChains[key]) {
             this.orderedChains[key] = new OrderedMsgChain(
@@ -28,7 +37,7 @@ export default class OrderingUtil {
         return this.orderedChains[key]
     }
 
-    markMessageExplicitly(streamMessage) {
+    markMessageExplicitly(streamMessage: Todo) {
         const chain = this._getChain(streamMessage.getPublisherId(), streamMessage.getMsgChainId())
         chain.markMessageExplicitly(streamMessage)
     }

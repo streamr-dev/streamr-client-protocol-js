@@ -1,10 +1,10 @@
-// @ts-nocheck
 import StreamMessage from '../protocol/message_layer/StreamMessage'
 import ValidationError from '../errors/ValidationError'
 import GroupKeyRequest from '../protocol/message_layer/GroupKeyRequest'
 import GroupKeyMessage from '../protocol/message_layer/GroupKeyMessage'
 
 import SigningUtil from './SigningUtil'
+import { Todo } from '../sharedTypes'
 
 const KEY_EXCHANGE_STREAM_PREFIX = 'SYSTEM/keyexchange/'
 
@@ -21,6 +21,12 @@ const KEY_EXCHANGE_STREAM_PREFIX = 'SYSTEM/keyexchange/'
  * TODO later: support for unsigned messages can be removed when deprecated system-wide.
  */
 export default class StreamMessageValidator {
+
+    getStream: Todo
+    isPublisher: Todo
+    isSubscriber: Todo
+    verify: Todo
+    
     /**
      * @param getStream async function(streamId): returns the metadata required for stream validation for streamId.
      *        The included fields should be at least: { partitions, requireSignedData, requireEncryptedData }
@@ -29,7 +35,7 @@ export default class StreamMessageValidator {
      * @param verify async function(address, payload, signature): returns true if the address and payload match the signature.
      * The default implementation uses the native secp256k1 library on node.js and falls back to the elliptic library on browsers.
      */
-    constructor({ getStream, isPublisher, isSubscriber, verify = SigningUtil.verify }) {
+    constructor({ getStream, isPublisher, isSubscriber, verify = SigningUtil.verify }: Todo) {
         StreamMessageValidator.checkInjectedFunctions(getStream, isPublisher, isSubscriber, verify)
         this.getStream = getStream
         this.isPublisher = isPublisher
@@ -37,7 +43,7 @@ export default class StreamMessageValidator {
         this.verify = verify
     }
 
-    static checkInjectedFunctions(getStreamFn, isPublisherFn, isSubscriberFn, verifyFn) {
+    static checkInjectedFunctions(getStreamFn: Todo, isPublisherFn: Todo, isSubscriberFn: Todo, verifyFn: Todo) {
         if (typeof getStreamFn !== 'function') {
             throw new Error('getStreamFn must be: async function(streamId): returns the validation metadata object for streamId')
         }
@@ -61,7 +67,7 @@ export default class StreamMessageValidator {
      *
      * @param streamMessage the StreamMessage to validate.
      */
-    async validate(streamMessage) {
+    async validate(streamMessage: Todo) {
         if (!streamMessage) {
             throw new ValidationError('Falsey argument passed to validate()!')
         }
@@ -89,7 +95,7 @@ export default class StreamMessageValidator {
      * @param streamMessage the StreamMessage to validate.
      * @param verifyFn function(address, payload, signature): return true if the address and payload match the signature
      */
-    static async assertSignatureIsValid(streamMessage, verifyFn) {
+    static async assertSignatureIsValid(streamMessage: Todo, verifyFn: Todo) {
         const payload = streamMessage.getPayloadToSign()
 
         if (streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH_LEGACY
@@ -110,7 +116,7 @@ export default class StreamMessageValidator {
         }
     }
 
-    async _validateMessage(streamMessage) {
+    async _validateMessage(streamMessage: Todo) {
         const stream = await this.getStream(streamMessage.getStreamId())
 
         // Checks against stream metadata
@@ -137,7 +143,7 @@ export default class StreamMessageValidator {
         }
     }
 
-    async _validateGroupKeyRequest(streamMessage) {
+    async _validateGroupKeyRequest(streamMessage: Todo) {
         if (!streamMessage.signature) {
             throw new ValidationError(`Received unsigned group key request (the public key must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
         }
@@ -164,7 +170,7 @@ export default class StreamMessageValidator {
         }
     }
 
-    async _validateGroupKeyResponseOrAnnounce(streamMessage) {
+    async _validateGroupKeyResponseOrAnnounce(streamMessage: Todo) {
         if (!streamMessage.signature) {
             throw new ValidationError(`Received unsigned ${streamMessage.messageType} (it must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
         }
@@ -191,7 +197,7 @@ export default class StreamMessageValidator {
         }
     }
 
-    static isKeyExchangeStream(streamId) {
+    static isKeyExchangeStream(streamId: Todo) {
         return streamId.startsWith(KEY_EXCHANGE_STREAM_PREFIX)
     }
 }
