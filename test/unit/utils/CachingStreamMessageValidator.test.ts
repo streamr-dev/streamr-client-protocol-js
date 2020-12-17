@@ -6,7 +6,7 @@ import sleep from 'await-sleep'
 
 import CachingStreamMessageValidator from '../../../src/utils/CachingStreamMessageValidator'
 import StreamMessage from '../../../src/protocol/message_layer/StreamMessage'
-import StreamMessageSerializerV31 from '../../../src/protocol/message_layer/StreamMessageSerializerV31' // eslint-disable-line no-unused-vars
+import '../../../src/protocol/message_layer/StreamMessageSerializerV31'
 
 describe('CachingStreamMessageValidator', () => {
     let cacheTimeoutMillis
