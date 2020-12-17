@@ -1,4 +1,3 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import StorageNodesRequest from '../../../../src/protocol/tracker_layer/storage_nodes_request/StorageNodesRequest'

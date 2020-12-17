@@ -1,4 +1,3 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import sinon from 'sinon'
@@ -6,6 +5,7 @@ import sinon from 'sinon'
 import { MessageLayer } from '../../../../src/index'
 import ValidationError from '../../../../src/errors/ValidationError'
 import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionError'
+import { Todo } from '../../../../src/sharedTypes'
 
 const { StreamMessage, MessageRef, MessageIDStrict, EncryptedGroupKey } = MessageLayer
 
@@ -99,6 +99,7 @@ describe('StreamMessage', () => {
 
         it('should not throw when encrypted content', () => {
             assert.doesNotThrow(() => msg({
+                // @ts-ignore TODO
                 content: 'encrypted content',
                 encryptionType: StreamMessage.ENCRYPTION_TYPES.AES,
             }))
@@ -106,12 +107,14 @@ describe('StreamMessage', () => {
 
         it('Throws with an invalid content type', () => {
             assert.throws(() => msg({
+                // @ts-ignore TODO
                 contentType: 999, // invalid
             }), ValidationError)
         })
 
         it('Throws with an invalid newGroupKey', () => {
             assert.throws(() => msg({
+                // @ts-ignore TODO
                 newGroupKey: 'foo', // invalid
             }), ValidationError)
         })
@@ -122,6 +125,7 @@ describe('StreamMessage', () => {
                 assert.throws(() => msg({
                     timestamp: ts,
                     sequenceNumber: 0,
+                    // @ts-ignore TODO
                     prevMsgRef: new MessageRef(ts, 0)
                 }), 'must come before current')
             })
@@ -130,6 +134,7 @@ describe('StreamMessage', () => {
                 assert.throws(() => msg({
                     timestamp: ts,
                     sequenceNumber: 0,
+                    // @ts-ignore TODO
                     prevMsgRef: new MessageRef(ts + 1, 0)
                 }), 'must come before current')
             })
@@ -139,6 +144,7 @@ describe('StreamMessage', () => {
                 assert.throws(() => msg({
                     timestamp: ts,
                     sequenceNumber: 0,
+                    // @ts-ignore TODO
                     prevMsgRef: new MessageRef(ts, 1)
                 }), 'must come before current')
             })
@@ -148,6 +154,7 @@ describe('StreamMessage', () => {
                 assert.throws(() => msg({
                     timestamp: ts,
                     sequenceNumber: 0,
+                    // @ts-ignore TODO
                     prevMsgRef: new MessageRef(ts + 1, 1)
                 }), 'must come before current')
             })
@@ -157,6 +164,7 @@ describe('StreamMessage', () => {
                 msg({
                     timestamp: ts,
                     sequenceNumber: 1,
+                    // @ts-ignore TODO
                     prevMsgRef: new MessageRef(ts, 0)
                 })
             })
@@ -166,6 +174,7 @@ describe('StreamMessage', () => {
                 msg({
                     timestamp: ts,
                     sequenceNumber: 0,
+                    // @ts-ignore TODO
                     prevMsgRef: new MessageRef(ts - 1, 0)
                 })
             })
@@ -175,6 +184,7 @@ describe('StreamMessage', () => {
                 msg({
                     timestamp: ts,
                     sequenceNumber: 0,
+                    // @ts-ignore TODO
                     prevMsgRef: null
                 })
             })
@@ -182,7 +192,7 @@ describe('StreamMessage', () => {
     })
 
     describe('serialization', () => {
-        let serializer
+        let serializer: Todo
         const VERSION = StreamMessage.LATEST_VERSION + 100
 
         beforeEach(() => {

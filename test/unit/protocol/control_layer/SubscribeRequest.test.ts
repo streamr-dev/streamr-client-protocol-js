@@ -1,4 +1,3 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import SubscribeRequest from '../../../../src/protocol/control_layer/subscribe_request/SubscribeRequest'

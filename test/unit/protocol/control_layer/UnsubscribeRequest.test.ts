@@ -1,4 +1,3 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import UnsubscribeRequest from '../../../../src/protocol/control_layer/unsubscribe_request/UnsubscribeRequest'

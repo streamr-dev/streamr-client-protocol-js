@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { createTrackerRegistry, getTrackerRegistryFromContract } from '../../src/utils/TrackerRegistry'
 
 const contractAddress = '0xBFCF120a8fD17670536f1B27D9737B775b2FD4CF'
@@ -79,6 +78,7 @@ describe('TrackerRegistry', () => {
 
             // partition is not valid
             expect(() => {
+                // @ts-ignore TODO
                 trackerRegistry.getTracker('stream-1', '0')
             }).toThrow()
 

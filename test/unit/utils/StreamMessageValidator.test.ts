@@ -1,9 +1,9 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import sinon from 'sinon'
 
 import { MessageLayer, Utils, Errors } from '../../../src'
+import { Todo } from '../../../src/sharedTypes'
 
 const {
     StreamMessage, MessageID, GroupKeyRequest, GroupKeyResponse, GroupKeyAnnounce, GroupKeyErrorResponse, EncryptedGroupKey
@@ -12,22 +12,22 @@ const { StreamMessageValidator, SigningUtil } = Utils
 const { ValidationError } = Errors
 
 describe('StreamMessageValidator', () => {
-    let getStream
-    let isPublisher
-    let isSubscriber
-    let verify
-    let msg
-    let msgWithNewGroupKey
+    let getStream: Todo
+    let isPublisher: Todo
+    let isSubscriber: Todo
+    let verify: Todo
+    let msg: Todo
+    let msgWithNewGroupKey: Todo
 
     const publisherPrivateKey = 'd462a6f2ccd995a346a841d110e8c6954930a1c22851c0032d3116d8ccd2296a'
     const publisher = '0x6807295093ac5da6fb2a10f7dedc5edd620804fb'
     const subscriberPrivateKey = '81fe39ed83c4ab997f64564d0c5a630e34c621ad9bbe51ad2754fac575fc0c46'
     const subscriber = '0xbe0ab87a1f5b09afe9101b09e3c86fd8f4162527'
 
-    let groupKeyRequest
-    let groupKeyResponse
-    let groupKeyAnnounce
-    let groupKeyErrorResponse
+    let groupKeyRequest: Todo
+    let groupKeyResponse: Todo
+    let groupKeyAnnounce: Todo
+    let groupKeyErrorResponse: Todo
 
     const defaultGetStreamResponse = {
         partitions: 10,
@@ -40,7 +40,7 @@ describe('StreamMessageValidator', () => {
     })
 
     /* eslint-disable */
-    const sign = async (msgToSign, privateKey) => {
+    const sign = async (msgToSign: Todo, privateKey: Todo) => {
         msgToSign.signatureType = StreamMessage.SIGNATURE_TYPES.ETH
         msgToSign.signature = await SigningUtil.sign(msgToSign.getPayloadToSign(), privateKey)
     }
@@ -49,10 +49,10 @@ describe('StreamMessageValidator', () => {
     beforeEach(async () => {
         // Default stubs
         getStream = sinon.stub().resolves(defaultGetStreamResponse)
-        isPublisher = async (address, streamId) => {
+        isPublisher = async (address: Todo, streamId: Todo) => {
             return address === publisher && streamId === 'streamId'
         }
-        isSubscriber = async (address, streamId) => {
+        isSubscriber = async (address: Todo, streamId: Todo) => {
             return address === subscriber && streamId === 'streamId'
         }
         verify = undefined // use default impl by default
@@ -506,7 +506,7 @@ describe('StreamMessageValidator', () => {
             groupKeyErrorResponse.signature = null
             groupKeyErrorResponse.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
 
-            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err: Todo) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 return true
             })
@@ -515,7 +515,7 @@ describe('StreamMessageValidator', () => {
         it('rejects invalid signatures', async () => {
             groupKeyErrorResponse.signature = groupKeyErrorResponse.signature.replace('a', 'b')
 
-            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err: Todo) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 return true
             })
@@ -524,7 +524,7 @@ describe('StreamMessageValidator', () => {
         it('rejects group key error responses on unexpected streams', async () => {
             groupKeyErrorResponse.getStreamId = sinon.stub().returns('foo')
 
-            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err: Todo) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 return true
             })
@@ -533,7 +533,7 @@ describe('StreamMessageValidator', () => {
         it('rejects messages from invalid publishers', async () => {
             isPublisher = sinon.stub().resolves(false)
 
-            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err: Todo) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 assert(isPublisher.calledOnce, 'isPublisher not called!')
                 assert(isPublisher.calledWith(publisher, 'streamId'), `isPublisher called with wrong args: ${isPublisher.getCall(0).args}`)
@@ -544,7 +544,7 @@ describe('StreamMessageValidator', () => {
         it('rejects messages to unpermitted subscribers', async () => {
             isSubscriber = sinon.stub().resolves(false)
 
-            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err: Todo) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 assert(isSubscriber.calledOnce, 'isSubscriber not called!')
                 assert(isSubscriber.calledWith(subscriber, 'streamId'), `isSubscriber called with wrong args: ${isSubscriber.getCall(0).args}`)
@@ -555,7 +555,7 @@ describe('StreamMessageValidator', () => {
         it('rejects if isPublisher rejects', async () => {
             const testError = new Error('test error')
             isPublisher = sinon.stub().rejects(testError)
-            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err: Todo) => {
                 assert(err === testError)
                 return true
             })
@@ -564,7 +564,7 @@ describe('StreamMessageValidator', () => {
         it('rejects if isSubscriber rejects', async () => {
             const testError = new Error('test error')
             isSubscriber = sinon.stub().rejects(testError)
-            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err: Todo) => {
                 assert(err === testError)
                 return true
             })
@@ -573,7 +573,7 @@ describe('StreamMessageValidator', () => {
         it('rejects with ValidationError if verify throws', async () => {
             const testError = new Error('test error')
             verify = sinon.stub().throws(testError)
-            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err) => {
+            await assert.rejects(getValidator().validate(groupKeyErrorResponse), (err: Todo) => {
                 assert(err instanceof ValidationError, `Unexpected error thrown: ${err}`)
                 return true
             })

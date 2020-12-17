@@ -1,4 +1,3 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import InstructionMessage from '../../../../src/protocol/tracker_layer/instruction_message/InstructionMessage'

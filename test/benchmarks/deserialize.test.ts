@@ -1,5 +1,5 @@
-// @ts-nocheck
 import { ControlLayer, MessageLayer } from '../../src'
+import { Todo } from '../../src/sharedTypes'
 
 const { ControlMessage, PublishRequest } = ControlLayer
 const { StreamMessage, MessageID, MessageRef } = MessageLayer
@@ -13,7 +13,7 @@ const publishRequest = ControlMessage.deserialize('[1,8,[31,["kxeE-gyxS8CkuWYlfB
 const { streamMessage } = publishRequest
 
 describe('deserialize', () => {
-    const run = (functionToTest, name) => {
+    const run = (functionToTest: Todo, name: Todo) => {
         const start = new Date()
 
         let resultString = `Benchmarking ${name}...\n`
@@ -22,11 +22,12 @@ describe('deserialize', () => {
             functionToTest()
         }
 
+        // @ts-ignore TODO
         const end = new Date() - start
 
         resultString += `Execution time: ${end} ms\n`
         resultString += `Iterations / second: ${ITERATIONS / (end / 1000)}\n`
-        const used = process.memoryUsage()
+        const used: Todo = process.memoryUsage()
         Object.keys(used).forEach((key) => {
             /* eslint-disable no-mixed-operators */
             resultString += `${key} ${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB\n`

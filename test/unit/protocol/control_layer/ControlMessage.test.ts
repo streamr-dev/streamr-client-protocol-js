@@ -1,4 +1,3 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import sinon from 'sinon'
@@ -7,6 +6,7 @@ import ControlMessage from '../../../../src/protocol/control_layer/ControlMessag
 import UnsupportedTypeError from '../../../../src/errors/UnsupportedTypeError'
 import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionError'
 import ValidationError from '../../../../src/errors/ValidationError'
+import { Todo } from '../../../../src/sharedTypes'
 
 const VERSION = 123
 const TYPE = 0
@@ -14,7 +14,7 @@ const REQUEST_ID = 'requestId'
 
 class TestControlMessage extends ControlMessage {
     // eslint-disable-next-line no-useless-constructor
-    constructor(version, type, requestId) {
+    constructor(version: Todo, type: Todo, requestId: Todo) {
         super(version, type, requestId)
     }
 }
@@ -24,7 +24,7 @@ const msg = () => {
 }
 
 describe('ControlMessage', () => {
-    let serializer
+    let serializer: Todo
 
     beforeEach(() => {
         serializer = {

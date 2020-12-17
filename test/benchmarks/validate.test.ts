@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { randomBytes } from 'crypto'
 import assert from 'assert'
 
@@ -9,6 +8,7 @@ import secp256k1 from 'secp256k1'
 import StreamMessage from '../../src/protocol/message_layer/StreamMessage'
 import StreamMessageValidator from '../../src/utils/StreamMessageValidator'
 import '../../src/protocol/message_layer/StreamMessageSerializerV31'
+import { Todo } from '../../src/sharedTypes'
 
 const privateKey = '5765eb50ed4eb3aeec7e4199e9c21f5b9d23336b65d31a60ac20bbdee7493bc8'
 const address = '0xD12b87c9325eB36801d6114A0D5334AC2A8D25D8'
@@ -24,10 +24,11 @@ const mocks = {
     isSubscriber: () => true,
 }
 
+// @ts-ignore TODO
 const accounts = new Web3EthAccounts()
 
 describe('validate', () => {
-    const run = async (functionToTest, name, iterations) => {
+    const run = async (functionToTest: Todo, name: Todo, iterations: Todo) => {
         const start = new Date()
 
         let resultString = `Benchmarking ${name}...\n`
@@ -37,12 +38,13 @@ describe('validate', () => {
             await functionToTest()
         }
 
+        // @ts-ignore TODO
         const end = new Date() - start
 
         resultString += `Execution time: ${end} ms\n`
         resultString += `Iterations: ${iterations}\n`
         resultString += `Iterations / second: ${iterations / (end / 1000)}\n`
-        const used = process.memoryUsage()
+        const used: Todo = process.memoryUsage()
         Object.keys(used).forEach((key) => {
             /* eslint-disable no-mixed-operators */
             resultString += `${key} ${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB\n`
@@ -62,7 +64,7 @@ describe('validate', () => {
 
     it('using ethers.js', async () => {
         const validator = new StreamMessageValidator({
-            verify: (addr, payload, signature) => {
+            verify: (addr: Todo, payload: Todo, signature: Todo) => {
                 return ethers.utils.verifyMessage(payload, signature).toLowerCase() === addr.toLowerCase()
             },
             ...mocks,
@@ -73,7 +75,7 @@ describe('validate', () => {
 
     it('using web3.js', async () => {
         const validator = new StreamMessageValidator({
-            verify: (addr, payload, signature) => {
+            verify: (addr: Todo, payload: Todo, signature: Todo) => {
                 return accounts.recover(payload, signature).toLowerCase() === addr.toLowerCase()
             },
             ...mocks,
@@ -106,6 +108,7 @@ describe('validate', () => {
         }, 'raw secp256k1 (verify)', 10000)
 
         await run(() => {
+            // @ts-ignore TODO
             secp256k1.ecdsaRecover(sigObj.signature, sigObj.recid, msg, true, Buffer.alloc)
         }, 'raw secp256k1 (recover)', 10000)
     })

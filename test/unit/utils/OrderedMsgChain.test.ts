@@ -1,4 +1,3 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import shuffle from 'array-shuffle'
@@ -8,9 +7,10 @@ import StreamMessage from '../../../src/protocol/message_layer/StreamMessage'
 import GapFillFailedError from '../../../src/errors/GapFillFailedError'
 import MessageID from '../../../src/protocol/message_layer/MessageID'
 import MessageRef from '../../../src/protocol/message_layer/MessageRef'
+import { Todo } from '../../../src/sharedTypes'
 
 const createMsg = (
-    timestamp = 1, sequenceNumber = 0, prevTimestamp = null,
+    timestamp = 1, sequenceNumber = 0, prevTimestamp: number | null = null,
     prevSequenceNumber = 0, content = {}, publisherId = 'publisherId', msgChainId = 'msgChainId',
 ) => {
     const prevMsgRef = prevTimestamp ? new MessageRef(prevTimestamp, prevSequenceNumber) : null
@@ -28,15 +28,15 @@ describe('OrderedMsgChain', () => {
     const msg4 = createMsg(4, 0, 3, 0)
     const msg5 = createMsg(5, 0, 4, 0)
     const msg6 = createMsg(6, 0, 5, 0)
-    let util
+    let util: Todo
 
     afterEach(() => {
         util.clearGap()
     })
 
     it('handles ordered messages in order', () => {
-        const received = []
-        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
+        const received: Todo = []
+        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg: Todo) => {
             received.push(msg)
         }, () => {
             throw new Error('Unexpected gap')
@@ -48,8 +48,8 @@ describe('OrderedMsgChain', () => {
     })
 
     it('drops duplicates', () => {
-        const received = []
-        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
+        const received: Todo = []
+        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg: Todo) => {
             received.push(msg)
         }, () => {
             throw new Error('Unexpected gap')
@@ -62,10 +62,10 @@ describe('OrderedMsgChain', () => {
     })
 
     it('calls the gap handler', (done) => {
-        const received = []
-        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
+        const received: Todo = []
+        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg: Todo) => {
             received.push(msg)
-        }, (from, to, publisherId, msgChainId) => {
+        }, (from: Todo, to: Todo, publisherId: Todo, msgChainId: Todo) => {
             assert.deepStrictEqual(received, [msg1, msg2])
             assert.strictEqual(from.timestamp, msg2.getMessageRef().timestamp)
             assert.strictEqual(from.sequenceNumber, msg2.getMessageRef().sequenceNumber + 1)
@@ -81,8 +81,8 @@ describe('OrderedMsgChain', () => {
     })
 
     it('handles unordered messages in order', () => {
-        const received = []
-        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
+        const received: Todo = []
+        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg: Todo) => {
             received.push(msg)
         }, () => {})
         util.add(msg1)
@@ -97,8 +97,8 @@ describe('OrderedMsgChain', () => {
         const m2 = createMsg(4, 0)
         const m3 = createMsg(17, 0)
         const m4 = createMsg(7, 0)
-        const received = []
-        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
+        const received: Todo = []
+        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg: Todo) => {
             received.push(msg)
         }, () => {})
         util.add(msg1)
@@ -109,8 +109,8 @@ describe('OrderedMsgChain', () => {
     })
 
     it('does not call the gap handler (scheduled but resolved before timeout)', () => {
-        const received = []
-        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
+        const received: Todo = []
+        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg: Todo) => {
             received.push(msg)
         }, () => {
             throw new Error('Unexpected gap')
@@ -139,14 +139,14 @@ describe('OrderedMsgChain', () => {
     })
 
     it('can handle multiple gaps', (done) => {
-        const msgs = []
-        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
+        const msgs: Todo = []
+        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg: Todo) => {
             msgs.push(msg)
             if (msgs.length === 5) {
                 assert.deepStrictEqual(msgs, [msg1, msg2, msg3, msg4, msg5])
                 done()
             }
-        }, (from, to) => {
+        }, (from: Todo, to: Todo) => {
             if (to.timestamp === 2) {
                 setTimeout(() => {
                     util.add(msg2)
@@ -166,7 +166,7 @@ describe('OrderedMsgChain', () => {
     })
 
     it('can force-fill multiple gaps', (done) => {
-        const msgs = []
+        const msgs: Todo = []
         const gapHandler = jest.fn((from, to) => {
             if (to.timestamp === 2) {
                 setTimeout(() => {
@@ -180,7 +180,7 @@ describe('OrderedMsgChain', () => {
             }
         })
 
-        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
+        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg: Todo) => {
             msgs.push(msg)
             if (msgs[msgs.length - 1].getMessageRef().timestamp === 5) {
                 assert.deepStrictEqual(msgs, [msg1, msg3, msg5]) // msg 2 & 3 will be missing
@@ -199,7 +199,7 @@ describe('OrderedMsgChain', () => {
     })
 
     it('can force-fill multiple gaps out of order', (done) => {
-        const msgs = []
+        const msgs: Todo = []
         const gapHandler = jest.fn((from, to) => {
             if (to.timestamp === 2) {
                 util.markMessageExplicitly(msg4)
@@ -207,12 +207,12 @@ describe('OrderedMsgChain', () => {
             }
         })
 
-        const skipped = []
+        const skipped: Todo = []
         const onSkip = jest.fn((msg) => {
             skipped.push(msg)
         })
 
-        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
+        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg: Todo) => {
             msgs.push(msg)
             if (msgs[msgs.length - 1].getMessageRef().timestamp === 5) {
                 assert.deepStrictEqual(msgs, [msg1, msg3, msg5]) // msg 2 & 3 will be missing
@@ -235,7 +235,7 @@ describe('OrderedMsgChain', () => {
     })
 
     it('does not hold onto old markMessageExplicitly messages', (done) => {
-        const msgs = []
+        const msgs: Todo = []
         const gapHandler = jest.fn((from, to) => {
             if (to.timestamp === 2) {
                 util.markMessageExplicitly(msg2)
@@ -243,7 +243,7 @@ describe('OrderedMsgChain', () => {
             }
         })
 
-        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
+        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg: Todo) => {
             msgs.push(msg)
             if (msgs[msgs.length - 1].getMessageRef().timestamp === 5) {
                 util.markMessageExplicitly(msg2)
@@ -277,7 +277,7 @@ describe('OrderedMsgChain', () => {
 
     it('call the gap handler MAX_GAP_REQUESTS times and then throws', (done) => {
         let counter = 0
-        util = new OrderedMsgChain('publisherId', 'msgChainId', () => {}, (from, to, publisherId, msgChainId) => {
+        util = new OrderedMsgChain('publisherId', 'msgChainId', () => {}, (from: Todo, to: Todo, publisherId: Todo, msgChainId: Todo) => {
             assert.strictEqual(from.timestamp, msg1.getMessageRef().timestamp)
             assert.strictEqual(from.sequenceNumber, msg1.getMessageRef().sequenceNumber + 1)
             assert.deepStrictEqual(to, msg3.prevMsgRef)
@@ -285,7 +285,7 @@ describe('OrderedMsgChain', () => {
             assert.strictEqual(msgChainId, 'msgChainId')
             counter += 1
         }, 100, 100)
-        util.on('error', (e) => {
+        util.on('error', (e: Todo) => {
             assert.strictEqual(e.message, 'Failed to fill gap between [1,1] and [2,0] for publisherId-msgChainId'
                 + ` after ${OrderedMsgChain.MAX_GAP_REQUESTS} trials`)
             assert.strictEqual(counter, OrderedMsgChain.MAX_GAP_REQUESTS)
@@ -296,8 +296,8 @@ describe('OrderedMsgChain', () => {
     })
 
     it('after MAX_GAP_REQUESTS OrderingUtil gives up on filling gap ', (done) => {
-        const received = []
-        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
+        const received: Todo = []
+        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg: Todo) => {
             received.push(msg)
         }, () => {}, 5, 5)
 
@@ -305,11 +305,11 @@ describe('OrderedMsgChain', () => {
         util.add(msg3)
         util.add(msg4)
 
-        util.once('error', (err) => {
+        util.once('error', (err: Todo) => {
             if (err instanceof GapFillFailedError) {
                 setImmediate(() => {
                     util.add(msg6)
-                    util.once('error', (err2) => {
+                    util.once('error', (err2: Todo) => {
                         if (err2 instanceof GapFillFailedError) {
                             setImmediate(() => {
                                 assert.deepStrictEqual(received, [msg1, msg3, msg4, msg6])
@@ -329,8 +329,8 @@ describe('OrderedMsgChain', () => {
             expected.push(createMsg(i, 0, i - 1, 0))
         }
         const shuffled = shuffle(expected)
-        const received = []
-        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg) => {
+        const received: Todo = []
+        util = new OrderedMsgChain('publisherId', 'msgChainId', (msg: Todo) => {
             received.push(msg)
         }, () => {}, 50)
         util.add(msg1)
@@ -342,12 +342,12 @@ describe('OrderedMsgChain', () => {
         try {
             assert.deepStrictEqual(received, expected)
         } catch (e) {
-            const shuffledTimestamps = []
-            shuffled.forEach((streamMessage) => {
+            const shuffledTimestamps: Todo = []
+            shuffled.forEach((streamMessage: Todo) => {
                 shuffledTimestamps.push(streamMessage.getTimestamp())
             })
-            const receivedTimestamps = []
-            received.forEach((streamMessage) => {
+            const receivedTimestamps: Todo = []
+            received.forEach((streamMessage: Todo) => {
                 receivedTimestamps.push(streamMessage.getTimestamp())
             })
             throw new Error('Was expecting to receive messages ordered per timestamp but instead received timestamps in this '

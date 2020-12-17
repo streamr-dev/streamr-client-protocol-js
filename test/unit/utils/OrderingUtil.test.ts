@@ -1,15 +1,15 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import shuffle from 'array-shuffle'
 
 import { Utils, MessageLayer } from '../../../src'
+import { Todo } from '../../../src/sharedTypes'
 
 const { OrderingUtil } = Utils
 const { StreamMessage, MessageID, MessageRef } = MessageLayer
 
 const createMsg = (
-    timestamp = 1, sequenceNumber = 0, prevTimestamp = null,
+    timestamp = 1, sequenceNumber = 0, prevTimestamp: number | null = null,
     prevSequenceNumber = 0, content = {}, publisherId = 'publisherId', msgChainId = '1',
 ) => {
     const prevMsgRef = prevTimestamp ? new MessageRef(prevTimestamp, prevSequenceNumber) : null
@@ -23,20 +23,21 @@ const createMsg = (
 const msg = createMsg()
 
 describe('OrderingUtil', () => {
-    let util
+    let util: Todo
     afterEach(() => {
         util.clearGaps()
     })
     it('calls the message handler when a message is received', (done) => {
-        const handler = (streamMessage) => {
+        const handler = (streamMessage: Todo) => {
             assert.deepStrictEqual(streamMessage.serialize(), msg.serialize())
             done()
         }
+        // @ts-ignore TODO
         util = new OrderingUtil('streamId', 0, handler, () => {})
         util.add(msg)
     })
     it('calls the gap handler if a gap is detected', (done) => {
-        const gapHandler = (from, to, publisherId) => {
+        const gapHandler = (from: Todo, to: Todo, publisherId: Todo) => {
             assert.equal(from.timestamp, 1)
             assert.equal(from.sequenceNumber, 1)
             assert.equal(to.timestamp, 3)
@@ -85,9 +86,10 @@ describe('OrderingUtil', () => {
             expected3.push(createMsg(i, 0, i - 1, 0, {}, 'publisherId3'))
         }
         const shuffled = shuffle(expected1.concat(expected2).concat(expected3))
-        const received1 = []
-        const received2 = []
-        const received3 = []
+        const received1: Todo = []
+        const received2: Todo = []
+        const received3: Todo = []
+        // @ts-ignore TODO
         util = new OrderingUtil('streamId', 0, (m) => {
             if (m.getPublisherId() === 'publisherId1') {
                 received1.push(m)
@@ -110,20 +112,20 @@ describe('OrderingUtil', () => {
             assert.deepStrictEqual(received2, expected2)
             assert.deepStrictEqual(received3, expected3)
         } catch (e) {
-            const shuffledTimestamps = []
-            shuffled.forEach((streamMessage) => {
+            const shuffledTimestamps: Todo = []
+            shuffled.forEach((streamMessage: Todo) => {
                 shuffledTimestamps.push(streamMessage.getTimestamp())
             })
-            const receivedTimestamps1 = []
-            received1.forEach((streamMessage) => {
+            const receivedTimestamps1: Todo = []
+            received1.forEach((streamMessage: Todo) => {
                 receivedTimestamps1.push(streamMessage.getTimestamp())
             })
-            const receivedTimestamps2 = []
-            received2.forEach((streamMessage) => {
+            const receivedTimestamps2: Todo = []
+            received2.forEach((streamMessage: Todo) => {
                 receivedTimestamps2.push(streamMessage.getTimestamp())
             })
-            const receivedTimestamps3 = []
-            received3.forEach((streamMessage) => {
+            const receivedTimestamps3: Todo = []
+            received3.forEach((streamMessage: Todo) => {
                 receivedTimestamps3.push(streamMessage.getTimestamp())
             })
             throw new Error('Was expecting to receive messages ordered per timestamp but instead received timestamps in this order:\n'

@@ -1,22 +1,23 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import sinon from 'sinon'
+// @ts-ignore
 import sleep from 'await-sleep'
 
 import CachingStreamMessageValidator from '../../../src/utils/CachingStreamMessageValidator'
 import StreamMessage from '../../../src/protocol/message_layer/StreamMessage'
 import '../../../src/protocol/message_layer/StreamMessageSerializerV31'
+import { Todo } from '../../../src/sharedTypes'
 
 describe('CachingStreamMessageValidator', () => {
-    let cacheTimeoutMillis
-    let cacheErrorsTimeoutMillis
-    let getStream
-    let isPublisher
-    let isSubscriber
-    let verify
-    let streamMetadata
-    let msg
+    let cacheTimeoutMillis: Todo
+    let cacheErrorsTimeoutMillis: Todo
+    let getStream: Todo
+    let isPublisher: Todo
+    let isSubscriber: Todo
+    let verify: Todo
+    let streamMetadata: Todo
+    let msg: Todo
 
     const getValidator = () => new CachingStreamMessageValidator({
         getStream,

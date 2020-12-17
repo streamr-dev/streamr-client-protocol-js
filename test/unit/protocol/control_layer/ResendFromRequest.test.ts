@@ -1,4 +1,3 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import ResendFromRequest from '../../../../src/protocol/control_layer/resend_request/ResendFromRequest'

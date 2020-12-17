@@ -1,4 +1,3 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import StatusMessage from '../../../../src/protocol/tracker_layer/status_message/StatusMessage'
