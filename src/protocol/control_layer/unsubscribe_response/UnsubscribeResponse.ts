@@ -1,9 +1,13 @@
-// @ts-nocheck
 import ControlMessage from '../ControlMessage'
 import { validateIsNotEmptyString, validateIsNotNegativeInteger } from '../../../utils/validations'
+import { Todo } from '../../../sharedTypes'
 
 export default class UnsubscribeResponse extends ControlMessage {
-    constructor({ version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition }) {
+    
+    streamId: string
+    streamPartition: number
+
+    constructor({ version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition }: Todo) {
         super(version, ControlMessage.TYPES.UnsubscribeResponse, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

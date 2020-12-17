@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InvalidJsonError from '../../errors/InvalidJsonError'
 import ValidationError from '../../errors/ValidationError'
 import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
@@ -7,8 +6,9 @@ import { validateIsNotEmptyString, validateIsString, validateIsType } from '../.
 import MessageRef from './MessageRef'
 import MessageID from './MessageID'
 import EncryptedGroupKey from './EncryptedGroupKey'
+import { Todo } from '../../sharedTypes'
 
-const serializerByVersion = {}
+const serializerByVersion: Todo = {}
 const BYE_KEY = '_bye'
 const LATEST_VERSION = 32
 
@@ -43,6 +43,19 @@ export default class StreamMessage {
     }
     static VALID_ENCRYPTIONS = new Set(Object.values(StreamMessage.ENCRYPTION_TYPES))
 
+    messageId: Todo
+    prevMsgRef: Todo
+    content: Todo
+    messageType: Todo 
+    contentType: Todo 
+    encryptionType: Todo
+    groupKeyId: string | undefined | null
+    newGroupKey: Todo
+    signatureType: Todo
+    signature: string | undefined | null
+    parsedContent?: Todo
+    serializedContent?: Todo
+
     constructor({
         messageId,
         prevMsgRef = null,
@@ -54,7 +67,7 @@ export default class StreamMessage {
         newGroupKey = null,
         signatureType = StreamMessage.SIGNATURE_TYPES.NONE,
         signature = null,
-    }) {
+    }: Todo) {
         validateIsType('messageId', messageId, 'MessageID', MessageID)
         this.messageId = messageId
 
@@ -149,7 +162,8 @@ export default class StreamMessage {
                     this.parsedContent = JSON.parse(this.serializedContent)
                 } catch (err) {
                     throw new InvalidJsonError(
-                        this.streamId,
+                        // @ts-ignore TODO bug?
+                        this.streamId,  
                         this.serializedContent,
                         err,
                         this,
@@ -195,7 +209,7 @@ export default class StreamMessage {
         throw new Error(`Unrecognized signature type: ${this.signatureType}`)
     }
 
-    static registerSerializer(version, serializer) {
+    static registerSerializer(version: number, serializer: Todo) {
         // Check the serializer interface
         if (!serializer.fromArray) {
             throw new Error(`Serializer ${JSON.stringify(serializer)} doesn't implement a method fromArray!`)
@@ -212,11 +226,11 @@ export default class StreamMessage {
         serializerByVersion[version] = serializer
     }
 
-    static unregisterSerializer(version) {
+    static unregisterSerializer(version: number) {
         delete serializerByVersion[version]
     }
 
-    static getSerializer(version) {
+    static getSerializer(version: number) {
         const clazz = serializerByVersion[version]
         if (!clazz) {
             throw new UnsupportedVersionError(version, `Supported versions: [${StreamMessage.getSupportedVersions()}]`)
@@ -236,7 +250,7 @@ export default class StreamMessage {
     /**
      * Takes a serialized representation (array or string) of a message, and returns a StreamMessage instance.
      */
-    static deserialize(msg) {
+    static deserialize(msg: Todo) {
         const messageArray = (typeof msg === 'string' ? JSON.parse(msg) : msg)
 
         /* eslint-disable prefer-destructuring */
@@ -247,35 +261,35 @@ export default class StreamMessage {
         return C.fromArray(messageArray)
     }
 
-    static validateMessageType(messageType) {
+    static validateMessageType(messageType: Todo) {
         if (!StreamMessage.VALID_MESSAGE_TYPES.has(messageType)) {
             throw new ValidationError(`Unsupported message type: ${messageType}`)
         }
     }
 
-    static validateContentType(contentType) {
+    static validateContentType(contentType: Todo) {
         if (!StreamMessage.VALID_CONTENT_TYPES.has(contentType)) {
             throw new ValidationError(`Unsupported content type: ${contentType}`)
         }
     }
 
-    static validateEncryptionType(encryptionType) {
+    static validateEncryptionType(encryptionType: Todo) {
         if (!StreamMessage.VALID_ENCRYPTIONS.has(encryptionType)) {
             throw new ValidationError(`Unsupported encryption type: ${encryptionType}`)
         }
     }
 
-    static validateSignatureType(signatureType) {
+    static validateSignatureType(signatureType: Todo) {
         if (!StreamMessage.VALID_SIGNATURE_TYPES.has(signatureType)) {
             throw new ValidationError(`Unsupported signature type: ${signatureType}`)
         }
     }
 
-    static versionSupportsEncryption(streamMessageVersion) {
+    static versionSupportsEncryption(streamMessageVersion: number) {
         return streamMessageVersion >= 31
     }
 
-    static validateSequence({ messageId, prevMsgRef }) {
+    static validateSequence({ messageId, prevMsgRef }: Todo) {
         if (!prevMsgRef) {
             return
         }

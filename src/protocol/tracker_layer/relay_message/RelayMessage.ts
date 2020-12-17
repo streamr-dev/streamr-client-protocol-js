@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { Todo } from '../../../sharedTypes'
 import {
     validateIsNotEmptyString,
     validateIsNotNullOrUndefined,
@@ -6,6 +6,12 @@ import {
 import TrackerMessage from '../TrackerMessage'
 
 export default class RelayMessage extends TrackerMessage {
+
+    originator: Todo
+    targetNode: string
+    subType: string
+    data: Todo
+
     constructor({
         version = TrackerMessage.LATEST_VERSION,
         requestId,
@@ -13,7 +19,7 @@ export default class RelayMessage extends TrackerMessage {
         targetNode,
         subType,
         data
-    }) {
+    }: Todo) {
         super(version, TrackerMessage.TYPES.RelayMessage, requestId)
 
         validateIsNotNullOrUndefined('originator', originator)

@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { Todo } from '../../../sharedTypes'
 import {
     validateIsOneOf,
     validateIsNotEmptyString,
@@ -10,7 +10,13 @@ const ERROR_CODES = Object.freeze({
 })
 
 export default class ErrorMessage extends TrackerMessage {
-    constructor({ version = TrackerMessage.LATEST_VERSION, requestId, errorCode, targetNode }) {
+    
+    static ERROR_CODES = ERROR_CODES
+
+    errorCode: Todo
+    targetNode: string
+
+    constructor({ version = TrackerMessage.LATEST_VERSION, requestId, errorCode, targetNode }: Todo) {
         super(version, TrackerMessage.TYPES.ErrorMessage, requestId)
 
         validateIsOneOf('errorCode', errorCode, Object.values(ERROR_CODES))
@@ -20,5 +26,3 @@ export default class ErrorMessage extends TrackerMessage {
         this.targetNode = targetNode
     }
 }
-
-ErrorMessage.ERROR_CODES = ERROR_CODES

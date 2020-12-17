@@ -1,9 +1,9 @@
-// @ts-nocheck
 import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
 import UnsupportedTypeError from '../../errors/UnsupportedTypeError'
 import { validateIsInteger, validateIsString } from '../../utils/validations'
+import { Todo } from '../../sharedTypes'
 
-const serializerByVersionAndType = {}
+const serializerByVersionAndType: Todo = {}
 const LATEST_VERSION = 1
 
 export default class TrackerMessage {
@@ -19,7 +19,11 @@ export default class TrackerMessage {
         ErrorMessage: 6
     }
 
-    constructor(version = LATEST_VERSION, type, requestId) {
+    version: number
+    type: number
+    requestId: string
+
+    constructor(version = LATEST_VERSION, type: number, requestId: string) {
         if (new.target === TrackerMessage) {
             throw new TypeError('TrackerMessage is abstract.')
         }
@@ -33,7 +37,7 @@ export default class TrackerMessage {
         this.requestId = requestId
     }
 
-    static registerSerializer(version, type, serializer) {
+    static registerSerializer(version: number, type: number, serializer: Todo) {
         // Check the serializer interface
         if (!serializer.fromArray) {
             throw new Error(`Serializer ${JSON.stringify(serializer)} doesn't implement a method fromArray!`)
@@ -53,11 +57,11 @@ export default class TrackerMessage {
         serializerByVersionAndType[version][type] = serializer
     }
 
-    static unregisterSerializer(version, type) {
+    static unregisterSerializer(version: number, type: number) {
         delete serializerByVersionAndType[version][type]
     }
 
-    static getSerializer(version, type) {
+    static getSerializer(version: number, type: number) {
         const serializersByType = serializerByVersionAndType[version]
         if (!serializersByType) {
             throw new UnsupportedVersionError(version, `Supported versions: [${TrackerMessage.getSupportedVersions()}]`)
@@ -73,14 +77,14 @@ export default class TrackerMessage {
         return Object.keys(serializerByVersionAndType).map((key) => parseInt(key, 10))
     }
 
-    serialize(version = this.version, ...typeSpecificSerializeArgs) {
+    serialize(version = this.version, ...typeSpecificSerializeArgs: Todo[]) {
         return JSON.stringify(TrackerMessage.getSerializer(version, this.type).toArray(this, ...typeSpecificSerializeArgs))
     }
 
     /**
      * Takes a serialized representation (array or string) of a message, and returns a ControlMessage instance.
      */
-    static deserialize(msg, ...typeSpecificDeserializeArgs) {
+    static deserialize(msg: Todo, ...typeSpecificDeserializeArgs: Todo[]) {
         const messageArray = (typeof msg === 'string' ? JSON.parse(msg) : msg)
 
         /* eslint-disable prefer-destructuring */

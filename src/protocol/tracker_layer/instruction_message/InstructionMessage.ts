@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { Todo } from '../../../sharedTypes'
 import {
     validateIsNotEmptyString,
     validateIsNotNegativeInteger,
@@ -7,9 +7,15 @@ import {
 import TrackerMessage from '../TrackerMessage'
 
 export default class InstructionMessage extends TrackerMessage {
+
+    streamId: string
+    streamPartition: number
+    nodeIds: Todo
+    counter: number
+
     constructor({
         version = TrackerMessage.LATEST_VERSION, requestId, streamId, streamPartition, nodeIds, counter
-    }) {
+    }: Todo) {
         super(version, TrackerMessage.TYPES.InstructionMessage, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

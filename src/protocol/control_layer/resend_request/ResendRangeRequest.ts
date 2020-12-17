@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ControlMessage from '../ControlMessage'
 import {
     validateIsNotEmptyString,
@@ -8,11 +7,21 @@ import {
 } from '../../../utils/validations'
 import MessageRef from '../../message_layer/MessageRef'
 import ValidationError from '../../../errors/ValidationError'
+import { Todo } from '../../../sharedTypes'
 
 export default class ResendRangeRequest extends ControlMessage {
+
+    streamId: string
+    streamPartition: number
+    fromMsgRef: Todo
+    toMsgRef: Todo
+    publisherId: string | undefined | null
+    msgChainId: string | undefined | null
+    sessionToken: string | undefined | null
+
     constructor({
         version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, fromMsgRef, toMsgRef, publisherId, msgChainId, sessionToken
-    }) {
+    }: Todo) {
         super(version, ControlMessage.TYPES.ResendRangeRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

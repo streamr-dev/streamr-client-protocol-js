@@ -1,9 +1,13 @@
-// @ts-nocheck
 import ControlMessage from '../ControlMessage'
 import { validateIsNotNullOrUndefined, validateIsString } from '../../../utils/validations'
+import { Todo } from '../../../sharedTypes'
 
 export default class PublishRequest extends ControlMessage {
-    constructor({ version = ControlMessage.LATEST_VERSION, requestId, streamMessage, sessionToken }) {
+
+    streamMessage: Todo
+    sessionToken: string | undefined | null
+
+    constructor({ version = ControlMessage.LATEST_VERSION, requestId, streamMessage, sessionToken }: Todo) {
         super(version, ControlMessage.TYPES.PublishRequest, requestId)
 
         validateIsNotNullOrUndefined('streamMessage', streamMessage)

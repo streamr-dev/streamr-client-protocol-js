@@ -1,9 +1,13 @@
-// @ts-nocheck
 import ControlMessage from '../ControlMessage'
 import { validateIsNotEmptyString, validateIsNotNegativeInteger } from '../../../utils/validations'
+import { Todo } from '../../../sharedTypes'
 
 export default class ResendResponseResent extends ControlMessage {
-    constructor({ version, requestId, streamId, streamPartition }) {
+
+    streamId: string
+    streamPartition: number
+
+    constructor({ version, requestId, streamId, streamPartition }: Todo) {
         super(version, ControlMessage.TYPES.ResendResponseResent, requestId)
 
         validateIsNotEmptyString('streamId', streamId)
