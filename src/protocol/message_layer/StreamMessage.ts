@@ -13,6 +13,36 @@ const BYE_KEY = '_bye'
 const LATEST_VERSION = 32
 
 export default class StreamMessage {
+    static LATEST_VERSION = LATEST_VERSION
+
+    static MESSAGE_TYPES = {
+        MESSAGE: 27,
+        GROUP_KEY_REQUEST: 28,
+        GROUP_KEY_RESPONSE: 29,
+        GROUP_KEY_ANNOUNCE: 30,
+        GROUP_KEY_ERROR_RESPONSE: 31,
+    }
+    static VALID_MESSAGE_TYPES = new Set(Object.values(StreamMessage.MESSAGE_TYPES))
+
+    static CONTENT_TYPES = {
+        JSON: 0,
+    }
+    static VALID_CONTENT_TYPES = new Set(Object.values(StreamMessage.CONTENT_TYPES))
+
+    static SIGNATURE_TYPES = {
+        NONE: 0,
+        ETH_LEGACY: 1,
+        ETH: 2,
+    }
+    static VALID_SIGNATURE_TYPES = new Set(Object.values(StreamMessage.SIGNATURE_TYPES))
+
+    static ENCRYPTION_TYPES = {
+        NONE: 0,
+        RSA: 1,
+        AES: 2,
+    }
+    static VALID_ENCRYPTIONS = new Set(Object.values(StreamMessage.ENCRYPTION_TYPES))
+
     constructor({
         messageId,
         prevMsgRef = null,
@@ -281,34 +311,3 @@ export default class StreamMessage {
         }
     }
 }
-
-/* static */
-StreamMessage.LATEST_VERSION = LATEST_VERSION
-
-StreamMessage.MESSAGE_TYPES = {
-    MESSAGE: 27,
-    GROUP_KEY_REQUEST: 28,
-    GROUP_KEY_RESPONSE: 29,
-    GROUP_KEY_ANNOUNCE: 30,
-    GROUP_KEY_ERROR_RESPONSE: 31,
-}
-StreamMessage.VALID_MESSAGE_TYPES = new Set(Object.values(StreamMessage.MESSAGE_TYPES))
-
-StreamMessage.CONTENT_TYPES = {
-    JSON: 0,
-}
-StreamMessage.VALID_CONTENT_TYPES = new Set(Object.values(StreamMessage.CONTENT_TYPES))
-
-StreamMessage.SIGNATURE_TYPES = {
-    NONE: 0,
-    ETH_LEGACY: 1,
-    ETH: 2,
-}
-StreamMessage.VALID_SIGNATURE_TYPES = new Set(Object.values(StreamMessage.SIGNATURE_TYPES))
-
-StreamMessage.ENCRYPTION_TYPES = {
-    NONE: 0,
-    RSA: 1,
-    AES: 2,
-}
-StreamMessage.VALID_ENCRYPTIONS = new Set(Object.values(StreamMessage.ENCRYPTION_TYPES))

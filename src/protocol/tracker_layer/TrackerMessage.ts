@@ -7,6 +7,18 @@ const serializerByVersionAndType = {}
 const LATEST_VERSION = 1
 
 export default class TrackerMessage {
+
+    static LATEST_VERSION = LATEST_VERSION
+
+    static TYPES = {
+        StatusMessage: 1,
+        InstructionMessage: 2,
+        StorageNodesRequest: 3,
+        StorageNodesResponse: 4,
+        RelayMessage: 5,
+        ErrorMessage: 6
+    }
+
     constructor(version = LATEST_VERSION, type, requestId) {
         if (new.target === TrackerMessage) {
             throw new TypeError('TrackerMessage is abstract.')
@@ -81,14 +93,3 @@ export default class TrackerMessage {
     }
 }
 
-/* static */
-TrackerMessage.LATEST_VERSION = LATEST_VERSION
-
-TrackerMessage.TYPES = {
-    StatusMessage: 1,
-    InstructionMessage: 2,
-    StorageNodesRequest: 3,
-    StorageNodesResponse: 4,
-    RelayMessage: 5,
-    ErrorMessage: 6
-}

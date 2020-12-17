@@ -7,6 +7,26 @@ const serializerByVersionAndType = {}
 const LATEST_VERSION = 2
 
 export default class ControlMessage {
+
+    static LATEST_VERSION = LATEST_VERSION
+
+    static TYPES = {
+        BroadcastMessage: 0,
+        UnicastMessage: 1,
+        SubscribeResponse: 2,
+        UnsubscribeResponse: 3,
+        ResendResponseResending: 4,
+        ResendResponseResent: 5,
+        ResendResponseNoResend: 6,
+        ErrorResponse: 7,
+        PublishRequest: 8,
+        SubscribeRequest: 9,
+        UnsubscribeRequest: 10,
+        ResendLastRequest: 11,
+        ResendFromRequest: 12,
+        ResendRangeRequest: 13,
+    }
+
     constructor(version = LATEST_VERSION, type, requestId) {
         if (new.target === ControlMessage) {
             throw new TypeError('ControlMessage is abstract.')
@@ -79,24 +99,4 @@ export default class ControlMessage {
         const C = ControlMessage.getSerializer(messageVersion, messageType)
         return C.fromArray(messageArray, ...typeSpecificDeserializeArgs)
     }
-}
-
-/* static */
-ControlMessage.LATEST_VERSION = LATEST_VERSION
-
-ControlMessage.TYPES = {
-    BroadcastMessage: 0,
-    UnicastMessage: 1,
-    SubscribeResponse: 2,
-    UnsubscribeResponse: 3,
-    ResendResponseResending: 4,
-    ResendResponseResent: 5,
-    ResendResponseNoResend: 6,
-    ErrorResponse: 7,
-    PublishRequest: 8,
-    SubscribeRequest: 9,
-    UnsubscribeRequest: 10,
-    ResendLastRequest: 11,
-    ResendFromRequest: 12,
-    ResendRangeRequest: 13,
 }
