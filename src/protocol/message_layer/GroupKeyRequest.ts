@@ -24,7 +24,6 @@ export default class GroupKeyRequest extends GroupKeyMessage {
     }
 
     toArray() {
-        // @ts-ignore TODO check
         return [this.requestId, this.streamId, this.rsaPublicKey, this.groupKeyIds]
     }
 

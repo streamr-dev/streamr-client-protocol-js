@@ -25,7 +25,6 @@ export default class GroupKeyAnnounce extends GroupKeyMessage {
     }
 
     toArray() {
-        // @ts-ignore TODO check
         return [this.streamId, this.encryptedGroupKeys.map((it: Todo) => it.toArray())]
     }
 

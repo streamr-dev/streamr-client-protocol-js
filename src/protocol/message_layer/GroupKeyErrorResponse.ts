@@ -30,7 +30,6 @@ export default class GroupKeyErrorResponse extends GroupKeyMessage {
     }
 
     toArray() {
-        // @ts-ignore TODO check
         return [this.requestId, this.streamId, this.errorCode, this.errorMessage, this.groupKeyIds]
     }
 
