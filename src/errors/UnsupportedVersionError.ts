@@ -1,6 +1,10 @@
-// @ts-nocheck
+import { Todo } from '../sharedTypes'
+
 export default class UnsupportedVersionError extends Error {
-    constructor(version, message) {
+    
+    version: Todo
+
+    constructor(version: Todo, message: Todo) {
         super(`Unsupported version: ${version}, message: ${message}`)
         this.version = version
         if (Error.captureStackTrace) {

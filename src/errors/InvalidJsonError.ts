@@ -1,6 +1,13 @@
-// @ts-nocheck
+import { Todo } from '../sharedTypes'
+
 export default class InvalidJsonError extends Error {
-    constructor(streamId, jsonString, parseError, streamMessage) {
+
+    streamId: Todo
+    jsonString: Todo
+    parseError: Todo
+    streamMessage: Todo
+
+    constructor(streamId: Todo, jsonString: Todo, parseError: Todo, streamMessage: Todo) {
         super(`Invalid JSON in stream ${streamId}: ${jsonString}. Error while parsing was: ${parseError}`)
         this.streamId = streamId
         this.jsonString = jsonString

@@ -1,6 +1,10 @@
-// @ts-nocheck
+import { Todo } from '../sharedTypes'
+
 export default class UnsupportedTypeError extends Error {
-    constructor(type, message) {
+    
+    type: Todo
+    
+    constructor(type: Todo, message: Todo) {
         super(`Unsupported type: ${type}, message: ${message}`)
         this.type = type
         if (Error.captureStackTrace) {
