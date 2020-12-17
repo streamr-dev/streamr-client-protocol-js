@@ -1,4 +1,3 @@
-// @ts-nocheck
 import TrackerMessage from '../TrackerMessage'
 
 import StorageNodesRequest from './StorageNodesRequest'

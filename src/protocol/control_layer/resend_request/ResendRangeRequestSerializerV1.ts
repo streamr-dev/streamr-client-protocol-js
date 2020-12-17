@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ControlMessage from '../ControlMessage'
 import MessageRef from '../../message_layer/MessageRef'
 
@@ -44,7 +43,9 @@ export default class ResendRangeRequestSerializerV1 extends Serializer<Todo> {
             requestId,
             streamId,
             streamPartition,
+            // @ts-ignore TODO check
             fromMsgRef: new MessageRef(...fromMsgRefArr),
+            // @ts-ignore TODO check
             toMsgRef: new MessageRef(...toMsgRefArr),
             publisherId,
             msgChainId,

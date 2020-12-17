@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ControlMessage from '../ControlMessage'
 
 import ErrorResponse from './ErrorResponse'

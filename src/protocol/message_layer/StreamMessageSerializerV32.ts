@@ -1,4 +1,3 @@
-// @ts-nocheck
 import StreamMessage from './StreamMessage'
 import MessageRef from './MessageRef'
 import MessageIDStrict from './MessageIDStrict'

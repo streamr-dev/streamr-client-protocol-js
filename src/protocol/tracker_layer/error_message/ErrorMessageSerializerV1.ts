@@ -1,4 +1,3 @@
-// @ts-nocheck
 import TrackerMessage from '../TrackerMessage'
 
 import ErrorMessage from './ErrorMessage'

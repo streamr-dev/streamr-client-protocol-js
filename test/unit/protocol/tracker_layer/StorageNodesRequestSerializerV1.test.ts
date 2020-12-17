@@ -1,4 +1,3 @@
-// @ts-nocheck
 import assert from 'assert'
 
 import '../../../../src/index' // imported for side effects
