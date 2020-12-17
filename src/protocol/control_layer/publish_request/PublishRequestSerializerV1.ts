@@ -4,10 +4,13 @@ import StreamMessage from '../../message_layer/StreamMessage'
 
 import PublishRequest from './PublishRequest'
 
+import { Serializer } from '../../../Serializer'
+import { Todo } from '../../../sharedTypes'
+
 const VERSION = 1
 
-export default class PublishRequestSerializerV1 {
-    static toArray(publishRequest, streamMessageVersion = StreamMessage.LATEST_VERSION) {
+export default class PublishRequestSerializerV1 extends Serializer<Todo> {
+    toArray(publishRequest: Todo, streamMessageVersion = StreamMessage.LATEST_VERSION) {
         return [
             VERSION,
             ControlMessage.TYPES.PublishRequest,
@@ -16,7 +19,7 @@ export default class PublishRequestSerializerV1 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
@@ -32,4 +35,4 @@ export default class PublishRequestSerializerV1 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.PublishRequest, PublishRequestSerializerV1)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.PublishRequest, new PublishRequestSerializerV1())

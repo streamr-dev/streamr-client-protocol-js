@@ -3,10 +3,13 @@ import ControlMessage from '../ControlMessage'
 
 import UnsubscribeResponse from './UnsubscribeResponse'
 
+import { Serializer } from '../../../Serializer'
+import { Todo } from '../../../sharedTypes'
+
 const VERSION = 2
 
-export default class UnsubscribeResponseSerializerV2 {
-    static toArray(unsubscribeResponse) {
+export default class UnsubscribeResponseSerializerV2 extends Serializer<Todo> {
+    toArray(unsubscribeResponse: Todo) {
         return [
             VERSION,
             ControlMessage.TYPES.UnsubscribeResponse,
@@ -16,7 +19,7 @@ export default class UnsubscribeResponseSerializerV2 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
@@ -31,4 +34,4 @@ export default class UnsubscribeResponseSerializerV2 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.UnsubscribeResponse, UnsubscribeResponseSerializerV2)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.UnsubscribeResponse, new UnsubscribeResponseSerializerV2())

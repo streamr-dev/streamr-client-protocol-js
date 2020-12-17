@@ -3,10 +3,13 @@ import ControlMessage from '../ControlMessage'
 
 import ResendResponseResending from './ResendResponseResending'
 
+import { Serializer } from '../../../Serializer'
+import { Todo } from '../../../sharedTypes'
+
 const VERSION = 1
 
-export default class ResendResponseResendingSerializerV1 {
-    static toArray(resendResponseResending) {
+export default class ResendResponseResendingSerializerV1 extends Serializer<Todo> {
+    toArray(resendResponseResending: Todo) {
         return [
             VERSION,
             ControlMessage.TYPES.ResendResponseResending,
@@ -16,7 +19,7 @@ export default class ResendResponseResendingSerializerV1 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
@@ -31,4 +34,4 @@ export default class ResendResponseResendingSerializerV1 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.ResendResponseResending, ResendResponseResendingSerializerV1)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.ResendResponseResending, new ResendResponseResendingSerializerV1())

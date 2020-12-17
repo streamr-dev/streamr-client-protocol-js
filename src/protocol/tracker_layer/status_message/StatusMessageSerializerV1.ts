@@ -3,10 +3,13 @@ import TrackerMessage from '../TrackerMessage'
 
 import StatusMessage from './StatusMessage'
 
+import { Serializer } from '../../../Serializer'
+import { Todo } from '../../../sharedTypes'
+
 const VERSION = 1
 
-export default class StatusMessageSerializerV1 {
-    static toArray(statusMessage) {
+export default class StatusMessageSerializerV1 extends Serializer<Todo> {
+    toArray(statusMessage: Todo) {
         return [
             VERSION,
             TrackerMessage.TYPES.StatusMessage,
@@ -15,7 +18,7 @@ export default class StatusMessageSerializerV1 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
@@ -29,4 +32,4 @@ export default class StatusMessageSerializerV1 {
     }
 }
 
-TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.StatusMessage, StatusMessageSerializerV1)
+TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.StatusMessage, new StatusMessageSerializerV1())

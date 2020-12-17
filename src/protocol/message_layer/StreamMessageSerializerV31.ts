@@ -3,10 +3,13 @@ import StreamMessage from './StreamMessage'
 import MessageRef from './MessageRef'
 import MessageIDStrict from './MessageIDStrict'
 
+import { Serializer } from '../../Serializer'
+import { Todo } from '../../sharedTypes'
+
 const VERSION = 31
 
-export default class StreamMessageSerializerV31 {
-    static toArray(streamMessage) {
+export default class StreamMessageSerializerV31 extends Serializer<StreamMessage> {
+    toArray(streamMessage: Todo) {
         return [
             VERSION,
             streamMessage.messageId.toArray(),
@@ -19,7 +22,7 @@ export default class StreamMessageSerializerV31 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version, // eslint-disable-line no-unused-vars
             messageIdArr,
@@ -44,4 +47,4 @@ export default class StreamMessageSerializerV31 {
     }
 }
 
-StreamMessage.registerSerializer(VERSION, StreamMessageSerializerV31)
+StreamMessage.registerSerializer(VERSION, new StreamMessageSerializerV31())

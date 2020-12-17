@@ -3,10 +3,13 @@ import TrackerMessage from '../TrackerMessage'
 
 import RelayMessage from './RelayMessage'
 
+import { Serializer } from '../../../Serializer'
+import { Todo } from '../../../sharedTypes'
+
 const VERSION = 1
 
-export default class RelayMessageSerializerV1 {
-    static toArray(relayMessage) {
+export default class RelayMessageSerializerV1 extends Serializer<Todo> {
+    toArray(relayMessage: Todo) {
         return [
             VERSION,
             TrackerMessage.TYPES.RelayMessage,
@@ -18,7 +21,7 @@ export default class RelayMessageSerializerV1 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
@@ -35,4 +38,4 @@ export default class RelayMessageSerializerV1 {
     }
 }
 
-TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.RelayMessage, RelayMessageSerializerV1)
+TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.RelayMessage, new RelayMessageSerializerV1())

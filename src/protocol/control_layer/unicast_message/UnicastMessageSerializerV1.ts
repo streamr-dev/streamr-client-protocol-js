@@ -4,10 +4,13 @@ import StreamMessage from '../../message_layer/StreamMessage'
 
 import UnicastMessage from './UnicastMessage'
 
+import { Serializer } from '../../../Serializer'
+import { Todo } from '../../../sharedTypes'
+
 const VERSION = 1
 
-export default class UnicastMessageSerializerV1 {
-    static toArray(unicastMessage, streamMessageVersion = StreamMessage.LATEST_VERSION) {
+export default class UnicastMessageSerializerV1 extends Serializer<Todo> {
+    toArray(unicastMessage: Todo, streamMessageVersion = StreamMessage.LATEST_VERSION) {
         return [
             VERSION,
             ControlMessage.TYPES.UnicastMessage,
@@ -16,7 +19,7 @@ export default class UnicastMessageSerializerV1 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
@@ -30,4 +33,4 @@ export default class UnicastMessageSerializerV1 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.UnicastMessage, UnicastMessageSerializerV1)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.UnicastMessage, new UnicastMessageSerializerV1())

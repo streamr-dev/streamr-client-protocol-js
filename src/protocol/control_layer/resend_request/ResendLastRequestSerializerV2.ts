@@ -3,10 +3,13 @@ import ControlMessage from '../ControlMessage'
 
 import ResendLastRequest from './ResendLastRequest'
 
+import { Serializer } from '../../../Serializer'
+import { Todo } from '../../../sharedTypes'
+
 const VERSION = 2
 
-export default class ResendLastRequestSerializerV2 {
-    static toArray(resendLastRequest) {
+export default class ResendLastRequestSerializerV2 extends Serializer<Todo> {
+    toArray(resendLastRequest: Todo) {
         return [
             VERSION,
             ControlMessage.TYPES.ResendLastRequest,
@@ -18,7 +21,7 @@ export default class ResendLastRequestSerializerV2 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
@@ -35,4 +38,4 @@ export default class ResendLastRequestSerializerV2 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.ResendLastRequest, ResendLastRequestSerializerV2)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.ResendLastRequest, new ResendLastRequestSerializerV2())

@@ -4,10 +4,13 @@ import StreamMessage from '../../message_layer/StreamMessage'
 
 import BroadcastMessage from './BroadcastMessage'
 
+import { Serializer } from '../../../Serializer'
+import { Todo } from '../../../sharedTypes'
+
 const VERSION = 2
 
-export default class BroadcastMessageSerializerV2 {
-    static toArray(broadcastMessage, streamMessageVersion = StreamMessage.LATEST_VERSION) {
+export default class BroadcastMessageSerializerV2 extends Serializer<Todo> {
+    toArray(broadcastMessage: Todo, streamMessageVersion = StreamMessage.LATEST_VERSION) {
         return [
             VERSION,
             ControlMessage.TYPES.BroadcastMessage,
@@ -16,7 +19,7 @@ export default class BroadcastMessageSerializerV2 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
@@ -32,4 +35,4 @@ export default class BroadcastMessageSerializerV2 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.BroadcastMessage, BroadcastMessageSerializerV2)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.BroadcastMessage, new BroadcastMessageSerializerV2())

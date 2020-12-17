@@ -3,10 +3,13 @@ import ControlMessage from '../ControlMessage'
 
 import ErrorResponse from './ErrorResponse'
 
+import { Serializer } from '../../../Serializer'
+import { Todo } from '../../../sharedTypes'
+
 const VERSION = 1
 
-export default class ErrorResponseSerializerV1 {
-    static toArray(errorResponse) {
+export default class ErrorResponseSerializerV1 extends Serializer<Todo> {
+    toArray(errorResponse: Todo) {
         return [
             VERSION,
             ControlMessage.TYPES.ErrorResponse,
@@ -14,7 +17,7 @@ export default class ErrorResponseSerializerV1 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
@@ -27,4 +30,4 @@ export default class ErrorResponseSerializerV1 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.ErrorResponse, ErrorResponseSerializerV1)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.ErrorResponse, new ErrorResponseSerializerV1())

@@ -4,10 +4,13 @@ import MessageRef from '../../message_layer/MessageRef'
 
 import ResendRangeRequest from './ResendRangeRequest'
 
+import { Serializer } from '../../../Serializer'
+import { Todo } from '../../../sharedTypes'
+
 const VERSION = 2
 
-export default class ResendRangeRequestSerializerV2 {
-    static toArray(resendRangeRequest) {
+export default class ResendRangeRequestSerializerV2 extends Serializer<Todo> {
+    toArray(resendRangeRequest: Todo) {
         return [
             VERSION,
             ControlMessage.TYPES.ResendRangeRequest,
@@ -22,7 +25,7 @@ export default class ResendRangeRequestSerializerV2 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
@@ -50,4 +53,4 @@ export default class ResendRangeRequestSerializerV2 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.ResendRangeRequest, ResendRangeRequestSerializerV2)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.ResendRangeRequest, new ResendRangeRequestSerializerV2())

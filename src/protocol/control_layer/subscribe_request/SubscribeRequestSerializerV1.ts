@@ -3,10 +3,13 @@ import ControlMessage from '../ControlMessage'
 
 import SubscribeRequest from './SubscribeRequest'
 
+import { Serializer } from '../../../Serializer'
+import { Todo } from '../../../sharedTypes'
+
 const VERSION = 1
 
-export default class SubscribeRequestSerializerV1 {
-    static toArray(subscribeRequest) {
+export default class SubscribeRequestSerializerV1 extends Serializer<Todo> {
+    toArray(subscribeRequest: Todo) {
         return [
             VERSION,
             ControlMessage.TYPES.SubscribeRequest,
@@ -16,7 +19,7 @@ export default class SubscribeRequestSerializerV1 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
@@ -31,4 +34,4 @@ export default class SubscribeRequestSerializerV1 {
     }
 }
 
-ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.SubscribeRequest, SubscribeRequestSerializerV1)
+ControlMessage.registerSerializer(VERSION, ControlMessage.TYPES.SubscribeRequest, new SubscribeRequestSerializerV1())

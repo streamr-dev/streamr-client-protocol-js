@@ -3,10 +3,13 @@ import TrackerMessage from '../TrackerMessage'
 
 import StorageNodesResponse from './StorageNodesResponse'
 
+import { Serializer } from '../../../Serializer'
+import { Todo } from '../../../sharedTypes'
+
 const VERSION = 1
 
-export default class StorageNodesResponseSerializerV1 {
-    static toArray(storageNodesResponse) {
+export default class StorageNodesResponseSerializerV1 extends Serializer<Todo> {
+    toArray(storageNodesResponse: Todo) {
         return [
             VERSION,
             TrackerMessage.TYPES.StorageNodesResponse,
@@ -17,7 +20,7 @@ export default class StorageNodesResponseSerializerV1 {
         ]
     }
 
-    static fromArray(arr) {
+    fromArray(arr: Todo) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
@@ -33,4 +36,4 @@ export default class StorageNodesResponseSerializerV1 {
     }
 }
 
-TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.StorageNodesResponse, StorageNodesResponseSerializerV1)
+TrackerMessage.registerSerializer(VERSION, TrackerMessage.TYPES.StorageNodesResponse, new StorageNodesResponseSerializerV1())
