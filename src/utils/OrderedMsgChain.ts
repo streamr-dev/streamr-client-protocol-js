@@ -115,8 +115,7 @@ export default class OrderedMsgChain extends EventEmitter {
                 this.clearGap()
                 this._process(msg)
             } else {
-                // @ts-ignore TODO bug?
-                this._scheduleGap(msg)
+                this._scheduleGap()
                 break
             }
         }
