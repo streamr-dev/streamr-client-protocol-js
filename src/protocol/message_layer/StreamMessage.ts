@@ -162,8 +162,7 @@ export default class StreamMessage {
                     this.parsedContent = JSON.parse(this.serializedContent)
                 } catch (err) {
                     throw new InvalidJsonError(
-                        // @ts-ignore TODO bug?
-                        this.streamId,  
+                        this.getStreamId(),
                         this.serializedContent,
                         err,
                         this,
