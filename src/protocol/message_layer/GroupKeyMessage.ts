@@ -3,9 +3,9 @@ import { validateIsString } from '../../utils/validations'
 
 import StreamMessage from './StreamMessage'
 
-export default class GroupKeyMessage {
+export default abstract class GroupKeyMessage {
 
-    static classByMessageType: Todo
+    static classByMessageType: Todo = {}
 
     streamId: string
     messageType: Todo
@@ -19,7 +19,6 @@ export default class GroupKeyMessage {
     }
 
     serialize() {
-        // @ts-ignore TODO bug?
         return JSON.stringify(this.toArray())
     }
 
@@ -42,6 +41,6 @@ export default class GroupKeyMessage {
             messageType: this.messageType,
         })
     }
-}
 
-GroupKeyMessage.classByMessageType = {}
+    abstract toArray(): Todo
+}
