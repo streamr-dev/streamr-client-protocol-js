@@ -1,13 +1,17 @@
-// @ts-nocheck
 import { validateIsArray, validateIsString } from '../../utils/validations'
 import ValidationError from '../../errors/ValidationError'
 
 import StreamMessage from './StreamMessage'
 import GroupKeyMessage from './GroupKeyMessage'
 import EncryptedGroupKey from './EncryptedGroupKey'
+import { Todo } from '../../sharedTypes'
 
 export default class GroupKeyResponse extends GroupKeyMessage {
-    constructor({ requestId, streamId, encryptedGroupKeys }) {
+
+    requestId: string
+    encryptedGroupKeys: Todo
+
+    constructor({ requestId, streamId, encryptedGroupKeys }: Todo) {
         super(streamId, StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE)
 
         validateIsString('requestId', requestId)
@@ -17,7 +21,7 @@ export default class GroupKeyResponse extends GroupKeyMessage {
         this.encryptedGroupKeys = encryptedGroupKeys
 
         // Validate content of encryptedGroupKeys
-        this.encryptedGroupKeys.forEach((it) => {
+        this.encryptedGroupKeys.forEach((it: Todo) => {
             if (!(it instanceof EncryptedGroupKey)) {
                 throw new ValidationError(`Expected 'encryptedGroupKeys' to be a list of EncryptedGroupKey instances! Was: ${this.encryptedGroupKeys}`)
             }
@@ -25,17 +29,19 @@ export default class GroupKeyResponse extends GroupKeyMessage {
     }
 
     toArray() {
-        return [this.requestId, this.streamId, this.encryptedGroupKeys.map((it) => it.toArray())]
+        // @ts-ignore TODO check
+        return [this.requestId, this.streamId, this.encryptedGroupKeys.map((it: Todo) => it.toArray())]
     }
 
-    static fromArray(arr) {
+    static fromArray(arr: Todo) {
         const [requestId, streamId, encryptedGroupKeys] = arr
         return new GroupKeyResponse({
             requestId,
             streamId,
-            encryptedGroupKeys: encryptedGroupKeys.map((it) => EncryptedGroupKey.fromArray(it)),
+            encryptedGroupKeys: encryptedGroupKeys.map((it: Todo) => EncryptedGroupKey.fromArray(it)),
         })
     }
 }
 
+// @ts-ignore TODO static
 GroupKeyMessage.classByMessageType[StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE] = GroupKeyResponse

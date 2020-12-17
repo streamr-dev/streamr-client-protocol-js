@@ -1,15 +1,19 @@
-// @ts-nocheck
+import { Todo } from '../../sharedTypes'
 import { validateIsNotNegativeInteger } from '../../utils/validations'
 
 export default class MessageRef {
-    constructor(timestamp, sequenceNumber) {
+
+    timestamp: number
+    sequenceNumber: number
+
+    constructor(timestamp: number, sequenceNumber: number) {
         validateIsNotNegativeInteger('timestamp', timestamp)
         validateIsNotNegativeInteger('sequenceNumber', sequenceNumber, true)
         this.timestamp = timestamp
         this.sequenceNumber = sequenceNumber
     }
 
-    compareTo(other) {
+    compareTo(other: MessageRef) {
         if (this.timestamp < other.timestamp) {
             return -1
         }
@@ -32,7 +36,7 @@ export default class MessageRef {
         ]
     }
 
-    static fromArray(arr) {
+    static fromArray(arr: Todo) {
         const [
             timestamp,
             sequenceNumber,

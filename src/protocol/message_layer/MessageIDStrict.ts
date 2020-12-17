@@ -1,17 +1,17 @@
-// @ts-nocheck
+import { Todo } from '../../sharedTypes'
 import { validateIsNotNegativeInteger, validateIsString } from '../../utils/validations'
 
 import MessageID from './MessageID'
 
 export default class MessageIDStrict extends MessageID {
-    constructor(streamId, streamPartition, timestamp, sequenceNumber, publisherId, msgChainId) {
+    constructor(streamId: string, streamPartition: number, timestamp: number, sequenceNumber: number, publisherId: string, msgChainId: string) {
         super(streamId, streamPartition, timestamp, sequenceNumber, publisherId, msgChainId)
         validateIsNotNegativeInteger('sequenceNumber', sequenceNumber)
         validateIsString('publisherId', publisherId)
         validateIsString('msgChainId', msgChainId)
     }
 
-    static fromArray(arr) {
+    static fromArray(arr: Todo) {
         const [
             streamId,
             streamPartition,

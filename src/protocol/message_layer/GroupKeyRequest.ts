@@ -1,11 +1,16 @@
-// @ts-nocheck
+import { Todo } from '../../sharedTypes'
 import { validateIsArray, validateIsString } from '../../utils/validations'
 
 import GroupKeyMessage from './GroupKeyMessage'
 import StreamMessage from './StreamMessage'
 
 export default class GroupKeyRequest extends GroupKeyMessage {
-    constructor({ requestId, streamId, rsaPublicKey, groupKeyIds }) {
+
+    requestId: string
+    rsaPublicKey: string
+    groupKeyIds: Todo
+
+    constructor({ requestId, streamId, rsaPublicKey, groupKeyIds }: Todo) {
         super(streamId, StreamMessage.MESSAGE_TYPES.GROUP_KEY_REQUEST)
 
         validateIsString('requestId', requestId)
@@ -19,10 +24,11 @@ export default class GroupKeyRequest extends GroupKeyMessage {
     }
 
     toArray() {
+        // @ts-ignore TODO check
         return [this.requestId, this.streamId, this.rsaPublicKey, this.groupKeyIds]
     }
 
-    static fromArray(arr) {
+    static fromArray(arr: Todo) {
         const [requestId, streamId, rsaPublicKey, groupKeyIds] = arr
         return new GroupKeyRequest({
             requestId,
@@ -33,4 +39,5 @@ export default class GroupKeyRequest extends GroupKeyMessage {
     }
 }
 
+// @ts-ignore TODO static
 GroupKeyMessage.classByMessageType[StreamMessage.MESSAGE_TYPES.GROUP_KEY_REQUEST] = GroupKeyRequest

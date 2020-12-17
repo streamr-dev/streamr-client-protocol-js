@@ -1,14 +1,19 @@
-// @ts-nocheck
+import { Todo } from '../../sharedTypes'
 import { validateIsString } from '../../utils/validations'
 
 export default class EncryptedGroupKey {
+
+    groupKeyId: string
+    encryptedGroupKeyHex: string
+    serialized: Todo | undefined | null = null
+
     /**
      * A pair (groupKeyId, encryptedGroupKey) where the encryptedGroupKey is an encrypted, hex-encoded version of the group key.
      * @param groupKeyId
      * @param encryptedGroupKeyHex
      * @param serialized Optional. If given, this exact string is returned from serialize().
      */
-    constructor(groupKeyId, encryptedGroupKeyHex, serialized = null) {
+    constructor(groupKeyId: string, encryptedGroupKeyHex: string, serialized: Todo | undefined | null = null) {
         validateIsString('groupKeyId', groupKeyId)
         this.groupKeyId = groupKeyId
 
@@ -31,12 +36,12 @@ export default class EncryptedGroupKey {
         return JSON.stringify(this.toArray())
     }
 
-    static deserialize(json) {
+    static deserialize(json: Todo) {
         const [groupKeyId, encryptedGroupKeyHex] = JSON.parse(json)
         return new EncryptedGroupKey(groupKeyId, encryptedGroupKeyHex, json)
     }
 
-    static fromArray(arr) {
+    static fromArray(arr: Todo) {
         const [groupKeyId, encryptedGroupKeyHex] = arr
         return new EncryptedGroupKey(groupKeyId, encryptedGroupKeyHex)
     }

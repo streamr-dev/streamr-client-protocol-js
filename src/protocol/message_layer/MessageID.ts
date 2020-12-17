@@ -1,10 +1,18 @@
-// @ts-nocheck
+import { Todo } from '../../sharedTypes'
 import { validateIsNotEmptyString, validateIsNotNegativeInteger } from '../../utils/validations'
 
 import MessageRef from './MessageRef'
 
 export default class MessageID {
-    constructor(streamId, streamPartition, timestamp, sequenceNumber, publisherId, msgChainId) {
+
+    streamId: string
+    streamPartition: number
+    timestamp: number
+    sequenceNumber: Todo
+    publisherId: Todo
+    msgChainId: Todo
+
+    constructor(streamId: string, streamPartition: number, timestamp: number, sequenceNumber: Todo, publisherId: Todo, msgChainId: Todo) {
         validateIsNotEmptyString('streamId', streamId)
         validateIsNotNegativeInteger('streamPartition', streamPartition)
         validateIsNotNegativeInteger('timestamp', timestamp)
@@ -28,7 +36,7 @@ export default class MessageID {
         ]
     }
 
-    static fromArray(arr) {
+    static fromArray(arr: Todo) {
         const [
             streamId,
             streamPartition,
