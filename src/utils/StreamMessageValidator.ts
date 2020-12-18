@@ -4,9 +4,16 @@ import GroupKeyRequest from '../protocol/message_layer/GroupKeyRequest'
 import GroupKeyMessage from '../protocol/message_layer/GroupKeyMessage'
 
 import SigningUtil from './SigningUtil'
-import { Todo } from '../sharedTypes'
+import { StreamMetadata } from '../sharedTypes'
 
 const KEY_EXCHANGE_STREAM_PREFIX = 'SYSTEM/keyexchange/'
+
+export interface Options {
+    getStream: (streamId: string) => Promise<StreamMetadata>
+    isPublisher: (address: string, streamId: string) => Promise<boolean>
+    isSubscriber: (address: string, streamId: string) => Promise<boolean>
+    verify?: (address: string, payload: string, signature: string) => Promise<boolean>
+}
 
 /**
  * Validates observed StreamMessages according to protocol rules, regardless of observer.
@@ -22,10 +29,10 @@ const KEY_EXCHANGE_STREAM_PREFIX = 'SYSTEM/keyexchange/'
  */
 export default class StreamMessageValidator {
 
-    getStream: Todo
-    isPublisher: Todo
-    isSubscriber: Todo
-    verify: Todo
+    getStream: (streamId: string) => Promise<StreamMetadata>
+    isPublisher: (address: string, streamId: string) => Promise<boolean>
+    isSubscriber: (address: string, streamId: string) => Promise<boolean>
+    verify: (address: string, payload: string, signature: string) => Promise<boolean>
     
     /**
      * @param getStream async function(streamId): returns the metadata required for stream validation for streamId.
@@ -35,7 +42,7 @@ export default class StreamMessageValidator {
      * @param verify async function(address, payload, signature): returns true if the address and payload match the signature.
      * The default implementation uses the native secp256k1 library on node.js and falls back to the elliptic library on browsers.
      */
-    constructor({ getStream, isPublisher, isSubscriber, verify = SigningUtil.verify }: Todo) {
+    constructor({ getStream, isPublisher, isSubscriber, verify = SigningUtil.verify }: Options) {
         StreamMessageValidator.checkInjectedFunctions(getStream, isPublisher, isSubscriber, verify)
         this.getStream = getStream
         this.isPublisher = isPublisher
@@ -43,18 +50,23 @@ export default class StreamMessageValidator {
         this.verify = verify
     }
 
-    static checkInjectedFunctions(getStreamFn: Todo, isPublisherFn: Todo, isSubscriberFn: Todo, verifyFn: Todo) {
-        if (typeof getStreamFn !== 'function') {
-            throw new Error('getStreamFn must be: async function(streamId): returns the validation metadata object for streamId')
+    static checkInjectedFunctions(
+        getStream: (streamId: string) => Promise<StreamMetadata>,
+        isPublisher: (address: string, streamId: string) => Promise<boolean>,
+        isSubscriber: (address: string, streamId: string) => Promise<boolean>,
+        verify: (address: string, payload: string, signature: string) => Promise<boolean>
+    ) {
+        if (typeof getStream !== 'function') {
+            throw new Error('getStream must be: async function(streamId): returns the validation metadata object for streamId')
         }
-        if (typeof isPublisherFn !== 'function') {
-            throw new Error('isPublisherFn must be: async function(address, streamId): returns true if address is a permitted publisher on streamId')
+        if (typeof isPublisher !== 'function') {
+            throw new Error('isPublisher must be: async function(address, streamId): returns true if address is a permitted publisher on streamId')
         }
-        if (typeof isSubscriberFn !== 'function') {
-            throw new Error('isSubscriberFn must be: async function(address, streamId): returns true if address is a permitted subscriber on streamId')
+        if (typeof isSubscriber !== 'function') {
+            throw new Error('isSubscriber must be: async function(address, streamId): returns true if address is a permitted subscriber on streamId')
         }
-        if (typeof verifyFn !== 'function') {
-            throw new Error('verifyFn must be: function(address, payload, signature): returns true if the address and payload match the signature')
+        if (typeof verify !== 'function') {
+            throw new Error('verify must be: function(address, payload, signature): returns true if the address and payload match the signature')
         }
     }
 
@@ -67,7 +79,7 @@ export default class StreamMessageValidator {
      *
      * @param streamMessage the StreamMessage to validate.
      */
-    async validate(streamMessage: Todo) {
+    async validate(streamMessage: StreamMessage) {
         if (!streamMessage) {
             throw new ValidationError('Falsey argument passed to validate()!')
         }
@@ -95,14 +107,14 @@ export default class StreamMessageValidator {
      * @param streamMessage the StreamMessage to validate.
      * @param verifyFn function(address, payload, signature): return true if the address and payload match the signature
      */
-    static async assertSignatureIsValid(streamMessage: Todo, verifyFn: Todo) {
+    static async assertSignatureIsValid(streamMessage: StreamMessage, verifyFn: (address: string, payload: string, signature: string) => Promise<boolean>) {
         const payload = streamMessage.getPayloadToSign()
 
         if (streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH_LEGACY
             || streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH) {
             let success
             try {
-                success = await verifyFn(streamMessage.getPublisherId(), payload, streamMessage.signature)
+                success = await verifyFn(streamMessage.getPublisherId(), payload, streamMessage.signature!)
             } catch (err) {
                 throw new ValidationError(`An error occurred during address recovery from signature: ${err}`)
             }
@@ -116,7 +128,7 @@ export default class StreamMessageValidator {
         }
     }
 
-    async _validateMessage(streamMessage: Todo) {
+    async _validateMessage(streamMessage: StreamMessage) {
         const stream = await this.getStream(streamMessage.getStreamId())
 
         // Checks against stream metadata
@@ -143,7 +155,7 @@ export default class StreamMessageValidator {
         }
     }
 
-    async _validateGroupKeyRequest(streamMessage: Todo) {
+    async _validateGroupKeyRequest(streamMessage: StreamMessage) {
         if (!streamMessage.signature) {
             throw new ValidationError(`Received unsigned group key request (the public key must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
         }
@@ -170,7 +182,7 @@ export default class StreamMessageValidator {
         }
     }
 
-    async _validateGroupKeyResponseOrAnnounce(streamMessage: Todo) {
+    async _validateGroupKeyResponseOrAnnounce(streamMessage: StreamMessage) {
         if (!streamMessage.signature) {
             throw new ValidationError(`Received unsigned ${streamMessage.messageType} (it must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
         }
@@ -197,7 +209,7 @@ export default class StreamMessageValidator {
         }
     }
 
-    static isKeyExchangeStream(streamId: Todo) {
+    static isKeyExchangeStream(streamId: string) {
         return streamId.startsWith(KEY_EXCHANGE_STREAM_PREFIX)
     }
 }

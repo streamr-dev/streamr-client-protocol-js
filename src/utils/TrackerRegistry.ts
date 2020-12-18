@@ -1,9 +1,14 @@
 import { Contract, providers } from 'ethers'
+import { ConnectionInfo } from 'ethers/lib/utils'
 
 import * as trackerRegistryConfig from '../../contracts/TrackerRegistry.json'
-import { Todo } from '../sharedTypes'
 
 const { JsonRpcProvider } = providers
+
+export interface Server {
+    http: string
+    ws: string
+}
 
 // source: https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
 function hashCode(str: string) {
@@ -14,14 +19,14 @@ function hashCode(str: string) {
 
 class TrackerRegistry {
 
-    records: Todo
+    records: Server[]
 
-    constructor(records: Todo) {
+    constructor(records: Server[]) {
         this.records = records
-        this.records.sort()
+        this.records.sort()  // TODO does this actually sort anything?
     }
 
-    getTracker(streamId: Todo, partition = 0) {
+    getTracker(streamId: string, partition = 0) {
         if (typeof streamId !== 'string' || streamId.indexOf('::') >= 0) {
             throw new Error(`invalid id: ${streamId}`)
         }
@@ -39,7 +44,7 @@ class TrackerRegistry {
     }
 }
 
-async function fetchTrackers(contractAddress: Todo, jsonRpcProvider: Todo) {
+async function fetchTrackers(contractAddress: string, jsonRpcProvider: string | ConnectionInfo) {
     const provider = new JsonRpcProvider(jsonRpcProvider)
     // check that provider is connected and has some valid blockNumber
     await provider.getBlockNumber()
@@ -53,14 +58,14 @@ async function fetchTrackers(contractAddress: Todo, jsonRpcProvider: Todo) {
     }
 
     const result = await contract.getNodes()
-    return result.map((tracker: Todo) => tracker.url)
+    return result.map((tracker: any) => tracker.url)
 }
 
-function createTrackerRegistry(servers: Todo) {
+function createTrackerRegistry(servers: Server[]) {
     return new TrackerRegistry(servers)
 }
 
-async function getTrackerRegistryFromContract({ contractAddress, jsonRpcProvider }: Todo) {
+async function getTrackerRegistryFromContract({ contractAddress, jsonRpcProvider }: { contractAddress: string, jsonRpcProvider: string | ConnectionInfo}) {
     const trackers = await fetchTrackers(contractAddress, jsonRpcProvider)
     const records = []
     for (let i = 0; i < trackers.length; ++i) {

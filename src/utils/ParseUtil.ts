@@ -1,5 +1,3 @@
-import { Todo } from '../sharedTypes';
-
-export function ensureParsed(stringOrObject: Todo) {
+export function ensureParsed(stringOrObject: any) {
     return (typeof stringOrObject === 'string' ? JSON.parse(stringOrObject) : stringOrObject)
 }

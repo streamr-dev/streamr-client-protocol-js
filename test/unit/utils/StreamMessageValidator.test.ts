@@ -2,12 +2,16 @@ import assert from 'assert'
 
 import sinon from 'sinon'
 
-import { MessageLayer, Utils, Errors } from '../../../src'
+import { Utils, Errors } from '../../../src'
+import StreamMessage from '../../../src/protocol/message_layer/StreamMessage'
+import MessageID from '../../../src/protocol/message_layer/MessageID'
+import GroupKeyRequest from '../../../src/protocol/message_layer/GroupKeyRequest'
+import GroupKeyResponse from '../../../src/protocol/message_layer/GroupKeyResponse'
+import GroupKeyAnnounce from '../../../src/protocol/message_layer/GroupKeyAnnounce'
+import GroupKeyErrorResponse from '../../../src/protocol/message_layer/GroupKeyErrorResponse'
+import EncryptedGroupKey from '../../../src/protocol/message_layer/EncryptedGroupKey'
 import { Todo } from '../../../src/sharedTypes'
 
-const {
-    StreamMessage, MessageID, GroupKeyRequest, GroupKeyResponse, GroupKeyAnnounce, GroupKeyErrorResponse, EncryptedGroupKey
-} = MessageLayer
 const { StreamMessageValidator, SigningUtil } = Utils
 const { ValidationError } = Errors
 
@@ -40,7 +44,7 @@ describe('StreamMessageValidator', () => {
     })
 
     /* eslint-disable */
-    const sign = async (msgToSign: Todo, privateKey: Todo) => {
+    const sign = async (msgToSign: StreamMessage, privateKey: string) => {
         msgToSign.signatureType = StreamMessage.SIGNATURE_TYPES.ETH
         msgToSign.signature = await SigningUtil.sign(msgToSign.getPayloadToSign(), privateKey)
     }
@@ -49,10 +53,10 @@ describe('StreamMessageValidator', () => {
     beforeEach(async () => {
         // Default stubs
         getStream = sinon.stub().resolves(defaultGetStreamResponse)
-        isPublisher = async (address: Todo, streamId: Todo) => {
+        isPublisher = async (address: string, streamId: string) => {
             return address === publisher && streamId === 'streamId'
         }
-        isSubscriber = async (address: Todo, streamId: Todo) => {
+        isSubscriber = async (address: string, streamId: string) => {
             return address === subscriber && streamId === 'streamId'
         }
         verify = undefined // use default impl by default

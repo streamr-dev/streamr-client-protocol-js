@@ -1,9 +1,12 @@
 import memoize from 'promise-memoize'
 
-import StreamMessageValidator from './StreamMessageValidator'
+import StreamMessageValidator, { Options as StreamMessageValidatorOptions } from './StreamMessageValidator'
 import SigningUtil from './SigningUtil'
 
-import { Todo } from '../sharedTypes'
+export interface Options extends StreamMessageValidatorOptions {
+    cacheTimeoutMillis?: number, 
+    cacheErrorsTimeoutMillis?: number
+}
 /**
  * A thin wrapper around StreamMessageValidator that adds caching for the following
  * expensive functions passed to the constructor:
@@ -25,7 +28,7 @@ export default class CachingStreamMessageValidator extends StreamMessageValidato
     constructor({
         getStream, isPublisher, isSubscriber, verify = SigningUtil.verify,
         cacheTimeoutMillis = 15 * 60 * 1000, cacheErrorsTimeoutMillis = 60 * 1000,
-    }: Todo) {
+    }: Options) {
         StreamMessageValidator.checkInjectedFunctions(getStream, isPublisher, isSubscriber, verify)
         const memoizeOpts = {
             maxAge: cacheTimeoutMillis,

@@ -1,17 +1,17 @@
-import { Todo } from '../sharedTypes'
-import OrderedMsgChain from './OrderedMsgChain'
+import StreamMessage from '../protocol/message_layer/StreamMessage'
+import OrderedMsgChain, { GapHandler, InOrderHandler } from './OrderedMsgChain'
 
 export default class OrderingUtil {
 
-    streamId: Todo
-    streamPartition: Todo
-    inOrderHandler: Todo
-    gapHandler: Todo
-    propagationTimeout: Todo
-    resendTimeout: Todo
-    orderedChains: Todo
+    streamId: string
+    streamPartition: number
+    inOrderHandler: InOrderHandler
+    gapHandler: GapHandler
+    propagationTimeout: number
+    resendTimeout: number
+    orderedChains: { [key: string]: OrderedMsgChain}
 
-    constructor(streamId: Todo, streamPartition: Todo, inOrderHandler: Todo, gapHandler: Todo, propagationTimeout: Todo, resendTimeout: Todo) {
+    constructor(streamId: string, streamPartition: number, inOrderHandler: InOrderHandler, gapHandler: GapHandler, propagationTimeout: number, resendTimeout: number) {
         this.streamId = streamId
         this.streamPartition = streamPartition
         this.inOrderHandler = inOrderHandler
@@ -21,12 +21,12 @@ export default class OrderingUtil {
         this.orderedChains = {}
     }
 
-    add(unorderedStreamMessage: Todo) {
+    add(unorderedStreamMessage: StreamMessage) {
         const chain = this._getChain(unorderedStreamMessage.getPublisherId(), unorderedStreamMessage.getMsgChainId())
         chain.add(unorderedStreamMessage)
     }
 
-    _getChain(publisherId: Todo, msgChainId: Todo) {
+    _getChain(publisherId: string, msgChainId: string) {
         const key = publisherId + msgChainId
         if (!this.orderedChains[key]) {
             this.orderedChains[key] = new OrderedMsgChain(
@@ -37,7 +37,7 @@ export default class OrderingUtil {
         return this.orderedChains[key]
     }
 
-    markMessageExplicitly(streamMessage: Todo) {
+    markMessageExplicitly(streamMessage: StreamMessage) {
         const chain = this._getChain(streamMessage.getPublisherId(), streamMessage.getMsgChainId())
         chain.markMessageExplicitly(streamMessage)
     }

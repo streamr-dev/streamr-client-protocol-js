@@ -1,6 +1,4 @@
-import { Todo } from '../sharedTypes'
-
-export function parse(millisOrString: Todo) {
+export function parse(millisOrString: number|string) {
     if (typeof millisOrString === 'number') {
         return millisOrString
     }

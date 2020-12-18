@@ -5,7 +5,7 @@ import { Todo } from "../sharedTypes"
 const SIGN_MAGIC = '\u0019Ethereum Signed Message:\n'
 const keccak = new Keccak(256)
 
-function hash(messageBuffer: Todo) {
+function hash(messageBuffer: Buffer) {
     const prefixString = SIGN_MAGIC + messageBuffer.length
     const merged = Buffer.concat([Buffer.from(prefixString, 'utf-8'), messageBuffer])
     keccak.reset()
@@ -13,7 +13,7 @@ function hash(messageBuffer: Todo) {
     return keccak.digest('binary')
 }
 
-function recoverPublicKey(signatureBuffer: Todo, payloadBuffer: Todo) {
+function recoverPublicKey(signatureBuffer: Buffer, payloadBuffer: Buffer) {
     const recoveryId = signatureBuffer.readUInt8(signatureBuffer.length - 1) - 27
     return secp256k1.ecdsaRecover(
         signatureBuffer.subarray(0, signatureBuffer.length - 1),
@@ -26,7 +26,7 @@ function recoverPublicKey(signatureBuffer: Todo, payloadBuffer: Todo) {
 }
 
 export default class SigningUtil {
-    static async sign(payload: Todo, privateKey: Todo) {
+    static async sign(payload: string, privateKey: string) {
         const payloadBuffer = Buffer.from(payload, 'utf-8')
         const privateKeyBuffer = Buffer.from(privateKey, 'hex')
 
@@ -37,7 +37,7 @@ export default class SigningUtil {
         return '0x' + result.toString('hex')
     }
 
-    static async recover(signature: Todo, payload: Todo, publicKeyBuffer: Todo = undefined) {
+    static async recover(signature: string, payload: string, publicKeyBuffer: Todo = undefined) {
         const signatureBuffer = Buffer.from(signature.substring(2), 'hex') // remove '0x' prefix
         const payloadBuffer = Buffer.from(payload, 'utf-8')
 
@@ -52,7 +52,7 @@ export default class SigningUtil {
         return '0x' + hashOfPubKey.subarray(12, hashOfPubKey.length).toString('hex')
     }
 
-    static async verify(address: Todo, payload: Todo, signature: Todo) {
+    static async verify(address: string, payload: string, signature: string) {
         try {
             const recoveredAddress = await SigningUtil.recover(signature, payload)
             return recoveredAddress.toLowerCase() === address.toLowerCase()
