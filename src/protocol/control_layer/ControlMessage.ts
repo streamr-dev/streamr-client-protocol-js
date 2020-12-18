@@ -6,11 +6,14 @@ import { Todo } from '../../sharedTypes'
 const serializerByVersionAndType: Todo = {}
 const LATEST_VERSION = 2
 
+// TODO convert to real enum?
+type ControlMessageType = number
+
 export default class ControlMessage {
 
     static LATEST_VERSION = LATEST_VERSION
 
-    static TYPES = {
+    static TYPES: { [key: string]: ControlMessageType } = {
         BroadcastMessage: 0,
         UnicastMessage: 1,
         SubscribeResponse: 2,
@@ -28,10 +31,10 @@ export default class ControlMessage {
     }
 
     version: number
-    type: number
+    type: ControlMessageType
     requestId: string | undefined | null 
 
-    constructor(version = LATEST_VERSION, type: number, requestId: string | undefined | null) {
+    constructor(version = LATEST_VERSION, type: ControlMessageType, requestId: string | undefined | null) {
         if (new.target === ControlMessage) {
             throw new TypeError('ControlMessage is abstract.')
         }
@@ -45,7 +48,7 @@ export default class ControlMessage {
         this.requestId = requestId
     }
 
-    static registerSerializer(version: number, type: number, serializer: Todo) {
+    static registerSerializer(version: number, type: ControlMessageType, serializer: Todo) {
         // Check the serializer interface
         if (!serializer.fromArray) {
             throw new Error(`Serializer ${JSON.stringify(serializer)} doesn't implement a method fromArray!`)
@@ -65,11 +68,11 @@ export default class ControlMessage {
         serializerByVersionAndType[version][type] = serializer
     }
 
-    static unregisterSerializer(version: number, type: number) {
+    static unregisterSerializer(version: number, type: ControlMessageType) {
         delete serializerByVersionAndType[version][type]
     }
 
-    static getSerializer(version: number, type: number) {
+    static getSerializer(version: number, type: ControlMessageType) {
         const serializersByType = serializerByVersionAndType[version]
         if (!serializersByType) {
             throw new UnsupportedVersionError(version, `Supported versions: [${ControlMessage.getSupportedVersions()}]`)

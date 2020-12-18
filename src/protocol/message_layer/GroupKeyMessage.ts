@@ -1,16 +1,16 @@
 import { Todo } from '../../sharedTypes'
 import { validateIsString } from '../../utils/validations'
 
-import StreamMessage from './StreamMessage'
+import StreamMessage, { StreamMessageType } from './StreamMessage'
 
 export default abstract class GroupKeyMessage {
 
-    static classByMessageType: Todo = {}
+    static classByMessageType: { [key: number]: Todo } = {}  // TODO replace "number" with real enum?
 
     streamId: string
-    messageType: Todo
+    messageType: StreamMessageType
 
-    constructor(streamId: string, messageType: Todo) {
+    constructor(streamId: string, messageType: StreamMessageType) {
         validateIsString('streamId', streamId)
         this.streamId = streamId
 
@@ -22,7 +22,7 @@ export default abstract class GroupKeyMessage {
         return JSON.stringify(this.toArray())
     }
 
-    static deserialize(serialized: Todo, messageType: Todo) {
+    static deserialize(serialized: Todo, messageType: StreamMessageType) {
         if (!GroupKeyMessage.classByMessageType[messageType]) {
             throw new Error(`Unknown MessageType: ${messageType}`)
         }

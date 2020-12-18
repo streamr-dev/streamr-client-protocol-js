@@ -6,11 +6,14 @@ import { Todo } from '../../sharedTypes'
 const serializerByVersionAndType: Todo = {}
 const LATEST_VERSION = 1
 
+// TODO convert to real enum?
+type TrackerMessageType = number
+
 export default class TrackerMessage {
 
     static LATEST_VERSION = LATEST_VERSION
 
-    static TYPES = {
+    static TYPES: { [key: string]: TrackerMessageType } = {
         StatusMessage: 1,
         InstructionMessage: 2,
         StorageNodesRequest: 3,
@@ -20,10 +23,10 @@ export default class TrackerMessage {
     }
 
     version: number
-    type: number
+    type: TrackerMessageType
     requestId: string
 
-    constructor(version = LATEST_VERSION, type: number, requestId: string) {
+    constructor(version = LATEST_VERSION, type: TrackerMessageType, requestId: string) {
         if (new.target === TrackerMessage) {
             throw new TypeError('TrackerMessage is abstract.')
         }
@@ -57,11 +60,11 @@ export default class TrackerMessage {
         serializerByVersionAndType[version][type] = serializer
     }
 
-    static unregisterSerializer(version: number, type: number) {
+    static unregisterSerializer(version: number, type: TrackerMessageType) {
         delete serializerByVersionAndType[version][type]
     }
 
-    static getSerializer(version: number, type: number) {
+    static getSerializer(version: number, type: TrackerMessageType) {
         const serializersByType = serializerByVersionAndType[version]
         if (!serializersByType) {
             throw new UnsupportedVersionError(version, `Supported versions: [${TrackerMessage.getSupportedVersions()}]`)

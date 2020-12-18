@@ -12,10 +12,16 @@ const serializerByVersion: Todo = {}
 const BYE_KEY = '_bye'
 const LATEST_VERSION = 32
 
+// TODO convert to real enums?
+export type StreamMessageType = number
+export type ContentType = number
+export type SignatureType = number
+export type EncryptionType = number
+
 export default class StreamMessage {
     static LATEST_VERSION = LATEST_VERSION
 
-    static MESSAGE_TYPES = {
+    static MESSAGE_TYPES: { [key: string]: StreamMessageType } = {
         MESSAGE: 27,
         GROUP_KEY_REQUEST: 28,
         GROUP_KEY_RESPONSE: 29,
@@ -24,19 +30,19 @@ export default class StreamMessage {
     }
     static VALID_MESSAGE_TYPES = new Set(Object.values(StreamMessage.MESSAGE_TYPES))
 
-    static CONTENT_TYPES = {
+    static CONTENT_TYPES: { [key: string]: ContentType } = {
         JSON: 0,
     }
     static VALID_CONTENT_TYPES = new Set(Object.values(StreamMessage.CONTENT_TYPES))
 
-    static SIGNATURE_TYPES = {
+    static SIGNATURE_TYPES: { [key: string]: SignatureType } = {
         NONE: 0,
         ETH_LEGACY: 1,
         ETH: 2,
     }
     static VALID_SIGNATURE_TYPES = new Set(Object.values(StreamMessage.SIGNATURE_TYPES))
 
-    static ENCRYPTION_TYPES = {
+    static ENCRYPTION_TYPES: { [key: string]: EncryptionType } = {
         NONE: 0,
         RSA: 1,
         AES: 2,
@@ -46,12 +52,12 @@ export default class StreamMessage {
     messageId: MessageID
     prevMsgRef: MessageRef | undefined | null
     content: Todo
-    messageType: Todo 
-    contentType: Todo 
-    encryptionType: Todo
+    messageType: StreamMessageType 
+    contentType: ContentType 
+    encryptionType: EncryptionType
     groupKeyId: string | undefined | null
     newGroupKey: EncryptedGroupKey | undefined | null
-    signatureType: Todo
+    signatureType: SignatureType
     signature: string | undefined | null
     parsedContent?: Todo
     serializedContent?: Todo
@@ -260,25 +266,25 @@ export default class StreamMessage {
         return C.fromArray(messageArray)
     }
 
-    static validateMessageType(messageType: Todo) {
+    static validateMessageType(messageType: StreamMessageType) {
         if (!StreamMessage.VALID_MESSAGE_TYPES.has(messageType)) {
             throw new ValidationError(`Unsupported message type: ${messageType}`)
         }
     }
 
-    static validateContentType(contentType: Todo) {
+    static validateContentType(contentType: ContentType) {
         if (!StreamMessage.VALID_CONTENT_TYPES.has(contentType)) {
             throw new ValidationError(`Unsupported content type: ${contentType}`)
         }
     }
 
-    static validateEncryptionType(encryptionType: Todo) {
+    static validateEncryptionType(encryptionType: EncryptionType) {
         if (!StreamMessage.VALID_ENCRYPTIONS.has(encryptionType)) {
             throw new ValidationError(`Unsupported encryption type: ${encryptionType}`)
         }
     }
 
-    static validateSignatureType(signatureType: Todo) {
+    static validateSignatureType(signatureType: SignatureType) {
         if (!StreamMessage.VALID_SIGNATURE_TYPES.has(signatureType)) {
             throw new ValidationError(`Unsupported signature type: ${signatureType}`)
         }
