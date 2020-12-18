@@ -12,7 +12,7 @@ export default class ResendFromRequest extends ControlMessage {
 
     streamId: string
     streamPartition: number
-    fromMsgRef: Todo
+    fromMsgRef: MessageRef
     publisherId: string | undefined | null
     sessionToken: string | undefined | null
 

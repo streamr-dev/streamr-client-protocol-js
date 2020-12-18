@@ -13,8 +13,8 @@ export default class ResendRangeRequest extends ControlMessage {
 
     streamId: string
     streamPartition: number
-    fromMsgRef: Todo
-    toMsgRef: Todo
+    fromMsgRef: MessageRef
+    toMsgRef: MessageRef
     publisherId: string | undefined | null
     msgChainId: string | undefined | null
     sessionToken: string | undefined | null

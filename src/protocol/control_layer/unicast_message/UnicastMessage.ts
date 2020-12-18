@@ -5,7 +5,7 @@ import { Todo } from '../../../sharedTypes'
 
 export default class UnicastMessage extends ControlMessage {
 
-    streamMessage: Todo
+    streamMessage: StreamMessage
 
     constructor({ version = ControlMessage.LATEST_VERSION, requestId, streamMessage }: Todo) {
         super(version, ControlMessage.TYPES.UnicastMessage, requestId)

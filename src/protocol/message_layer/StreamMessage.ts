@@ -43,14 +43,14 @@ export default class StreamMessage {
     }
     static VALID_ENCRYPTIONS = new Set(Object.values(StreamMessage.ENCRYPTION_TYPES))
 
-    messageId: Todo
-    prevMsgRef: Todo
+    messageId: MessageID
+    prevMsgRef: MessageRef | undefined | null
     content: Todo
     messageType: Todo 
     contentType: Todo 
     encryptionType: Todo
     groupKeyId: string | undefined | null
-    newGroupKey: Todo
+    newGroupKey: EncryptedGroupKey | undefined | null
     signatureType: Todo
     signature: string | undefined | null
     parsedContent?: Todo
