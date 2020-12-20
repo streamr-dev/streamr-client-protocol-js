@@ -62,6 +62,12 @@ const serverConfig = merge({}, commonConfig, {
 
 const clientConfig = merge({}, commonConfig, {
     target: 'web',
+    devtool: 'source-map',
+    resolve: {
+        alias: {
+            buffer: path.resolve(__dirname, 'node_modules', 'buffer'),
+        }
+    },
     output: {
         libraryTarget: 'umd2',
         filename: libraryName + '.web.js',
