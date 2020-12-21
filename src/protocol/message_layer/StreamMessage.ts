@@ -51,7 +51,7 @@ export default class StreamMessage {
 
     messageId: MessageID
     prevMsgRef: MessageRef | undefined | null
-    content: Todo
+    content: any
     messageType: StreamMessageType 
     contentType: ContentType 
     encryptionType: EncryptionType
@@ -73,7 +73,18 @@ export default class StreamMessage {
         newGroupKey = null,
         signatureType = StreamMessage.SIGNATURE_TYPES.NONE,
         signature = null,
-    }: Todo) {
+    }: {
+        messageId: MessageID
+        prevMsgRef?: MessageRef | undefined | null
+        content: any
+        messageType?: StreamMessageType 
+        contentType?: ContentType 
+        encryptionType?: EncryptionType
+        groupKeyId?: string | undefined | null
+        newGroupKey?: EncryptedGroupKey | undefined | null
+        signatureType?: SignatureType
+        signature?: string | undefined | null
+    }) {
         validateIsType('messageId', messageId, 'MessageID', MessageID)
         this.messageId = messageId
 

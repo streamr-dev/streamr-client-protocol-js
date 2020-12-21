@@ -1,4 +1,3 @@
-import { Todo } from '../../../sharedTypes'
 import { validateIsNotEmptyString, validateIsNotNegativeInteger, validateIsString } from '../../../utils/validations'
 import ControlMessage from '../ControlMessage'
 
@@ -10,7 +9,7 @@ export default class SubscribeRequest extends ControlMessage {
 
     constructor({
         version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, sessionToken
-    }: Todo) {
+    }: { version?: number, requestId?: string, streamId: string, streamPartition: number, sessionToken?: string}) {
         super(version, ControlMessage.TYPES.SubscribeRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

@@ -1,13 +1,13 @@
-import { Todo } from '../sharedTypes'
+import MessageRef from '../protocol/message_layer/MessageRef'
 
 export default class GapFillFailedError extends Error {
 
-    from: Todo
-    to: Todo
-    publisherId: Todo
-    msgChainId: Todo
+    from: MessageRef
+    to: MessageRef
+    publisherId: string
+    msgChainId: string
 
-    constructor(from: Todo, to: Todo, publisherId: Todo, msgChainId: Todo, nbTrials: Todo) {
+    constructor(from: MessageRef, to: MessageRef, publisherId: string, msgChainId: string, nbTrials: number) {
         super(`Failed to fill gap between ${from.serialize()} and ${to.serialize()}`
             + ` for ${publisherId}-${msgChainId} after ${nbTrials} trials`)
         this.from = from

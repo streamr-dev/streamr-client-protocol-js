@@ -1,10 +1,8 @@
-import { Todo } from '../sharedTypes'
-
 export default class UnsupportedVersionError extends Error {
     
-    version: Todo
+    version: number
 
-    constructor(version: Todo, message: Todo) {
+    constructor(version: number, message: string) {
         super(`Unsupported version: ${version}, message: ${message}`)
         this.version = version
         if (Error.captureStackTrace) {

@@ -2,7 +2,7 @@ import assert from 'assert'
 
 import sinon from 'sinon'
 
-import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
+import ControlMessage, { ControlMessageType } from '../../../../src/protocol/control_layer/ControlMessage'
 import UnsupportedTypeError from '../../../../src/errors/UnsupportedTypeError'
 import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionError'
 import ValidationError from '../../../../src/errors/ValidationError'
@@ -14,7 +14,7 @@ const REQUEST_ID = 'requestId'
 
 class TestControlMessage extends ControlMessage {
     // eslint-disable-next-line no-useless-constructor
-    constructor(version: Todo, type: Todo, requestId: Todo) {
+    constructor(version: number, type: ControlMessageType, requestId: string | null) {
         super(version, type, requestId)
     }
 }
@@ -43,10 +43,10 @@ describe('ControlMessage', () => {
             assert.throws(() => new ControlMessage(VERSION, TYPE, REQUEST_ID), TypeError)
         })
         it('validates version', () => {
-            assert.throws(() => new TestControlMessage('invalid', TYPE, REQUEST_ID), ValidationError)
+            assert.throws(() => new TestControlMessage('invalid' as any, TYPE, REQUEST_ID), ValidationError)
         })
         it('validates type', () => {
-            assert.throws(() => new TestControlMessage(VERSION, 'invalid', REQUEST_ID), ValidationError)
+            assert.throws(() => new TestControlMessage(VERSION, 'invalid' as any, REQUEST_ID), ValidationError)
         })
         it('does not validate requestId on version < 2', () => {
             assert.doesNotThrow(() => new TestControlMessage(1, TYPE, null))

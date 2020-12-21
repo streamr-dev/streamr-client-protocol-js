@@ -1,13 +1,13 @@
-import { Todo } from '../sharedTypes'
+import StreamMessage from '../protocol/message_layer/StreamMessage'
 
 export default class InvalidJsonError extends Error {
 
-    streamId: Todo
-    jsonString: Todo
-    parseError: Todo
-    streamMessage: Todo
+    streamId: string
+    jsonString: string
+    parseError: Error
+    streamMessage: StreamMessage
 
-    constructor(streamId: Todo, jsonString: Todo, parseError: Todo, streamMessage: Todo) {
+    constructor(streamId: string, jsonString: string, parseError: Error, streamMessage: StreamMessage) {
         super(`Invalid JSON in stream ${streamId}: ${jsonString}. Error while parsing was: ${parseError}`)
         this.streamId = streamId
         this.jsonString = jsonString

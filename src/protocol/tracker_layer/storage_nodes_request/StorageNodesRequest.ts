@@ -1,4 +1,3 @@
-import { Todo } from '../../../sharedTypes'
 import {
     validateIsNotEmptyString,
     validateIsNotNegativeInteger,
@@ -10,7 +9,7 @@ export default class StorageNodesRequest extends TrackerMessage {
     streamId: string
     streamPartition: number
 
-    constructor({ version = TrackerMessage.LATEST_VERSION, requestId, streamId, streamPartition }: Todo) {
+    constructor({ version = TrackerMessage.LATEST_VERSION, requestId, streamId, streamPartition }: { version?: number, requestId: string, streamId: string, streamPartition: number}) {
         super(version, TrackerMessage.TYPES.StorageNodesRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

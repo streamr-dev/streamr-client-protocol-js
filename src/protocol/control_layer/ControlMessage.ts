@@ -2,12 +2,13 @@ import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
 import UnsupportedTypeError from '../../errors/UnsupportedTypeError'
 import { validateIsInteger, validateIsString } from '../../utils/validations'
 import { Todo } from '../../sharedTypes'
+import { Serializer } from '../../Serializer'
 
 const serializerByVersionAndType: Todo = {}
 const LATEST_VERSION = 2
 
 // TODO convert to real enum?
-type ControlMessageType = number
+export type ControlMessageType = number
 
 export default class ControlMessage {
 
@@ -48,7 +49,7 @@ export default class ControlMessage {
         this.requestId = requestId
     }
 
-    static registerSerializer(version: number, type: ControlMessageType, serializer: Todo) {
+    static registerSerializer(version: number, type: ControlMessageType, serializer: Serializer<ControlMessage>) {
         // Check the serializer interface
         if (!serializer.fromArray) {
             throw new Error(`Serializer ${JSON.stringify(serializer)} doesn't implement a method fromArray!`)
@@ -88,14 +89,14 @@ export default class ControlMessage {
         return Object.keys(serializerByVersionAndType).map((key) => parseInt(key, 10))
     }
 
-    serialize(version = this.version, ...typeSpecificSerializeArgs: Todo[]) {
+    serialize(version = this.version, ...typeSpecificSerializeArgs: any[]) {
         return JSON.stringify(ControlMessage.getSerializer(version, this.type).toArray(this, ...typeSpecificSerializeArgs))
     }
 
     /**
      * Takes a serialized representation (array or string) of a message, and returns a ControlMessage instance.
      */
-    static deserialize(msg: Todo, ...typeSpecificDeserializeArgs: Todo[]) {
+    static deserialize(msg: any, ...typeSpecificDeserializeArgs: any[]) {
         const messageArray = (typeof msg === 'string' ? JSON.parse(msg) : msg)
 
         /* eslint-disable prefer-destructuring */

@@ -6,7 +6,6 @@ import {
     validateIsType
 } from '../../../utils/validations'
 import MessageRef from '../../message_layer/MessageRef'
-import { Todo } from '../../../sharedTypes'
 
 export default class ResendFromRequest extends ControlMessage {
 
@@ -18,7 +17,7 @@ export default class ResendFromRequest extends ControlMessage {
 
     constructor({
         version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, fromMsgRef, publisherId, sessionToken
-    }: Todo) {
+    }: { version?: number, requestId?: string, streamId: string, streamPartition: number, fromMsgRef: MessageRef, publisherId?: string, sessionToken?: string}) {
         super(version, ControlMessage.TYPES.ResendFromRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

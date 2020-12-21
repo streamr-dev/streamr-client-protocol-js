@@ -1,6 +1,5 @@
 import ControlMessage from '../ControlMessage'
 import { validateIsNotEmptyString, validateIsNotNegativeInteger, validateIsString } from '../../../utils/validations'
-import { Todo } from '../../../sharedTypes'
 
 export default class ResendLastRequest extends ControlMessage {
 
@@ -11,7 +10,7 @@ export default class ResendLastRequest extends ControlMessage {
 
     constructor({
         version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, numberLast, sessionToken
-    }: Todo) {
+    }: { version?: number, requestId?: string, streamId: string, streamPartition: number, numberLast: number, sessionToken?: string}) {
         super(version, ControlMessage.TYPES.ResendLastRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

@@ -8,9 +8,9 @@ export default class GroupKeyRequest extends GroupKeyMessage {
 
     requestId: string
     rsaPublicKey: string
-    groupKeyIds: Todo
+    groupKeyIds: string[]
 
-    constructor({ requestId, streamId, rsaPublicKey, groupKeyIds }: Todo) {
+    constructor({ requestId, streamId, rsaPublicKey, groupKeyIds }: { requestId: string, streamId: string, rsaPublicKey: string, groupKeyIds: string[]}) {
         super(streamId, StreamMessage.MESSAGE_TYPES.GROUP_KEY_REQUEST)
 
         validateIsString('requestId', requestId)

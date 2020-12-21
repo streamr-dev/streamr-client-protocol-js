@@ -2,18 +2,17 @@ import { validateIsArray, validateIsString } from '../../utils/validations'
 
 import StreamMessage from './StreamMessage'
 import GroupKeyMessage from './GroupKeyMessage'
-import { Todo } from '../../sharedTypes'
 
 export default class GroupKeyErrorResponse extends GroupKeyMessage {
 
     requestId: string
     errorCode: string
     errorMessage: string
-    groupKeyIds: Todo
+    groupKeyIds: string[]
     
     constructor({
         requestId, streamId, errorCode, errorMessage, groupKeyIds
-    }: Todo) {
+    }: { requestId: string, streamId: string, errorCode: string, errorMessage: string, groupKeyIds: string[]}) {
         super(streamId, StreamMessage.MESSAGE_TYPES.GROUP_KEY_ERROR_RESPONSE)
 
         validateIsString('requestId', requestId)

@@ -1,13 +1,12 @@
 import ControlMessage from '../ControlMessage'
 import { validateIsNotEmptyString, validateIsNotNegativeInteger } from '../../../utils/validations'
-import { Todo } from '../../../sharedTypes'
 
 export default class ResendResponseResent extends ControlMessage {
 
     streamId: string
     streamPartition: number
 
-    constructor({ version, requestId, streamId, streamPartition }: Todo) {
+    constructor({ version, requestId, streamId, streamPartition }: { version: number, requestId?: string, streamId: string, streamPartition: number}) {
         super(version, ControlMessage.TYPES.ResendResponseResent, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

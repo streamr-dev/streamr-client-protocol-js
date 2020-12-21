@@ -3,7 +3,6 @@ import TrackerMessage from '../TrackerMessage'
 import RelayMessage from './RelayMessage'
 
 import { Serializer } from '../../../Serializer'
-import { Todo } from '../../../sharedTypes'
 
 const VERSION = 1
 

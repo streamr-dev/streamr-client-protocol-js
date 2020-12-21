@@ -10,11 +10,11 @@ export default class StorageNodesResponse extends TrackerMessage {
 
     streamId: string
     streamPartition: number
-    nodeIds: Todo
+    nodeIds: string[]
 
     constructor({
         version = TrackerMessage.LATEST_VERSION, requestId, streamId, streamPartition, nodeIds
-    }: Todo) {
+    }: { version?: number, requestId: string, streamId: string, streamPartition: number, nodeIds: string[]}) {
         super(version, TrackerMessage.TYPES.StorageNodesResponse, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

@@ -8,11 +8,11 @@ export default class MessageID {
     streamId: string
     streamPartition: number
     timestamp: number
-    sequenceNumber: Todo
-    publisherId: Todo
-    msgChainId: Todo
+    sequenceNumber: number
+    publisherId: string
+    msgChainId: string
 
-    constructor(streamId: string, streamPartition: number, timestamp: number, sequenceNumber: Todo, publisherId: Todo, msgChainId: Todo) {
+    constructor(streamId: string, streamPartition: number, timestamp: number, sequenceNumber: number, publisherId: string, msgChainId: string) {
         validateIsNotEmptyString('streamId', streamId)
         validateIsNotNegativeInteger('streamPartition', streamPartition)
         validateIsNotNegativeInteger('timestamp', timestamp)

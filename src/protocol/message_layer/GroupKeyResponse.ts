@@ -9,9 +9,9 @@ import { Todo } from '../../sharedTypes'
 export default class GroupKeyResponse extends GroupKeyMessage {
 
     requestId: string
-    encryptedGroupKeys: Todo
+    encryptedGroupKeys: EncryptedGroupKey[]
 
-    constructor({ requestId, streamId, encryptedGroupKeys }: Todo) {
+    constructor({ requestId, streamId, encryptedGroupKeys }: { requestId: string, streamId: string, encryptedGroupKeys: EncryptedGroupKey[] }) {
         super(streamId, StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE)
 
         validateIsString('requestId', requestId)
@@ -21,7 +21,7 @@ export default class GroupKeyResponse extends GroupKeyMessage {
         this.encryptedGroupKeys = encryptedGroupKeys
 
         // Validate content of encryptedGroupKeys
-        this.encryptedGroupKeys.forEach((it: Todo) => {
+        this.encryptedGroupKeys.forEach((it: EncryptedGroupKey) => {
             if (!(it instanceof EncryptedGroupKey)) {
                 throw new ValidationError(`Expected 'encryptedGroupKeys' to be a list of EncryptedGroupKey instances! Was: ${this.encryptedGroupKeys}`)
             }
@@ -29,7 +29,7 @@ export default class GroupKeyResponse extends GroupKeyMessage {
     }
 
     toArray() {
-        return [this.requestId, this.streamId, this.encryptedGroupKeys.map((it: Todo) => it.toArray())]
+        return [this.requestId, this.streamId, this.encryptedGroupKeys.map((it: EncryptedGroupKey) => it.toArray())]
     }
 
     static fromArray(arr: Todo) {
@@ -37,7 +37,7 @@ export default class GroupKeyResponse extends GroupKeyMessage {
         return new GroupKeyResponse({
             requestId,
             streamId,
-            encryptedGroupKeys: encryptedGroupKeys.map((it: Todo) => EncryptedGroupKey.fromArray(it)),
+            encryptedGroupKeys: encryptedGroupKeys.map((it: EncryptedGroupKey) => EncryptedGroupKey.fromArray(it)),
         })
     }
 }
