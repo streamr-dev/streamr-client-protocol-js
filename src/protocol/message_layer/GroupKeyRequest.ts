@@ -1,4 +1,3 @@
-import { Todo } from '../../sharedTypes'
 import { validateIsArray, validateIsString } from '../../utils/validations'
 
 import GroupKeyMessage from './GroupKeyMessage'

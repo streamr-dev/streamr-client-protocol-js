@@ -35,7 +35,7 @@ export default abstract class GroupKeyMessage {
         return GroupKeyMessage.deserialize(streamMessage.getSerializedContent()!, streamMessage.messageType)
     }
 
-    toStreamMessage(messageId: MessageID, prevMsgRef: MessageRef) {
+    toStreamMessage(messageId: MessageID, prevMsgRef: MessageRef | null) {
         return new StreamMessage({
             messageId,
             prevMsgRef,
