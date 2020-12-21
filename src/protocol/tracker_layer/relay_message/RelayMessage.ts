@@ -1,16 +1,22 @@
-import { Todo } from '../../../sharedTypes'
 import {
     validateIsNotEmptyString,
     validateIsNotNullOrUndefined,
 } from '../../../utils/validations'
 import TrackerMessage from '../TrackerMessage'
 
+export interface Originator {
+    peerId: string
+    peerType: string
+    peerName: string | null
+    location: any
+}
+
 export default class RelayMessage extends TrackerMessage {
 
-    originator: Todo
+    originator: Originator
     targetNode: string
     subType: string
-    data: Todo
+    data: any
 
     constructor({
         version = TrackerMessage.LATEST_VERSION,
@@ -19,7 +25,14 @@ export default class RelayMessage extends TrackerMessage {
         targetNode,
         subType,
         data
-    }: Todo) {
+    }: {
+        version?: number,
+        requestId: string,
+        originator: Originator,
+        targetNode: string,
+        subType: string,
+        data: any
+    }) {
         super(version, TrackerMessage.TYPES.RelayMessage, requestId)
 
         validateIsNotNullOrUndefined('originator', originator)

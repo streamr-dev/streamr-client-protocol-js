@@ -12,7 +12,8 @@ describe('RelayMessage', () => {
                 originator: {
                     peerId: 'peerId',
                     peerName: 'peerName',
-                    peerType: 'node'
+                    peerType: 'node',
+                    location: null
                 },
                 targetNode: 'targetNode',
                 subType: 'offer',
@@ -25,10 +26,11 @@ describe('RelayMessage', () => {
                 originator: {
                     peerId: 'peerId',
                     peerName: 'peerName',
-                    peerType: 'node'
+                    peerType: 'node',
+                    location: null
                 },
                 targetNode: 'targetNode',
-                subType: null,
+                subType: null as any,
                 data: {
                     hello: 'world'
                 }
@@ -40,9 +42,10 @@ describe('RelayMessage', () => {
                 originator: {
                     peerId: 'peerId',
                     peerName: 'peerName',
-                    peerType: 'node'
+                    peerType: 'node',
+                    location: null
                 },
-                targetNode: null,
+                targetNode: null as any,
                 subType: 'offer',
                 data: {
                     hello: 'world'
@@ -52,7 +55,7 @@ describe('RelayMessage', () => {
         it('throws on null originatorId', () => {
             assert.throws(() => new RelayMessage({
                 requestId: 'requestId',
-                originator: null,
+                originator: null as any,
                 targetNode: 'targetNode',
                 subType: 'offer',
                 data: {
@@ -62,11 +65,12 @@ describe('RelayMessage', () => {
         })
         it('throws on null requestId', () => {
             assert.throws(() => new RelayMessage({
-                requestId: null,
+                requestId: null as any,
                 originator: {
                     peerId: 'peerId',
                     peerName: 'peerName',
-                    peerType: 'node'
+                    peerType: 'node',
+                    location: null
                 },
                 targetNode: 'targetNode',
                 subType: 'offer',
@@ -81,7 +85,8 @@ describe('RelayMessage', () => {
                 originator: {
                     peerId: 'peerId',
                     peerName: 'peerName',
-                    peerType: 'node'
+                    peerType: 'node',
+                    location: null
                 },
                 targetNode: 'targetNode',
                 subType: 'offer',
@@ -95,7 +100,8 @@ describe('RelayMessage', () => {
             assert.deepStrictEqual(msg.originator, {
                 peerId: 'peerId',
                 peerName: 'peerName',
-                peerType: 'node'
+                peerType: 'node',
+                location: null
             })
             assert.strictEqual(msg.targetNode, 'targetNode')
             assert.deepStrictEqual(msg.subType, 'offer')

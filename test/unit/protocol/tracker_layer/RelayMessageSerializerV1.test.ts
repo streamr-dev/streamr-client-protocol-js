@@ -13,7 +13,8 @@ const message = new RelayMessage({
     originator: {
         peerId: 'peerId',
         peerName: 'peerName',
-        peerType: 'node'
+        peerType: 'node',
+        location: null
     },
     targetNode: 'targetNode',
     subType: 'offer',
@@ -28,7 +29,8 @@ const serializedMessage = JSON.stringify([
     {
         peerId: 'peerId',
         peerName: 'peerName',
-        peerType: 'node'
+        peerType: 'node',
+        location: null
     },
     'targetNode',
     'offer',
