@@ -8,8 +8,8 @@ import { Todo } from '../../../sharedTypes'
 
 const VERSION = 1
 
-export default class BroadcastMessageSerializerV1 extends Serializer<Todo> {
-    toArray(broadcastMessage: Todo, streamMessageVersion = StreamMessage.LATEST_VERSION) {
+export default class BroadcastMessageSerializerV1 extends Serializer<BroadcastMessage> {
+    toArray(broadcastMessage: BroadcastMessage, streamMessageVersion = StreamMessage.LATEST_VERSION) {
         return [
             VERSION,
             ControlMessage.TYPES.BroadcastMessage,

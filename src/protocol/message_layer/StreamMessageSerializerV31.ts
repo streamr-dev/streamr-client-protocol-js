@@ -8,7 +8,7 @@ import { Todo } from '../../sharedTypes'
 const VERSION = 31
 
 export default class StreamMessageSerializerV31 extends Serializer<StreamMessage> {
-    toArray(streamMessage: Todo) {
+    toArray(streamMessage: StreamMessage) {
         return [
             VERSION,
             streamMessage.messageId.toArray(),

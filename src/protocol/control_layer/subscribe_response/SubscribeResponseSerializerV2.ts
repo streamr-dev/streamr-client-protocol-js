@@ -7,8 +7,8 @@ import { Todo } from '../../../sharedTypes'
 
 const VERSION = 2
 
-export default class SubscribeResponseSerializerV2 extends Serializer<Todo> {
-    toArray(subscribeResponse: Todo) {
+export default class SubscribeResponseSerializerV2 extends Serializer<SubscribeResponse> {
+    toArray(subscribeResponse: SubscribeResponse) {
         return [
             VERSION,
             ControlMessage.TYPES.SubscribeResponse,

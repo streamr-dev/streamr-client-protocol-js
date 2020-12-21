@@ -7,8 +7,8 @@ import { Todo } from '../../../sharedTypes'
 
 const VERSION = 1
 
-export default class StorageNodesResponseSerializerV1 extends Serializer<Todo> {
-    toArray(storageNodesResponse: Todo) {
+export default class StorageNodesResponseSerializerV1 extends Serializer<StorageNodesResponse> {
+    toArray(storageNodesResponse: StorageNodesResponse) {
         return [
             VERSION,
             TrackerMessage.TYPES.StorageNodesResponse,

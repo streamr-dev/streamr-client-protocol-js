@@ -7,8 +7,8 @@ import { Todo } from '../../../sharedTypes'
 
 const VERSION = 1
 
-export default class ResendLastRequestSerializerV1 extends Serializer<Todo> {
-    toArray(resendLastRequest: Todo) {
+export default class ResendLastRequestSerializerV1 extends Serializer<ResendLastRequest> {
+    toArray(resendLastRequest: ResendLastRequest) {
         return [
             VERSION,
             ControlMessage.TYPES.ResendLastRequest,

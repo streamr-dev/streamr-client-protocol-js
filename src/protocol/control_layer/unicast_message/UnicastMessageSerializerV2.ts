@@ -8,7 +8,7 @@ import { Todo } from '../../../sharedTypes'
 
 const VERSION = 2
 
-export default class UnicastMessageSerializerV2 extends Serializer<Todo> {
+export default class UnicastMessageSerializerV2 extends Serializer<UnicastMessage> {
     toArray(unicastMessage: Todo, streamMessageVersion = StreamMessage.LATEST_VERSION) {
         return [
             VERSION,

@@ -8,8 +8,8 @@ import { Todo } from '../../../sharedTypes'
 
 const VERSION = 2
 
-export default class ResendRangeRequestSerializerV2 extends Serializer<Todo> {
-    toArray(resendRangeRequest: Todo) {
+export default class ResendRangeRequestSerializerV2 extends Serializer<ResendRangeRequest> {
+    toArray(resendRangeRequest: ResendRangeRequest) {
         return [
             VERSION,
             ControlMessage.TYPES.ResendRangeRequest,

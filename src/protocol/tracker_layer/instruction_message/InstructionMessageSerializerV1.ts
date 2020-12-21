@@ -7,8 +7,8 @@ import { Todo } from '../../../sharedTypes'
 
 const VERSION = 1
 
-export default class InstructionMessageSerializerV1 extends Serializer<Todo> {
-    toArray(instructionMessage: Todo) {
+export default class InstructionMessageSerializerV1 extends Serializer<InstructionMessage> {
+    toArray(instructionMessage: InstructionMessage) {
         return [
             VERSION,
             TrackerMessage.TYPES.InstructionMessage,

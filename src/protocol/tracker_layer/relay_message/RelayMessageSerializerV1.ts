@@ -7,8 +7,8 @@ import { Todo } from '../../../sharedTypes'
 
 const VERSION = 1
 
-export default class RelayMessageSerializerV1 extends Serializer<Todo> {
-    toArray(relayMessage: Todo) {
+export default class RelayMessageSerializerV1 extends Serializer<RelayMessage> {
+    toArray(relayMessage: RelayMessage) {
         return [
             VERSION,
             TrackerMessage.TYPES.RelayMessage,

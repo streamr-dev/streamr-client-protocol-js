@@ -7,8 +7,8 @@ import { Todo } from '../../../sharedTypes'
 
 const VERSION = 1
 
-export default class UnsubscribeRequestSerializerV1 extends Serializer<Todo> {
-    toArray(unsubscribeRequest: Todo) {
+export default class UnsubscribeRequestSerializerV1 extends Serializer<UnsubscribeRequest> {
+    toArray(unsubscribeRequest: UnsubscribeRequest) {
         return [
             VERSION,
             ControlMessage.TYPES.UnsubscribeRequest,
