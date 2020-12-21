@@ -18,7 +18,7 @@ export default class ErrorResponseSerializerV2 extends Serializer<ErrorResponse>
         ]
     }
 
-    fromArray(arr: Todo) {
+    fromArray(arr: any) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars

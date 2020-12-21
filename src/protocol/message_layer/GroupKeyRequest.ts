@@ -27,7 +27,7 @@ export default class GroupKeyRequest extends GroupKeyMessage {
         return [this.requestId, this.streamId, this.rsaPublicKey, this.groupKeyIds]
     }
 
-    static fromArray(arr: Todo) {
+    static fromArray(arr: any) {
         const [requestId, streamId, rsaPublicKey, groupKeyIds] = arr
         return new GroupKeyRequest({
             requestId,

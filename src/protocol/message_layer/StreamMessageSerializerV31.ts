@@ -21,7 +21,7 @@ export default class StreamMessageSerializerV31 extends Serializer<StreamMessage
         ]
     }
 
-    fromArray(arr: Todo) {
+    fromArray(arr: any) {
         const [
             version, // eslint-disable-line no-unused-vars
             messageIdArr,

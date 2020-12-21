@@ -41,7 +41,7 @@ export default class EncryptedGroupKey {
         return new EncryptedGroupKey(groupKeyId, encryptedGroupKeyHex, json)
     }
 
-    static fromArray(arr: Todo) {
+    static fromArray(arr: any) {
         const [groupKeyId, encryptedGroupKeyHex] = arr
         return new EncryptedGroupKey(groupKeyId, encryptedGroupKeyHex)
     }

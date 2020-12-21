@@ -36,7 +36,7 @@ export default class MessageRef {
         ]
     }
 
-    static fromArray(arr: Todo) {
+    static fromArray(arr: any) {
         const [
             timestamp,
             sequenceNumber,

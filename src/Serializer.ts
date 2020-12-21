@@ -4,6 +4,6 @@ export abstract class Serializer<T> {
 
     abstract toArray(request: Todo, streamMessageVersion?: number): Todo[]
 
-    abstract fromArray(arr: Todo): T
+    abstract fromArray(arr: any): T
 
 }

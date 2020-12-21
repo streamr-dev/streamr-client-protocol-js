@@ -24,7 +24,7 @@ export default class ResendRangeRequestSerializerV1 extends Serializer<ResendRan
         ]
     }
 
-    fromArray(arr: Todo) {
+    fromArray(arr: any) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars

@@ -18,7 +18,7 @@ export default class ResendResponseResendingSerializerV1 extends Serializer<Rese
         ]
     }
 
-    fromArray(arr: Todo) {
+    fromArray(arr: any) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars

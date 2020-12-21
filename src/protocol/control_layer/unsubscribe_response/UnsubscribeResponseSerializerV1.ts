@@ -17,7 +17,7 @@ export default class UnsubscribeResponseSerializerV1 extends Serializer<Unsubscr
         ]
     }
 
-    fromArray(arr: Todo) {
+    fromArray(arr: any) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars

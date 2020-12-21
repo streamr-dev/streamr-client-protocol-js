@@ -18,7 +18,7 @@ export default class UnicastMessageSerializerV1 extends Serializer<UnicastMessag
         ]
     }
 
-    fromArray(arr: Todo) {
+    fromArray(arr: any) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars

@@ -32,7 +32,7 @@ export default class GroupKeyResponse extends GroupKeyMessage {
         return [this.requestId, this.streamId, this.encryptedGroupKeys.map((it: EncryptedGroupKey) => it.toArray())]
     }
 
-    static fromArray(arr: Todo) {
+    static fromArray(arr: any) {
         const [requestId, streamId, encryptedGroupKeys] = arr
         return new GroupKeyResponse({
             requestId,

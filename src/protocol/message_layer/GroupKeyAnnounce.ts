@@ -28,7 +28,7 @@ export default class GroupKeyAnnounce extends GroupKeyMessage {
         return [this.streamId, this.encryptedGroupKeys.map((it: EncryptedGroupKey)=> it.toArray())]
     }
 
-    static fromArray(arr: Todo) {
+    static fromArray(arr: any) {
         const [streamId, encryptedGroupKeys] = arr
         return new GroupKeyAnnounce({
             streamId,

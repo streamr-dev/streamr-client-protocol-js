@@ -36,7 +36,7 @@ export default class MessageID {
         ]
     }
 
-    static fromArray(arr: Todo) {
+    static fromArray(arr: any) {
         const [
             streamId,
             streamPartition,
