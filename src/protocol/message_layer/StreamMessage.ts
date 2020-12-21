@@ -6,10 +6,9 @@ import { validateIsNotEmptyString, validateIsString, validateIsType } from '../.
 import MessageRef from './MessageRef'
 import MessageID from './MessageID'
 import EncryptedGroupKey from './EncryptedGroupKey'
-import { Todo } from '../../sharedTypes'
 import { Serializer } from '../../Serializer'
 
-const serializerByVersion: Todo = {}
+const serializerByVersion: {[version: string]: Serializer<StreamMessage> } = {}
 const BYE_KEY = '_bye'
 const LATEST_VERSION = 32
 

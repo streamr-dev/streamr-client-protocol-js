@@ -1,10 +1,10 @@
 import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
 import UnsupportedTypeError from '../../errors/UnsupportedTypeError'
 import { validateIsInteger, validateIsString } from '../../utils/validations'
-import { Todo } from '../../sharedTypes'
 import { Serializer } from '../../Serializer'
 
-const serializerByVersionAndType: Todo = {}
+// TODO use ControlMessageType instead of number when we have real enums
+const serializerByVersionAndType: {[version: string]: { [type: number]: Serializer<ControlMessage> }} = {}
 const LATEST_VERSION = 2
 
 // TODO convert to real enum?

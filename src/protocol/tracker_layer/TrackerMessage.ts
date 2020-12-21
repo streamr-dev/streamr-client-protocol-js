@@ -1,9 +1,10 @@
 import UnsupportedVersionError from '../../errors/UnsupportedVersionError'
 import UnsupportedTypeError from '../../errors/UnsupportedTypeError'
 import { validateIsInteger, validateIsString } from '../../utils/validations'
-import { Todo } from '../../sharedTypes'
+import { Serializer } from '../../Serializer'
 
-const serializerByVersionAndType: Todo = {}
+// TODO use ControlMessageType instead of number when we have real enums
+const serializerByVersionAndType: {[version: string]: { [type: number]: Serializer<TrackerMessage> }} = {}
 const LATEST_VERSION = 1
 
 // TODO convert to real enum?
@@ -40,7 +41,7 @@ export default class TrackerMessage {
         this.requestId = requestId
     }
 
-    static registerSerializer(version: number, type: number, serializer: Todo) {
+    static registerSerializer(version: number, type: number, serializer: Serializer<TrackerMessage>) {
         // Check the serializer interface
         if (!serializer.fromArray) {
             throw new Error(`Serializer ${JSON.stringify(serializer)} doesn't implement a method fromArray!`)
