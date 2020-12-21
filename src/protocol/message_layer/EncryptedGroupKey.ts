@@ -1,11 +1,10 @@
-import { Todo } from '../../sharedTypes'
 import { validateIsString } from '../../utils/validations'
 
 export default class EncryptedGroupKey {
 
     groupKeyId: string
     encryptedGroupKeyHex: string
-    serialized: Todo | undefined | null = null
+    serialized: string | undefined | null = null
 
     /**
      * A pair (groupKeyId, encryptedGroupKey) where the encryptedGroupKey is an encrypted, hex-encoded version of the group key.
@@ -36,7 +35,7 @@ export default class EncryptedGroupKey {
         return JSON.stringify(this.toArray())
     }
 
-    static deserialize(json: Todo) {
+    static deserialize(json: any) {
         const [groupKeyId, encryptedGroupKeyHex] = JSON.parse(json)
         return new EncryptedGroupKey(groupKeyId, encryptedGroupKeyHex, json)
     }

@@ -1,5 +1,7 @@
 import { Todo } from '../../sharedTypes'
 import { validateIsString } from '../../utils/validations'
+import MessageID from './MessageID'
+import MessageRef from './MessageRef'
 
 import StreamMessage, { StreamMessageType } from './StreamMessage'
 
@@ -22,18 +24,18 @@ export default abstract class GroupKeyMessage {
         return JSON.stringify(this.toArray())
     }
 
-    static deserialize(serialized: Todo, messageType: StreamMessageType) {
+    static deserialize(serialized: string, messageType: StreamMessageType) {
         if (!GroupKeyMessage.classByMessageType[messageType]) {
             throw new Error(`Unknown MessageType: ${messageType}`)
         }
         return GroupKeyMessage.classByMessageType[messageType].fromArray(JSON.parse(serialized))
     }
 
-    static fromStreamMessage(streamMessage: Todo) {
-        return GroupKeyMessage.deserialize(streamMessage.getSerializedContent(), streamMessage.messageType)
+    static fromStreamMessage(streamMessage: StreamMessage) {
+        return GroupKeyMessage.deserialize(streamMessage.getSerializedContent()!, streamMessage.messageType)
     }
 
-    toStreamMessage(messageId: Todo, prevMsgRef: Todo) {
+    toStreamMessage(messageId: MessageID, prevMsgRef: MessageRef) {
         return new StreamMessage({
             messageId,
             prevMsgRef,
@@ -42,5 +44,5 @@ export default abstract class GroupKeyMessage {
         })
     }
 
-    abstract toArray(): Todo
+    abstract toArray(): any[]
 }

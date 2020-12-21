@@ -7,6 +7,7 @@ import MessageRef from './MessageRef'
 import MessageID from './MessageID'
 import EncryptedGroupKey from './EncryptedGroupKey'
 import { Todo } from '../../sharedTypes'
+import { Serializer } from '../../Serializer'
 
 const serializerByVersion: Todo = {}
 const BYE_KEY = '_bye'
@@ -59,8 +60,8 @@ export default class StreamMessage {
     newGroupKey: EncryptedGroupKey | undefined | null
     signatureType: SignatureType
     signature: string | undefined | null
-    parsedContent?: Todo
-    serializedContent?: Todo
+    parsedContent?: any
+    serializedContent?: string
 
     constructor({
         messageId,
@@ -176,11 +177,11 @@ export default class StreamMessage {
 
             if (this.contentType === StreamMessage.CONTENT_TYPES.JSON) {
                 try {
-                    this.parsedContent = JSON.parse(this.serializedContent)
+                    this.parsedContent = JSON.parse(this.serializedContent!)
                 } catch (err) {
                     throw new InvalidJsonError(
                         this.getStreamId(),
-                        this.serializedContent,
+                        this.serializedContent!,
                         err,
                         this,
                     )
@@ -225,7 +226,7 @@ export default class StreamMessage {
         throw new Error(`Unrecognized signature type: ${this.signatureType}`)
     }
 
-    static registerSerializer(version: number, serializer: Todo) {
+    static registerSerializer(version: number, serializer: Serializer<StreamMessage>) {
         // Check the serializer interface
         if (!serializer.fromArray) {
             throw new Error(`Serializer ${JSON.stringify(serializer)} doesn't implement a method fromArray!`)
@@ -266,7 +267,7 @@ export default class StreamMessage {
     /**
      * Takes a serialized representation (array or string) of a message, and returns a StreamMessage instance.
      */
-    static deserialize(msg: Todo) {
+    static deserialize(msg: any[] | string) {
         const messageArray = (typeof msg === 'string' ? JSON.parse(msg) : msg)
 
         /* eslint-disable prefer-destructuring */
@@ -305,7 +306,7 @@ export default class StreamMessage {
         return streamMessageVersion >= 31
     }
 
-    static validateSequence({ messageId, prevMsgRef }: Todo) {
+    static validateSequence({ messageId, prevMsgRef }: { messageId: MessageID, prevMsgRef?: MessageRef | undefined | null}) {
         if (!prevMsgRef) {
             return
         }

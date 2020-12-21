@@ -1,8 +1,6 @@
-import { Todo } from './sharedTypes'
-
 export abstract class Serializer<T> {
 
-    abstract toArray(request: Todo, streamMessageVersion?: number): Todo[]
+    abstract toArray(request: T, streamMessageVersion?: number): any[]
 
     abstract fromArray(arr: any): T
 

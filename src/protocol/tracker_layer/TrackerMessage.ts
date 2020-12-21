@@ -80,14 +80,14 @@ export default class TrackerMessage {
         return Object.keys(serializerByVersionAndType).map((key) => parseInt(key, 10))
     }
 
-    serialize(version = this.version, ...typeSpecificSerializeArgs: Todo[]) {
+    serialize(version = this.version, ...typeSpecificSerializeArgs: any[]) {
         return JSON.stringify(TrackerMessage.getSerializer(version, this.type).toArray(this, ...typeSpecificSerializeArgs))
     }
 
     /**
      * Takes a serialized representation (array or string) of a message, and returns a ControlMessage instance.
      */
-    static deserialize(msg: Todo, ...typeSpecificDeserializeArgs: Todo[]) {
+    static deserialize(msg: any[] | string, ...typeSpecificDeserializeArgs: any[]) {
         const messageArray = (typeof msg === 'string' ? JSON.parse(msg) : msg)
 
         /* eslint-disable prefer-destructuring */

@@ -4,12 +4,11 @@ import StreamMessage from '../../message_layer/StreamMessage'
 import UnicastMessage from './UnicastMessage'
 
 import { Serializer } from '../../../Serializer'
-import { Todo } from '../../../sharedTypes'
 
 const VERSION = 1
 
 export default class UnicastMessageSerializerV1 extends Serializer<UnicastMessage> {
-    toArray(unicastMessage: Todo, streamMessageVersion = StreamMessage.LATEST_VERSION) {
+    toArray(unicastMessage: UnicastMessage, streamMessageVersion = StreamMessage.LATEST_VERSION) {
         return [
             VERSION,
             ControlMessage.TYPES.UnicastMessage,
