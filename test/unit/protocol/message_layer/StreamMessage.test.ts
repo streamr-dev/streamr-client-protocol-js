@@ -5,9 +5,10 @@ import sinon from 'sinon'
 import { MessageLayer } from '../../../../src/index'
 import ValidationError from '../../../../src/errors/ValidationError'
 import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionError'
-import { Todo } from '../../../../src/sharedTypes'
+import { Serializer } from '../../../../src/Serializer'
+import StreamMessage from '../../../../src/protocol/message_layer/StreamMessage'
 
-const { StreamMessage, MessageRef, MessageIDStrict, EncryptedGroupKey } = MessageLayer
+const { MessageRef, MessageIDStrict, EncryptedGroupKey } = MessageLayer
 
 const content = {
     hello: 'world',
@@ -87,14 +88,14 @@ describe('StreamMessage', () => {
             assert.throws(() => new StreamMessage({
                 // missing messageId
                 content: JSON.stringify(content),
-            }), ValidationError)
+            } as any), ValidationError)
         })
 
         it('should throw if content is not defined', () => {
             assert.throws(() => new StreamMessage({
                 messageId: new MessageIDStrict('streamId', 0, 1564046332168, 10, 'publisherId', 'msgChainId'),
                 // missing content
-            }), ValidationError)
+            } as any), ValidationError)
         })
 
         it('should not throw when encrypted content', () => {
@@ -192,7 +193,7 @@ describe('StreamMessage', () => {
     })
 
     describe('serialization', () => {
-        let serializer: Todo
+        let serializer: Serializer<StreamMessage>
         const VERSION = StreamMessage.LATEST_VERSION + 100
 
         beforeEach(() => {
@@ -223,12 +224,16 @@ describe('StreamMessage', () => {
                 assert.throws(() => StreamMessage.registerSerializer(VERSION, serializer))
             })
             it('throws if the Serializer does not implement fromArray', () => {
-                delete serializer.fromArray
-                assert.throws(() => StreamMessage.registerSerializer(VERSION, serializer))
+                const invalidSerializer: any = {
+                    toArray: sinon.stub()
+                }
+                assert.throws(() => StreamMessage.registerSerializer(VERSION, invalidSerializer))
             })
             it('throws if the Serializer does not implement toArray', () => {
-                delete serializer.toArray
-                assert.throws(() => StreamMessage.registerSerializer(VERSION, serializer))
+                const invalidSerializer: any = {
+                    fromArray: sinon.stub()
+                }
+                assert.throws(() => StreamMessage.registerSerializer(VERSION, invalidSerializer))
             })
         })
 
@@ -238,7 +243,7 @@ describe('StreamMessage', () => {
             it('calls toArray() on the configured serializer and stringifies it', () => {
                 serializer.toArray = sinon.stub().returns([12345])
                 assert.strictEqual(m.serialize(VERSION), '[12345]')
-                assert(serializer.toArray.calledWith(m))
+                assert((serializer.toArray as any).calledWith(m))
             })
 
             it('should throw on unsupported version', () => {
@@ -256,7 +261,7 @@ describe('StreamMessage', () => {
                 const m = msg()
                 serializer.fromArray = sinon.stub().returns(m)
                 assert.strictEqual(StreamMessage.deserialize(JSON.stringify(arr)), m)
-                assert(serializer.fromArray.calledWith(arr))
+                assert((serializer.fromArray as any).calledWith(arr))
             })
 
             it('should throw on unsupported version', () => {

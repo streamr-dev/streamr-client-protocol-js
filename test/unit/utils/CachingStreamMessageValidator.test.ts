@@ -7,17 +7,17 @@ import sleep from 'await-sleep'
 import CachingStreamMessageValidator from '../../../src/utils/CachingStreamMessageValidator'
 import StreamMessage from '../../../src/protocol/message_layer/StreamMessage'
 import '../../../src/protocol/message_layer/StreamMessageSerializerV31'
-import { Todo } from '../../../src/sharedTypes'
+import { StreamMetadata } from '../../../src/sharedTypes'
 
 describe('CachingStreamMessageValidator', () => {
-    let cacheTimeoutMillis: Todo
-    let cacheErrorsTimeoutMillis: Todo
-    let getStream: Todo
-    let isPublisher: Todo
-    let isSubscriber: Todo
-    let verify: Todo
-    let streamMetadata: Todo
-    let msg: Todo
+    let cacheTimeoutMillis: number
+    let cacheErrorsTimeoutMillis: number
+    let getStream: (streamId: string) => Promise<StreamMetadata>
+    let isPublisher: (address: string, streamId: string) => Promise<boolean>
+    let isSubscriber: (address: string, streamId: string) => Promise<boolean>
+    let verify: ((address: string, payload: string, signature: string) => Promise<boolean>) | undefined
+    let streamMetadata: StreamMetadata
+    let msg: StreamMessage
 
     const getValidator = () => new CachingStreamMessageValidator({
         getStream,
@@ -52,9 +52,9 @@ describe('CachingStreamMessageValidator', () => {
         const validator = getValidator()
         await validator.validate(msg)
         await validator.validate(msg)
-        assert.strictEqual(getStream.callCount, 1) // cached
-        assert.strictEqual(isPublisher.callCount, 1) // cached
-        assert.strictEqual(verify.callCount, 2) // not cached
+        assert.strictEqual((getStream as any).callCount, 1) // cached
+        assert.strictEqual((isPublisher as any).callCount, 1) // cached
+        assert.strictEqual((verify as any).callCount, 2) // not cached
     })
 
     it('only calls the expensive functions once (parallel promise resolution)', async () => {
@@ -62,10 +62,10 @@ describe('CachingStreamMessageValidator', () => {
         // I think the sinon.stub().resolves() might return an already-resolved promise.
         getStream = sinon.spy(() => new Promise((resolve) => {
             setTimeout(() => resolve(streamMetadata), 0)
-        }))
+        })) as any
         isPublisher = sinon.spy(() => new Promise((resolve) => {
             setTimeout(() => resolve(true), 0)
-        }))
+        })) as any
 
         const validator = getValidator()
 
@@ -74,8 +74,8 @@ describe('CachingStreamMessageValidator', () => {
             validator.validate(msg),
             validator.validate(msg),
         ])
-        assert.strictEqual(getStream.callCount, 1)
-        assert.strictEqual(isPublisher.callCount, 1)
+        assert.strictEqual((getStream as any).callCount, 1)
+        assert.strictEqual((isPublisher as any).callCount, 1)
     })
 
     it('only calls the expensive function once for each different stream', async () => {
@@ -85,9 +85,9 @@ describe('CachingStreamMessageValidator', () => {
         await validator.validate(msg)
         await validator.validate(msg2)
 
-        assert.strictEqual(isPublisher.callCount, 2, `Unexpected calls: ${isPublisher.getCalls()}`)
-        assert(isPublisher.calledWith('0xbce3217F2AC9c8a2D14A6303F87506c4FC124014', 'streamId'), `Unexpected calls: ${isPublisher.getCalls()}`)
-        assert(isPublisher.calledWith('0xbce3217F2AC9c8a2D14A6303F87506c4FC124014', 'tagHE6nTQ9SJV2wPoCxBFw'), `Unexpected calls: ${isPublisher.getCalls()}`)
+        assert.strictEqual((isPublisher as any).callCount, 2, `Unexpected calls: ${(isPublisher as any).getCalls()}`)
+        assert((isPublisher as any).calledWith('0xbce3217F2AC9c8a2D14A6303F87506c4FC124014', 'streamId'), `Unexpected calls: ${(isPublisher as any).getCalls()}`)
+        assert((isPublisher as any).calledWith('0xbce3217F2AC9c8a2D14A6303F87506c4FC124014', 'tagHE6nTQ9SJV2wPoCxBFw'), `Unexpected calls: ${(isPublisher as any).getCalls()}`)
     })
 
     it('expires items from cache after timeout', async () => {
@@ -97,14 +97,14 @@ describe('CachingStreamMessageValidator', () => {
 
         await validator.validate(msg)
         await validator.validate(msg)
-        assert.strictEqual(isPublisher.callCount, 1)
+        assert.strictEqual((isPublisher as any).callCount, 1)
 
         await sleep(cacheTimeoutMillis * 3)
 
         // Results should have been expired
         await validator.validate(msg)
         await validator.validate(msg)
-        assert.strictEqual(isPublisher.callCount, 2)
+        assert.strictEqual((isPublisher as any).callCount, 2)
     })
 
     it('does not swallow rejections', async () => {
@@ -126,14 +126,14 @@ describe('CachingStreamMessageValidator', () => {
 
         await assert.rejects(validator.validate(msg))
         await assert.rejects(validator.validate(msg))
-        assert.strictEqual(isPublisher.callCount, 1)
+        assert.strictEqual((isPublisher as any).callCount, 1)
 
         await sleep(cacheErrorsTimeoutMillis * 3)
 
         // Error results should have been expired
         await assert.rejects(validator.validate(msg))
         await assert.rejects(validator.validate(msg))
-        assert.strictEqual(isPublisher.callCount, 2)
+        assert.strictEqual((isPublisher as any).callCount, 2)
     })
 
     // Further tests would basically be just testing the memoizee library. Add more tests if the implementation grows.

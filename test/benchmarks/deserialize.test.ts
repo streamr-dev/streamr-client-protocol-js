@@ -1,7 +1,7 @@
 import { ControlLayer, MessageLayer } from '../../src'
-import { Todo } from '../../src/sharedTypes'
+import PublishRequest from '../../src/protocol/control_layer/publish_request/PublishRequest'
 
-const { ControlMessage, PublishRequest } = ControlLayer
+const { ControlMessage } = ControlLayer
 const { StreamMessage, MessageID, MessageRef } = MessageLayer
 
 const ITERATIONS = 1000000
@@ -10,10 +10,10 @@ const publishRequest = ControlMessage.deserialize('[1,8,[31,["kxeE-gyxS8CkuWYlfB
     + '"7kcxFuyOs4ozeAcVfzJF"],[1567671579675,0],27,0,"{\\"random\\": 0.8314497807870005}",0,null],'
     + '"kuC8Ilzt2NURdpKxuYN2JBLkPQBJ0vN7NGIx5ohA7ZJafyh29I07fZR57Jq4fUBo"]')
 
-const { streamMessage } = publishRequest
+const { streamMessage } = publishRequest as PublishRequest
 
 describe('deserialize', () => {
-    const run = (functionToTest: Todo, name: Todo) => {
+    const run = (functionToTest: () => void, name: string) => {
         const start = new Date()
 
         let resultString = `Benchmarking ${name}...\n`
@@ -27,10 +27,10 @@ describe('deserialize', () => {
 
         resultString += `Execution time: ${end} ms\n`
         resultString += `Iterations / second: ${ITERATIONS / (end / 1000)}\n`
-        const used: Todo = process.memoryUsage()
+        const used: any = process.memoryUsage()
         Object.keys(used).forEach((key) => {
             /* eslint-disable no-mixed-operators */
-            resultString += `${key} ${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB\n`
+            resultString += `${key} ${Math.round((used[key] as number) / 1024 / 1024 * 100) / 100} MB\n`
             /* eslint-enable no-mixed-operators */
         })
         console.log(resultString)

@@ -2,11 +2,12 @@ import assert from 'assert'
 
 import shuffle from 'array-shuffle'
 
-import { Utils, MessageLayer } from '../../../src'
-import { Todo } from '../../../src/sharedTypes'
+import { MessageLayer } from '../../../src'
+import OrderingUtil from '../../../src/utils/OrderingUtil'
+import StreamMessage from '../../../src/protocol/message_layer/StreamMessage'
+import MessageRef from '../../../src/protocol/message_layer/MessageRef'
 
-const { OrderingUtil } = Utils
-const { StreamMessage, MessageID, MessageRef } = MessageLayer
+const { MessageID } = MessageLayer
 
 const createMsg = (
     timestamp = 1, sequenceNumber = 0, prevTimestamp: number | null = null,
@@ -23,12 +24,12 @@ const createMsg = (
 const msg = createMsg()
 
 describe('OrderingUtil', () => {
-    let util: Todo
+    let util: OrderingUtil 
     afterEach(() => {
         util.clearGaps()
     })
     it('calls the message handler when a message is received', (done) => {
-        const handler = (streamMessage: Todo) => {
+        const handler = (streamMessage: StreamMessage) => {
             assert.deepStrictEqual(streamMessage.serialize(), msg.serialize())
             done()
         }
@@ -37,7 +38,7 @@ describe('OrderingUtil', () => {
         util.add(msg)
     })
     it('calls the gap handler if a gap is detected', (done) => {
-        const gapHandler = (from: Todo, to: Todo, publisherId: Todo) => {
+        const gapHandler = (from: MessageRef, to: MessageRef, publisherId: string) => {
             assert.equal(from.timestamp, 1)
             assert.equal(from.sequenceNumber, 1)
             assert.equal(to.timestamp, 3)
@@ -86,9 +87,9 @@ describe('OrderingUtil', () => {
             expected3.push(createMsg(i, 0, i - 1, 0, {}, 'publisherId3'))
         }
         const shuffled = shuffle(expected1.concat(expected2).concat(expected3))
-        const received1: Todo = []
-        const received2: Todo = []
-        const received3: Todo = []
+        const received1: StreamMessage[] = []
+        const received2: StreamMessage[] = []
+        const received3: StreamMessage[] = []
         // @ts-ignore TODO
         util = new OrderingUtil('streamId', 0, (m) => {
             if (m.getPublisherId() === 'publisherId1') {
@@ -112,20 +113,20 @@ describe('OrderingUtil', () => {
             assert.deepStrictEqual(received2, expected2)
             assert.deepStrictEqual(received3, expected3)
         } catch (e) {
-            const shuffledTimestamps: Todo = []
-            shuffled.forEach((streamMessage: Todo) => {
+            const shuffledTimestamps: number[] = []
+            shuffled.forEach((streamMessage: StreamMessage) => {
                 shuffledTimestamps.push(streamMessage.getTimestamp())
             })
-            const receivedTimestamps1: Todo = []
-            received1.forEach((streamMessage: Todo) => {
+            const receivedTimestamps1: number[] = []
+            received1.forEach((streamMessage: StreamMessage) => {
                 receivedTimestamps1.push(streamMessage.getTimestamp())
             })
-            const receivedTimestamps2: Todo = []
-            received2.forEach((streamMessage: Todo) => {
+            const receivedTimestamps2: number[] = []
+            received2.forEach((streamMessage: StreamMessage) => {
                 receivedTimestamps2.push(streamMessage.getTimestamp())
             })
-            const receivedTimestamps3: Todo = []
-            received3.forEach((streamMessage: Todo) => {
+            const receivedTimestamps3: number[] = []
+            received3.forEach((streamMessage: StreamMessage) => {
                 receivedTimestamps3.push(streamMessage.getTimestamp())
             })
             throw new Error('Was expecting to receive messages ordered per timestamp but instead received timestamps in this order:\n'

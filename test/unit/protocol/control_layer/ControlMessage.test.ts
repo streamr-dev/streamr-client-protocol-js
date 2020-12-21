@@ -6,7 +6,7 @@ import ControlMessage, { ControlMessageType } from '../../../../src/protocol/con
 import UnsupportedTypeError from '../../../../src/errors/UnsupportedTypeError'
 import UnsupportedVersionError from '../../../../src/errors/UnsupportedVersionError'
 import ValidationError from '../../../../src/errors/ValidationError'
-import { Todo } from '../../../../src/sharedTypes'
+import { Serializer } from '../../../../src/Serializer'
 
 const VERSION = 123
 const TYPE = 0
@@ -24,7 +24,7 @@ const msg = () => {
 }
 
 describe('ControlMessage', () => {
-    let serializer: Todo
+    let serializer: Serializer<ControlMessage>
 
     beforeEach(() => {
         serializer = {
@@ -71,12 +71,16 @@ describe('ControlMessage', () => {
             assert.throws(() => ControlMessage.registerSerializer(VERSION, TYPE, serializer))
         })
         it('throws if the Serializer does not implement fromArray', () => {
-            delete serializer.fromArray
-            assert.throws(() => ControlMessage.registerSerializer(VERSION, TYPE, serializer))
+            const invalidSerializer: any = {
+                toArray: sinon.stub()
+            }
+            assert.throws(() => ControlMessage.registerSerializer(VERSION, TYPE, invalidSerializer))
         })
         it('throws if the Serializer does not implement toArray', () => {
-            delete serializer.toArray
-            assert.throws(() => ControlMessage.registerSerializer(VERSION, TYPE, serializer))
+            const invalidSerializer: any = {
+                fromArray: sinon.stub()
+            }
+            assert.throws(() => ControlMessage.registerSerializer(VERSION, TYPE, invalidSerializer))
         })
     })
 
@@ -85,7 +89,7 @@ describe('ControlMessage', () => {
             const m = msg()
             serializer.toArray = sinon.stub().returns([12345])
             assert.strictEqual(m.serialize(), '[12345]')
-            assert(serializer.toArray.calledWith(m))
+            assert((serializer.toArray as any).calledWith(m))
         })
 
         it('should throw on unsupported version', () => {
@@ -113,7 +117,7 @@ describe('ControlMessage', () => {
             const m = msg()
             serializer.fromArray = sinon.stub().returns(m)
             assert.strictEqual(ControlMessage.deserialize(JSON.stringify(arr)), m)
-            assert(serializer.fromArray.calledWith(arr))
+            assert((serializer.fromArray as any).calledWith(arr))
         })
 
         it('should throw on unsupported version', () => {

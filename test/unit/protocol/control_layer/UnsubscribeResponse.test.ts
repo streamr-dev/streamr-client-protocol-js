@@ -9,7 +9,7 @@ describe('UnsubscribeResponse', () => {
         it('throws on null streamId', () => {
             assert.throws(() => new UnsubscribeResponse({
                 requestId: 'requestId',
-                streamId: null,
+                streamId: null as any,
                 streamPartition: 0,
             }), ValidationError)
         })
@@ -17,7 +17,7 @@ describe('UnsubscribeResponse', () => {
             assert.throws(() => new UnsubscribeResponse({
                 requestId: 'requestId',
                 streamId: 'streamId',
-                streamPartition: null,
+                streamPartition: null as any,
             }), ValidationError)
         })
         it('throws on null requestId (since V2)', () => {

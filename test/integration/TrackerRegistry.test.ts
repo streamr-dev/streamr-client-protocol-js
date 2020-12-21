@@ -73,7 +73,7 @@ describe('TrackerRegistry', () => {
 
             // stream id is not a string
             expect(() => {
-                trackerRegistry.getTracker(1234)
+                trackerRegistry.getTracker(1234 as any)
             }).toThrow()
 
             // partition is not valid

@@ -12,7 +12,7 @@ const VERSION = 2
 
 // Message definitions
 const message = new PublishRequest({
-    VERSION,
+    version: VERSION,
     requestId: 'requestId',
     streamMessage,
     sessionToken: 'sessionToken',
