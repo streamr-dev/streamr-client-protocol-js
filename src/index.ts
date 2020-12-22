@@ -138,10 +138,3 @@ export const Utils = {
     createTrackerRegistry,
     getTrackerRegistryFromContract
 }
-
-export default {
-    ControlLayer,
-    MessageLayer,
-    Errors,
-    Utils,
-}
