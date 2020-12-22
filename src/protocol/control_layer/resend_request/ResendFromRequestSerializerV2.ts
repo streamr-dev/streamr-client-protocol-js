@@ -4,7 +4,6 @@ import MessageRef from '../../message_layer/MessageRef'
 import ResendFromRequest from './ResendFromRequest'
 
 import { Serializer } from '../../../Serializer'
-import { Todo } from '../../../sharedTypes'
 
 const VERSION = 2
 

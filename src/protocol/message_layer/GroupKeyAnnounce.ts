@@ -4,7 +4,6 @@ import ValidationError from '../../errors/ValidationError'
 import GroupKeyMessage from './GroupKeyMessage'
 import StreamMessage from './StreamMessage'
 import EncryptedGroupKey from './EncryptedGroupKey'
-import { Todo } from '../../sharedTypes'
 
 export interface Options {
     streamId: string

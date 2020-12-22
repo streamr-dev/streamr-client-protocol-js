@@ -1,4 +1,3 @@
-import { Todo } from '../../sharedTypes'
 import { validateIsNotEmptyString, validateIsNotNegativeInteger } from '../../utils/validations'
 
 import MessageRef from './MessageRef'

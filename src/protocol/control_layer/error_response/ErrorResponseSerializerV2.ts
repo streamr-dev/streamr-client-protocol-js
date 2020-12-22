@@ -3,8 +3,6 @@ import ControlMessage from '../ControlMessage'
 import ErrorResponse from './ErrorResponse'
 
 import { Serializer } from '../../../Serializer'
-import { Todo } from '../../../sharedTypes'
-
 const VERSION = 2
 
 export default class ErrorResponseSerializerV2 extends Serializer<ErrorResponse> {

@@ -3,7 +3,6 @@ import MessageID from './MessageID'
 import MessageRef from './MessageRef'
 
 import { Serializer } from '../../Serializer'
-import { Todo } from '../../sharedTypes'
 
 const VERSION = 30
 

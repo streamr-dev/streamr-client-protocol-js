@@ -4,7 +4,7 @@ import ValidationError from '../../errors/ValidationError'
 import StreamMessage from './StreamMessage'
 import GroupKeyMessage from './GroupKeyMessage'
 import EncryptedGroupKey from './EncryptedGroupKey'
-import { Todo } from '../../sharedTypes'
+
 
 interface Options {
     requestId: string

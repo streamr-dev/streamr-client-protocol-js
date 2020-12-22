@@ -1,4 +1,3 @@
-import { Todo } from '../../sharedTypes'
 import { validateIsNotNegativeInteger } from '../../utils/validations'
 
 export default class MessageRef {

@@ -4,7 +4,6 @@ import MessageIDStrict from './MessageIDStrict'
 import EncryptedGroupKey from './EncryptedGroupKey'
 
 import { Serializer } from '../../Serializer'
-import { Todo } from '../../sharedTypes'
 
 const VERSION = 32
 

@@ -3,7 +3,6 @@ import ControlMessage from '../ControlMessage'
 import ResendResponseResending from './ResendResponseResending'
 
 import { Serializer } from '../../../Serializer'
-import { Todo } from '../../../sharedTypes'
 
 const VERSION = 1
 

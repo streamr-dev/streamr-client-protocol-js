@@ -4,7 +4,6 @@ import StreamMessage from '../../message_layer/StreamMessage'
 import PublishRequest from './PublishRequest'
 
 import { Serializer } from '../../../Serializer'
-import { Todo } from '../../../sharedTypes'
 
 const VERSION = 2
 
