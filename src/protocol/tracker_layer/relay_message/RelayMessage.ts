@@ -3,16 +3,9 @@ import {
     validateIsNotNullOrUndefined,
 } from '../../../utils/validations'
 import TrackerMessage from '../TrackerMessage'
-
-export interface Originator {
-    peerId: string
-    peerType: string
-    peerName: string | null
-    location: any
-}
+import { Originator } from "../Originator"
 
 export default class RelayMessage extends TrackerMessage {
-
     originator: Originator
     targetNode: string
     subType: string

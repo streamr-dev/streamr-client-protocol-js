@@ -5,6 +5,7 @@ import StatusMessage from "./status_message/StatusMessage"
 import StorageNodesRequest from "./storage_nodes_request/StorageNodesRequest"
 import StorageNodesResponse from "./storage_nodes_response/StorageNodesResponse"
 import TrackerMessage from "./TrackerMessage"
+import { Originator } from "./Originator"
 
 // Serializers are imported because of their side effects: they statically register themselves to the factory class
 import './error_message/ErrorMessageSerializerV1'
@@ -21,5 +22,6 @@ export {
     StatusMessage,
     StorageNodesRequest,
     StorageNodesResponse,
-    TrackerMessage
+    TrackerMessage,
+    Originator
 }
