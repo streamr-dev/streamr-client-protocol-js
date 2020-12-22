@@ -1,4 +1,4 @@
-import ControlMessage from '../ControlMessage'
+import ControlMessage, { ControlMessageOptions } from '../ControlMessage'
 import {
     validateIsNotEmptyString,
     validateIsNotNegativeInteger,
@@ -6,6 +6,14 @@ import {
     validateIsType
 } from '../../../utils/validations'
 import MessageRef from '../../message_layer/MessageRef'
+
+export interface Options extends ControlMessageOptions {
+    streamId: string
+    streamPartition: number
+    fromMsgRef: MessageRef
+    publisherId: string | null
+    sessionToken: string | null
+}
 
 export default class ResendFromRequest extends ControlMessage {
 
@@ -15,9 +23,7 @@ export default class ResendFromRequest extends ControlMessage {
     publisherId: string | null
     sessionToken: string | null
 
-    constructor({
-        version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, fromMsgRef, publisherId, sessionToken
-    }: { version?: number, requestId: string, streamId: string, streamPartition: number, fromMsgRef: MessageRef, publisherId: string | null, sessionToken: string | null}) {
+    constructor({ version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, fromMsgRef, publisherId, sessionToken }: Options) {
         super(version, ControlMessage.TYPES.ResendFromRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

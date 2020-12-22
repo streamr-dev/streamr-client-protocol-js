@@ -1,12 +1,17 @@
-import ControlMessage from '../ControlMessage'
+import ControlMessage, { ControlMessageOptions } from '../ControlMessage'
 import { validateIsNotEmptyString, validateIsNotNegativeInteger } from '../../../utils/validations'
+
+export interface Options extends ControlMessageOptions {
+    streamId: string
+    streamPartition: number
+}
 
 export default class ResendResponseResent extends ControlMessage {
 
     streamId: string
     streamPartition: number
 
-    constructor({ version, requestId, streamId, streamPartition }: { version?: number, requestId: string, streamId: string, streamPartition: number}) {
+    constructor({ version, requestId, streamId, streamPartition }: Options) {
         super(version, ControlMessage.TYPES.ResendResponseResent, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

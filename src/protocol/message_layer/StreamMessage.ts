@@ -18,6 +18,19 @@ export type ContentType = number
 export type SignatureType = number
 export type EncryptionType = number
 
+interface Options {
+    messageId: MessageID
+    prevMsgRef?: MessageRef | null
+    content: any
+    messageType?: StreamMessageType
+    contentType?: ContentType
+    encryptionType?: EncryptionType
+    groupKeyId?: string | null
+    newGroupKey?: EncryptedGroupKey | null
+    signatureType?: SignatureType
+    signature?: string | null
+}
+
 export default class StreamMessage {
     static LATEST_VERSION = LATEST_VERSION
 
@@ -73,18 +86,7 @@ export default class StreamMessage {
         newGroupKey = null,
         signatureType = StreamMessage.SIGNATURE_TYPES.NONE,
         signature = null,
-    }: {
-        messageId: MessageID
-        prevMsgRef?: MessageRef | null
-        content: any
-        messageType?: StreamMessageType 
-        contentType?: ContentType 
-        encryptionType?: EncryptionType
-        groupKeyId?: string | null
-        newGroupKey?: EncryptedGroupKey | null
-        signatureType?: SignatureType
-        signature?: string | null
-    }) {
+    }: Options) {
         validateIsType('messageId', messageId, 'MessageID', MessageID)
         this.messageId = messageId
 

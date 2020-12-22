@@ -6,11 +6,16 @@ import StreamMessage from './StreamMessage'
 import EncryptedGroupKey from './EncryptedGroupKey'
 import { Todo } from '../../sharedTypes'
 
+export interface Options {
+    streamId: string
+    encryptedGroupKeys: EncryptedGroupKey[]
+}
+
 export default class GroupKeyAnnounce extends GroupKeyMessage {
 
     encryptedGroupKeys: EncryptedGroupKey[]
 
-    constructor({ streamId, encryptedGroupKeys }: { streamId: string, encryptedGroupKeys: EncryptedGroupKey[] }) {
+    constructor({ streamId, encryptedGroupKeys }: Options) {
         super(streamId, StreamMessage.MESSAGE_TYPES.GROUP_KEY_ANNOUNCE)
 
         validateIsArray('encryptedGroupKeys', encryptedGroupKeys)

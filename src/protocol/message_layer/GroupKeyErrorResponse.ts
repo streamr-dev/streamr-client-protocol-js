@@ -3,6 +3,14 @@ import { validateIsArray, validateIsString } from '../../utils/validations'
 import StreamMessage from './StreamMessage'
 import GroupKeyMessage from './GroupKeyMessage'
 
+export interface Options {
+    requestId: string
+    streamId: string
+    errorCode: string
+    errorMessage: string
+    groupKeyIds: string[]
+}
+
 export default class GroupKeyErrorResponse extends GroupKeyMessage {
 
     requestId: string
@@ -10,9 +18,7 @@ export default class GroupKeyErrorResponse extends GroupKeyMessage {
     errorMessage: string
     groupKeyIds: string[]
     
-    constructor({
-        requestId, streamId, errorCode, errorMessage, groupKeyIds
-    }: { requestId: string, streamId: string, errorCode: string, errorMessage: string, groupKeyIds: string[]}) {
+    constructor({ requestId, streamId, errorCode, errorMessage, groupKeyIds }: Options) {
         super(streamId, StreamMessage.MESSAGE_TYPES.GROUP_KEY_ERROR_RESPONSE)
 
         validateIsString('requestId', requestId)

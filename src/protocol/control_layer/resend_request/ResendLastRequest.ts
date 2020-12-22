@@ -1,5 +1,12 @@
-import ControlMessage from '../ControlMessage'
+import ControlMessage, { ControlMessageOptions } from '../ControlMessage'
 import { validateIsNotEmptyString, validateIsNotNegativeInteger, validateIsString } from '../../../utils/validations'
+
+export interface Options extends ControlMessageOptions {
+    streamId: string
+    streamPartition: number
+    numberLast: number
+    sessionToken: string | null
+}
 
 export default class ResendLastRequest extends ControlMessage {
 
@@ -8,9 +15,7 @@ export default class ResendLastRequest extends ControlMessage {
     numberLast: number
     sessionToken: string | null
 
-    constructor({
-        version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, numberLast, sessionToken
-    }: { version?: number, requestId: string, streamId: string, streamPartition: number, numberLast: number, sessionToken: string | null}) {
+    constructor({ version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, numberLast, sessionToken }: Options) {
         super(version, ControlMessage.TYPES.ResendLastRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

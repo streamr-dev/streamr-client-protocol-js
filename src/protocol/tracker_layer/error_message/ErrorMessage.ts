@@ -2,7 +2,7 @@ import {
     validateIsOneOf,
     validateIsNotEmptyString,
 } from '../../../utils/validations'
-import TrackerMessage from '../TrackerMessage'
+import TrackerMessage, { TrackerMessageOptions } from '../TrackerMessage'
 
 type ErrorCode = string
 
@@ -11,6 +11,11 @@ const ERROR_CODES = Object.freeze({
     RTC_UNKNOWN_PEER: 'RTC_UNKNOWN_PEER' as ErrorCode
 })
 
+export interface Options extends TrackerMessageOptions {
+    errorCode: ErrorCode
+    targetNode: string
+}
+
 export default class ErrorMessage extends TrackerMessage {
     
     static ERROR_CODES = ERROR_CODES
@@ -18,7 +23,7 @@ export default class ErrorMessage extends TrackerMessage {
     errorCode: ErrorCode
     targetNode: string
 
-    constructor({ version = TrackerMessage.LATEST_VERSION, requestId, errorCode, targetNode }: { version?: number, requestId: string, errorCode: ErrorCode, targetNode: string}) {
+    constructor({ version = TrackerMessage.LATEST_VERSION, requestId, errorCode, targetNode }: Options) {
         super(version, TrackerMessage.TYPES.ErrorMessage, requestId)
 
         validateIsOneOf('errorCode', errorCode, Object.values(ERROR_CODES))

@@ -2,8 +2,15 @@ import {
     validateIsNotEmptyString,
     validateIsNotNullOrUndefined,
 } from '../../../utils/validations'
-import TrackerMessage from '../TrackerMessage'
+import TrackerMessage, { TrackerMessageOptions } from '../TrackerMessage'
 import { Originator } from "../Originator"
+
+export interface Options extends TrackerMessageOptions {
+    originator: Originator,
+    targetNode: string,
+    subType: string,
+    data: any
+}
 
 export default class RelayMessage extends TrackerMessage {
     originator: Originator
@@ -11,21 +18,7 @@ export default class RelayMessage extends TrackerMessage {
     subType: string
     data: any
 
-    constructor({
-        version = TrackerMessage.LATEST_VERSION,
-        requestId,
-        originator,
-        targetNode,
-        subType,
-        data
-    }: {
-        version?: number,
-        requestId: string,
-        originator: Originator,
-        targetNode: string,
-        subType: string,
-        data: any
-    }) {
+    constructor({ version = TrackerMessage.LATEST_VERSION, requestId, originator, targetNode, subType, data }: Options) {
         super(version, TrackerMessage.TYPES.RelayMessage, requestId)
 
         validateIsNotNullOrUndefined('originator', originator)

@@ -6,12 +6,18 @@ import GroupKeyMessage from './GroupKeyMessage'
 import EncryptedGroupKey from './EncryptedGroupKey'
 import { Todo } from '../../sharedTypes'
 
+interface Options {
+    requestId: string
+    streamId: string
+    encryptedGroupKeys: EncryptedGroupKey[]
+}
+
 export default class GroupKeyResponse extends GroupKeyMessage {
 
     requestId: string
     encryptedGroupKeys: EncryptedGroupKey[]
 
-    constructor({ requestId, streamId, encryptedGroupKeys }: { requestId: string, streamId: string, encryptedGroupKeys: EncryptedGroupKey[] }) {
+    constructor({ requestId, streamId, encryptedGroupKeys }: Options) {
         super(streamId, StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE)
 
         validateIsString('requestId', requestId)

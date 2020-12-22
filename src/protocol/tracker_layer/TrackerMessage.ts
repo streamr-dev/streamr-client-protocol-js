@@ -10,6 +10,11 @@ const LATEST_VERSION = 1
 // TODO convert to real enum?
 type TrackerMessageType = number
 
+export interface TrackerMessageOptions {
+    version?: number
+    requestId: string
+}
+
 export default class TrackerMessage {
 
     static LATEST_VERSION = LATEST_VERSION

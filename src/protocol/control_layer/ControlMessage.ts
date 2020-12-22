@@ -10,6 +10,11 @@ const LATEST_VERSION = 2
 // TODO convert to real enum?
 export type ControlMessageType = number
 
+export interface ControlMessageOptions {
+    version?: number
+    requestId: string
+}
+
 export default class ControlMessage {
 
     static LATEST_VERSION = LATEST_VERSION
