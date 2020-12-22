@@ -3,7 +3,7 @@ import ControlMessage from '../ControlMessage'
 import ErrorResponse from './ErrorResponse'
 
 import { Serializer } from '../../../Serializer'
-import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../sharedTypes'
+import { PLACEHOLDER_ERROR_CODE_PROTOCOL_V1, PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../sharedTypes'
 
 const VERSION = 1
 
@@ -25,7 +25,8 @@ export default class ErrorResponseSerializerV1 extends Serializer<ErrorResponse>
 
         return new ErrorResponse({
             version, errorMessage,
-            requestId: PLACEHOLDER_REQUEST_ID_PROTOCOL_V1
+            requestId: PLACEHOLDER_REQUEST_ID_PROTOCOL_V1,
+            errorCode: PLACEHOLDER_ERROR_CODE_PROTOCOL_V1
         })
     }
 }
