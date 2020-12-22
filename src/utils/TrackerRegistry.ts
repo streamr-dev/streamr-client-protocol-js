@@ -17,11 +17,10 @@ function hashCode(str: string) {
     return Math.abs(a)
 }
 
-export class TrackerRegistry {
+export class TrackerRegistry<T extends Server> {
+    private readonly records: T[]
 
-    records: Server[]
-
-    constructor(records: Server[]) {
+    constructor(records: T[]) {
         this.records = records
         this.records.sort()  // TODO does this actually sort anything?
     }
