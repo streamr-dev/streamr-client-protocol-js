@@ -10,14 +10,14 @@ describe('ResendResponseResent', () => {
             assert.throws(() => new ResendResponseResent({
                 streamId: 'streamId',
                 streamPartition: 0,
-            }), ValidationError)
+            } as any), ValidationError)
         })
         it('should create the latest version', () => {
             const msg = new ResendResponseResent({
                 requestId: 'requestId',
                 streamId: 'streamId',
                 streamPartition: 0,
-            })
+            } as any)
             assert(msg instanceof ResendResponseResent)
             assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
             assert.strictEqual(msg.streamId, 'streamId')

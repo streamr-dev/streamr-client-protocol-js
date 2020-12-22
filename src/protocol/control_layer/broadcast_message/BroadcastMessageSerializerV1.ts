@@ -4,7 +4,7 @@ import StreamMessage from '../../message_layer/StreamMessage'
 import BroadcastMessage from './BroadcastMessage'
 
 import { Serializer } from '../../../Serializer'
-import { Todo } from '../../../sharedTypes'
+import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../sharedTypes'
 
 const VERSION = 1
 
@@ -27,6 +27,7 @@ export default class BroadcastMessageSerializerV1 extends Serializer<BroadcastMe
         return new BroadcastMessage({
             version,
             streamMessage: StreamMessage.deserialize(serializedStreamMsg),
+            requestId: PLACEHOLDER_REQUEST_ID_PROTOCOL_V1
         })
     }
 }

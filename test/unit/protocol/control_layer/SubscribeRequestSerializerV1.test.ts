@@ -1,6 +1,7 @@
 import assert from 'assert'
 
 import { ControlLayer } from '../../../../src/index'
+import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../../src/sharedTypes'
 
 const { SubscribeRequest, ControlMessage } = ControlLayer
 
@@ -12,6 +13,7 @@ const message = new SubscribeRequest({
     streamId: 'streamId',
     streamPartition: 0,
     sessionToken: 'sessionToken',
+    requestId: PLACEHOLDER_REQUEST_ID_PROTOCOL_V1
 })
 const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.SubscribeRequest, 'streamId', 0, 'sessionToken'])
 

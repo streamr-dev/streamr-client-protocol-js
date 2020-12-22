@@ -9,6 +9,7 @@ describe('ResendRangeRequest', () => {
     describe('constructor', () => {
         it('throws on null requestId', () => {
             assert.throws(() => new ResendRangeRequest({
+                requestId: null as any,
                 streamId: 'streamId',
                 streamPartition: 0,
                 fromMsgRef: new MessageRef(132846894, 0),
@@ -20,6 +21,7 @@ describe('ResendRangeRequest', () => {
         })
         it('throws if from > to', () => {
             assert.throws(() => new ResendRangeRequest({
+                requestId: '',
                 streamId: 'streamId',
                 streamPartition: 0,
                 fromMsgRef: new MessageRef(132847000, 0),

@@ -10,7 +10,7 @@ describe('ErrorResponse', () => {
             assert.throws(() => new ErrorResponse({
                 requestId: 'requestId',
                 errorMessage: undefined,
-            }), ValidationError)
+            } as any), ValidationError)
         })
         it('throws on null error code (since V2)', () => {
             assert.throws(() => new ErrorResponse({

@@ -38,7 +38,7 @@ describe('GroupKeyResponse', () => {
     })
     describe('toStreamMessage', () => {
         it('produces the expected StreamMessage', () => {
-            assert.deepStrictEqual(message.toStreamMessage(streamMessage.getMessageID(), streamMessage.getPreviousMessageRef()), streamMessage)
+            assert.deepStrictEqual(message.toStreamMessage(streamMessage.getMessageID(), streamMessage.getPreviousMessageRef()!), streamMessage)
         })
     })
     describe('fromStreamMessage', () => {

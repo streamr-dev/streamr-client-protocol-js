@@ -10,13 +10,13 @@ describe('ErrorMessage', () => {
             assert.throws(() => new ErrorMessage({
                 requestId: 'requestId',
                 errorCode: ErrorMessage.ERROR_CODES.RTC_UNKNOWN_PEER,
-                targetNode: null
+                targetNode: null as any
             }), ValidationError)
         })
         it('throws on null errorCode', () => {
             assert.throws(() => new ErrorMessage({
                 requestId: 'requestId',
-                errorCode: null,
+                errorCode: null as any,
                 targetNode: 'targetNode'
             }), ValidationError)
         })
@@ -29,7 +29,7 @@ describe('ErrorMessage', () => {
         })
         it('throws on null requestId', () => {
             assert.throws(() => new ErrorMessage({
-                requestId: null,
+                requestId: null as any,
                 errorCode: ErrorMessage.ERROR_CODES.RTC_UNKNOWN_PEER,
                 targetNode: 'targetNode'
             }), ValidationError)

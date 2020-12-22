@@ -3,7 +3,7 @@ import ControlMessage from '../ControlMessage'
 import ErrorResponse from './ErrorResponse'
 
 import { Serializer } from '../../../Serializer'
-import { Todo } from '../../../sharedTypes'
+import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../sharedTypes'
 
 const VERSION = 1
 
@@ -24,7 +24,8 @@ export default class ErrorResponseSerializerV1 extends Serializer<ErrorResponse>
         ] = arr
 
         return new ErrorResponse({
-            version, errorMessage
+            version, errorMessage,
+            requestId: PLACEHOLDER_REQUEST_ID_PROTOCOL_V1
         })
     }
 }

@@ -33,9 +33,9 @@ export default class ControlMessage {
 
     version: number
     type: ControlMessageType
-    requestId: string | undefined | null 
+    requestId: string
 
-    constructor(version = LATEST_VERSION, type: ControlMessageType, requestId: string | undefined | null) {
+    constructor(version = LATEST_VERSION, type: ControlMessageType, requestId: string) {
         if (new.target === ControlMessage) {
             throw new TypeError('ControlMessage is abstract.')
         }

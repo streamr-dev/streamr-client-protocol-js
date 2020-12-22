@@ -10,7 +10,7 @@ describe('ResendResponseResending', () => {
             assert.throws(() => new ResendResponseResending({
                 streamId: 'streamId',
                 streamPartition: 0,
-            }), ValidationError)
+            } as any), ValidationError)
         })
         it('should create the latest version', () => {
             const msg = new ResendResponseResending({

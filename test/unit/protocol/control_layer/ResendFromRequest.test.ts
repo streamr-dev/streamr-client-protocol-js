@@ -9,7 +9,7 @@ describe('ResendFromRequest', () => {
     describe('constructor', () => {
         it('throws on null requestId', () => {
             assert.throws(() => new ResendFromRequest({
-                requestId: null,
+                requestId: null as any,
                 streamId: 'streamId',
                 streamPartition: 0,
                 fromMsgRef: new MessageRef(132846894, 0),

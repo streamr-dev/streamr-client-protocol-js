@@ -3,7 +3,7 @@ import ControlMessage from '../ControlMessage'
 import SubscribeResponse from './SubscribeResponse'
 
 import { Serializer } from '../../../Serializer'
-import { Todo } from '../../../sharedTypes'
+import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1, Todo } from '../../../sharedTypes'
 
 const VERSION = 1
 
@@ -26,7 +26,7 @@ export default class SubscribeResponseSerializerV1 extends Serializer<SubscribeR
         ] = arr
 
         return new SubscribeResponse({
-            version, streamId, streamPartition
+            version, streamId, streamPartition, requestId: PLACEHOLDER_REQUEST_ID_PROTOCOL_V1
         })
     }
 }

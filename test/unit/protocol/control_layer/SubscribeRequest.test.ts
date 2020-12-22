@@ -9,7 +9,7 @@ describe('SubscribeRequest', () => {
         it('throws on null streamId', () => {
             assert.throws(() => new SubscribeRequest({
                 requestId: 'requestId',
-                streamId: null,
+                streamId: null as any,
                 streamPartition: 0,
                 sessionToken: 'sessionToken',
             }), ValidationError)
@@ -18,13 +18,13 @@ describe('SubscribeRequest', () => {
             assert.throws(() => new SubscribeRequest({
                 requestId: 'requestId',
                 streamId: 'streamId',
-                streamPartition: null,
+                streamPartition: null as any,
                 sessionToken: 'sessionToken',
             }), ValidationError)
         })
         it('throws on null requestId (since V2)', () => {
             assert.throws(() => new SubscribeRequest({
-                requestId: null,
+                requestId: null as any,
                 streamId: 'streamId',
                 streamPartition: 0,
                 sessionToken: 'sessionToken',
@@ -33,7 +33,7 @@ describe('SubscribeRequest', () => {
         it('does not throw on null requestId (before V2)', () => {
             assert.doesNotThrow(() => new SubscribeRequest({
                 version: 1,
-                requestId: null,
+                requestId: null as any,
                 streamId: 'streamId',
                 streamPartition: 0,
                 sessionToken: 'sessionToken',

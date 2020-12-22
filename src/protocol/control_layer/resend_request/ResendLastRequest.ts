@@ -10,7 +10,7 @@ export default class ResendLastRequest extends ControlMessage {
 
     constructor({
         version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, numberLast, sessionToken
-    }: { version?: number, requestId?: string, streamId: string, streamPartition: number, numberLast: number, sessionToken?: string}) {
+    }: { version?: number, requestId: string, streamId: string, streamPartition: number, numberLast: number, sessionToken?: string}) {
         super(version, ControlMessage.TYPES.ResendLastRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

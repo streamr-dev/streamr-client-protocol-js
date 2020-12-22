@@ -9,7 +9,7 @@ export default class SubscribeRequest extends ControlMessage {
 
     constructor({
         version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, sessionToken
-    }: { version?: number, requestId?: string, streamId: string, streamPartition: number, sessionToken?: string}) {
+    }: { version?: number, requestId: string, streamId: string, streamPartition: number, sessionToken?: string}) {
         super(version, ControlMessage.TYPES.SubscribeRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

@@ -17,13 +17,13 @@ describe('PublishRequest', () => {
             assert.throws(() => new PublishRequest({
                 requestId: 'requestId',
                 sessionToken: 'sessionToken',
-            }), ValidationError)
+            } as any), ValidationError)
         })
         it('throws on invalid sessionToken', () => {
             assert.throws(() => new PublishRequest({
                 requestId: 'requestId',
                 streamMessage,
-                sessionToken: 123,
+                sessionToken: 123 as any,
             }), ValidationError)
         })
         it('should create the latest version', () => {

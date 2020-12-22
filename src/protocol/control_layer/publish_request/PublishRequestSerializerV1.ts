@@ -4,7 +4,7 @@ import StreamMessage from '../../message_layer/StreamMessage'
 import PublishRequest from './PublishRequest'
 
 import { Serializer } from '../../../Serializer'
-import { Todo } from '../../../sharedTypes'
+import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../sharedTypes'
 
 const VERSION = 1
 
@@ -30,6 +30,7 @@ export default class PublishRequestSerializerV1 extends Serializer<PublishReques
             version,
             streamMessage: StreamMessage.deserialize(serializedStreamMsg),
             sessionToken,
+            requestId: PLACEHOLDER_REQUEST_ID_PROTOCOL_V1
         })
     }
 }

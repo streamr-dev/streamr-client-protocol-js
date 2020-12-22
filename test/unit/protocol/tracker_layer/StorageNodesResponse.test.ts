@@ -11,28 +11,28 @@ describe('StorageNodesResponse', () => {
                 requestId: 'requestId',
                 streamId: 'streamId',
                 streamPartition: 0,
-                nodeIds: null
+                nodeIds: null as any
             }), ValidationError)
         })
         it('throws on null streamPartition', () => {
             assert.throws(() => new StorageNodesResponse({
                 requestId: 'requestId',
                 streamId: 'streamId',
-                streamPartition: null,
+                streamPartition: null as any,
                 nodeIds: []
             }), ValidationError)
         })
         it('throws on null streamId', () => {
             assert.throws(() => new StorageNodesResponse({
                 requestId: 'requestId',
-                streamId: null,
+                streamId: null as any,
                 streamPartition: 0,
                 nodeIds: []
             }), ValidationError)
         })
         it('throws on null requestId', () => {
             assert.throws(() => new StorageNodesResponse({
-                requestId: null,
+                requestId: null as any,
                 streamId: 'streamId',
                 streamPartition: 0,
                 nodeIds: []

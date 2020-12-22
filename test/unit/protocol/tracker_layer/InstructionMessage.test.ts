@@ -12,7 +12,7 @@ describe('InstructionMessage', () => {
                 streamId: 'streamId',
                 streamPartition: 0,
                 nodeIds: [],
-                counter: null
+                counter: null as any
             }), ValidationError)
         })
         it('throws on null nodeIds', () => {
@@ -20,7 +20,7 @@ describe('InstructionMessage', () => {
                 requestId: 'requestId',
                 streamId: 'streamId',
                 streamPartition: 0,
-                nodeIds: null,
+                nodeIds: null as any,
                 counter: 1
             }), ValidationError)
         })
@@ -28,7 +28,7 @@ describe('InstructionMessage', () => {
             assert.throws(() => new InstructionMessage({
                 requestId: 'requestId',
                 streamId: 'streamId',
-                streamPartition: null,
+                streamPartition: null as any,
                 nodeIds: [],
                 counter: 1
             }), ValidationError)
@@ -36,7 +36,7 @@ describe('InstructionMessage', () => {
         it('throws on null streamId', () => {
             assert.throws(() => new InstructionMessage({
                 requestId: 'requestId',
-                streamId: null,
+                streamId: null as any,
                 streamPartition: 0,
                 nodeIds: [],
                 counter: 1
@@ -44,7 +44,7 @@ describe('InstructionMessage', () => {
         })
         it('throws on null requestId', () => {
             assert.throws(() => new InstructionMessage({
-                requestId: null,
+                requestId: null as any,
                 streamId: 'streamId',
                 streamPartition: 0,
                 nodeIds: [],

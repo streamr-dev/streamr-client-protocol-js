@@ -1,6 +1,7 @@
 import assert from 'assert'
 
 import { ControlLayer, MessageLayer } from '../../../../src/index'
+import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../../src/sharedTypes'
 
 const { StreamMessage } = MessageLayer
 const { BroadcastMessage, ControlMessage } = ControlLayer
@@ -14,6 +15,7 @@ const VERSION = 1
 const message = new BroadcastMessage({
     version: VERSION,
     streamMessage,
+    requestId: PLACEHOLDER_REQUEST_ID_PROTOCOL_V1
 })
 const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.BroadcastMessage, JSON.parse(streamMessage.serialize(30))])
 

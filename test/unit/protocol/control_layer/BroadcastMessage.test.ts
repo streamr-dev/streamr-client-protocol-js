@@ -11,14 +11,14 @@ describe('BroadcastMessage', () => {
         it('throws on null streamMessage', () => {
             assert.throws(() => new BroadcastMessage({
                 requestId: 'requestId',
-            }), ValidationError)
+            } as any), ValidationError)
         })
         it('throws on bogus streamMessage', () => {
             assert.throws(() => new BroadcastMessage({
                 requestId: 'requestId',
                 streamMessage: {
                     fake: true
-                },
+                } as any,
             }), ValidationError)
         })
         it('should create the latest version', () => {

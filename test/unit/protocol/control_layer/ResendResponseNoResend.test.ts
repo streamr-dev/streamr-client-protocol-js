@@ -8,6 +8,7 @@ describe('ResendResponseNoResend', () => {
     describe('constructor', () => {
         it('throws on null requestId', () => {
             assert.throws(() => new ResendResponseNoResend({
+                requestId: null as any,
                 streamId: 'streamId',
                 streamPartition: 0,
             }), ValidationError)

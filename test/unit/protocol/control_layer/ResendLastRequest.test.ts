@@ -8,7 +8,7 @@ describe('ResendLastRequest', () => {
     describe('constructor', () => {
         it('throws on null requestId', () => {
             assert.throws(() => new ResendLastRequest({
-                requestId: null,
+                requestId: null as any,
                 streamId: 'streamId',
                 streamPartition: 0,
                 numberLast: 100,

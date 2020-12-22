@@ -6,7 +6,7 @@ export default class ErrorResponse extends ControlMessage {
     errorMessage: string
     errorCode: string | undefined
     
-    constructor({ version = ControlMessage.LATEST_VERSION, requestId, errorMessage, errorCode }: { version?: number, requestId?: string, errorMessage: string, errorCode?: string }) {
+    constructor({ version = ControlMessage.LATEST_VERSION, requestId, errorMessage, errorCode }: { version?: number, requestId: string, errorMessage: string, errorCode?: string }) {
         super(version, ControlMessage.TYPES.ErrorResponse, requestId)
 
         validateIsString('errorMessage', errorMessage)

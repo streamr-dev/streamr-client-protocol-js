@@ -14,18 +14,19 @@ describe('StatusMessage', () => {
         })
         it('throws on missing status', () => {
             assert.throws(() => new StatusMessage({
-                requestId: 'requestId',
-            }), ValidationError)
+                requestId: 'requestId'
+            } as any), ValidationError)
         })
         it('throws on null requestId', () => {
             assert.throws(() => new StatusMessage({
-                requestId: null,
+                requestId: null as any,
                 status: {}
             }), ValidationError)
         })
         it('should create the latest version', () => {
             const msg = new StatusMessage({
                 requestId: 'requestId',
+                // @ts-ignore BUG?
                 streamId: 'streamId',
                 status: {}
             })

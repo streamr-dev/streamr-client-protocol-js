@@ -11,7 +11,7 @@ describe('UnicastMessage', () => {
         it('throws on null streamMessage', () => {
             assert.throws(() => new UnicastMessage({
                 requestId: 'requestId',
-                streamMessage: null,
+                streamMessage: null as any,
             }), ValidationError)
         })
         it('throws on bogus streamMessage', () => {
@@ -19,7 +19,7 @@ describe('UnicastMessage', () => {
                 requestId: 'requestId',
                 streamMessage: {
                     fake: true,
-                },
+                } as any,
             }), ValidationError)
         })
         it('should create the latest version', () => {

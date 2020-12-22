@@ -10,19 +10,19 @@ describe('StorageNodesRequest', () => {
             assert.throws(() => new StorageNodesRequest({
                 requestId: 'requestId',
                 streamId: 'streamId',
-                streamPartition: null
+                streamPartition: null as any
             }), ValidationError)
         })
         it('throws on null streamId', () => {
             assert.throws(() => new StorageNodesRequest({
                 requestId: 'requestId',
-                streamId: null,
+                streamId: null as any,
                 streamPartition: 0
             }), ValidationError)
         })
         it('throws on null requestId', () => {
             assert.throws(() => new StorageNodesRequest({
-                requestId: null,
+                requestId: null as any,
                 streamId: 'streamId',
                 streamPartition: 0
             }), ValidationError)

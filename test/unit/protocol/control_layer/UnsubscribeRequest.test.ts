@@ -9,7 +9,7 @@ describe('UnsubscribeRequest', () => {
         it('throws on null streamId', () => {
             assert.throws(() => new UnsubscribeRequest({
                 requestId: 'requestId',
-                streamId: null,
+                streamId: null as any,
                 streamPartition: 0,
             }), ValidationError)
         })
@@ -17,12 +17,12 @@ describe('UnsubscribeRequest', () => {
             assert.throws(() => new UnsubscribeRequest({
                 requestId: 'requestId',
                 streamId: 'streamId',
-                streamPartition: null,
+                streamPartition: null as any,
             }), ValidationError)
         })
         it('throws on null requestId (since V2)', () => {
             assert.throws(() => new UnsubscribeRequest({
-                requestId: null,
+                requestId: null as any,
                 streamId: 'streamId',
                 streamPartition: 0,
             }), ValidationError)
@@ -30,7 +30,7 @@ describe('UnsubscribeRequest', () => {
         it('does not throw on null requestId (before V2)', () => {
             assert.doesNotThrow(() => new UnsubscribeRequest({
                 version: 1,
-                requestId: null,
+                requestId: null as any,
                 streamId: 'streamId',
                 streamPartition: 0,
             }))

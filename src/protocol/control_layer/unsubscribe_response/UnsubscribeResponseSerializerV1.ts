@@ -3,7 +3,7 @@ import ControlMessage from '../ControlMessage'
 import UnsubscribeResponse from './UnsubscribeResponse'
 
 import { Serializer } from '../../../Serializer'
-import { Todo } from '../../../sharedTypes'
+import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../sharedTypes'
 
 const VERSION = 1
 
@@ -26,7 +26,7 @@ export default class UnsubscribeResponseSerializerV1 extends Serializer<Unsubscr
         ] = arr
 
         return new UnsubscribeResponse({
-            version, streamId, streamPartition
+            version, streamId, streamPartition, requestId: PLACEHOLDER_REQUEST_ID_PROTOCOL_V1
         })
     }
 }
