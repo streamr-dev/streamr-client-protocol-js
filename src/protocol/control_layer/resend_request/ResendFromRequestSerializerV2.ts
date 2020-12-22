@@ -33,9 +33,9 @@ export default class ResendFromRequestSerializerV2 extends Serializer<ResendFrom
             sessionToken,
         ] = arr
 
+        const [ fromTimestamp, fromSequenceNumber ] = fromMsgRefArray
         return new ResendFromRequest({
-            // @ts-ignore TODO check
-            version, requestId, streamId, streamPartition, fromMsgRef: new MessageRef(...fromMsgRefArray), publisherId, sessionToken
+            version, requestId, streamId, streamPartition, fromMsgRef: new MessageRef(fromTimestamp, fromSequenceNumber), publisherId, sessionToken
         })
     }
 }

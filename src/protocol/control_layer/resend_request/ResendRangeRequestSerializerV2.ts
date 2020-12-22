@@ -37,15 +37,15 @@ export default class ResendRangeRequestSerializerV2 extends Serializer<ResendRan
             sessionToken,
         ] = arr
 
+        const [ fromTimestamp, fromSequenceNumber ] = fromMsgRefArr
+        const [ toTimestamp, toSequenceNumber ] = toMsgRefArr
         return new ResendRangeRequest({
             version,
             requestId,
             streamId,
             streamPartition,
-            // @ts-ignore TODO check
-            fromMsgRef: new MessageRef(...fromMsgRefArr),
-            // @ts-ignore TODO check
-            toMsgRef: new MessageRef(...toMsgRefArr),
+            fromMsgRef: new MessageRef(fromTimestamp, fromSequenceNumber),
+            toMsgRef: new MessageRef(toTimestamp, toSequenceNumber),
             publisherId,
             msgChainId,
             sessionToken
