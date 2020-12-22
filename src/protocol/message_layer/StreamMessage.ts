@@ -50,15 +50,15 @@ export default class StreamMessage {
     static VALID_ENCRYPTIONS = new Set(Object.values(StreamMessage.ENCRYPTION_TYPES))
 
     messageId: MessageID
-    prevMsgRef: MessageRef | undefined | null
+    prevMsgRef: MessageRef | null
     content: any
     messageType: StreamMessageType 
     contentType: ContentType 
     encryptionType: EncryptionType
-    groupKeyId: string | undefined | null
-    newGroupKey: EncryptedGroupKey | undefined | null
+    groupKeyId: string | null
+    newGroupKey: EncryptedGroupKey | null
     signatureType: SignatureType
-    signature: string | undefined | null
+    signature: string | null
     parsedContent?: any
     serializedContent?: string
 
@@ -75,15 +75,15 @@ export default class StreamMessage {
         signature = null,
     }: {
         messageId: MessageID
-        prevMsgRef?: MessageRef | undefined | null
+        prevMsgRef?: MessageRef | null
         content: any
         messageType?: StreamMessageType 
         contentType?: ContentType 
         encryptionType?: EncryptionType
-        groupKeyId?: string | undefined | null
-        newGroupKey?: EncryptedGroupKey | undefined | null
+        groupKeyId?: string | null
+        newGroupKey?: EncryptedGroupKey | null
         signatureType?: SignatureType
-        signature?: string | undefined | null
+        signature?: string | null
     }) {
         validateIsType('messageId', messageId, 'MessageID', MessageID)
         this.messageId = messageId
@@ -305,7 +305,7 @@ export default class StreamMessage {
         return streamMessageVersion >= 31
     }
 
-    static validateSequence({ messageId, prevMsgRef }: { messageId: MessageID, prevMsgRef?: MessageRef | undefined | null}) {
+    static validateSequence({ messageId, prevMsgRef }: { messageId: MessageID, prevMsgRef?: MessageRef | null}) {
         if (!prevMsgRef) {
             return
         }

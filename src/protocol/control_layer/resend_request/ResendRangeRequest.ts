@@ -14,13 +14,13 @@ export default class ResendRangeRequest extends ControlMessage {
     streamPartition: number
     fromMsgRef: MessageRef
     toMsgRef: MessageRef
-    publisherId: string | undefined | null
-    msgChainId: string | undefined | null
-    sessionToken: string | undefined | null
+    publisherId: string | null
+    msgChainId: string | null
+    sessionToken: string | null
 
     constructor({
         version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, fromMsgRef, toMsgRef, publisherId, msgChainId, sessionToken
-    }: { version?: number, requestId: string, streamId: string, streamPartition: number, fromMsgRef: MessageRef, toMsgRef: MessageRef, publisherId?: string, msgChainId?: string, sessionToken?: string}) {
+    }: { version?: number, requestId: string, streamId: string, streamPartition: number, fromMsgRef: MessageRef, toMsgRef: MessageRef, publisherId: string | null, msgChainId: string | null, sessionToken: string | null}) {
         super(version, ControlMessage.TYPES.ResendRangeRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

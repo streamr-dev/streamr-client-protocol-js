@@ -12,12 +12,12 @@ export default class ResendFromRequest extends ControlMessage {
     streamId: string
     streamPartition: number
     fromMsgRef: MessageRef
-    publisherId: string | undefined | null
-    sessionToken: string | undefined | null
+    publisherId: string | null
+    sessionToken: string | null
 
     constructor({
         version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, fromMsgRef, publisherId, sessionToken
-    }: { version?: number, requestId: string, streamId: string, streamPartition: number, fromMsgRef: MessageRef, publisherId?: string, sessionToken?: string}) {
+    }: { version?: number, requestId: string, streamId: string, streamPartition: number, fromMsgRef: MessageRef, publisherId: string | null, sessionToken: string | null}) {
         super(version, ControlMessage.TYPES.ResendFromRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

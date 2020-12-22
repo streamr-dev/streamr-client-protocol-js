@@ -4,7 +4,7 @@ export default class EncryptedGroupKey {
 
     groupKeyId: string
     encryptedGroupKeyHex: string
-    serialized: string | undefined | null = null
+    serialized: string | null
 
     /**
      * A pair (groupKeyId, encryptedGroupKey) where the encryptedGroupKey is an encrypted, hex-encoded version of the group key.
@@ -20,7 +20,7 @@ export default class EncryptedGroupKey {
         this.encryptedGroupKeyHex = encryptedGroupKeyHex
 
         validateIsString('serialized', serialized, true)
-        this.serialized = serialized
+        this.serialized = serialized || null
     }
 
     toArray() {

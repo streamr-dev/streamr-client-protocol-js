@@ -5,9 +5,9 @@ import StreamMessage from '../../message_layer/StreamMessage'
 export default class PublishRequest extends ControlMessage {
 
     streamMessage: StreamMessage
-    sessionToken: string | undefined | null
+    sessionToken: string | null
 
-    constructor({ version = ControlMessage.LATEST_VERSION, requestId, streamMessage, sessionToken }: { version?: number, requestId: string, streamMessage: StreamMessage, sessionToken?: string}) {
+    constructor({ version = ControlMessage.LATEST_VERSION, requestId, streamMessage, sessionToken }: { version?: number, requestId: string, streamMessage: StreamMessage, sessionToken: string | null}) {
         super(version, ControlMessage.TYPES.PublishRequest, requestId)
 
         validateIsNotNullOrUndefined('streamMessage', streamMessage)
