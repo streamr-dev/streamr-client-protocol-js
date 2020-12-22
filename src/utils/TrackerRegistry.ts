@@ -5,10 +5,10 @@ import * as trackerRegistryConfig from '../../contracts/TrackerRegistry.json'
 
 const { JsonRpcProvider } = providers
 
-export interface Server {
+export type Server = {
     http: string
     ws: string
-}
+} | string
 
 // source: https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
 function hashCode(str: string) {
@@ -17,7 +17,7 @@ function hashCode(str: string) {
     return Math.abs(a)
 }
 
-class TrackerRegistry {
+export class TrackerRegistry {
 
     records: Server[]
 
