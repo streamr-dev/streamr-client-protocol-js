@@ -40,7 +40,7 @@ export default class EncryptedGroupKey {
         return new EncryptedGroupKey(groupKeyId, encryptedGroupKeyHex, json)
     }
 
-    static fromArray(arr: any) {
+    static fromArray(arr: any[]) {
         const [groupKeyId, encryptedGroupKeyHex] = arr
         return new EncryptedGroupKey(groupKeyId, encryptedGroupKeyHex)
     }

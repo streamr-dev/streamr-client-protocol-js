@@ -22,7 +22,7 @@ export default class ResendFromRequestSerializerV1 extends Serializer<ResendFrom
         ]
     }
 
-    fromArray(arr: any) {
+    fromArray(arr: any[]) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars

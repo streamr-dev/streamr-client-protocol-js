@@ -17,7 +17,7 @@ export default class StorageNodesRequestSerializerV1 extends Serializer<StorageN
         ]
     }
 
-    fromArray(arr: any) {
+    fromArray(arr: any[]) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars

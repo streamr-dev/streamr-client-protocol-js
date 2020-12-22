@@ -17,7 +17,7 @@ export default class ResendResponseNoResendSerializerV2 extends Serializer<Resen
         ]
     }
 
-    fromArray(arr: any) {
+    fromArray(arr: any[]) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars

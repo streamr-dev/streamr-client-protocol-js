@@ -38,7 +38,7 @@ export default class GroupKeyErrorResponse extends GroupKeyMessage {
         return [this.requestId, this.streamId, this.errorCode, this.errorMessage, this.groupKeyIds]
     }
 
-    static fromArray(arr: any) {
+    static fromArray(arr: any[]) {
         const [requestId, streamId, errorCode, errorMessage, groupKeyIds] = arr
         return new GroupKeyErrorResponse({
             requestId,

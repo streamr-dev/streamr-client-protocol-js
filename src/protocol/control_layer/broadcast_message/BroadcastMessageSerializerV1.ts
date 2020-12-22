@@ -17,7 +17,7 @@ export default class BroadcastMessageSerializerV1 extends Serializer<BroadcastMe
         ]
     }
 
-    fromArray(arr: any) {
+    fromArray(arr: any[]) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars

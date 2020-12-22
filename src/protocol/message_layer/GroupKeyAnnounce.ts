@@ -32,11 +32,11 @@ export default class GroupKeyAnnounce extends GroupKeyMessage {
         return [this.streamId, this.encryptedGroupKeys.map((it: EncryptedGroupKey)=> it.toArray())]
     }
 
-    static fromArray(arr: any) {
+    static fromArray(arr: any[]) {
         const [streamId, encryptedGroupKeys] = arr
         return new GroupKeyAnnounce({
             streamId,
-            encryptedGroupKeys: encryptedGroupKeys.map((it: EncryptedGroupKey) => EncryptedGroupKey.fromArray(it)),
+            encryptedGroupKeys: encryptedGroupKeys.map((it: any[]) => EncryptedGroupKey.fromArray(it)),
         })
     }
 }

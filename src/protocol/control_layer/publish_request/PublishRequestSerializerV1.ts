@@ -18,7 +18,7 @@ export default class PublishRequestSerializerV1 extends Serializer<PublishReques
         ]
     }
 
-    fromArray(arr: any) {
+    fromArray(arr: any[]) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars

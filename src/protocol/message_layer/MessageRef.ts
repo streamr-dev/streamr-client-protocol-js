@@ -35,7 +35,7 @@ export default class MessageRef {
         ]
     }
 
-    static fromArray(arr: any) {
+    static fromArray(arr: any[]) {
         const [
             timestamp,
             sequenceNumber,

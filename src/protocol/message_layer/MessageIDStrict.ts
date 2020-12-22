@@ -10,7 +10,7 @@ export default class MessageIDStrict extends MessageID {
         validateIsString('msgChainId', msgChainId)
     }
 
-    static fromArray(arr: any) {
+    static fromArray(arr: any[]) {
         const [
             streamId,
             streamPartition,

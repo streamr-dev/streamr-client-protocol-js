@@ -35,7 +35,7 @@ export default class MessageID {
         ]
     }
 
-    static fromArray(arr: any) {
+    static fromArray(arr: any[]) {
         const [
             streamId,
             streamPartition,

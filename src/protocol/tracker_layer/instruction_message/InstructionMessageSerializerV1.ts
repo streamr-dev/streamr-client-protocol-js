@@ -19,7 +19,7 @@ export default class InstructionMessageSerializerV1 extends Serializer<Instructi
         ]
     }
 
-    fromArray(arr: any) {
+    fromArray(arr: any[]) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars

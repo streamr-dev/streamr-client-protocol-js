@@ -17,7 +17,7 @@ export default class SubscribeResponseSerializerV2 extends Serializer<SubscribeR
         ]
     }
 
-    fromArray(arr: any) {
+    fromArray(arr: any[]) {
         const [
             version,
             type, // eslint-disable-line no-unused-vars
