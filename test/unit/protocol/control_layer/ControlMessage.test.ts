@@ -14,7 +14,7 @@ const REQUEST_ID = 'requestId'
 
 class TestControlMessage extends ControlMessage {
     // eslint-disable-next-line no-useless-constructor
-    constructor(version: number, type: ControlMessageType, requestId: string | null) {
+    constructor(version: number, type: ControlMessageType, requestId: string) {
         super(version, type, requestId)
     }
 }
@@ -49,10 +49,10 @@ describe('ControlMessage', () => {
             assert.throws(() => new TestControlMessage(VERSION, 'invalid' as any, REQUEST_ID), ValidationError)
         })
         it('does not validate requestId on version < 2', () => {
-            assert.doesNotThrow(() => new TestControlMessage(1, TYPE, null))
+            assert.doesNotThrow(() => new TestControlMessage(1, TYPE, null as any))
         })
         it('validates requestId on version >= 2', () => {
-            assert.throws(() => new TestControlMessage(2, TYPE, null), ValidationError)
+            assert.throws(() => new TestControlMessage(2, TYPE, null as any), ValidationError)
         })
     })
 
