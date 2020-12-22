@@ -7,8 +7,14 @@ import { Serializer } from '../../Serializer'
 const serializerByVersionAndType: {[version: string]: { [type: number]: Serializer<TrackerMessage> }} = {}
 const LATEST_VERSION = 1
 
-// TODO convert to real enum?
-type TrackerMessageType = number
+export enum TrackerMessageType {
+    StatusMessage = 1,
+    InstructionMessage = 2,
+    StorageNodesRequest = 3,
+    StorageNodesResponse = 4,
+    RelayMessage = 5,
+    ErrorMessage = 6
+}
 
 export interface TrackerMessageOptions {
     version?: number
@@ -19,14 +25,7 @@ export default class TrackerMessage {
 
     static LATEST_VERSION = LATEST_VERSION
 
-    static TYPES: { [key: string]: TrackerMessageType } = {
-        StatusMessage: 1,
-        InstructionMessage: 2,
-        StorageNodesRequest: 3,
-        StorageNodesResponse: 4,
-        RelayMessage: 5,
-        ErrorMessage: 6
-    }
+    static TYPES = TrackerMessageType // TODO can we remove this and use the enum object directly?
 
     version: number
     type: TrackerMessageType

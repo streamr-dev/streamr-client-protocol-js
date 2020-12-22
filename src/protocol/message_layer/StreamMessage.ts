@@ -12,11 +12,29 @@ const serializerByVersion: {[version: string]: Serializer<StreamMessage> } = {}
 const BYE_KEY = '_bye'
 const LATEST_VERSION = 32
 
-// TODO convert to real enums?
-export type StreamMessageType = number
-export type ContentType = number
-export type SignatureType = number
-export type EncryptionType = number
+export enum StreamMessageType {
+    MESSAGE = 27,
+    GROUP_KEY_REQUEST = 28,
+    GROUP_KEY_RESPONSE = 29,
+    GROUP_KEY_ANNOUNCE = 30,
+    GROUP_KEY_ERROR_RESPONSE = 31
+}
+
+export enum ContentType {
+    JSON = 0
+}
+
+export enum SignatureType {
+    NONE = 0,
+    ETH_LEGACY = 1,
+    ETH = 2
+}
+
+export enum EncryptionType {
+    NONE = 0,
+    RSA = 1,
+    AES = 2
+}
 
 interface Options {
     messageId: MessageID
@@ -34,32 +52,21 @@ interface Options {
 export default class StreamMessage {
     static LATEST_VERSION = LATEST_VERSION
 
-    static MESSAGE_TYPES: { [key: string]: StreamMessageType } = {
-        MESSAGE: 27,
-        GROUP_KEY_REQUEST: 28,
-        GROUP_KEY_RESPONSE: 29,
-        GROUP_KEY_ANNOUNCE: 30,
-        GROUP_KEY_ERROR_RESPONSE: 31,
-    }
+    // TODO can we remove these static field and use the enum object directly?
+    static MESSAGE_TYPES = StreamMessageType
+
     static VALID_MESSAGE_TYPES = new Set(Object.values(StreamMessage.MESSAGE_TYPES))
 
-    static CONTENT_TYPES: { [key: string]: ContentType } = {
-        JSON: 0,
-    }
+    static CONTENT_TYPES = ContentType
+
     static VALID_CONTENT_TYPES = new Set(Object.values(StreamMessage.CONTENT_TYPES))
 
-    static SIGNATURE_TYPES: { [key: string]: SignatureType } = {
-        NONE: 0,
-        ETH_LEGACY: 1,
-        ETH: 2,
-    }
+    static SIGNATURE_TYPES = SignatureType
+
     static VALID_SIGNATURE_TYPES = new Set(Object.values(StreamMessage.SIGNATURE_TYPES))
 
-    static ENCRYPTION_TYPES: { [key: string]: EncryptionType } = {
-        NONE: 0,
-        RSA: 1,
-        AES: 2,
-    }
+    static ENCRYPTION_TYPES = EncryptionType
+
     static VALID_ENCRYPTIONS = new Set(Object.values(StreamMessage.ENCRYPTION_TYPES))
 
     messageId: MessageID

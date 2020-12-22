@@ -7,8 +7,22 @@ import { Serializer } from '../../Serializer'
 const serializerByVersionAndType: {[version: string]: { [type: number]: Serializer<ControlMessage> }} = {}
 const LATEST_VERSION = 2
 
-// TODO convert to real enum?
-export type ControlMessageType = number
+export enum ControlMessageType {
+    BroadcastMessage = 0,
+    UnicastMessage = 1,
+    SubscribeResponse = 2,
+    UnsubscribeResponse = 3,
+    ResendResponseResending = 4,
+    ResendResponseResent = 5,
+    ResendResponseNoResend = 6,
+    ErrorResponse = 7,
+    PublishRequest = 8,
+    SubscribeRequest = 9,
+    UnsubscribeRequest = 10,
+    ResendLastRequest = 11,
+    ResendFromRequest = 12,
+    ResendRangeRequest = 13
+}
 
 export interface ControlMessageOptions {
     version?: number
@@ -19,22 +33,7 @@ export default class ControlMessage {
 
     static LATEST_VERSION = LATEST_VERSION
 
-    static TYPES: { [key: string]: ControlMessageType } = {
-        BroadcastMessage: 0,
-        UnicastMessage: 1,
-        SubscribeResponse: 2,
-        UnsubscribeResponse: 3,
-        ResendResponseResending: 4,
-        ResendResponseResent: 5,
-        ResendResponseNoResend: 6,
-        ErrorResponse: 7,
-        PublishRequest: 8,
-        SubscribeRequest: 9,
-        UnsubscribeRequest: 10,
-        ResendLastRequest: 11,
-        ResendFromRequest: 12,
-        ResendRangeRequest: 13,
-    }
+    static TYPES = ControlMessageType  // TODO can we remove this and use the enum object directly?
 
     version: number
     type: ControlMessageType
