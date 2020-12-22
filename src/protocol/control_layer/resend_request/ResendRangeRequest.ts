@@ -28,7 +28,17 @@ export default class ResendRangeRequest extends ControlMessage {
     msgChainId: string | null
     sessionToken: string | null
 
-    constructor({ version = ControlMessage.LATEST_VERSION, requestId, streamId, streamPartition, fromMsgRef, toMsgRef, publisherId, msgChainId, sessionToken }: Options) {
+    constructor({ 
+        version = ControlMessage.LATEST_VERSION, 
+        requestId, 
+        streamId, 
+        streamPartition, 
+        fromMsgRef, 
+        toMsgRef, 
+        publisherId, 
+        msgChainId, 
+        sessionToken 
+    }: Options) {
         super(version, ControlMessage.TYPES.ResendRangeRequest, requestId)
 
         validateIsNotEmptyString('streamId', streamId)

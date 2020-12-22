@@ -11,7 +11,14 @@ export default class OrderingUtil {
     resendTimeout: number
     orderedChains: { [key: string]: OrderedMsgChain}
 
-    constructor(streamId: string, streamPartition: number, inOrderHandler: InOrderHandler, gapHandler: GapHandler, propagationTimeout: number, resendTimeout: number) {
+    constructor(
+        streamId: string, 
+        streamPartition: number, 
+        inOrderHandler: InOrderHandler, 
+        gapHandler: GapHandler, 
+        propagationTimeout: number, 
+        resendTimeout: number
+    ) {
         this.streamId = streamId
         this.streamPartition = streamPartition
         this.inOrderHandler = inOrderHandler

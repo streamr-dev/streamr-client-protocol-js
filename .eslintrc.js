@@ -9,7 +9,7 @@ module.exports = {
     ],
     rules: {
         'max-len': ['error', {
-            code: 250,  // TODO revert to 150!
+            code: 150,
             ignoreTemplateLiterals: true,
             ignoreStrings: true
         }],
@@ -25,7 +25,8 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': DISABLED,
         '@typescript-eslint/no-non-null-assertion': DISABLED,
         '@typescript-eslint/no-unused-vars': DISABLED,
-        '@typescript-eslint/explicit-module-boundary-types': DISABLED
+        '@typescript-eslint/explicit-module-boundary-types': DISABLED,
+        '@typescript-eslint/no-inferrable-types': DISABLED
     },
     settings: {
         'import/resolver': {

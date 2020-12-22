@@ -66,7 +66,13 @@ export function createTrackerRegistry<T extends TrackerInfo>(servers: T[]) {
     return new TrackerRegistry(servers)
 }
 
-export async function getTrackerRegistryFromContract({ contractAddress, jsonRpcProvider }: { contractAddress: string, jsonRpcProvider: string | ConnectionInfo}) {
+export async function getTrackerRegistryFromContract({ 
+    contractAddress, 
+    jsonRpcProvider
+}: { 
+    contractAddress: string, 
+    jsonRpcProvider: string | ConnectionInfo
+}) {
     const trackers = await fetchTrackers(contractAddress, jsonRpcProvider)
     const records: SmartContractRecord[] = []
     for (let i = 0; i < trackers.length; ++i) {

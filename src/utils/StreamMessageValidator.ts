@@ -107,7 +107,10 @@ export default class StreamMessageValidator {
      * @param streamMessage the StreamMessage to validate.
      * @param verifyFn function(address, payload, signature): return true if the address and payload match the signature
      */
-    static async assertSignatureIsValid(streamMessage: StreamMessage, verifyFn: (address: string, payload: string, signature: string) => Promise<boolean>) {
+    static async assertSignatureIsValid(
+        streamMessage: StreamMessage, 
+        verifyFn: (address: string, payload: string, signature: string) => Promise<boolean>
+    ) {
         const payload = streamMessage.getPayloadToSign()
 
         if (streamMessage.signatureType === StreamMessage.SIGNATURE_TYPES.ETH_LEGACY
