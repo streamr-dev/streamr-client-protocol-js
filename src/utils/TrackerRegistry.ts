@@ -5,10 +5,12 @@ import * as trackerRegistryConfig from '../../contracts/TrackerRegistry.json'
 
 const { JsonRpcProvider } = providers
 
-export type Server = {
+export type SmartContractRecord = {
     http: string
     ws: string
-} | string
+}
+
+export type TrackerInfo = SmartContractRecord | string
 
 // source: https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
 function hashCode(str: string) {
@@ -17,7 +19,7 @@ function hashCode(str: string) {
     return Math.abs(a)
 }
 
-export class TrackerRegistry<T extends Server> {
+export class TrackerRegistry<T extends TrackerInfo> {
     private readonly records: T[]
 
     constructor(records: T[]) {
@@ -60,13 +62,13 @@ async function fetchTrackers(contractAddress: string, jsonRpcProvider: string | 
     return result.map((tracker: any) => tracker.url)
 }
 
-function createTrackerRegistry(servers: Server[]) {
+export function createTrackerRegistry<T extends TrackerInfo>(servers: T[]) {
     return new TrackerRegistry(servers)
 }
 
-async function getTrackerRegistryFromContract({ contractAddress, jsonRpcProvider }: { contractAddress: string, jsonRpcProvider: string | ConnectionInfo}) {
+export async function getTrackerRegistryFromContract({ contractAddress, jsonRpcProvider }: { contractAddress: string, jsonRpcProvider: string | ConnectionInfo}) {
     const trackers = await fetchTrackers(contractAddress, jsonRpcProvider)
-    const records = []
+    const records: SmartContractRecord[] = []
     for (let i = 0; i < trackers.length; ++i) {
         try {
             records.push(JSON.parse(trackers[i]))
@@ -75,9 +77,4 @@ async function getTrackerRegistryFromContract({ contractAddress, jsonRpcProvider
         }
     }
     return createTrackerRegistry(records)
-}
-
-export {
-    createTrackerRegistry,
-    getTrackerRegistryFromContract,
 }
