@@ -6,13 +6,10 @@
     "type": "git",
     "url": "git://github.com/streamr-dev/streamr-client-protocol-js.git"
   },
-  "main": "dist/streamr-client-protocol.js",
-  "module": "src/index.js",
-  "directories": {
-    "test": "test"
-  },
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build --clean && tsc --build",
     "benchmark": "jest test/benchmarks --detectOpenHandles",
     "prepare": "npm run build",
     "eslint": "eslint '{src,test}/**/*.ts'",
@@ -20,9 +17,6 @@
     "test-unit": "jest test/unit --detectOpenHandles",
     "test-integration": "jest test/integration --detectOpenHandles",
     "coverage": "jest --coverage"
-  },
-  "engines": {
-    "node": ">= 10"
   },
   "author": "Streamr",
   "license": "Apache-2.0",
