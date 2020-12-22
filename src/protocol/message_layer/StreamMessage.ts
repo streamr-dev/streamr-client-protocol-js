@@ -72,8 +72,8 @@ export default class StreamMessage {
     newGroupKey: EncryptedGroupKey | null
     signatureType: SignatureType
     signature: string | null
-    parsedContent?: any
-    serializedContent?: string
+    parsedContent: any
+    serializedContent: string
 
     constructor({
         messageId,
@@ -119,6 +119,7 @@ export default class StreamMessage {
             this.serializedContent = JSON.stringify(content)
         } else {
             // this.parsedContent gets written lazily
+            this.parsedContent = null
             this.serializedContent = content
         }
         validateIsNotEmptyString('content', this.serializedContent)

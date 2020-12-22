@@ -32,10 +32,10 @@ export default class OrderedMsgChain extends EventEmitter {
     propagationTimeout: number
     resendTimeout: number
     queue: Heap<StreamMessage>
-    inProgress?: boolean   // TODO initialize with false so that we can remove the optionality?
-    nextGaps?: ReturnType<typeof setTimeout>
-    firstGap?: ReturnType<typeof setTimeout>
-    gapRequestCount?: number // TODO initialize with 0 so that we can remove optionality?
+    inProgress: boolean = false
+    nextGaps: ReturnType<typeof setTimeout> | null = null
+    firstGap: ReturnType<typeof setTimeout> | null = null
+    gapRequestCount: number = 0 
 
     constructor(
         publisherId: string, msgChainId: string, inOrderHandler: InOrderHandler, gapHandler: GapHandler,
@@ -96,8 +96,8 @@ export default class OrderedMsgChain extends EventEmitter {
         this.inProgress = false
         clearTimeout(this.firstGap!)
         clearInterval(this.nextGaps!)
-        this.nextGaps = undefined
-        this.firstGap = undefined
+        this.nextGaps = null
+        this.firstGap = null
     }
 
     _isNextMessage(unorderedStreamMessage: StreamMessage) {

@@ -12,7 +12,7 @@ export default class EncryptedGroupKey {
      * @param encryptedGroupKeyHex
      * @param serialized Optional. If given, this exact string is returned from serialize().
      */
-    constructor(groupKeyId: string, encryptedGroupKeyHex: string, serialized?: string) {
+    constructor(groupKeyId: string, encryptedGroupKeyHex: string, serialized: string | null = null) {
         validateIsString('groupKeyId', groupKeyId)
         this.groupKeyId = groupKeyId
 
@@ -20,7 +20,7 @@ export default class EncryptedGroupKey {
         this.encryptedGroupKeyHex = encryptedGroupKeyHex
 
         validateIsString('serialized', serialized, true)
-        this.serialized = serialized || null
+        this.serialized = serialized
     }
 
     toArray() {
