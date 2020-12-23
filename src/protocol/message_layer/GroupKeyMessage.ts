@@ -1,13 +1,15 @@
-import { Todo } from '../../sharedTypes'
+import { GroupKeyRequest } from '.'
 import { validateIsString } from '../../utils/validations'
 import MessageID from './MessageID'
 import MessageRef from './MessageRef'
 
 import StreamMessage, { StreamMessageType } from './StreamMessage'
 
+// TODO refactor deserialization to separate class (Serializer<GroupKeyMessage>)
+
 export default abstract class GroupKeyMessage {
 
-    static classByMessageType: { [key: number]: Todo } = {}  // TODO replace "number" with real enum?
+    static classByMessageType: { [key: number]: { fromArray: (args: any[]) => GroupKeyMessage } } = {}
 
     streamId: string
     messageType: StreamMessageType
