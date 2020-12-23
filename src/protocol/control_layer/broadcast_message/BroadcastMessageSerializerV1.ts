@@ -1,10 +1,9 @@
-import ControlMessage from '../ControlMessage'
+import ControlMessage, { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../ControlMessage'
 import StreamMessage from '../../message_layer/StreamMessage'
 
 import BroadcastMessage from './BroadcastMessage'
 
 import { Serializer } from '../../../Serializer'
-import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../sharedTypes'
 
 const VERSION = 1
 

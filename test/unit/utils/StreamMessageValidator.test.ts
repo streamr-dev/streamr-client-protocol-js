@@ -8,10 +8,10 @@ import MessageID from '../../../src/protocol/message_layer/MessageID'
 import GroupKeyRequest from '../../../src/protocol/message_layer/GroupKeyRequest'
 import GroupKeyResponse from '../../../src/protocol/message_layer/GroupKeyResponse'
 import GroupKeyAnnounce from '../../../src/protocol/message_layer/GroupKeyAnnounce'
-import GroupKeyErrorResponse from '../../../src/protocol/message_layer/GroupKeyErrorResponse'
+import GroupKeyErrorResponse, { ErrorCode } from '../../../src/protocol/message_layer/GroupKeyErrorResponse'
 import EncryptedGroupKey from '../../../src/protocol/message_layer/EncryptedGroupKey'
-import { StreamMetadata } from '../../../src/sharedTypes'
 import ValidationError from '../../../src/errors/ValidationError'
+import { StreamMetadata } from '../../../src/utils/StreamMessageValidator'
 
 const { StreamMessageValidator, SigningUtil } = Utils
 
@@ -111,7 +111,7 @@ describe('StreamMessageValidator', () => {
         groupKeyErrorResponse = new GroupKeyErrorResponse({
             requestId: 'requestId',
             streamId: 'streamId',
-            errorCode: 'errorCode',
+            errorCode: ErrorCode.PLACEHOLDER,
             errorMessage: 'errorMessage',
             groupKeyIds: ['groupKeyId1', 'groupKeyId2'],
         }).toStreamMessage(

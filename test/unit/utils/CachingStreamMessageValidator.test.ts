@@ -7,7 +7,7 @@ import sleep from 'await-sleep'
 import CachingStreamMessageValidator from '../../../src/utils/CachingStreamMessageValidator'
 import StreamMessage from '../../../src/protocol/message_layer/StreamMessage'
 import '../../../src/protocol/message_layer/StreamMessageSerializerV31'
-import { StreamMetadata } from '../../../src/sharedTypes'
+import { StreamMetadata } from '../../../src/utils/StreamMessageValidator'
 
 describe('CachingStreamMessageValidator', () => {
     let cacheTimeoutMillis: number

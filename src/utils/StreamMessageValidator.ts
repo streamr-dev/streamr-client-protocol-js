@@ -4,9 +4,14 @@ import GroupKeyRequest from '../protocol/message_layer/GroupKeyRequest'
 import GroupKeyMessage from '../protocol/message_layer/GroupKeyMessage'
 
 import SigningUtil from './SigningUtil'
-import { StreamMetadata } from '../sharedTypes'
 
 const KEY_EXCHANGE_STREAM_PREFIX = 'SYSTEM/keyexchange/'
+
+export interface StreamMetadata {
+    partitions: number,
+    requireSignedData: boolean,
+    requireEncryptedData: boolean
+}
 
 export interface Options {
     getStream: (streamId: string) => Promise<StreamMetadata>

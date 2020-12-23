@@ -1,7 +1,7 @@
 import assert from 'assert'
 
 import { ControlLayer } from '../../../../src/index'
-import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../../src/sharedTypes'
+import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../../src/protocol/control_layer/ControlMessage'
 
 const { UnsubscribeResponse, ControlMessage } = ControlLayer
 

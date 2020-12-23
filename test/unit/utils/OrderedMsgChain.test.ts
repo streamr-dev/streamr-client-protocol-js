@@ -7,7 +7,6 @@ import StreamMessage from '../../../src/protocol/message_layer/StreamMessage'
 import GapFillFailedError from '../../../src/errors/GapFillFailedError'
 import MessageID from '../../../src/protocol/message_layer/MessageID'
 import MessageRef from '../../../src/protocol/message_layer/MessageRef'
-import { Todo } from '../../../src/sharedTypes'
 
 const createMsg = (
     timestamp = 1, sequenceNumber = 0, prevTimestamp: number | null = null,

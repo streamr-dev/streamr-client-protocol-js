@@ -1,9 +1,8 @@
-import ControlMessage from '../ControlMessage'
+import ControlMessage, { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../ControlMessage'
 
 import SubscribeResponse from './SubscribeResponse'
 
 import { Serializer } from '../../../Serializer'
-import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../sharedTypes'
 
 const VERSION = 1
 
