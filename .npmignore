@@ -1,8 +1,8 @@
-src
-test
+/src
+/test
 .github
 tsconfig.json
-contracts
+/contracts
 .eslintignore
 .eslintrc.js
 jest.config.js
