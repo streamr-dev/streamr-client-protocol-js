@@ -1,7 +1,8 @@
 import assert from 'assert'
 
 import { ControlLayer } from '../../../../src/index'
-import { PLACEHOLDER_ERROR_CODE_PROTOCOL_V1, PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../../src/sharedTypes'
+import { ErrorCode } from '../../../../src/protocol/control_layer/error_response/ErrorResponse'
+import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../../src/sharedTypes'
 
 const { ErrorResponse, ControlMessage } = ControlLayer
 
@@ -12,7 +13,7 @@ const message = new ErrorResponse({
     version: VERSION,
     errorMessage: 'error message',
     requestId: PLACEHOLDER_REQUEST_ID_PROTOCOL_V1,
-    errorCode: PLACEHOLDER_ERROR_CODE_PROTOCOL_V1
+    errorCode: ErrorCode.UNKNOWN
 })
 const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.ErrorResponse, 'error message'])
 

@@ -1,6 +1,7 @@
 import assert from 'assert'
 
 import { MessageLayer } from '../../../../src/index'
+import { ErrorCode } from '../../../../src/protocol/message_layer/GroupKeyErrorResponse'
 
 const {
     StreamMessage, MessageID, MessageRef, GroupKeyMessage, GroupKeyErrorResponse
@@ -10,11 +11,11 @@ const {
 const message = new GroupKeyErrorResponse({
     requestId: 'requestId',
     streamId: 'streamId',
-    errorCode: 'ERROR_CODE',
+    errorCode: ErrorCode.PLACEHOLDER,
     errorMessage: 'errorMessage',
     groupKeyIds: ['groupKeyId1', 'groupKeyId2'],
 })
-const serializedMessage = JSON.stringify(['requestId', 'streamId', 'ERROR_CODE', 'errorMessage', ['groupKeyId1', 'groupKeyId2']])
+const serializedMessage = JSON.stringify(['requestId', 'streamId', 'PLACEHOLDER', 'errorMessage', ['groupKeyId1', 'groupKeyId2']])
 
 const streamMessage = new StreamMessage({
     messageId: new MessageID('streamId', 0, 1, 0, 'publisherId', 'msgChainId'),

@@ -3,10 +3,15 @@ import { validateIsArray, validateIsString } from '../../utils/validations'
 import StreamMessage from './StreamMessage'
 import GroupKeyMessage from './GroupKeyMessage'
 
+export enum ErrorCode {
+    // TODO define the values, remove PLACEHOLDER
+    PLACEHOLDER = 'PLACEHOLDER'
+}
+
 export interface Options {
     requestId: string
     streamId: string
-    errorCode: string
+    errorCode: ErrorCode
     errorMessage: string
     groupKeyIds: string[]
 }
@@ -14,7 +19,7 @@ export interface Options {
 export default class GroupKeyErrorResponse extends GroupKeyMessage {
 
     requestId: string
-    errorCode: string
+    errorCode: ErrorCode
     errorMessage: string
     groupKeyIds: string[]
     

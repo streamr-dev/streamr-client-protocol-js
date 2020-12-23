@@ -1,6 +1,6 @@
 import assert from 'assert'
 
-import ErrorResponse from '../../../../src/protocol/control_layer/error_response/ErrorResponse'
+import ErrorResponse, { ErrorCode } from '../../../../src/protocol/control_layer/error_response/ErrorResponse'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import ValidationError from '../../../../src/errors/ValidationError'
 
@@ -31,12 +31,12 @@ describe('ErrorResponse', () => {
             const msg = new ErrorResponse({
                 requestId: 'requestId',
                 errorMessage: 'error message',
-                errorCode: 'ERROR_CODE',
+                errorCode: ErrorCode.NOT_FOUND,
             })
             assert(msg instanceof ErrorResponse)
             assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
             assert.strictEqual(msg.errorMessage, 'error message')
-            assert.strictEqual(msg.errorCode, 'ERROR_CODE')
+            assert.strictEqual(msg.errorCode, ErrorCode.NOT_FOUND)
         })
     })
 })
