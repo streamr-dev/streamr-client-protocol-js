@@ -11,7 +11,7 @@ const message = new ErrorResponse({
     version: VERSION,
     requestId: 'requestId',
     errorMessage: 'error message',
-    errorCode: 'ERROR_CODE',
+    errorCode: 'ERROR_CODE' as any,
 })
 const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.ErrorResponse, 'requestId', 'error message', 'ERROR_CODE'])
 

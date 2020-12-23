@@ -23,7 +23,7 @@ describe('ErrorMessage', () => {
         it('throws on invalid errorCode', () => {
             assert.throws(() => new ErrorMessage({
                 requestId: 'requestId',
-                errorCode: 'INVALID-CODE',
+                errorCode: 'INVALID-CODE' as any,
                 targetNode: 'targetNode'
             }), ValidationError)
         })
