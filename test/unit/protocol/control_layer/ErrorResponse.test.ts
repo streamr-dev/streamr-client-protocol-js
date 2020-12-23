@@ -16,7 +16,7 @@ describe('ErrorResponse', () => {
             assert.throws(() => new ErrorResponse({
                 requestId: 'requestId',
                 errorMessage: 'error message',
-                errorCode: undefined,
+                errorCode: null as any,
             }), ValidationError)
         })
         it('accepts null error code (before V2)', () => {
@@ -24,7 +24,7 @@ describe('ErrorResponse', () => {
                 version: 1,
                 requestId: 'requestId',
                 errorMessage: 'error message',
-                errorCode: undefined,
+                errorCode: null as any,
             }))
         })
         it('should create the latest version', () => {

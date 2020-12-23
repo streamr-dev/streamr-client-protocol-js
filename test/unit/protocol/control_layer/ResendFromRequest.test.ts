@@ -42,14 +42,16 @@ describe('ResendFromRequest', () => {
                 streamId: 'streamId',
                 streamPartition: 0,
                 fromMsgRef: new MessageRef(132846894, 0),
+                publisherId: null, 
+                sessionToken: null
             })
             assert(msg instanceof ResendFromRequest)
             assert.strictEqual(msg.requestId, 'requestId')
             assert.strictEqual(msg.streamId, 'streamId')
             assert.strictEqual(msg.streamPartition, 0)
             assert(msg.fromMsgRef instanceof MessageRef)
-            assert.strictEqual(msg.publisherId, undefined)
-            assert.strictEqual(msg.sessionToken, undefined)
+            assert.strictEqual(msg.publisherId, null)
+            assert.strictEqual(msg.sessionToken, null)
         })
     })
 })

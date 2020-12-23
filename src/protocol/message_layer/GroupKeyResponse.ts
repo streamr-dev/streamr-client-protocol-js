@@ -43,7 +43,7 @@ export default class GroupKeyResponse extends GroupKeyMessage {
         return new GroupKeyResponse({
             requestId,
             streamId,
-            encryptedGroupKeys: encryptedGroupKeys.map((it: EncryptedGroupKey) => EncryptedGroupKey.fromArray(it)),
+            encryptedGroupKeys: encryptedGroupKeys.map((it: any[]) => EncryptedGroupKey.fromArray(it)),
         })
     }
 }
