@@ -1,6 +1,5 @@
 import secp256k1 from 'secp256k1'
 import { Keccak } from 'sha3'
-import { Todo } from "../sharedTypes"
 
 const SIGN_MAGIC = '\u0019Ethereum Signed Message:\n'
 const keccak = new Keccak(256)
@@ -37,7 +36,7 @@ export default class SigningUtil {
         return '0x' + result.toString('hex')
     }
 
-    static async recover(signature: string, payload: string, publicKeyBuffer: Todo = undefined) {
+    static async recover(signature: string, payload: string, publicKeyBuffer: Buffer | Uint8Array | undefined = undefined) {
         const signatureBuffer = Buffer.from(signature.startsWith('0x') ? signature.substring(2) : signature, 'hex') // remove '0x' prefix
         const payloadBuffer = Buffer.from(payload, 'utf-8')
 
