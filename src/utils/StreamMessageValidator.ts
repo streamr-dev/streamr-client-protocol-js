@@ -86,13 +86,13 @@ export default class StreamMessageValidator {
 
         switch (streamMessage.messageType) {
             case StreamMessage.MESSAGE_TYPES.MESSAGE:
-                return this._validateMessage(streamMessage)
+                return this.validateMessage(streamMessage)
             case StreamMessage.MESSAGE_TYPES.GROUP_KEY_REQUEST:
-                return this._validateGroupKeyRequest(streamMessage)
+                return this.validateGroupKeyRequest(streamMessage)
             case StreamMessage.MESSAGE_TYPES.GROUP_KEY_ANNOUNCE:
             case StreamMessage.MESSAGE_TYPES.GROUP_KEY_RESPONSE:
             case StreamMessage.MESSAGE_TYPES.GROUP_KEY_ERROR_RESPONSE:
-                return this._validateGroupKeyResponseOrAnnounce(streamMessage)
+                return this.validateGroupKeyResponseOrAnnounce(streamMessage)
             default:
                 throw new ValidationError(`Unknown message type: ${streamMessage.messageType}!`)
         }
@@ -131,7 +131,7 @@ export default class StreamMessageValidator {
         }
     }
 
-    async _validateMessage(streamMessage: StreamMessage) {
+    private async validateMessage(streamMessage: StreamMessage) {
         const stream = await this.getStream(streamMessage.getStreamId())
 
         // Checks against stream metadata
@@ -158,7 +158,7 @@ export default class StreamMessageValidator {
         }
     }
 
-    async _validateGroupKeyRequest(streamMessage: StreamMessage) {
+    private async validateGroupKeyRequest(streamMessage: StreamMessage) {
         if (!streamMessage.signature) {
             throw new ValidationError(`Received unsigned group key request (the public key must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
         }
@@ -185,7 +185,7 @@ export default class StreamMessageValidator {
         }
     }
 
-    async _validateGroupKeyResponseOrAnnounce(streamMessage: StreamMessage) {
+    private async validateGroupKeyResponseOrAnnounce(streamMessage: StreamMessage) {
         if (!streamMessage.signature) {
             throw new ValidationError(`Received unsigned ${streamMessage.messageType} (it must be signed to avoid MitM attacks). Message: ${streamMessage.serialize()}`)
         }

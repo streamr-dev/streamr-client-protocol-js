@@ -29,11 +29,11 @@ export default class OrderingUtil {
     }
 
     add(unorderedStreamMessage: StreamMessage) {
-        const chain = this._getChain(unorderedStreamMessage.getPublisherId(), unorderedStreamMessage.getMsgChainId())
+        const chain = this.getChain(unorderedStreamMessage.getPublisherId(), unorderedStreamMessage.getMsgChainId())
         chain.add(unorderedStreamMessage)
     }
 
-    _getChain(publisherId: string, msgChainId: string) {
+    private getChain(publisherId: string, msgChainId: string) {
         const key = publisherId + msgChainId
         if (!this.orderedChains[key]) {
             this.orderedChains[key] = new OrderedMsgChain(
@@ -45,7 +45,7 @@ export default class OrderingUtil {
     }
 
     markMessageExplicitly(streamMessage: StreamMessage) {
-        const chain = this._getChain(streamMessage.getPublisherId(), streamMessage.getMsgChainId())
+        const chain = this.getChain(streamMessage.getPublisherId(), streamMessage.getMsgChainId())
         chain.markMessageExplicitly(streamMessage)
     }
 

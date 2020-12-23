@@ -73,13 +73,13 @@ export default class OrderedMsgChain extends EventEmitter {
             return
         }
 
-        if (this._isNextMessage(unorderedStreamMessage)) {
-            this._process(unorderedStreamMessage)
+        if (this.isNextMessage(unorderedStreamMessage)) {
+            this.process(unorderedStreamMessage)
         } else {
             this.queue.push(unorderedStreamMessage)
         }
 
-        this._checkQueue()
+        this.checkQueue()
     }
 
     markMessageExplicitly(streamMessage: StreamMessage) {
@@ -100,7 +100,7 @@ export default class OrderedMsgChain extends EventEmitter {
         this.firstGap = null
     }
 
-    _isNextMessage(unorderedStreamMessage: StreamMessage) {
+    private isNextMessage(unorderedStreamMessage: StreamMessage) {
         const isFirstMessage = this.lastReceivedMsgRef === null
         return isFirstMessage
             // is chained and next
@@ -109,22 +109,22 @@ export default class OrderedMsgChain extends EventEmitter {
             || (unorderedStreamMessage.prevMsgRef === null && unorderedStreamMessage.getMessageRef().compareTo(this.lastReceivedMsgRef!) > 0)
     }
 
-    _checkQueue() {
+    private checkQueue() {
         while (!this.queue.empty()) {
             const msg = this.queue.peek()
-            if (msg && this._isNextMessage(msg)) {
+            if (msg && this.isNextMessage(msg)) {
                 this.queue.pop()
                 // If the next message is found in the queue, current gap must have been filled, so clear the timer
                 this.clearGap()
-                this._process(msg)
+                this.process(msg)
             } else {
-                this._scheduleGap()
+                this.scheduleGap()
                 break
             }
         }
     }
 
-    _process(msg: StreamMessage) {
+    private process(msg: StreamMessage) {
         this.lastReceivedMsgRef = msg.getMessageRef()
 
         if (this.markedExplicitly.has(msg)) {
@@ -135,7 +135,7 @@ export default class OrderedMsgChain extends EventEmitter {
         }
     }
 
-    _scheduleGap() {
+    private scheduleGap() {
         if (this.inProgress) {
             return
         }
@@ -144,7 +144,7 @@ export default class OrderedMsgChain extends EventEmitter {
         this.inProgress = true
         clearTimeout(this.firstGap!)
         this.firstGap = setTimeout(() => {
-            this._requestGapFill()
+            this.requestGapFill()
             if (!this.inProgress) { return }
             clearInterval(this.nextGaps!)
             this.nextGaps = setInterval(() => {
@@ -152,12 +152,12 @@ export default class OrderedMsgChain extends EventEmitter {
                     clearInterval(this.nextGaps!)
                     return
                 }
-                this._requestGapFill()
+                this.requestGapFill()
             }, this.resendTimeout)
         }, this.propagationTimeout)
     }
 
-    _requestGapFill() {
+    private requestGapFill() {
         if (!this.inProgress) { return }
         const from = new MessageRef(this.lastReceivedMsgRef!.timestamp, this.lastReceivedMsgRef!.sequenceNumber + 1)
         const to = this.queue.peek().prevMsgRef!
@@ -168,7 +168,7 @@ export default class OrderedMsgChain extends EventEmitter {
             this.emit('error', new GapFillFailedError(from, to, this.publisherId, this.msgChainId, MAX_GAP_REQUESTS))
             this.clearGap()
             this.lastReceivedMsgRef = null
-            this._checkQueue()
+            this.checkQueue()
         }
     }
 }
