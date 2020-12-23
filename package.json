@@ -31,7 +31,6 @@
     "@typescript-eslint/parser": "^4.10.0",
     "array-shuffle": "^2.0.0",
     "await-sleep": "0.0.1",
-    "buffer": "^6.0.3",
     "eslint": "^7.15.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-streamr-nodejs": "^1.3.0",
