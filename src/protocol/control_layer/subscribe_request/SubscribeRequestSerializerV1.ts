@@ -3,7 +3,7 @@ import ControlMessage from '../ControlMessage'
 import SubscribeRequest from './SubscribeRequest'
 
 import { Serializer } from '../../../Serializer'
-import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1, Todo } from '../../../sharedTypes'
+import { PLACEHOLDER_REQUEST_ID_PROTOCOL_V1 } from '../../../sharedTypes'
 
 const VERSION = 1
 
