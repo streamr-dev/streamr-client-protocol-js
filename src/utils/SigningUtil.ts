@@ -38,7 +38,7 @@ export default class SigningUtil {
     }
 
     static async recover(signature: string, payload: string, publicKeyBuffer: Todo = undefined) {
-        const signatureBuffer = Buffer.from(signature.substring(2), 'hex') // remove '0x' prefix
+        const signatureBuffer = Buffer.from(signature.startsWith('0x') ? signature.substring(2) : signature, 'hex') // remove '0x' prefix
         const payloadBuffer = Buffer.from(payload, 'utf-8')
 
         if (!publicKeyBuffer) {
@@ -47,7 +47,7 @@ export default class SigningUtil {
         }
         const pubKeyWithoutFirstByte = publicKeyBuffer.subarray(1, publicKeyBuffer.length)
         keccak.reset()
-        keccak.update(pubKeyWithoutFirstByte)
+        keccak.update(Buffer.from(pubKeyWithoutFirstByte))
         const hashOfPubKey = keccak.digest('binary')
         return '0x' + hashOfPubKey.subarray(12, hashOfPubKey.length).toString('hex')
     }
