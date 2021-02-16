@@ -59,7 +59,7 @@ async function fetchTrackers(contractAddress: string, jsonRpcProvider: string | 
     }
 
     const result = await contract.getNodes()
-    return result.map((tracker: any) => tracker.url)
+    return result.map((tracker: any) => tracker.metadata || tracker.url)
 }
 
 export function createTrackerRegistry<T extends TrackerInfo>(servers: T[]) {
