@@ -277,4 +277,11 @@ describe('StreamMessage', () => {
             assert(StreamMessage.getSupportedVersions().indexOf(999) < 0)
         })
     })
+
+    describe('toString', () => {
+        it('provides a log-friendly format', () => {
+            expect(msg().toString())
+                .toEqual(`StreamMessage{streamId='streamId', streamPartition=0, timestamp=1564046332168, sequenceNumber=10, publisherId='publisherId', ...}`)
+        })
+    })
 })

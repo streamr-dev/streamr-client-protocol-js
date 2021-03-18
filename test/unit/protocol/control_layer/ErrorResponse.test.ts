@@ -3,6 +3,7 @@ import assert from 'assert'
 import ErrorResponse, { ErrorCode } from '../../../../src/protocol/control_layer/error_response/ErrorResponse'
 import ControlMessage from '../../../../src/protocol/control_layer/ControlMessage'
 import ValidationError from '../../../../src/errors/ValidationError'
+import { MessageID, StreamMessage } from "../../../../src"
 
 describe('ErrorResponse', () => {
     describe('constructor', () => {
@@ -37,6 +38,18 @@ describe('ErrorResponse', () => {
             assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
             assert.strictEqual(msg.errorMessage, 'error message')
             assert.strictEqual(msg.errorCode, ErrorCode.NOT_FOUND)
+        })
+    })
+
+    describe('toString', () => {
+        it('provides a log-friendly format', () => {
+            const msg = new ErrorResponse({
+                requestId: 'requestId',
+                errorMessage: 'Authentication failed.',
+                errorCode: ErrorCode.AUTHENTICATION_FAILED,
+            })
+            expect(msg.toString())
+                .toEqual(`ErrorResponse{requestId='requestId', errorMessage='Authentication failed.', errorCode='AUTHENTICATION_FAILED'}`)
         })
     })
 })

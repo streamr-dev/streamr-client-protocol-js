@@ -33,4 +33,19 @@ describe('BroadcastMessage', () => {
             assert.strictEqual(msg.streamMessage, streamMessage)
         })
     })
+
+    describe('toString', () => {
+        it('provides a log-friendly format', () => {
+            const streamMessage = new StreamMessage({
+                messageId: new MessageID('streamId', 0, 1529549961116, 0, 'publisherId', 'msgChainId'),
+                content: {},
+            })
+            const msg = new BroadcastMessage({
+                requestId: 'requestId',
+                streamMessage,
+            })
+            expect(msg.toString())
+                .toEqual(`BroadcastMessage{requestId='requestId', streamMessage='${streamMessage.toString()}'}`)
+        })
+    })
 })

@@ -4,6 +4,7 @@ import {
     validateIsArray
 } from '../../../utils/validations'
 import TrackerMessage, { TrackerMessageOptions } from '../TrackerMessage'
+import { formLogFriendlyString } from "../../helpers"
 
 export interface Options extends TrackerMessageOptions {
     streamId: string
@@ -31,5 +32,16 @@ export default class InstructionMessage extends TrackerMessage {
         this.streamPartition = streamPartition
         this.nodeIds = nodeIds
         this.counter = counter
+    }
+
+    toString(): string {
+        return formLogFriendlyString(
+            this.constructor.name, false,
+            'requestId', this.requestId,
+            'streamId', this.streamId,
+            'streamPartition', this.streamPartition,
+            'nodeIds', this.nodeIds,
+            'counter', this.counter
+        )
     }
 }

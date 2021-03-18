@@ -7,6 +7,7 @@ import MessageRef from './MessageRef'
 import MessageID from './MessageID'
 import EncryptedGroupKey from './EncryptedGroupKey'
 import { Serializer } from '../../Serializer'
+import { formLogFriendlyString } from "../helpers"
 
 const serializerByVersion: {[version: string]: Serializer<StreamMessage> } = {}
 const BYE_KEY = '_bye'
@@ -349,5 +350,16 @@ export default class StreamMessage {
             signatureType: this.signatureType,
             signature: this.signature,
         }
+    }
+
+    toString(): string {
+        return formLogFriendlyString(
+            this.constructor.name, true,
+            'streamId', this.getStreamId(),
+            'streamPartition', this.getStreamPartition(),
+            'timestamp', this.getTimestamp(),
+            'sequenceNumber', this.getSequenceNumber(),
+            'publisherId', this.getPublisherId()
+        )
     }
 }

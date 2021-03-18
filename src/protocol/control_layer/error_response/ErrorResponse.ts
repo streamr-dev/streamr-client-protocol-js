@@ -1,5 +1,6 @@
 import ControlMessage, { ControlMessageOptions } from '../ControlMessage'
 import { validateIsString } from '../../../utils/validations'
+import { formLogFriendlyString } from "../../helpers"
 
 export enum ErrorCode {
     INVALID_REQUEST = 'INVALID_REQUEST',
@@ -34,5 +35,14 @@ export default class ErrorResponse extends ControlMessage {
             validateIsString('errorCode', errorCode)
         }
         this.errorCode = errorCode
+    }
+
+    toString(): string {
+        return formLogFriendlyString(
+            this.constructor.name, false,
+            'requestId', this.requestId,
+            'errorMessage', this.errorMessage,
+            'errorCode', this.errorCode
+        )
     }
 }

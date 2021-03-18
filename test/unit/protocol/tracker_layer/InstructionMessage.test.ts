@@ -68,4 +68,18 @@ describe('InstructionMessage', () => {
             assert.strictEqual(msg.counter, 1)
         })
     })
+
+    describe('toString', () => {
+        it('provides a log-friendly format', () => {
+            const msg = new InstructionMessage({
+                requestId: 'requestId',
+                streamId: 'streamId',
+                streamPartition: 0,
+                nodeIds: ['node-1', 'node-2'],
+                counter: 1
+            })
+            expect(msg.toString())
+                .toEqual("InstructionMessage{requestId='requestId', streamId='streamId', streamPartition=0, nodeIds=['node-1','node-2'], counter=1}")
+        })
+    })
 })
