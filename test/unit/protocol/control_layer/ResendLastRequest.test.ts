@@ -9,7 +9,7 @@ describe('ResendLastRequest', () => {
         it('throws on null requestId', () => {
             assert.throws(() => new ResendLastRequest({
                 requestId: null as any,
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 numberLast: 100,
                 sessionToken: 'sessionToken',
@@ -18,14 +18,14 @@ describe('ResendLastRequest', () => {
         it('should create the latest version', () => {
             const msg = new ResendLastRequest({
                 requestId: 'requestId',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 numberLast: 100,
                 sessionToken: 'sessionToken',
             })
             assert(msg instanceof ResendLastRequest)
             assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
-            assert.strictEqual(msg.streamId, 'streamId')
+            assert.strictEqual(msg.streamId, 'streamid')
             assert.strictEqual(msg.streamPartition, 0)
             assert.strictEqual(msg.requestId, 'requestId')
             assert.strictEqual(msg.numberLast, 100)

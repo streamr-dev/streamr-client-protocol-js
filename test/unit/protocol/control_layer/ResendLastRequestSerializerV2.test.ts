@@ -8,12 +8,12 @@ const VERSION = 2
 const message = new ResendLastRequest({
     version: VERSION,
     requestId: 'requestId',
-    streamId: 'streamId',
+    streamId: 'streamid',
     streamPartition: 0,
     numberLast: 100,
     sessionToken: 'sessionToken',
 })
-const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.ResendLastRequest, 'requestId', 'streamId', 0, 100, 'sessionToken'])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.ResendLastRequest, 'requestId', 'streamid', 0, 100, 'sessionToken'])
 
 describe('ResendLastRequestSerializerV2', () => {
     describe('deserialize', () => {

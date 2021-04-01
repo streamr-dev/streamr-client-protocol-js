@@ -17,7 +17,7 @@ describe('SubscribeRequest', () => {
         it('throws on null streamPartition', () => {
             assert.throws(() => new SubscribeRequest({
                 requestId: 'requestId',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: null as any,
                 sessionToken: 'sessionToken',
             }), ValidationError)
@@ -25,7 +25,7 @@ describe('SubscribeRequest', () => {
         it('throws on null requestId (since V2)', () => {
             assert.throws(() => new SubscribeRequest({
                 requestId: null as any,
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 sessionToken: 'sessionToken',
             }), ValidationError)
@@ -34,7 +34,7 @@ describe('SubscribeRequest', () => {
             assert.doesNotThrow(() => new SubscribeRequest({
                 version: 1,
                 requestId: null as any,
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 sessionToken: 'sessionToken',
             }))
@@ -42,14 +42,14 @@ describe('SubscribeRequest', () => {
         it('should create the latest version', () => {
             const msg = new SubscribeRequest({
                 requestId: 'requestId',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 sessionToken: 'sessionToken',
             })
             assert(msg instanceof SubscribeRequest)
             assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
             assert.strictEqual(msg.requestId, 'requestId')
-            assert.strictEqual(msg.streamId, 'streamId')
+            assert.strictEqual(msg.streamId, 'streamid')
             assert.strictEqual(msg.streamPartition, 0)
             assert.strictEqual(msg.sessionToken, 'sessionToken')
         })

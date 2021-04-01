@@ -27,7 +27,7 @@ describe('StatusMessage', () => {
             const msg = new StatusMessage({
                 requestId: 'requestId',
                 // @ts-ignore BUG?
-                streamId: 'streamId',
+                streamId: 'streamid',
                 status: {}
             })
             assert(msg instanceof StatusMessage)

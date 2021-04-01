@@ -9,13 +9,13 @@ const VERSION = 2
 const message = new ResendFromRequest({
     version: VERSION,
     requestId: 'requestId',
-    streamId: 'streamId',
+    streamId: 'streamid',
     streamPartition: 0,
     fromMsgRef: new MessageRef(132846894, 0),
     publisherId: 'publisherId',
     sessionToken: 'sessionToken',
 })
-const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.ResendFromRequest, 'requestId', 'streamId', 0, [132846894, 0], 'publisherId', 'sessionToken'])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.ResendFromRequest, 'requestId', 'streamid', 0, [132846894, 0], 'publisherId', 'sessionToken'])
 
 describe('ResendFromRequestSerializerV2', () => {
     describe('deserialize', () => {

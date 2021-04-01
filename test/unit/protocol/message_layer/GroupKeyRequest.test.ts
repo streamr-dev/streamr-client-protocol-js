@@ -5,14 +5,14 @@ import { StreamMessage, MessageID, MessageRef, GroupKeyMessage, GroupKeyRequest 
 // Message definitions
 const message = new GroupKeyRequest({
     requestId: 'requestId',
-    streamId: 'streamId',
+    streamId: 'streamid',
     rsaPublicKey: 'rsaPublicKey',
     groupKeyIds: ['groupKeyId1', 'groupKeyId2'],
 })
-const serializedMessage = JSON.stringify(['requestId', 'streamId', 'rsaPublicKey', ['groupKeyId1', 'groupKeyId2']])
+const serializedMessage = JSON.stringify(['requestId', 'streamid', 'rsaPublicKey', ['groupKeyId1', 'groupKeyId2']])
 
 const streamMessage = new StreamMessage({
-    messageId: new MessageID('streamId', 0, 1, 0, 'publisherId', 'msgChainId'),
+    messageId: new MessageID('streamid', 0, 1, 0, 'publisherId', 'msgChainId'),
     prevMsgRef: new MessageRef(0, 0),
     content: serializedMessage,
     messageType: StreamMessage.MESSAGE_TYPES.GROUP_KEY_REQUEST,

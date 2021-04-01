@@ -7,6 +7,7 @@ import CachingStreamMessageValidator from '../../../src/utils/CachingStreamMessa
 import StreamMessage from '../../../src/protocol/message_layer/StreamMessage'
 import '../../../src/protocol/message_layer/StreamMessageSerializerV31'
 import { StreamMetadata } from '../../../src/utils/StreamMessageValidator'
+import { toStreamId } from '../../../src/utils/validations'
 
 describe('CachingStreamMessageValidator', () => {
     let cacheTimeoutMillis: number
@@ -85,8 +86,8 @@ describe('CachingStreamMessageValidator', () => {
         await validator.validate(msg2)
 
         assert.strictEqual((isPublisher as any).callCount, 2, `Unexpected calls: ${(isPublisher as any).getCalls()}`)
-        assert((isPublisher as any).calledWith('0xbce3217F2AC9c8a2D14A6303F87506c4FC124014', 'streamId'), `Unexpected calls: ${(isPublisher as any).getCalls()}`)
-        assert((isPublisher as any).calledWith('0xbce3217F2AC9c8a2D14A6303F87506c4FC124014', 'tagHE6nTQ9SJV2wPoCxBFw'), `Unexpected calls: ${(isPublisher as any).getCalls()}`)
+        assert((isPublisher as any).calledWith('0xbce3217F2AC9c8a2D14A6303F87506c4FC124014', toStreamId('streamId')), `Unexpected calls: ${(isPublisher as any).getCalls()}`)
+        assert((isPublisher as any).calledWith('0xbce3217F2AC9c8a2D14A6303F87506c4FC124014', toStreamId('tagHE6nTQ9SJV2wPoCxBFw')), `Unexpected calls: ${(isPublisher as any).getCalls()}`)
     })
 
     it('expires items from cache after timeout', async () => {

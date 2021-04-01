@@ -10,14 +10,14 @@ const VERSION = 1
 const message = new StorageNodesRequest({
     version: VERSION,
     requestId: 'requestId',
-    streamId: 'streamId',
+    streamId: 'streamid',
     streamPartition: 10
 })
 const serializedMessage = JSON.stringify([
     VERSION,
     TrackerMessage.TYPES.StorageNodesRequest,
     'requestId',
-    'streamId',
+    'streamid',
     10
 ])
 

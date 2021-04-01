@@ -9,7 +9,7 @@ describe('StorageNodesRequest', () => {
         it('throws on null streamPartition', () => {
             assert.throws(() => new StorageNodesRequest({
                 requestId: 'requestId',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: null as any
             }), ValidationError)
         })
@@ -23,20 +23,20 @@ describe('StorageNodesRequest', () => {
         it('throws on null requestId', () => {
             assert.throws(() => new StorageNodesRequest({
                 requestId: null as any,
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0
             }), ValidationError)
         })
         it('should create the latest version', () => {
             const msg = new StorageNodesRequest({
                 requestId: 'requestId',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0
             })
             assert(msg instanceof StorageNodesRequest)
             assert.strictEqual(msg.version, TrackerMessage.LATEST_VERSION)
             assert.strictEqual(msg.requestId, 'requestId')
-            assert.strictEqual(msg.streamId, 'streamId')
+            assert.strictEqual(msg.streamId, 'streamid')
             assert.strictEqual(msg.streamPartition, 0)
         })
     })

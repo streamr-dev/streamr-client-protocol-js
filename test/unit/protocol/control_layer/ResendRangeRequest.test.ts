@@ -10,7 +10,7 @@ describe('ResendRangeRequest', () => {
         it('throws on null requestId', () => {
             assert.throws(() => new ResendRangeRequest({
                 requestId: null as any,
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 fromMsgRef: new MessageRef(132846894, 0),
                 toMsgRef: new MessageRef(132847000, 0),
@@ -22,7 +22,7 @@ describe('ResendRangeRequest', () => {
         it('throws if from > to', () => {
             assert.throws(() => new ResendRangeRequest({
                 requestId: '',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 fromMsgRef: new MessageRef(132847000, 0),
                 toMsgRef: new MessageRef(132846894, 0),
@@ -34,7 +34,7 @@ describe('ResendRangeRequest', () => {
         it('should create the latest version', () => {
             const msg = new ResendRangeRequest({
                 requestId: 'requestId',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 fromMsgRef: new MessageRef(132846894, 0),
                 toMsgRef: new MessageRef(132847000, 0),
@@ -44,7 +44,7 @@ describe('ResendRangeRequest', () => {
             })
             assert(msg instanceof ResendRangeRequest)
             assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
-            assert.strictEqual(msg.streamId, 'streamId')
+            assert.strictEqual(msg.streamId, 'streamid')
             assert.strictEqual(msg.streamPartition, 0)
             assert.strictEqual(msg.requestId, 'requestId')
             assert(msg.fromMsgRef instanceof MessageRef)

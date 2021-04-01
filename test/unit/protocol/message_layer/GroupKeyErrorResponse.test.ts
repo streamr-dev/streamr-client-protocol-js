@@ -9,15 +9,15 @@ import { ErrorCode } from '../../../../src/protocol/message_layer/GroupKeyErrorR
 // Message definitions
 const message = new GroupKeyErrorResponse({
     requestId: 'requestId',
-    streamId: 'streamId',
+    streamId: 'streamid',
     errorCode: ErrorCode.PLACEHOLDER,
     errorMessage: 'errorMessage',
     groupKeyIds: ['groupKeyId1', 'groupKeyId2'],
 })
-const serializedMessage = JSON.stringify(['requestId', 'streamId', 'PLACEHOLDER', 'errorMessage', ['groupKeyId1', 'groupKeyId2']])
+const serializedMessage = JSON.stringify(['requestId', 'streamid', 'PLACEHOLDER', 'errorMessage', ['groupKeyId1', 'groupKeyId2']])
 
 const streamMessage = new StreamMessage({
-    messageId: new MessageID('streamId', 0, 1, 0, 'publisherId', 'msgChainId'),
+    messageId: new MessageID('streamid', 0, 1, 0, 'publisherId', 'msgChainId'),
     prevMsgRef: new MessageRef(0, 0),
     content: serializedMessage,
     messageType: StreamMessage.MESSAGE_TYPES.GROUP_KEY_ERROR_RESPONSE,

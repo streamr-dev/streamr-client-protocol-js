@@ -8,7 +8,7 @@ const VERSION = 2
 const message = new ResendRangeRequest({
     version: VERSION,
     requestId: 'requestId',
-    streamId: 'streamId',
+    streamId: 'streamid',
     streamPartition: 0,
     fromMsgRef: new MessageRef(132846894, 0),
     toMsgRef: new MessageRef(132847000, 0),
@@ -16,7 +16,7 @@ const message = new ResendRangeRequest({
     msgChainId: 'msgChainId',
     sessionToken: 'sessionToken',
 })
-const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.ResendRangeRequest, 'requestId', 'streamId', 0, [132846894, 0], [132847000, 0], 'publisherId', 'msgChainId', 'sessionToken'])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.ResendRangeRequest, 'requestId', 'streamid', 0, [132846894, 0], [132847000, 0], 'publisherId', 'msgChainId', 'sessionToken'])
 
 describe('ResendRangeRequestSerializerV2', () => {
     describe('deserialize', () => {

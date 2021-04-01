@@ -9,7 +9,7 @@ describe('StorageNodesResponse', () => {
         it('throws on null nodeIds', () => {
             assert.throws(() => new StorageNodesResponse({
                 requestId: 'requestId',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 nodeIds: null as any
             }), ValidationError)
@@ -17,7 +17,7 @@ describe('StorageNodesResponse', () => {
         it('throws on null streamPartition', () => {
             assert.throws(() => new StorageNodesResponse({
                 requestId: 'requestId',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: null as any,
                 nodeIds: []
             }), ValidationError)
@@ -33,7 +33,7 @@ describe('StorageNodesResponse', () => {
         it('throws on null requestId', () => {
             assert.throws(() => new StorageNodesResponse({
                 requestId: null as any,
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 nodeIds: []
             }), ValidationError)
@@ -41,14 +41,14 @@ describe('StorageNodesResponse', () => {
         it('should create the latest version', () => {
             const msg = new StorageNodesResponse({
                 requestId: 'requestId',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 nodeIds: []
             })
             assert(msg instanceof StorageNodesResponse)
             assert.strictEqual(msg.version, TrackerMessage.LATEST_VERSION)
             assert.strictEqual(msg.requestId, 'requestId')
-            assert.strictEqual(msg.streamId, 'streamId')
+            assert.strictEqual(msg.streamId, 'streamid')
             assert.strictEqual(msg.streamPartition, 0)
             assert.deepStrictEqual(msg.nodeIds, [])
         })

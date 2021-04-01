@@ -9,7 +9,7 @@ const VERSION = 1
 const message = new StorageNodesResponse({
     version: VERSION,
     requestId: 'requestId',
-    streamId: 'streamId',
+    streamId: 'streamid',
     streamPartition: 10,
     nodeIds: ['node-1', 'node-2']
 })
@@ -17,7 +17,7 @@ const serializedMessage = JSON.stringify([
     VERSION,
     TrackerMessage.TYPES.StorageNodesResponse,
     'requestId',
-    'streamId',
+    'streamid',
     10,
     ['node-1', 'node-2']
 ])

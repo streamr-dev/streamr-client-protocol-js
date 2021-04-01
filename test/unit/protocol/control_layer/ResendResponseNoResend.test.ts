@@ -9,19 +9,19 @@ describe('ResendResponseNoResend', () => {
         it('throws on null requestId', () => {
             assert.throws(() => new ResendResponseNoResend({
                 requestId: null as any,
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
             }), ValidationError)
         })
         it('should create the latest version', () => {
             const msg = new ResendResponseNoResend({
                 requestId: 'requestId',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
             })
             assert(msg instanceof ResendResponseNoResend)
             assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
-            assert.strictEqual(msg.streamId, 'streamId')
+            assert.strictEqual(msg.streamId, 'streamid')
             assert.strictEqual(msg.streamPartition, 0)
             assert.strictEqual(msg.requestId, 'requestId')
         })

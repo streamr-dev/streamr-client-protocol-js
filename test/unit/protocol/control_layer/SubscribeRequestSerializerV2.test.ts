@@ -8,11 +8,11 @@ const VERSION = 2
 const message = new SubscribeRequest({
     version: VERSION,
     requestId: 'requestId',
-    streamId: 'streamId',
+    streamId: 'streamid',
     streamPartition: 0,
     sessionToken: 'sessionToken',
 })
-const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.SubscribeRequest, 'requestId', 'streamId', 0, 'sessionToken'])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.SubscribeRequest, 'requestId', 'streamid', 0, 'sessionToken'])
 
 describe('SubscribeRequestSerializerV2', () => {
     describe('deserialize', () => {

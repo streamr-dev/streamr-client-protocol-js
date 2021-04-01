@@ -8,12 +8,12 @@ const VERSION = 1
 // Message definitions
 const message = new SubscribeRequest({
     version: VERSION,
-    streamId: 'streamId',
+    streamId: 'streamid',
     streamPartition: 0,
     sessionToken: 'sessionToken',
     requestId: PLACEHOLDER_REQUEST_ID_PROTOCOL_V1
 })
-const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.SubscribeRequest, 'streamId', 0, 'sessionToken'])
+const serializedMessage = JSON.stringify([VERSION, ControlMessage.TYPES.SubscribeRequest, 'streamid', 0, 'sessionToken'])
 
 describe('SubscribeRequestSerializerV1', () => {
     describe('deserialize', () => {

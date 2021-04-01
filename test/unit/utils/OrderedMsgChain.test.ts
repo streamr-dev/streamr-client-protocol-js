@@ -49,7 +49,7 @@ const createMsg = ({
 } = {}) => {
     const prevMsgRef = prevTimestamp ? new MessageRef(prevTimestamp, prevSequenceNumber) : null
     return new StreamMessage({
-        messageId: new MessageID('streamId', 0, timestamp, sequenceNumber, publisherId, msgChainId),
+        messageId: new MessageID('streamid', 0, timestamp, sequenceNumber, publisherId, msgChainId),
         prevMsgRef,
         content,
     })

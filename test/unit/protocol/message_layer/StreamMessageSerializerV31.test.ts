@@ -10,7 +10,7 @@ const content = {
 
 // Message definitions
 const message = new StreamMessage({
-    messageId: new MessageIDStrict('streamId', 0, 1564046332168, 10, 'publisherId', 'msgChainId'),
+    messageId: new MessageIDStrict('streamid', 0, 1564046332168, 10, 'publisherId', 'msgChainId'),
     prevMsgRef: new MessageRef(1564046132168, 5),
     content: JSON.stringify(content),
     messageType: StreamMessage.MESSAGE_TYPES.MESSAGE,
@@ -20,7 +20,7 @@ const message = new StreamMessage({
 })
 const serializedMessage = JSON.stringify([
     VERSION,
-    ['streamId', 0, 1564046332168, 10, 'publisherId', 'msgChainId'],
+    ['streamid', 0, 1564046332168, 10, 'publisherId', 'msgChainId'],
     [1564046132168, 5],
     StreamMessage.MESSAGE_TYPES.MESSAGE,
     StreamMessage.ENCRYPTION_TYPES.NONE,

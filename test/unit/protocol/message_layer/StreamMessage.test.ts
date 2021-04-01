@@ -16,7 +16,7 @@ const newGroupKey = new EncryptedGroupKey('groupKeyId', 'encryptedGroupKeyHex')
 
 const msg = ({ timestamp = 1564046332168, sequenceNumber = 10, ...overrides } = {}) => {
     return new StreamMessage({
-        messageId: new MessageIDStrict('streamId', 0, timestamp, sequenceNumber, 'publisherId', 'msgChainId'),
+        messageId: new MessageIDStrict('streamid', 0, timestamp, sequenceNumber, 'publisherId', 'msgChainId'),
         prevMsgRef: new MessageRef(timestamp, 5),
         content: JSON.stringify(content),
         messageType: StreamMessage.MESSAGE_TYPES.MESSAGE,
@@ -32,7 +32,7 @@ describe('StreamMessage', () => {
     describe('constructor', () => {
         it('create a StreamMessage with all fields defined', () => {
             const streamMessage = msg()
-            assert.strictEqual(streamMessage.getStreamId(), 'streamId')
+            assert.strictEqual(streamMessage.getStreamId(), 'streamid')
             assert.strictEqual(streamMessage.getStreamPartition(), 0)
             assert.strictEqual(streamMessage.getTimestamp(), 1564046332168)
             assert.strictEqual(streamMessage.getSequenceNumber(), 10)
@@ -52,10 +52,10 @@ describe('StreamMessage', () => {
 
         it('create StreamMessage with minimum fields defined', () => {
             const streamMessage = new StreamMessage({
-                messageId: new MessageIDStrict('streamId', 0, 1564046332168, 10, 'publisherId', 'msgChainId'),
+                messageId: new MessageIDStrict('streamid', 0, 1564046332168, 10, 'publisherId', 'msgChainId'),
                 content: JSON.stringify(content),
             })
-            assert.strictEqual(streamMessage.getStreamId(), 'streamId')
+            assert.strictEqual(streamMessage.getStreamId(), 'streamid')
             assert.strictEqual(streamMessage.getStreamPartition(), 0)
             assert.strictEqual(streamMessage.getTimestamp(), 1564046332168)
             assert.strictEqual(streamMessage.getSequenceNumber(), 10)
@@ -75,7 +75,7 @@ describe('StreamMessage', () => {
 
         it('create StreamMessage with object as content instead of string', () => {
             const streamMessage = new StreamMessage({
-                messageId: new MessageIDStrict('streamId', 0, 1564046332168, 10, 'publisherId', 'msgChainId'),
+                messageId: new MessageIDStrict('streamid', 0, 1564046332168, 10, 'publisherId', 'msgChainId'),
                 content,
             })
             assert.deepStrictEqual(streamMessage.getContent(), content)
@@ -91,7 +91,7 @@ describe('StreamMessage', () => {
 
         it('should throw if content is not defined', () => {
             assert.throws(() => new StreamMessage({
-                messageId: new MessageIDStrict('streamId', 0, 1564046332168, 10, 'publisherId', 'msgChainId'),
+                messageId: new MessageIDStrict('streamid', 0, 1564046332168, 10, 'publisherId', 'msgChainId'),
                 // missing content
             } as any), ValidationError)
         })

@@ -5,7 +5,7 @@ import { StreamMessage, MessageID, PublishRequest, ControlMessage } from '../../
 
 describe('PublishRequest', () => {
     const streamMessage = new StreamMessage({
-        messageId: new MessageID('streamId', 0, 1529549961116, 0, 'publisherId', 'msgChainId'),
+        messageId: new MessageID('streamid', 0, 1529549961116, 0, 'publisherId', 'msgChainId'),
         content: {}
     })
 

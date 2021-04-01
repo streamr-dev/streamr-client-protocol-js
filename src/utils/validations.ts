@@ -78,3 +78,11 @@ export function validateIsOneOf(varName: string, varValue: any, validValues: Rea
     }
 }
 
+export type StreamID = string & {
+    __brand: 'StreamId'
+}
+
+export function toStreamId(id:string){
+    return id.toLowerCase() as StreamID
+}
+

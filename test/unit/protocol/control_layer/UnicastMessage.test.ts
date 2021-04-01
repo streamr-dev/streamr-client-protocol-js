@@ -21,7 +21,7 @@ describe('UnicastMessage', () => {
         })
         it('should create the latest version', () => {
             const streamMessage = new StreamMessage({
-                messageId: new MessageID('streamId', 0, 12345, 0, 'publisherId', 'msgChainId'),
+                messageId: new MessageID('streamid', 0, 12345, 0, 'publisherId', 'msgChainId'),
                 content: {},
             })
 

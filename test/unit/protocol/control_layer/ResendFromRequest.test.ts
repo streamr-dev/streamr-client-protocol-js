@@ -10,7 +10,7 @@ describe('ResendFromRequest', () => {
         it('throws on null requestId', () => {
             assert.throws(() => new ResendFromRequest({
                 requestId: null as any,
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 fromMsgRef: new MessageRef(132846894, 0),
                 publisherId: 'publisherId',
@@ -20,7 +20,7 @@ describe('ResendFromRequest', () => {
         it('should create the latest version', () => {
             const msg = new ResendFromRequest({
                 requestId: 'requestId',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 fromMsgRef: new MessageRef(132846894, 0),
                 publisherId: 'publisherId',
@@ -29,7 +29,7 @@ describe('ResendFromRequest', () => {
             assert(msg instanceof ResendFromRequest)
             assert.strictEqual(msg.version, ControlMessage.LATEST_VERSION)
             assert.strictEqual(msg.requestId, 'requestId')
-            assert.strictEqual(msg.streamId, 'streamId')
+            assert.strictEqual(msg.streamId, 'streamid')
             assert.strictEqual(msg.streamPartition, 0)
             assert(msg.fromMsgRef instanceof MessageRef)
             assert.strictEqual(msg.publisherId, 'publisherId')
@@ -39,7 +39,7 @@ describe('ResendFromRequest', () => {
         it('publisherId and sessionToken can be null', () => {
             const msg = new ResendFromRequest({
                 requestId: 'requestId',
-                streamId: 'streamId',
+                streamId: 'streamid',
                 streamPartition: 0,
                 fromMsgRef: new MessageRef(132846894, 0),
                 publisherId: null,
@@ -47,7 +47,7 @@ describe('ResendFromRequest', () => {
             })
             assert(msg instanceof ResendFromRequest)
             assert.strictEqual(msg.requestId, 'requestId')
-            assert.strictEqual(msg.streamId, 'streamId')
+            assert.strictEqual(msg.streamId, 'streamid')
             assert.strictEqual(msg.streamPartition, 0)
             assert(msg.fromMsgRef instanceof MessageRef)
             assert.strictEqual(msg.publisherId, null)

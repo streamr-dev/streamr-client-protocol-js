@@ -5,16 +5,16 @@ import EncryptedGroupKey from '../../../../src/protocol/message_layer/EncryptedG
 
 // Message definitions
 const message = new GroupKeyAnnounce({
-    streamId: 'streamId',
+    streamId: 'streamid',
     encryptedGroupKeys: [
         new EncryptedGroupKey('groupKeyId1', 'encryptedGroupKey1'),
         new EncryptedGroupKey('groupKeyId2', 'encryptedGroupKey2'),
     ],
 })
-const serializedMessage = JSON.stringify(['streamId', [['groupKeyId1', 'encryptedGroupKey1'], ['groupKeyId2', 'encryptedGroupKey2']]])
+const serializedMessage = JSON.stringify(['streamid', [['groupKeyId1', 'encryptedGroupKey1'], ['groupKeyId2', 'encryptedGroupKey2']]])
 
 const streamMessage = new StreamMessage({
-    messageId: new MessageID('streamId', 0, 1, 0, 'publisherId', 'msgChainId'),
+    messageId: new MessageID('streamid', 0, 1, 0, 'publisherId', 'msgChainId'),
     prevMsgRef: new MessageRef(0, 0),
     content: serializedMessage,
     messageType: StreamMessage.MESSAGE_TYPES.GROUP_KEY_ANNOUNCE,
