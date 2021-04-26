@@ -143,11 +143,14 @@ export default class StreamMessageValidator {
         if (!streamMessage.signature) {
             throw new ValidationError(`Stream data is required to be signed. Message: ${streamMessage.serialize()}`)
         }
-        if (stream.requireEncryptedData && streamMessage.encryptionType === StreamMessage.ENCRYPTION_TYPES.NONE) {
-            throw new ValidationError(`This stream requires data to be encrypted. Message: ${streamMessage.serialize()}`)
+
+        // @ts-expect-error
+        const publicUserAllowed = await this.isPublisher(null, stream)
+
+        if (!publicUserAllowed && stream.requireEncryptedData && streamMessage.encryptionType === StreamMessage.ENCRYPTION_TYPES.NONE) {
+            throw new ValidationError(`Non-public streams require data to be encrypted. Message: ${streamMessage.serialize()}`)
         }
 
-        // console.log('stream', stream.)
         if (streamMessage.getStreamPartition() < 0 || streamMessage.getStreamPartition() >= stream.partitions) {
             throw new ValidationError(`Partition ${streamMessage.getStreamPartition()} is out of range (0..${stream.partitions - 1}). Message: ${streamMessage.serialize()}`)
         }
