@@ -136,7 +136,7 @@ describe('StreamMessageValidator', () => {
         it('accepts valid messages with a new group key', async () => {
             await getValidator().validate(msgWithNewGroupKey)
         })
-
+        /* original test 
         it('accepts unsigned messages that dont need to be signed', async () => {
             getStream = sinon.stub().resolves({
                 ...defaultGetStreamResponse,
@@ -147,6 +147,23 @@ describe('StreamMessageValidator', () => {
             msg.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
 
             await getValidator().validate(msg)
+        })
+        */
+
+        it('throws when unsigned messages get sent', async () => {
+            getStream = sinon.stub().resolves({
+                ...defaultGetStreamResponse,
+                requireSignedData: false,
+            })
+
+            msg.signature = null
+            msg.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
+
+            try {
+                await getValidator().validate(msg)
+            } catch (e){
+                expect(e.message).toEqual('Stream data is required to be signed. Message: [32,["streamId",0,0,0,"0x6807295093ac5da6fb2a10f7dedc5edd620804fb","msgChainId"],null,27,0,0,null,"{}",null,0,null]')
+            }
         })
 
         it('rejects unsigned messages that should be signed', async () => {
