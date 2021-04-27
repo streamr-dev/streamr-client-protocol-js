@@ -164,14 +164,16 @@ export default class StreamMessageValidator {
             throw new ValidationError(`Partition ${streamMessage.getStreamPartition()} is out of range (0..${stream.partitions - 1}). Message: ${streamMessage.serialize()}`)
         }
 
-        // Cryptographic integrity and publisher permission checks. Note that only signed messages can be validated this way.
-        await StreamMessageValidator.assertSignatureIsValid(streamMessage, this.verify)
-        const sender = streamMessage.getPublisherId()
+        if (streamMessage.signature) {
+            // Cryptographic integrity and publisher permission checks. Note that only signed messages can be validated this way.
+            await StreamMessageValidator.assertSignatureIsValid(streamMessage, this.verify)
+            const sender = streamMessage.getPublisherId()
 
-        // Check that the sender of the message is a valid publisher of the stream
-        const senderIsPublisher = await this.isPublisher(sender, streamMessage.getStreamId())
-        if (!senderIsPublisher) {
-            throw new ValidationError(`${sender} is not a publisher on stream ${streamMessage.getStreamId()}. Message: ${streamMessage.serialize()}`)
+            // Check that the sender of the message is a valid publisher of the stream
+            const senderIsPublisher = await this.isPublisher(sender, streamMessage.getStreamId())
+            if (!senderIsPublisher) {
+                throw new ValidationError(`${sender} is not a publisher on stream ${streamMessage.getStreamId()}. Message: ${streamMessage.serialize()}`)
+            }
         }
     }
 

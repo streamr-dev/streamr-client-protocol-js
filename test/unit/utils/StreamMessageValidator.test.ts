@@ -136,7 +136,7 @@ describe('StreamMessageValidator', () => {
         it('accepts valid messages with a new group key', async () => {
             await getValidator().validate(msgWithNewGroupKey)
         })
-        /* WHY DOES IT FAIL???
+
         it('accepts unsigned messages that dont need to be signed', async () => {
             getStream = sinon.stub().resolves({
                 ...defaultGetStreamResponse,
@@ -149,7 +149,6 @@ describe('StreamMessageValidator', () => {
 
             await getValidator().validate(msg)
         })
-        */
 
         it('rejects unsigned messages that should be signed', async () => {
             msg.signature = null
