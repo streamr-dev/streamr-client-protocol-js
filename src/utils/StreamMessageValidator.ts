@@ -153,7 +153,10 @@ export default class StreamMessageValidator {
             throw new ValidationError(`Stream data is required to be signed. Message: ${streamMessage.serialize()}`)
         }
 
-        if ((stream.requireEncryptedData || this.requireEncryptedData) && stream.requireEncryptedData && streamMessage.encryptionType === StreamMessage.ENCRYPTION_TYPES.NONE) {
+        if (
+            (stream.requireEncryptedData || this.requireEncryptedData) 
+            && stream.requireEncryptedData && streamMessage.encryptionType === StreamMessage.ENCRYPTION_TYPES.NONE
+        ) {
             throw new ValidationError(`Non-public streams require data to be encrypted. Message: ${streamMessage.serialize()}`)
         }
 
