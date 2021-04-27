@@ -136,7 +136,7 @@ describe('StreamMessageValidator', () => {
         it('accepts valid messages with a new group key', async () => {
             await getValidator().validate(msgWithNewGroupKey)
         })
-        /* original test 
+
         it('accepts unsigned messages that dont need to be signed', async () => {
             getStream = sinon.stub().resolves({
                 ...defaultGetStreamResponse,
@@ -147,23 +147,6 @@ describe('StreamMessageValidator', () => {
             msg.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
 
             await getValidator().validate(msg)
-        })
-        */
-
-        it('throws when unsigned messages get sent', async () => {
-            getStream = sinon.stub().resolves({
-                ...defaultGetStreamResponse,
-                requireSignedData: false,
-            })
-
-            msg.signature = null
-            msg.signatureType = StreamMessage.SIGNATURE_TYPES.NONE
-
-            try {
-                await getValidator().validate(msg)
-            } catch (e){
-                expect(e.message).toEqual('Stream data is required to be signed. Message: [32,["streamId",0,0,0,"0x6807295093ac5da6fb2a10f7dedc5edd620804fb","msgChainId"],null,27,0,0,null,"{}",null,0,null]')
-            }
         })
 
         it('rejects unsigned messages that should be signed', async () => {
@@ -228,7 +211,7 @@ describe('StreamMessageValidator', () => {
                 return true
             })
         })
-        /*
+
         it('rejects messages from unpermitted publishers', async () => {
             isPublisher = sinon.stub().resolves(false)
 
@@ -238,7 +221,7 @@ describe('StreamMessageValidator', () => {
                 assert((isPublisher as any).calledWith(msg.getPublisherId(), msg.getStreamId()), `isPublisher called with wrong args: ${(isPublisher as any).getCall(0).args}`)
                 return true
             })
-        })*/
+        })
 
         it('rejects messages with unknown signature type', async () => {
             msg.signatureType = 666
@@ -308,7 +291,7 @@ describe('StreamMessageValidator', () => {
                 return true
             })
         })
-        /*
+
         it('rejects messages to invalid publishers', async () => {
             isPublisher = sinon.stub().resolves(false)
 
@@ -330,7 +313,6 @@ describe('StreamMessageValidator', () => {
                 return true
             })
         })
-        */
 
         it('rejects if isPublisher rejects', async () => {
             const testError = new Error('test error')
@@ -392,7 +374,7 @@ describe('StreamMessageValidator', () => {
                 return true
             })
         })
-        /*
+
         it('rejects messages from invalid publishers', async () => {
             isPublisher = sinon.stub().resolves(false)
 
@@ -414,7 +396,7 @@ describe('StreamMessageValidator', () => {
                 return true
             })
         })
-        */
+
         it('rejects if isPublisher rejects', async () => {
             const testError = new Error('test error')
             isPublisher = sinon.stub().rejects(testError)
@@ -466,7 +448,7 @@ describe('StreamMessageValidator', () => {
                 return true
             })
         })
-        /*
+
         it('rejects messages from invalid publishers', async () => {
             isPublisher = sinon.stub().resolves(false)
 
@@ -488,7 +470,6 @@ describe('StreamMessageValidator', () => {
                 return true
             })
         })
-        */
 
         it('rejects if isPublisher rejects', async () => {
             const testError = new Error('test error')
@@ -550,7 +531,7 @@ describe('StreamMessageValidator', () => {
                 return true
             })
         })
-        /*
+
         it('rejects messages from invalid publishers', async () => {
             isPublisher = sinon.stub().resolves(false)
 
@@ -572,7 +553,7 @@ describe('StreamMessageValidator', () => {
                 return true
             })
         })
-        */
+
         it('rejects if isPublisher rejects', async () => {
             const testError = new Error('test error')
             isPublisher = sinon.stub().rejects(testError)

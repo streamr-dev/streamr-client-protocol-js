@@ -46,7 +46,6 @@ describe('CachingStreamMessageValidator', () => {
 
     // Note: this test assumes that the passed getStream, isPublisher, and isSubscriber are cached in the same way.
     // Only validation of normal messages is tested, which uses only isPublisher.
-    /*
     it('only calls the expensive function once (sequential promise resolution)', async () => {
         const validator = getValidator()
         await validator.validate(msg)
@@ -104,7 +103,7 @@ describe('CachingStreamMessageValidator', () => {
         await validator.validate(msg)
         await validator.validate(msg)
         assert.strictEqual((isPublisher as any).callCount, 2)
-    })*/
+    })
 
     it('does not swallow rejections', async () => {
         const testError = new Error('test error')
