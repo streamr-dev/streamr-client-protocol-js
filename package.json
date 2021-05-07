@@ -33,7 +33,7 @@
     "@typescript-eslint/parser": "^4.22.1",
     "array-shuffle": "^2.0.0",
     "eslint": "^7.25.0",
-    "eslint-config-streamr-ts": "^2.0.0",
+    "eslint-config-streamr-ts": "^3.0.0",
     "eslint-plugin-promise": "^5.1.0",
     "jest": "^26.6.3",
     "sinon": "^10.0.0",
