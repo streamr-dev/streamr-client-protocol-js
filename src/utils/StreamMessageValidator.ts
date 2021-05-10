@@ -14,8 +14,7 @@ export interface StreamMetadata {
 }
 
 export interface Options {
-    requireSignedData?: boolean
-    requireEncryptedData?: boolean
+    requireBrubeckValidation?: boolean
 
     getStream: (streamId: string) => Promise<StreamMetadata>
     isPublisher: (address: string, streamId: string) => Promise<boolean>
@@ -37,8 +36,7 @@ export interface Options {
  */
 export default class StreamMessageValidator {
 
-    requireSignedData: boolean
-    requireEncryptedData: boolean
+    requireBrubeckValidation?:boolean
 
     getStream: (streamId: string) => Promise<StreamMetadata>
     isPublisher: (address: string, streamId: string) => Promise<boolean>
@@ -53,15 +51,14 @@ export default class StreamMessageValidator {
      * @param verify async function(address, payload, signature): returns true if the address and payload match the signature.
      * The default implementation uses the native secp256k1 library on node.js and falls back to the elliptic library on browsers.
      */
-    constructor({ getStream, isPublisher, isSubscriber, verify = SigningUtil.verify, requireEncryptedData=false, requireSignedData=false }: Options) {
+    constructor({ getStream, isPublisher, isSubscriber, verify = SigningUtil.verify, requireBrubeckValidation=false }: Options) {
         StreamMessageValidator.checkInjectedFunctions(getStream, isPublisher, isSubscriber, verify)
         this.getStream = getStream
         this.isPublisher = isPublisher
         this.isSubscriber = isSubscriber
         this.verify = verify
 
-        this.requireSignedData = requireSignedData
-        this.requireEncryptedData = requireEncryptedData
+        this.requireBrubeckValidation = requireBrubeckValidation
     }
 
     static checkInjectedFunctions(
@@ -149,13 +146,13 @@ export default class StreamMessageValidator {
         const stream = await this.getStream(streamMessage.getStreamId())
 
         // Checks against stream metadata
-        if ((stream.requireSignedData || this.requireSignedData) && !streamMessage.signature) {
+        if ((stream.requireSignedData || this.requireBrubeckValidation) && !streamMessage.signature) {
             throw new ValidationError(`Stream data is required to be signed. Message: ${streamMessage.serialize()}`)
         }
 
         if (
-            (stream.requireEncryptedData || this.requireEncryptedData) 
-            && stream.requireEncryptedData && streamMessage.encryptionType === StreamMessage.ENCRYPTION_TYPES.NONE
+            (stream.requireEncryptedData || this.requireBrubeckValidation)
+            && streamMessage.encryptionType === StreamMessage.ENCRYPTION_TYPES.NONE
         ) {
             throw new ValidationError(`Non-public streams require data to be encrypted. Message: ${streamMessage.serialize()}`)
         }
@@ -168,7 +165,6 @@ export default class StreamMessageValidator {
             // Cryptographic integrity and publisher permission checks. Note that only signed messages can be validated this way.
             await StreamMessageValidator.assertSignatureIsValid(streamMessage, this.verify)
             const sender = streamMessage.getPublisherId()
-
             // Check that the sender of the message is a valid publisher of the stream
             const senderIsPublisher = await this.isPublisher(sender, streamMessage.getStreamId())
             if (!senderIsPublisher) {
