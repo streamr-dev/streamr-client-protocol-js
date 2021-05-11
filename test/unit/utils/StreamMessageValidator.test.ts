@@ -14,7 +14,6 @@ import ValidationError from '../../../src/errors/ValidationError'
 import { StreamMetadata } from '../../../src/utils/StreamMessageValidator'
 
 describe('StreamMessageValidator', () => {
-    const requireBrubeckValidation: boolean = false
     let getStream: (streamId: string) => Promise<StreamMetadata>
     let isPublisher: (address: string, streamId: string) => Promise<boolean>
     let isSubscriber: (address: string, streamId: string) => Promise<boolean>
@@ -43,7 +42,7 @@ describe('StreamMessageValidator', () => {
             return new StreamMessageValidator(customConfig)
         } else {
             return new StreamMessageValidator({
-                getStream, isPublisher, isSubscriber, verify, requireBrubeckValidation
+                getStream, isPublisher, isSubscriber, verify, requireBrubeckValidation: false
             })
         }
     }
@@ -148,6 +147,7 @@ describe('StreamMessageValidator', () => {
         it ('rejects unsigned messages when Brubeck validation is required', async () => {
             getStream = sinon.stub().resolves({
                 ...defaultGetStreamResponse,
+                requireSignedData: false,
             })
 
             msg.signature = null
@@ -207,7 +207,7 @@ describe('StreamMessageValidator', () => {
             })
 
             msg.encryptionType = StreamMessage.ENCRYPTION_TYPES.NONE
-            msg.getPublisherId = () => { return '0x0000000000000000000000000000000000000000' }
+            //msg.getPublisherId = () => { return '0x0000000000000000000000000000000000000000' }
 
             await assert.rejects(getValidator({
                 getStream,

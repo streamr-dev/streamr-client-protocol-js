@@ -22,6 +22,8 @@ export interface Options {
     verify?: (address: string, payload: string, signature: string) => Promise<boolean>
 }
 
+const PUBLIC_USER = '0x0000000000000000000000000000000000000000'
+
 /**
  * Validates observed StreamMessages according to protocol rules, regardless of observer.
  * Functions needed for external interactions are injected as constructor args.
@@ -36,7 +38,7 @@ export interface Options {
  */
 export default class StreamMessageValidator {
 
-    requireBrubeckValidation?:boolean
+    requireBrubeckValidation?: boolean
 
     getStream: (streamId: string) => Promise<StreamMetadata>
     isPublisher: (address: string, streamId: string) => Promise<boolean>
@@ -150,11 +152,17 @@ export default class StreamMessageValidator {
             throw new ValidationError(`Stream data is required to be signed. Message: ${streamMessage.serialize()}`)
         }
 
-        if (
-            (stream.requireEncryptedData || this.requireBrubeckValidation)
-            && streamMessage.encryptionType === StreamMessage.ENCRYPTION_TYPES.NONE
-        ) {
-            throw new ValidationError(`Non-public streams require data to be encrypted. Message: ${streamMessage.serialize()}`)
+
+
+        if (streamMessage.encryptionType === StreamMessage.ENCRYPTION_TYPES.NONE){
+            if (stream.requireEncryptedData){
+                throw new ValidationError(`Non-public streams require data to be encrypted. Message: ${streamMessage.serialize()}`)
+            } else if (this.requireBrubeckValidation){
+                const isPublicStream = await this.isSubscriber(PUBLIC_USER, streamMessage.getStreamId())
+                if (!isPublicStream){
+                    throw new ValidationError(`Non-public streams require data to be encrypted. Message: ${streamMessage.serialize()}`)
+                }
+            }
         }
 
         if (streamMessage.getStreamPartition() < 0 || streamMessage.getStreamPartition() >= stream.partitions) {
