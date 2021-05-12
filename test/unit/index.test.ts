@@ -1,6 +1,6 @@
 import * as Protocol from '../../src'
 
-// in enum the first key is a number, that number maps to a string, 
+// in enum the first key is a number, that number maps to a string,
 // and that string maps to the first key (e.g. '123' => 'Foobar' => '123')
 const isProbablyEnum = (obj: any) => {
     const key = Object.keys(obj)[0]
