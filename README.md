@@ -1,3 +1,5 @@
+# NOTICE! This repository has been moved under [network monorepo](https://github.com/streamr-dev/network-monorepo)
+
 # streamr-client-protocol
 
 ES6 JS implementations of [Streamr Protocol](https://github.com/streamr-dev/streamr-specs/blob/master/PROTOCOL.md) messages. This is shared code used by (at least):
